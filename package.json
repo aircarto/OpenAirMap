@@ -1,0 +1,19 @@
+{
+  "name": "openairmap",
+  "version": "1.0.0",
+  "description": "Map of outdoors air quality sensors",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aircarto/OpenAirMap.git"
+  },
+  "author": "Paul Vuarambon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aircarto/OpenAirMap/issues"
+  },
+  "homepage": "https://github.com/aircarto/OpenAirMap#readme"
+}
