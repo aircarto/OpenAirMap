@@ -1,13 +1,16 @@
 // server-express.js
 const express = require('express')
+const path = require('path');
+
 const app = express() // initialize app
 const port = 3000
 
-// GET callback function returns a response message
+app.use(express.static(path.join(__dirname, 'app')));
+
 app.get('/', (req, res) => {
-res.send('Open Air Map plouf')
+    res.redirect('index.html');
 })
 
 app.listen(port, () => {
-console.log(`Server listening at http://localhost:${port}`)
+    console.log(`Server listening at http://localhost:${port}`)
 })
