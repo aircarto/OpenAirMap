@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/aircarto/OpenAirMap/issues"
   },
-  "homepage": "https://github.com/aircarto/OpenAirMap#readme"
+  "homepage": "https://github.com/aircarto/OpenAirMap#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
