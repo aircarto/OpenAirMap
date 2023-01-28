@@ -29,4 +29,4 @@ The app will get air quality data from multiples sensors and their API.
 
 Install npm and type `npm install`. This will install all the npm packages needed for this app.
 
-Install node.js and type `node app.js`. This will start the app as a server on port 3000.
+Install node.js and type `node app.js`. This will start the app as a server on port 3003.
