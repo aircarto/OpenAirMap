@@ -1,0 +1,55 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#map {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    border-radius: 0px;
+}
+
+#logoAirCarto img {
+    position: fixed;
+    height: 60px;
+    right: 0px;
+    margin: 0px;
+    border-radius: 0px;
+}
+
+
+#div_buttonPM {
+    position: fixed;
+    right: 940px;
+    top: 15px;
+}
+
+#div_button_purpleAir {
+    position: fixed;
+    right: 755px;
+    top: 15px;
+}
+
+#div_button_modelisationAtmoSud {
+    position: fixed;
+    right: 585px;
+    top: 15px;
+}
+
+#div_button_stationsAtmoSud {
+    position: fixed;
+    right: 380px;
+    top: 15px;
+}
+
+#div_button_monNebulo {
+    position: fixed;
+    right: 250px;
+    top: 15px;
+}
+
+.leaflet-popup-content {
+    width: 600px;
+}

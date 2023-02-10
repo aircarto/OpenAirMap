@@ -13,6 +13,7 @@
  * Leaflet
  * Jquery
  * Bootstrap
+ * dotenv
 
 ## Sensors
 

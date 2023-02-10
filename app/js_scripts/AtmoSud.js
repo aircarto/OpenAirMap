@@ -1,17 +1,19 @@
 
 var date = new Date();
 var current_date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate();
+var api_key_atmo = "21d3ca8d59e93e7cee170cb388858ba4";
+
 
 // ******** ATMOSUD *************
 //on va chercher les coordonnées de AtmoSud (Stations)
 function loadStationAtmo() {
     $.ajax({
         method: "GET",
-        url: "./php_scripts/get_localisationStationsAtmoSud.php",
+        url: "https://api.atmosud.org/observations/stations?polluant_id=39,24,68&format=json&download=false&token="+api_key_atmo,
     }).done(function (data) {
         console.log("Getting data from AtmoSud (Stations localisation"); //récupère lat et long de toutes les stations qui mesurent des PM
-        console.log(data);
-        $.each(data, function (key, value) {
+        console.log(data.stations);
+        $.each(data.stations, function (key, value) {
             //on ajoute un point (marker) pour chaque sensor qui ouvre un popup lorsque l'on clique dessus
             L.marker([value['latitude'], value['longitude']])
                 .addTo(map)
@@ -20,11 +22,12 @@ function loadStationAtmo() {
     })
 };
 
+//on va chercher les coordonnées de AtmoSud (micro-capteurs Fixes)
 
 function loadCapteurAtmo() {
     $.ajax({
         method: "GET",
-        url: "./php_scripts/get_capteursAtmoSud.php",
+        url: "https://api.atmosud.org/observations/capteurs/sites/live?format=json&download=false&delais=60&formatage=dict&token="+api_key_atmo,
     }).done(function (data) {
         console.log("Getting data from AtmoSud (capteurs"); //récupère lat et long de toutes les stations qui mesurent des PM
         console.log(data);
@@ -50,8 +53,7 @@ function loadCapteurAtmo() {
 
 
 function loadModelisatonAtmo() {
-    console.log("Getting data from AtmoSud (modelisation)"); //récupère lat et long de toutes les stations qui mesurent des PM
-
+    console.log("Getting data from AtmoSud (modelisation)"); 
     var coumpound_map = "pm10";
 
     //layer pollution

@@ -7,6 +7,11 @@ const port = 3003
 
 app.use(express.static(path.join(__dirname, 'app')));
 
+require('dotenv').config()
+console.log("Purple Air API: ", process.env.purpleAir_API_key)
+
+//TODO: send API key to js files
+
 app.get('/', (req, res) => {
     res.redirect('index.html');
 })
