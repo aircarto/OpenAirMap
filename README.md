@@ -1,33 +1,82 @@
-# OpenAirMap
+# Sensor.Community Map
+visualize recent sensor data on a world map for [Sensor.Community](https://sensor.community).
+ 
+👉 [Live Version](https://maps.sensor.community/).
 
-![mapImage](app/img/example_OpenAirMap.jpg)
+# Map application
+The implementation makes use of various frameworks and is on [ECMA 6](https://developer.mozilla.org/de/docs/Web/JavaScript) language level. 
 
- Map of all outdoors air quality sensors in southern France.
+Used frameworks are:
+* [leaflet](http://leafletjs.com/) (mapping framework)
+* [d3](https://d3js.org/) (visualisation framework)
+* [webpack](https://webpack.github.io/) is used for deployment
 
- Project developped with [AirCarto](https://www.aircarto.fr) and [AtmoSud](https://www.atmosud.org/).
+# How to run
+### Installation
+Requirements:
+* [Node JS](https://nodejs.org/) 10.15.x or higher
+* NPM should be version 6.9.x or higher
 
- This is a javascript app running with node.js.
+install all dependencies
 
- Javascript libraries and frameworks used in this project:
+```
+cp src/js/config.js.dist src/js/config.js
+npm install
+```
 
- * Leaflet
- * Jquery
- * Bootstrap
- * dotenv
+### Develop
+start development server (http://127.0.0.1:8080/)
 
-## Sensors
+```
+npm start
+```
 
-The app will get air quality data from multiples sensors and their API.
+### Publish
+build all files needed to run on a webserver, files will be compiled into `dist/`):
 
-* Nebulo from AirCarto
-* Purple Air
-* Sensor Community
-* AtmoSud
+```
+npm run build
+npm run ghpages
+```
 
+# Translation
 
- ## Deploy
+The translation file can be found in `src/js/translation.js`. 
 
+To add a new translated word or sentence, add below the key (see below) a new _key-value pair_. 
+The nested key should start with the iso-code of the language followed by the translated world.
+You can find the iso-code on [wikipedia table (639-1)](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 
-Install npm and type `npm install`. This will install all the npm packages needed for this app.
+```javascript
+   "(Sensor)": { // key - original english translation 
+      "de": "Sensor", // nested key - value pair
+      "fr": "Détecteur" // add new translation "iso-code": "translated word"
+   },
+    "PM10 &micro;g/m&sup3;": {},
+    "PM2.5 &micro;g/m&sup3;": {},
+    "AQI US": {},
+    "Temperature °C": { // key - original english translation 
+       "de": "Temperatur °C",
+       "fr": "Température °C" // add new translation "iso-code": "translated word"
+       },...
+```
 
-Install node.js and type `node app.js`. This will start the app as a server on port 3003.
+⚠ Don't forget to add the comma in the previous _key - value pair_ else syntax is broken.
+
+If you don't have a Github account download the file `src/js/translation.js` via the `Raw` button directly right
+over the source code. Send us your file with the translation to "tech (at) sensor.community".
+
+## URL-Parameter
+
+### Sensor 
+valid sensor parameters PM25, PM10, Pressure, Noise, Humidity & AQIus 
+http://127.0.0.1:8080/?sensor=Noise
+
+### Location 
+valid parameters zoom level, lat and long 
+http://127.0.0.1:8080/#9/48.8123/9.2487
+
+### combine parameters
+first start with sensor, then layers and finally location
+http://127.0.0.1:8080/?sensor=Noise#3/48.8123/9.2487
+
