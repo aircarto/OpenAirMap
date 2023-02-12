@@ -1,5 +1,8 @@
 //on va chercher les coordonnées des Nebulo
 function loadNebulo() {
+
+    if(selected.sensors.loadNebulo){
+
     $.ajax({
         method: "GET",
         url: "https://moduleair.fr/devices/API/nebulo_lastMeasure.php",
@@ -104,19 +107,23 @@ function loadNebulo() {
 
             //on ajoute un point (marker) pour chaque sensor qui ouvre un popup lorsque l'on clique dessus
             L.marker([value['latitude'], value['longitude']], { icon: nebulo_icon })
-                .addTo(map)
+                .addTo(layerGroupNebulo)
 
             //on ajoute le texte sur les points
             L.marker([value['latitude'], value['longitude']], { icon: myIcon })
-                .addTo(map)
+                .addTo(layerGroupNebulo)
                 .bindPopup(nebuloPopup, {
                     maxWidth: 4000
                 });
-
-
-
             //.openPopup();
         });
 
     });
+}else{
+
+
+    layerGroupNebulo.clearLayers();
+
+
+}
 };

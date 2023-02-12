@@ -32,14 +32,16 @@
     <!-- LA CARTE -->
     <div id="map"></div>
 
+    btn btn-outline-primary
+
     <!-- Les boutons -->
     <div class="btn-group" id="div_buttonPM" role="group" aria-label="Basic example">
-        <button id="button_PM1" class="btn btn-primary" onclick="choosePM(1)">PM1</button>
-        <button id="button_PM25" class="btn btn-outline-primary" onclick="choosePM(25)">PM2.5</button>
+        <button id="button_PM1" class="btn btn-outline-primary" onclick="choosePM(1)">PM1</button>
+        <button id="button_PM25" class="btn btn-primary" onclick="choosePM(25)">PM2.5</button>
         <button id="button_PM10" class="btn btn-outline-primary" onclick="choosePM(10)">PM10</button>
     </div>
 
-    <div id="div_button_monNebulo"><button id="button_monNebulo" class="btn btn-primary" onclick="choosePM(10)">Mon
+    <div id="div_button_monNebulo"><button id="button_monNebulo" class="btn btn-primary" onclick="choosePM(10)">
             Nebulo</button></div>
 
     <div id="div_button_modelisationAtmoSud"><button id="button_stationsAtmoSud" class="btn btn-primary">Stations
@@ -53,6 +55,8 @@
     <div id="div_button_purpleAir"><button id="button_purpleAir" class="btn btn-primary">
             Capteurs Purple Air</button></div>
 
+    <div id="div_button_sensorCommunity"><button id="button_sensorCommunity" class="btn btn-primary">
+                Capteurs Sensor.Community</button></div>
 
     <!-- Les Logos -->
     <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div>
@@ -96,6 +100,11 @@
 
 
     <script>
+
+        var selected = {"sensors":{"loadNebulo":true},"PM":"PM25"};
+
+        var layerGroupNebulo = L.layerGroup().addTo(map);
+        
         //on ajoute les fonctions sur les boutons
         document.getElementById("button_stationsAtmoSud").addEventListener("click", loadStationAtmo);
         document.getElementById("button_stationsAtmoSud").addEventListener("click", loadCapteurAtmo);
@@ -115,7 +124,7 @@
             var compoundUpper = compound.toUpperCase();
             console.log(compoundUpper);
         } else {
-            compoundUpper = "PM1";
+            compoundUpper = "PM25";
         }
 
         //on crée la carte, centrée sur Marseille
@@ -167,7 +176,7 @@
         }
 
         function choosePM(size) {
-            var url = 'https://map.moduleair.fr?compound=pm' + size;
+            var url = 'http://localhost:3003?compound=pm' + size;
             window.location.href = url;
         }
 
@@ -175,20 +184,18 @@
         //changement de couleurs des boutons
         if (compoundUpper == "PM1") {
             document.getElementById("button_PM25").classList.replace("btn-primary", "btn-outline-primary");
-
+            document.getElementById("button_PM10").classList.replace("btn-primary", "btn-outline-primary");
+            document.getElementById("button_PM1").classList.replace("btn-outline-primary", "btn-primary");
         }
         if (compoundUpper == "PM25") {
             document.getElementById("button_PM25").classList.replace("btn-outline-primary", "btn-primary");
             document.getElementById("button_PM10").classList.replace("btn-primary", "btn-outline-primary");
             document.getElementById("button_PM1").classList.replace("btn-primary", "btn-outline-primary");
-
-            console.log("plouf");
         }
         if (compoundUpper == "PM10") {
             document.getElementById("button_PM25").classList.replace("btn-primary", "btn-outline-primary");
             document.getElementById("button_PM1").classList.replace("btn-primary", "btn-outline-primary");
             document.getElementById("button_PM10").classList.replace("btn-outline-primary", "btn-primary");
-
         }
 
     </script>
