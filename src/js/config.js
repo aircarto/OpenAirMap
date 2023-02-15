@@ -3,7 +3,7 @@ module.exports = {
     "initialZoom": 12,
     "minZoom": 10,
     "maxZoom": 16,
-    "sensor": "PM25", // sensor shown at start, possible values: PM10, PM25, AQIus, Temperature, Humidity, Pressure, Noise
+    "sensor": "PM25", // sensor shown at start, possible values: PM10, PM25, PM1
     "tiles_server": "https://{s}.maps.sensor.community",
     "tiles_path": "/{z}/{x}/{y}.png",
     "tiles_subdomains": ["osmc1", "osmc2", "osmc3"],
@@ -25,6 +25,7 @@ module.exports = {
     "panelIDs": {
         "PM10": [2, 1],
         "PM25": [2, 1],
+        "PM1": [2, 1],
         "PM10eu": [2, 1],
         "PM25eu": [2, 1],
         "PM10who": [2, 1],
@@ -49,7 +50,9 @@ module.exports = {
             valueDomain: [20, 40, 60, 100, 500], colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
         }, "PM25": {
             valueDomain: [10, 20, 40, 60, 100], colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
-        }, "PM10eu": {
+        }, "PM1": {
+            valueDomain: [10, 20, 40, 60, 100], colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
+        },"PM10eu": {
             valueDomain: [10, 30, 45, 75, 125, 150], colorRange: ['#50F0E6', '#50CCAA', '#F0E641', '#FF5050', '#960032', '#7D2181']
         }, "PM25eu": {
             valueDomain: [5, 15, 22.5, 37.5, 62.5, 75], colorRange: ['#50F0E6', '#50CCAA', '#F0E641', '#FF5050', '#960032', '#7D2181']

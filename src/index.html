@@ -18,13 +18,9 @@
     <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
     <meta name="msapplication-config" content="/favicons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    <title>Map Sensor.Community</title>
+    <title>openAirMap</title>
 </head>
 <body>
-
-<button id="loading">Loading data...</button>
-
-
 
 <div id="source_container">
            
@@ -32,20 +28,20 @@
  <tbody>
    <tr>
     <td>
-     <input type="checkbox" id="nebulo" name="Nebulo">
-     <label for="sc">Nebulo AirCarto</label>
+     <input type="checkbox" id="nebulo" name="nebulo">
+     <label for="nebulo">Nebulo AirCarto</label>
      </td>
      <td>
      <input type="checkbox" id="sc" name="sc">
      <label for="sc">Sensor.Community</label>
      </td>
      <td>
-     <input type="checkbox" id="paca" name="paca">
-     <label for="paca">AtmoSud</label>
+     <input type="checkbox" id="atmosud" name="atmosud">
+     <label for="atmosud">AtmoSud</label>
      </td>
      <td>
         <input type="checkbox" id="purple" name="purple">
-        <label for="paca">PurpleAir</label>
+        <label for="purple">PurpleAir</label>
         </td>
    </tr>
    <tr>
@@ -58,7 +54,7 @@
        <label for="current">Current</label>
      </td>
      <td>
-       <input type="radio" id="current" name="paca" value="current">
+       <input type="radio" id="current" name="atmosud" value="current">
        <label for="current">Current</label>
      </td>
      <td>
@@ -76,7 +72,7 @@
        <label for="hourly">Hourly</label>
      </td>
      <td>
-       <input type="radio" id="hourly" name="paca" value="hourly">
+       <input type="radio" id="hourly" name="atmosud" value="hourly">
        <label for="hourly">Hourly</label>
      </td>
      <td>
@@ -94,7 +90,7 @@
        <label for="daily">Daily</label>
      </td>
      <td>
-       <input type="radio" id="daily" name="paca" value="daily">
+       <input type="radio" id="daily" name="atmosud" value="daily">
        <label for="daily">Daily</label>
      </td>
      <td>
@@ -107,10 +103,10 @@
  
 </div>
 
-
 <div id='map'></div>
 
 <button id="menuButton">PM2.5</button>
+
 <div id="legend">
     <div id="legend_PM10">
         <div class="legend">
