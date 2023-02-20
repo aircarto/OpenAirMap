@@ -25,7 +25,7 @@ import 'whatwg-fetch';
 const d3 = Object.assign({}, d3_Selection, d3_Hexbin);
 
 import api from './feinstaub-api';
-import PACAdata from './pacadata.js';
+import AtmoSuddata from './atmosuddata.js';
 import Nebulodata from './aircartodata.js';
 import * as config from './config.js';
 
@@ -46,16 +46,14 @@ import '../favicons/site.webmanifest';
 import '../favicons/browserconfig.xml';
 
 let SensorCommunityData = { "type": "FeatureCollection", "name": "SCSensors", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] };
-
 let NebuloData = { "type": "FeatureCollection", "name": "Nebulo", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] };
+let AtmoSudData = { "type": "FeatureCollection", "name": "Atmosud", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] };
 
-let AtmoSudData = { PM10: { "type": "FeatureCollection", "name": "stations_AtmoSud_PM10", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] }, PM25: { "type": "FeatureCollection", "name": "stations_AtmoSud_PM25", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] } };
+let SensorCommunityData0 = { "type": "FeatureCollection", "name": "SCSensors", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] };
+let NebuloData0 = { "type": "FeatureCollection", "name": "Nebulo", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] };
+let AtmoSudData0 = { "type": "FeatureCollection", "name": "Atmosud", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] };
 
-let AtmoSudDataCurrent = { PM10: { "type": "FeatureCollection", "name": "stations_AtmoAURA_PM10", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] }, PM25: { "type": "FeatureCollection", "name": "stations_AtmoAURA_PM25", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [] } };
 
-// let AtmoPurpleData ={PM10:{"type": "FeatureCollection","name": "Purple_Air","crs": { "type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84" }},"features": []},PM25:{"type": "FeatureCollection","name": "stations_AtmoAURA_PM25","crs": { "type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84" }},"features": []}};
-
-// let AtmoPurpleDataCurrent ={PM10:{"type": "FeatureCollection","name": "stations_AtmoAURA_PM10","crs": { "type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84" }},"features": []},PM25:{"type": "FeatureCollection","name": "stations_AtmoAURA_PM25","crs": { "type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84" }},"features": []}};
 
 const scale_options = config.scale_options;
 
@@ -138,14 +136,14 @@ d3.select("#custom-select").select("select").property("value", config.sensor);
 
 // // Intitialisation of the Leaflet Layers for each dataset
 
-var AtmoSudStationsMap = L.geoJSON(AtmoSudDataCurrent.PM25, {
+var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
     pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
-            radius: 5,
-            fillColor: colorScaler(user_selected_value, feature.properties.valeur),
+            radius: 10,
+            fillColor: colorScaler(user_selected_value, feature.properties.data),
             weight: 2,
             stroke: true,
-            color: 'black',
+            color: 'green',
             fillOpacity: 1
         })
     },
@@ -161,10 +159,10 @@ var AtmoSudStationsMap = L.geoJSON(AtmoSudDataCurrent.PM25, {
 }).addTo(map);
 
 
-var SCSensorsMap = L.geoJSON(SensorCommunityData, {
+var SCSensorsMap = new L.geoJSON(SensorCommunityData, {
     pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
-            radius: 20,
+            radius: 10,
             fillColor: colorScaler(user_selected_value, feature.properties.data),
             weight: 2,
             stroke: true,
@@ -179,10 +177,10 @@ var SCSensorsMap = L.geoJSON(SensorCommunityData, {
 }).addTo(map);
 
 
-var AirCartoSensorsMap = L.geoJSON(SensorCommunityData, {
+var AirCartoSensorsMap = new L.geoJSON(NebuloData, {
     pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
-            radius: 5,
+            radius: 10,
             fillColor: colorScaler(user_selected_value, feature.properties.data),
             weight: 2,
             stroke: true,
@@ -281,12 +279,8 @@ window.onload = function () {
     map.setView(coordsCenter, zoomLevel);
     map.clicked = 0;
 
-    //retrieveDataSC();
-    // retrieveDataAtmoSud();
-    retrieveDataNebulo();
-
     map.on('moveend', function () {
-        // hexagonheatmap._zoomChange();
+
     });
 
     map.on('click', function () {
@@ -300,30 +294,9 @@ window.onload = function () {
 
     //    Events for the checkboxes
 
-    d3.select("#sc").on("change", function () { switcher("sc", SCSensorsMap) });
-    d3.select("#nebulo").on("change", function () { switcher("nebulo", AirCartoSensorsMap) });
-    d3.select("#atmosud").on("change", function () { switcher("atmosud", AtmoSudStationsMap) });
-    // d3.select("#uba").on("change", function (){switcher("purple",PurpleAirSensorsMap)});
-    //    d3.select("#aura").on("change", switchAURA);
-    //    d3.select("#paca").on("change", switchPACA);
-    //    d3.select("#occi").on("change", switchOccitanie);
-    //    d3.select("#lucht").on("change", switchLuchtmeetnet);
-
-
-    // //    Events for the radios
-
-
-    //     d3.selectAll('input[type="radio"][name="sc"]').on("change", function (){switcher2("sc",this.value,SCSensorsMap)});
-    // //    d3.selectAll('input[type="radio"][name="eea"]').on("change", function (){switcher2("eea",this.value,SCSensorsMap)});
-    //     d3.selectAll('input[type="radio"][name="uba"]').on("change", function (){switcher2("uba",this.value,UBAStationsMap)});
-    // //    d3.selectAll('input[type="radio"][name="aura"]').on("change", function (){switcher2("aura",this.value,SCSensorsMap)});
-    // //    d3.selectAll('input[type="radio"][name="paca"]').on("change", function (){switcher2("paca",this.value,SCSensorsMap)});
-    // //    d3.selectAll('input[type="radio"][name="occi"]').on("change", function (){switcher2("occi",this.value,SCSensorsMap)});
-    // //    d3.selectAll('input[type="radio"][name="lucht"]').on("change", function (){switcher2("lucht",this.value,SCSensorsMap)});
-
-
-
-
+    d3.select("#sc").on("change", function () { switcher("sc")});
+    d3.select("#nebulo").on("change", function () { switcher("nebulo")});
+    d3.select("#atmosud").on("change", function () { switcher("atmosud")});
 
     switchTo(user_selected_value)
 
@@ -331,7 +304,8 @@ window.onload = function () {
 
     // refresh data every 5 minutes
     setInterval(function () {
-        retrieveDataSC()
+        //REVOIR if activé
+        //retrieveDataSC()
     }, 300000);
 
     document.querySelectorAll(".select-items div").forEach(function (d) {
@@ -357,56 +331,34 @@ function data_median(data) {
 
 function reloadMap(val) {
     // switchLegend(val);
-
-    console.log("RELOAD");
     console.log(val);
-
-    SCSensorsMap.clearLayers();
-    SCSensorsMap.addData(SensorCommunityData).bringToFront();
-
+// Ajouter if avec le logger
     if (val == "PM10") {
-        // EUStationsMap.clearLayers();
-        // EUStationsMap.addData(EUofficialData.PM10).bringToFront(); 
-        // UBAStationsMap.clearLayers();
-        // UBAStationsMap.addData(UBAofficialData.PM10).bringToFront(); 
-        // LuchtmeetnetStationsMap.clearLayers();
-        // LuchtmeetnetStationsMap.addData(EUofficialData.PM10).bringToFront();
-        // AtmoAURAStationsMap.clearLayers();
-        // AtmoAURAStationsMap.addData(AtmoAURADataCurrent.PM10).bringToFront();
-        // AtmoSudStationsMap.clearLayers();
-        // AtmoSudStationsMap.addData(AtmoSudDataCurrent.PM10).bringToFront();
-        // UBAStationsMap.clearLayers();
-        // UBAStationsMap.addData(UBAofficialData.PM10).bringToFront();
+
+        SCSensorsMap.clearLayers();
+        SCSensorsMap.addData(SensorCommunityData).bringToFront(); 
+        AirCartoSensorsMap.clearLayers();
+        AirCartoSensorsMap.addData(NebuloData).bringToFront(); 
+        AtmoSudStationsMap.clearLayers();
+        AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
     };
 
     if (val == "PM25") {
-        // EUStationsMap.clearLayers();
-        // EUStationsMap.addData(EUofficialData.PM25).bringToFront();
-        // LuchtmeetnetStationsMap.clearLayers();
-        // LuchtmeetnetStationsMap.addData(EUofficialData.PM25).bringToFront();
-        // AtmoAURAStationsMap.clearLayers();
-        // AtmoAURAStationsMap.addData(AtmoAURADataCurrent.PM25).bringToFront();
-        // AtmoSudStationsMap.clearLayers();
-        // AtmoSudStationsMap.addData(AtmoSudDataCurrent.PM25).bringToFront();
-        // AtmoOccitanieStationsMap.clearLayers();
-        // AtmoOccitanieStationsMap.addData(AtmoOccitanieDataCurrent.PM25).bringToFront(); 
-        // UBAStationsMap.clearLayers();
-        // UBAStationsMap.addData(UBAofficialData.PM25).bringToFront();   
+        SCSensorsMap.clearLayers();
+        SCSensorsMap.addData(SensorCommunityData).bringToFront(); 
+        AirCartoSensorsMap.clearLayers();
+        AirCartoSensorsMap.addData(NebuloData).bringToFront(); 
+        AtmoSudStationsMap.clearLayers();
+        AtmoSudStationsMap.addData(AtmoSudData).bringToFront();  
     };
 
     if (val == "PM1") {
-        // EUStationsMap.clearLayers();
-        // EUStationsMap.addData(EUofficialData.PM25).bringToFront();
-        // LuchtmeetnetStationsMap.clearLayers();
-        // LuchtmeetnetStationsMap.addData(EUofficialData.PM25).bringToFront();
-        // AtmoAURAStationsMap.clearLayers();
-        // AtmoAURAStationsMap.addData(AtmoAURADataCurrent.PM25).bringToFront();
-        // AtmoSudStationsMap.clearLayers();
-        // AtmoSudStationsMap.addData(AtmoSudDataCurrent.PM25).bringToFront();
-        // AtmoOccitanieStationsMap.clearLayers();
-        // AtmoOccitanieStationsMap.addData(AtmoOccitanieDataCurrent.PM25).bringToFront(); 
-        // UBAStationsMap.clearLayers();
-        // UBAStationsMap.addData(UBAofficialData.PM25).bringToFront();   
+        SCSensorsMap.clearLayers();
+        SCSensorsMap.addData(SensorCommunityData).bringToFront(); 
+        AirCartoSensorsMap.clearLayers();
+        AirCartoSensorsMap.addData(NebuloData).bringToFront(); 
+        AtmoSudStationsMap.clearLayers();
+        AtmoSudStationsMap.addData(AtmoSudData).bringToFront(); 
     };
 }
 
@@ -506,20 +458,23 @@ function toggleMenu() {
 
 function colorScaler(option, value) {
 
+    console.log(option);
+    console.log(value);
+
+
     if (typeof value == 'object') {
+
+        //console.log(typeof value);
 
         if (value != null) {
             if (option == "PM10") { return colorScalePM10(value.PM10); };
             if (option == "PM25") { return colorScalePM25(value.PM25); };
-            if (option == "PM1") { if(value.PM1 == -1){return '#808080'}else{return colorScalePM1(value.PM1);} };
+            if (option == "PM1") { if(value.PM1 == -1){return 'grey'}else{return colorScalePM1(value.PM1);} };
         } else {
             return 'grey';
+            //'#808080'
         }
 
-    } else if (typeof value == 'number') {
-        if (option == "PM10") { return colorScalePM10(value); };
-        if (option == "PM25") { return colorScalePM25(value); };
-        if (option == "PM1") { return colorScalePM1(value); };
     } else { console.log(typeof value) };
 };
 
@@ -563,100 +518,41 @@ async function retrieveDataSC() {
 
         console.log(SensorCommunityData);
 
-        // SCSensorsMap.clearLayers();
-        // SCSensorsMap.addData(SensorCommunityData).bringToBack();
+        SCSensorsMap.addData(SensorCommunityData).bringToFront();
 
-        if (logger.sc.display == true) {
-            SCSensorsMap.clearLayers();
-            SCSensorsMap.addData(SensorCommunityData).bringToBack();
-
-        };
     });
-
-    logger.sc.data == true;
-
 }
 
 
 async function retrieveDataAtmoSud() {
 
-    var URL = "https://geoservices.atmosud.org/geoserver/mes_sudpaca_horaire_poll_princ/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=mes_sudpaca_horaire_poll_princ:mes_sudpaca_horaire_3j&outputFormat=application/json&srsName=EPSG:4326"
+    var URL = "https://api.atmosud.org/observations/capteurs/mesures/dernieres?format=json&download=false&nb_dec=1&variable=PM1,PM2.5,PM10";
 
-    PACAdata.getData(URL)
+    AtmoSuddata.getData(URL)
         .then(function (result) {
+            let sensorsAtmoSud = Array.from(new Set(result.map(({ id_site }) => id_site)));
+            sensorsAtmoSud.forEach(function(e){
 
-            AtmoSudData.PM10.features = result.PM10;
-            AtmoSudData.PM25.features = result.PM25;
-            return getCurrentPACA(AtmoSudData);
-        })
-        .then(function (result) {
+                let sensorAtmosud =result.filter(i => i.id_site == e);
+                let Atmofeature = { "type": "Feature", "properties": { "id": sensorAtmosud[0].id_site, "data": {}}, "geometry": { "type": "Point", "coordinates": [sensorAtmosud[0].lon,sensorAtmosud[0].lat] } };
 
-            console.log(result)
+                sensorAtmosud.forEach(function(s){
+                    if((s.variable == "PM1")|| (s.variable == "PM2.5") || (s.variable == "PM10")){
+                        if(s.variable == "PM2.5"){
+                            Atmofeature.properties.data['PM25']= s.valeur;
+                        }
+                        else{
+                            Atmofeature.properties.data[s.variable]= s.valeur;
+                        }
 
-            AtmoSudDataCurrent.PM10.features = result.PM10;
-            AtmoSudDataCurrent.PM25.features = result.PM25;
+                    };
+                });
 
-            if (user_selected_value == "PM10") {
-                AtmoSudStationsMap.clearLayers();
-                AtmoSudStationsMap.addData(AtmoSudDataCurrent.PM10).bringToFront();
-            };
-
-            if (user_selected_value == "PM25") {
-                AtmoSudStationsMap.clearLayers();
-                AtmoSudStationsMap.addData(AtmoSudDataCurrent.PM25).bringToFront();
-            };
-
+                AtmoSudData.features.push(Atmofeature);
+            });
+                AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
         });
 }
-
-function getCurrentPACA(data) {
-
-    var dataOut = { "PM10": [], "PM25": [] };
-
-    //    "2021/04/21 00:59"
-
-    var parseDate = timeParse("%Y/%m/%d %H:%M");
-    var listeSitesPM10 = [];
-    var listeSitesPM25 = [];
-
-
-    data.PM10.features.forEach(function (e) {
-        if (!listeSitesPM10.includes(e.properties.code_station)) {
-            listeSitesPM10.push(e.properties.code_station)
-        }
-    });
-
-    listeSitesPM10.forEach(function (e) {
-        var filter = data.PM10.features.filter(o => o.properties.code_station == e)
-
-        filter.sort(function (a, b) {
-            return new Date(parseDate(a.properties.date_fin)) - new Date(parseDate(b.properties.date_fin));
-        });
-        //      current.push(filter[filter.length-1])
-        dataOut.PM10.push(filter[filter.length - 1])
-    });
-
-
-    data.PM25.features.forEach(function (e) {
-        if (!listeSitesPM25.includes(e.properties.code_station)) {
-            listeSitesPM25.push(e.properties.code_station)
-        }
-    });
-
-    listeSitesPM25.forEach(function (e) {
-        var filter = data.PM25.features.filter(o => o.properties.code_station == e)
-
-        filter.sort(function (a, b) {
-            return new Date(parseDate(a.properties.date_fin)) - new Date(parseDate(b.properties.date_fin));
-        });
-        //      current.push(filter[filter.length-1])
-        dataOut.PM25.push(filter[filter.length - 1])
-    });
-
-
-    return dataOut
-}
-
 
 async function retrieveDataNebulo() {
 
@@ -666,13 +562,6 @@ async function retrieveDataNebulo() {
         .then(function (result) {
 
             console.log(result);
-
-            // NebuloData.PM10.features = result.PM10;
-            // NebuloData.PM25.features = result.PM25;
-            // NebuloData.PM25.features = result.PM25;
-
-            // console.log(NebuloData)
-
             var mapper = result.map(function (obj) {
                 var Nebulofeature = { "type": "Feature", "properties": { "id": 0, "data": { "PM1": 0, "PM25": 0, "PM10": 0 } }, "geometry": { "type": "Point", "coordinates": [] } };
 
@@ -688,55 +577,20 @@ async function retrieveDataNebulo() {
 
             NebuloData.features = mapper;
 
-            console.log(NebuloData);
-
-            AirCartoSensorsMap.clearLayers();
-            AirCartoSensorsMap.addData(NebuloData).bringToBack();
-
-            if (logger.sc.display == true) {
-                AirCartoSensorsMap.clearLayers();
-                AirCartoSensorsMap.addData(NebuloData).bringToBack();
-
-            };
-
-
-
-            // if(user_selected_value == "PM10"){
-            //     AirCartoSensorsMap.clearLayers();
-            //     AirCartoSensorsMap.addData(NebuloData.PM10).bringToFront();
-            //     };
-
-            //      if(user_selected_value == "PM25"){
-            //         AirCartoSensorsMap.clearLayers();
-            //         AirCartoSensorsMap.addData(NebuloData.PM25).bringToFront();
-            //     };
-
-            //     if(user_selected_value == "PM1"){
-            //         AirCartoSensorsMap.clearLayers();
-            //         AirCartoSensorsMap.addData(NebuloData.PM25).bringToFront();
-            //         };
-
+                AirCartoSensorsMap.addData(NebuloData).bringToFront();
         });
 }
 
 
 
-function switcher(key, geojson) {
+function switcher(key) {
 
-    console.log("SWITCH");
-    console.log(key);
-
-    console.log(logger[key].data);
-
-    if (d3.select("#" + key).property("checked")) {
-        logger[key].display = true;
-
+    if (d3.select("#" + key).property("checked") && logger[key].display == false) {
         console.log(logger[key].display);
 
-        if (logger[key].data == false && d3.selectAll('input[type="radio"][name="' + key + '"]:checked').node() != null) {
-            var option = d3.selectAll('input[type="radio"][name="' + key + '"]:checked').node().value;
-            logger[key].data = option;
-            //voir apres pour option daily etc,
+        if (logger[key].data == false) {
+            console.log(logger[key].data);
+            console.log(key);
             switch (key) {
                 case "sc":
                     retrieveDataSC();
@@ -751,61 +605,40 @@ function switcher(key, geojson) {
 
                     break;
             }
+
+            logger[key].data = true;
         } else {
             switch (key) {
                 case "sc":
-                    geojson.addData(SensorCommunityData).bringToFront();
+                    SCSensorsMap.addData(SensorCommunityData).bringToFront();
                     break;
                 case "atmosud":
-                    geojson.addData(AtmoSudData).bringToFront();
+                    AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
                     break;
                 case "nebulo":
-                    geojson.addData(NebuloData).bringToFront();
-
+                    AirCartoSensorsMap.addData(NebuloData).bringToFront();
                     break;
                 case "purple":
-
                     break;
             };
         }
+        logger[key].display = true;
     } else {
-        geojson.clearLayers();
+        switch (key) {
+            case "sc":
+                SCSensorsMap.clearLayers();
+                break;
+            case "atmosud":
+                AtmoSudStationsMap.clearLayers();
+                break;
+            case "nebulo":
+                AirCartoSensorsMap.clearLayers();
+                break;
+            case "purple":
+                break;
+        };
         logger[key].display = false;
     }
-}
-
-
-function switcher2(key, option, geojson) {
-
-    console.log("SWITCH2");
-    console.log(key);
-    console.log(option);
-
-    logger[key].data = option;
-
-    switch (key) {
-        case "sc":
-            retrieveData(option);
-            break;
-        case "eea":
-
-            break;
-        case "uba":
-            retrieveDataUBA(option);
-            break;
-        case "aura":
-
-            break;
-        case "paca":
-
-            break;
-        case "occi":
-
-            break;
-        case "lucht":
-
-            break;
-    };
 }
 
 

@@ -1,8 +1,6 @@
 import 'whatwg-fetch'
 
-// https://moduleair.fr/devices/API/nebulo_lastMeasure.php
-
-let Nebulodata = {
+let AtmoSuddata = {
     
     getData: async function (URL) {
          
@@ -11,10 +9,10 @@ let Nebulodata = {
     return fetch(URL)
 			.then((resp) => resp.json())
 			.then((json) => {
-        console.log('successful retrieved data');    
+        console.log('successful retrieved data');
         return json;
     })
 }
 }
 
-export default Nebulodata
+export default AtmoSuddata

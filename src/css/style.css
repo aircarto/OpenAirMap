@@ -162,7 +162,8 @@ tr {
 
 #modal {
     display: none;
-    width: 100vw;
+    width: 100px !important;
+    /* width: 100vw; */
     height: 100vh;
     position: absolute;
     z-index: 20;

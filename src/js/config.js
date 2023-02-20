@@ -47,28 +47,30 @@ module.exports = {
     },
     "scale_options": {
         "PM10": {
-            valueDomain: [20, 40, 60, 100, 500], colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
+            valueDomain: [0, 20, 40, 60, 100, 500], colorRange: ['#00796B', '#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
         }, "PM25": {
-            valueDomain: [10, 20, 40, 60, 100], colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
+            valueDomain: [0, 10, 20, 40, 60, 100], colorRange: ['#00796B', '#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
         }, "PM1": {
-            valueDomain: [10, 20, 40, 60, 100], colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
-        },"PM10eu": {
-            valueDomain: [10, 30, 45, 75, 125, 150], colorRange: ['#50F0E6', '#50CCAA', '#F0E641', '#FF5050', '#960032', '#7D2181']
-        }, "PM25eu": {
-            valueDomain: [5, 15, 22.5, 37.5, 62.5, 75], colorRange: ['#50F0E6', '#50CCAA', '#F0E641', '#FF5050', '#960032', '#7D2181']
-        }, "PM10who": {
-            valueDomain: [0, 45, 150], colorRange: ['#8bf3ff', '#fff148', '#ff5353']
-        }, "PM25who": {
-            valueDomain: [0, 15, 75], colorRange: ['#8bf3ff', '#fff148', '#ff5353']
-        }, "Temperature": {
-            valueDomain: [-20, -10, 0, 10, 20, 30, 40], colorRange: ['#4050B0', '#5679f9', '#55cbd9', '#a2cf4a', '#fedb64', '#fe8f52', '#e6380f']
-        }, "Humidity": {
-            valueDomain: [0, 20, 40, 60, 80, 100], colorRange: ['#c41a0a', '#f47a0b', '#f4e60b', '#aff474', '#6dbcff', '#00528f']
-        }, "Pressure": {
-            valueDomain: [926, 947.75, 969.50, 991.25, 1013, 1034.75, 1056.50, 1078.25, 1100],
-            colorRange: ["#dd2e97", "#6b3b8f", "#2979b9", "#02B9ed", "#13ae52", "#c9d841", "#fad635", "#f0a03d", "#892725"]
-        }, "Noise": {
-            valueDomain: [0, 20, 40, 60, 80, 100], colorRange: ['#00528f', '#6dbcff', '#aff474', '#f4e60b', '#f47a0b', '#c41a0a']
-        },
+            valueDomain: [0, 10, 20, 40, 60, 100], colorRange: ['#00796B', '#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']
+        }
+        
+        // ,"PM10eu": {
+        //     valueDomain: [10, 30, 45, 75, 125, 150], colorRange: ['#50F0E6', '#50CCAA', '#F0E641', '#FF5050', '#960032', '#7D2181']
+        // }, "PM25eu": {
+        //     valueDomain: [5, 15, 22.5, 37.5, 62.5, 75], colorRange: ['#50F0E6', '#50CCAA', '#F0E641', '#FF5050', '#960032', '#7D2181']
+        // }, "PM10who": {
+        //     valueDomain: [0, 45, 150], colorRange: ['#8bf3ff', '#fff148', '#ff5353']
+        // }, "PM25who": {
+        //     valueDomain: [0, 15, 75], colorRange: ['#8bf3ff', '#fff148', '#ff5353']
+        // }, "Temperature": {
+        //     valueDomain: [-20, -10, 0, 10, 20, 30, 40], colorRange: ['#4050B0', '#5679f9', '#55cbd9', '#a2cf4a', '#fedb64', '#fe8f52', '#e6380f']
+        // }, "Humidity": {
+        //     valueDomain: [0, 20, 40, 60, 80, 100], colorRange: ['#c41a0a', '#f47a0b', '#f4e60b', '#aff474', '#6dbcff', '#00528f']
+        // }, "Pressure": {
+        //     valueDomain: [926, 947.75, 969.50, 991.25, 1013, 1034.75, 1056.50, 1078.25, 1100],
+        //     colorRange: ["#dd2e97", "#6b3b8f", "#2979b9", "#02B9ed", "#13ae52", "#c9d841", "#fad635", "#f0a03d", "#892725"]
+        // }, "Noise": {
+        //     valueDomain: [0, 20, 40, 60, 80, 100], colorRange: ['#00528f', '#6dbcff', '#aff474', '#f4e60b', '#f47a0b', '#c41a0a']
+        // },
     }
 }
