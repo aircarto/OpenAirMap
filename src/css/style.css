@@ -22,7 +22,7 @@ button {
     border-radius: 12px;
     padding: 6px 12px;
     cursor: pointer;
-    background-color: white;
+    background-color: grey;
     border: solid white;
 }
 
@@ -39,7 +39,7 @@ li {
 
 table {
     border-collapse: collapse;
-    text-align: center;
+    /* text-align: center; */
     padding: 8px;
     margin: 10px;
     pointer-events: all;
@@ -50,7 +50,7 @@ table {
 td {
     border: 1px solid #858585;
     height: 1.5em;
-    text-align: center;
+    /* text-align: center; */
     padding: 2px 0;
 }
 
@@ -257,12 +257,21 @@ input[type="checkbox"] {
     margin-right: 5px;
     z-index: 5;
     position: relative;
+    vertical-align: middle;
 }
 
 input[type="checkbox"]:checked {
     box-shadow: inset 0 0 0 3px #fff;
     background-color: #084945;
 }
+
+/* label {
+    display: flex;
+    align-items: center;
+}
+input[type=checkbox]{
+    flex: none;
+} */
 
 #explanation {
     cursor: pointer;
@@ -369,89 +378,39 @@ input[type="checkbox"]:checked {
     cursor: pointer;
 }
 
-/* labs popup */
-.labsSocialIcon:before {
-    display: inline-block;
-    padding-right: 5px;
-    width: 15px;
-    vertical-align: middle;
-}
-
-.labs_facebook:before {
-    content: url("../images/facebook.svg");
-}
-
-.labs_twitter:before {
-    content: url("../images/twitter.svg");
-}
-
-.labs_github:before {
-    content: url("../images/github.svg");
-}
-
-.labs_gitlab:before {
-    content: url("../images/gitlab.svg");
-}
-
-.labs_mastodon:before {
-    content: url("../images/mastodon.svg");
-}
-
-
-.labs_meetup:before {
-    content: url("../images/meetup.svg");
-}
-
-.labs_telegram:before {
-    content: url("../images/telegram.svg");
-}
-
-.labs_sociallinks, .labs_sociallinks td, .labs_sociallinks tr {
-    border: none;
-    width: auto;
-    text-align: left;
-    vertical-align: middle;
-}
-
-.leaflet-touch .leaflet-geosearch-bar form {
-    margin-top: 6.25em !important;
-    border-radius: 10px;
-    border: 1px solid #C2C2C2;
-}
-
-.leaflet-touch .leaflet-geosearch-bar .reset {
-    background-color: transparent;
-}
-
 
 #source_container {
     position: absolute;
     top:0px;
     right: 0px;
-    width:700px;
+    width:600px;
     z-index: 900;
     background-color: white;
 }
 
 #sources {
+  margin: 0 auto;
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  width: 700px;
-  height: 100px;
+  width: 600px;
+  height: 50px;
   z-index: 900;
   font-family: arial, sans-serif;
   font-size: 0.5em;
+  padding:10px;
 }
 
 #sources td, #sources th {
   border: 1px solid #ddd;
-  width : 200px;
+  width : 100px;
   height : 10px;
+  vertical-align: center;
+  font-size: 12px;
 }
 
 #sources tr:nth-child(even){background-color: #f2f2f2;}
 
-#sources tr:hover {background-color: #ddd;}
+/* #sources tr:hover {background-color: #ddd;} */
 
 #sources th {
   padding-top: 5px;
@@ -459,4 +418,28 @@ input[type="checkbox"]:checked {
   text-align: left;
   background-color: #4CAF50;
   color: white;
+}
+
+.leaflet-popup-content-wrapper {
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+background-color: white;
+padding: 5px;
+border-radius: 5px;
+}
+
+.leaflet-popup-tip-container {
+    background-color: white; 
+}
+
+#graphic_panel{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    z-index: 900;
+    display: none;
 }

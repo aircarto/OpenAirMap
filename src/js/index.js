@@ -134,6 +134,7 @@ config.sensor = (query.sensor !== undefined) ? query.sensor : config.sensor;
 d3.select("#custom-select").select("select").property("value", config.sensor);
 
 
+
 // // Intitialisation of the Leaflet Layers for each dataset
 
 var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
@@ -149,10 +150,14 @@ var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
     },
     onEachFeature: function (feature, layer) {
 
-        if (feature.properties.valeur == -1) { feature.properties.valeur = "N/A" };
+        // if (feature.properties.valeur == -1) { feature.properties.valeur = "N/A" };
 
-        var popupContent = "<h2>AtmoSud</h2><p><b>Name</b> : " + feature.properties.nom_station + "</p><p><b>Value</b> : " + feature.properties.valeur + " µg\/m&sup3; (" + feature.properties.influence + ")</p><button type='button' id='button" + feature.properties.code_station + "' value='" + feature.properties.code_station + "'>Show graph!</button><div id='graph" + feature.properties.code_station + "'></div>";
-        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: false, closeButton: true });
+        // let valuePM;
+
+        // switch user_selected_value
+
+        var popupContent = "<h2>AtmoSud</h2><p><b>Name</b> : " + feature.properties.id + "</p><p><b>Value</b> : " + feature.properties.data.PM10 + " µg\/m&sup3; (" + feature.properties.influence + ")</p><button type='button' id='button" + feature.properties.code_station + "' value='" + feature.properties.code_station + "'>Graphique</button><div id='graph" + feature.properties.code_station + "'></div>";
+        layer.bindPopup(popupContent, { closeOnClick: true, autoClose: true, closeButton: false});
     }
 
 
@@ -189,89 +194,24 @@ var AirCartoSensorsMap = new L.geoJSON(NebuloData, {
         })
     },
     onEachFeature: function (feature, layer) {
-        var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Sensor ID</b> : " + feature.properties.id + "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p><p><b>PM25</b> : " + feature.properties.data.PM25 + " µg\/m&sup3;</p><button type='button' id='button" + feature.properties.id + "' value='" + feature.properties.id + "'>Show graph!</button><div id='graph" + feature.properties.id + "'></div>";
-        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: false, closeButton: true });
+        // let valuePM;
+
+        // switch (user_selected_value) {
+        //     case "PM10":
+        //         valuePM = feature.properties.data.PM10;
+        //         break;
+        //     case "PM25":
+        //         valuePM = feature.properties.data.PM25;
+        //         break;
+        //     case "PM1":
+        //         valuePM = feature.properties.data.PM1;
+        //         break;
+        // }
+
+        var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Sensor ID</b> : " + feature.properties.id + "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p></p><p><b>PM1</b> : " + feature.properties.data.PM1 + " µg\/m&sup3;</p><button type='button' class='buttonnebulo' id='button_" + feature.properties.id + "' value='" + feature.properties.id + "'>Show graph!</button>";
+        layer.bindPopup(popupContent, { closeOnClick: true, autoClose: true, closeButton: false});
     }
 }).addTo(map);
-
-// const myCustomColour = '#583470'
-
-
-// const markerHtmlStyles = `
-// iconUrl: '../images/icons/aircarto.png',  
-// background-color: ${myCustomColour};
-//   width: 3rem;
-//   height: 3rem;
-//   display: block;
-//   left: -1.5rem;
-//   top: -1.5rem;
-//   position: relative;
-//   border-radius: 3rem 3rem 0;
-//   transform: rotate(45deg);
-//   border: 1px solid #FFFFFF`
-
-// const aircartoicon = L.divIcon({
-//   className: "my-custom-pin",
-//   iconAnchor: [0, 24],
-//   labelAnchor: [-6, 0],
-//   popupAnchor: [0, -36],
-//   html: `<span style="${markerHtmlStyles}" />`
-// })
-
-
-//     var AirCartoSensorsMap = L.geoJSON(SensorCommunityData,{
-//         pointToLayer: function (feature, latlng) {
-
-
-//          return L.Marker(latlng)
-//         },
-//         onEachFeature: function (feature, layer) {
-//           var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Sensor ID</b> : "+feature.properties.id+"</p><p><b>PM10</b> : "+feature.properties.data.PM10+" µg\/m&sup3;</p><p><b>PM25</b> : "+feature.properties.data.PM25+" µg\/m&sup3;</p><button type='button' id='button" + feature.properties.id + "' value='" + feature.properties.id + "'>Show graph!</button><div id='graph"+ feature.properties.id +"'></div>";
-//           layer.bindPopup(popupContent,{closeOnClick: false,autoClose: false,closeButton:true});
-//         }}).addTo(map);
-
-
-// var PurpleSensorsMap = L.geoJSON(SensorCommunityData,{
-//         pointToLayer: function (feature, latlng) {
-//          return L.circleMarker(latlng, {
-//           radius:5,
-//           fillColor: colorScaler(user_selected_value,feature.properties.data),
-//           stroke:true,
-//           weight:2,
-//           stroke:false,
-//           color :'blue',
-//           fillOpacity: 1})
-//         },
-//         onEachFeature: function (feature, layer) {
-//           var popupContent = "<h2>PurpleAir</h2><p><b>Sensor ID</b> : "+feature.properties.id+"</p><p><b>PM10</b> : "+feature.properties.data.PM10+" µg\/m&sup3;</p><p><b>PM25</b> : "+feature.properties.data.PM25+" µg\/m&sup3;</p><button type='button' id='button" + feature.properties.id + "' value='" + feature.properties.id + "'>Show graph!</button><div id='graph"+ feature.properties.id +"'></div>";
-//           layer.bindPopup(popupContent,{closeOnClick: false,autoClose: false,closeButton:true});
-//         }}).addTo(map);
-
-//         var AtmoSudStationsMap = L.geoJSON(AtmoSudDataCurrent.PM25,{
-//             pointToLayer: function (feature, latlng) {
-//              return L.circleMarker(latlng, {
-//               radius:5,
-//               fillColor: colorScaler(user_selected_value,feature.properties.valeur),
-//               stroke:true,
-//               weight:2,
-//               stroke:true,
-//               color :'black',
-//               fillOpacity: 1})
-//             },
-//             onEachFeature: function (feature, layer) {
-
-//                 if (feature.properties.valeur == -1){feature.properties.valeur = "N/A"};
-
-//               var popupContent = "<h2>AtmoSud</h2><p><b>Name</b> : "+feature.properties.nom_station+"</p><p><b>Value</b> : "+feature.properties.valeur+" µg\/m&sup3; ("+ feature.properties.influence +")</p><button type='button' id='button" + feature.properties.code_station + "' value='" + feature.properties.code_station + "'>Show graph!</button><div id='graph"+ feature.properties.code_station +"'></div>";
-//               layer.bindPopup(popupContent,{closeOnClick: false,autoClose: false,closeButton:true});
-//             }
-
-
-//               }).addTo(map);
-
-
-
-
 
 window.onload = function () {
 
@@ -298,6 +238,7 @@ window.onload = function () {
     d3.select("#nebulo").on("change", function () { switcher("nebulo")});
     d3.select("#atmosud").on("change", function () { switcher("atmosud")});
 
+
     switchTo(user_selected_value)
 
     document.querySelector("#menuButton").onclick = toggleMenu;
@@ -314,23 +255,12 @@ window.onload = function () {
             !(user_selected_value === document.querySelector(".selected").getAttribute("value")) && switchTo(user_selected_value)
         })
     });
-}
 
+    d3.selectAll(".buttonnebulo").on("click", function () { nebuloGraph(3)});
 
-function data_median(data) {
-    function sort_num(a, b) {
-        let c = a - b;
-        return (c < 0 ? -1 : (c = 0 ? 0 : 1));
-    }
-
-    let d_temp = data.filter(d => !d.o.indoor)
-        .map(o => o.o.data[user_selected_value])
-        .sort(sort_num);
-    return median(d_temp);
 }
 
 function reloadMap(val) {
-    // switchLegend(val);
     console.log(val);
 // Ajouter if avec le logger
     if (val == "PM10") {
@@ -361,69 +291,6 @@ function reloadMap(val) {
         AtmoSudStationsMap.addData(AtmoSudData).bringToFront(); 
     };
 }
-
-// function sensorNr(data) {
-//     openMenu()
-//     document.getElementById("mainContainer").style.display = "none"; // hide menu content
-//     let textefin = "<table id='results' style='width:95%;'><tr><th class ='title'>" + 'Sensor' + "</th><th class = 'title'>" + config.tableTitles[user_selected_value] + "</th></tr>";
-//     if (data.length > 1) {
-//         textefin += "<tr><td class='idsens'>Median " + data.length + " Sensors</td><td>" + (isNaN(parseInt(data_median(data))) ? "-" : parseInt(data_median(data))) + "</td></tr>";
-//     }
-//     let sensors = '';
-//     data.forEach(function (i) {
-//         sensors += "<tr><td class='idsens' id='id_" + i.o.id + (i.o.indoor ? "_indoor" : "") + "'> #" + i.o.id + (i.o.indoor ? " (indoor)" : "") + "</td>";
-//         if (["PM10", "PM25", "PM10eu", "PM25eu", "PM10who", "PM25who", "Temperature", "Humidity", "Noise"].includes(user_selected_value)) {
-//             sensors += "<td>" + i.o.data[user_selected_value] + "</td></tr>";
-//         }
-//         if (user_selected_value === "AQIus") {
-//             sensors += "<td>" + i.o.data[user_selected_value] + " (" + i.o.data.origin + ")</td></tr>";
-//         }
-//         if (user_selected_value === "Pressure") {
-//             sensors += "<td>" + i.o.data[user_selected_value].toFixed(1) + "</td></tr>";
-//         }
-//         sensors += "<tr id='graph_" + i.o.id + "'></tr>";
-//     });
-//     textefin += sensors;
-//     textefin += "</table>";
-//     document.querySelector('#table').innerHTML = textefin;
-//     document.querySelectorAll('.idsens').forEach(function (d) {
-//         d.addEventListener('click', function () {
-//             displayGraph(this.id); // transfer id e.g. id_67849
-//         });
-//     });
-// }
-
-// async function displayGraph(id) {
-//     const panel_str = "<iframe src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=<PANELID>&var-node=<SENSOR>' frameborder='0' height='300px' width='100%'></iframe>";
-//     const sens = id.substr(3);
-//     const sens_id = sens.replace("_indoor", "");
-//     const sens_desc = sens.replace("_indoor", " (indoor)");
-
-//     if (!openedGraph1.includes(sens_id)) {
-//         openedGraph1.push(sens_id);
-//         const iframeID = 'frame_' + sens_id
-//         document.querySelector("#graph_" + sens_id).appendChild(document.createElement('td')).setAttribute('id', iframeID);
-//         document.querySelector('#' + iframeID).setAttribute('colspan', '2')
-//         document.querySelector('#' + iframeID).innerHTML = ((config.panelIDs[user_selected_value][0] > 0 ? panel_str.replace("<PANELID>", config.panelIDs[user_selected_value][0]).replace("<SENSOR>", sens_id) + "<br/>" : "") + (config.panelIDs[user_selected_value][1] > 0 ? panel_str.replace("<PANELID>", config.panelIDs[user_selected_value][1]).replace("<SENSOR>", sens_id) : ""))
-
-//         document.querySelector("#id_" + sens).innerText = "(-) #" + sens_desc
-//     } else {
-//         document.querySelector("#id_" + sens).innerText = "(+) #" + sens_desc
-//         document.querySelector('#frame_' + sens_id).remove();
-//         removeInArray(openedGraph1, sens_id);
-//     }
-// }
-
-// function removeInArray(array) {
-//     let what, a = arguments, L = a.length, ax;
-//     while (L > 1 && array.length) {
-//         what = a[--L];
-//         while ((ax = array.indexOf(what)) !== -1) {
-//             array.splice(ax, 1);
-//         }
-//     }
-//     return array;
-// }
 
 function switchTo(user_selected_value) {
     let elem = document.querySelector(`div[value='${user_selected_value}']`)
@@ -642,7 +509,11 @@ function switcher(key) {
 }
 
 
-
+function nebuloGraph(id){
+    document.getElementById('graphic_panel').style.display = "block";
+    
+    
+    }
 
 
 
