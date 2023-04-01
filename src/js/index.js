@@ -80,7 +80,7 @@ const colorScalePM1 = scaleLinear()
 
 //REVOIR LES COULEURS
 
-var timer0 = new Date
+var timer0 = new Date();
 
 //mettre dans config?
 
@@ -135,6 +135,13 @@ d3.select("#custom-select").select("select").property("value", config.sensor);
 
 
 
+
+
+
+
+
+
+
 // // Intitialisation of the Leaflet Layers for each dataset
 
 var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
@@ -145,19 +152,12 @@ var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
             weight: 2,
             stroke: true,
             color: 'green',
-            fillOpacity: 1
+            fillOpacity: 1,
         })
     },
     onEachFeature: function (feature, layer) {
-
-        // if (feature.properties.valeur == -1) { feature.properties.valeur = "N/A" };
-
-        // let valuePM;
-
-        // switch user_selected_value
-
-        var popupContent = "<h2>AtmoSud</h2><p><b>Name</b> : " + feature.properties.id + "</p><p><b>Value</b> : " + feature.properties.data.PM10 + " µg\/m&sup3; (" + feature.properties.influence + ")</p><button type='button' id='button" + feature.properties.code_station + "' value='" + feature.properties.code_station + "'>Graphique</button><div id='graph" + feature.properties.code_station + "'></div>";
-        layer.bindPopup(popupContent, { closeOnClick: true, autoClose: true, closeButton: false});
+        var popupContent = "<h2>AtmoSud</h2><p><b>Identifiant</b> : " + feature.properties.id + "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 + " µg\/m&sup3;</p><p><b>PM1</b> : " + feature.properties.data.PM1 + " µg\/m&sup3;</p><button type='button' id='button" + feature.properties.code_station + "' value='" + feature.properties.code_station + "'>Graphique</button><div id='graph" + feature.properties.code_station + "'></div>";
+        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: true, closeButton: true});
     }
 
 
@@ -176,7 +176,16 @@ var SCSensorsMap = new L.geoJSON(SensorCommunityData, {
         })
     },
     onEachFeature: function (feature, layer) {
-        var popupContent = "<h2>Sensor.Community</h2><p><b>Sensor ID</b> : " + feature.properties.id + "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p><p><b>PM25</b> : " + feature.properties.data.PM25 + " µg\/m&sup3;</p><button type='button' id='button" + feature.properties.id + "' value='" + feature.properties.id + "'>Show graph!</button><div id='graph" + feature.properties.id + "'></div>";
+        var popupContent = "<h2>Sensor.Community</h2><p><b>Identifiant</b> : " + feature.properties.id + 
+                           "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + 
+                           " µg\/m&sup3;</p><p><b>PM25</b> : " + feature.properties.data.PM25 + 
+                           " µg\/m&sup3;</p>"+
+                           "<button type='button' class='button_sc' id='button_" + feature.properties.id + 
+                           "' value='" + feature.properties.id + "'>Show graph!</button>";
+                        //    <div id='graph" + feature.properties.id + "'></div>";
+        console.log("#button_" + feature.properties.id);
+        console.log(d3.select("#button_" + feature.properties.id));
+        d3.select("#button_" + feature.properties.id).on("click", function () { console.log('test')});
         layer.bindPopup(popupContent, { closeOnClick: false, autoClose: false, closeButton: true });
     }
 }).addTo(map);
@@ -194,27 +203,21 @@ var AirCartoSensorsMap = new L.geoJSON(NebuloData, {
         })
     },
     onEachFeature: function (feature, layer) {
-        // let valuePM;
-
-        // switch (user_selected_value) {
-        //     case "PM10":
-        //         valuePM = feature.properties.data.PM10;
-        //         break;
-        //     case "PM25":
-        //         valuePM = feature.properties.data.PM25;
-        //         break;
-        //     case "PM1":
-        //         valuePM = feature.properties.data.PM1;
-        //         break;
-        // }
-
-        var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Sensor ID</b> : " + feature.properties.id + "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p></p><p><b>PM1</b> : " + feature.properties.data.PM1 + " µg\/m&sup3;</p><button type='button' class='buttonnebulo' id='button_" + feature.properties.id + "' value='" + feature.properties.id + "'>Show graph!</button>";
-        layer.bindPopup(popupContent, { closeOnClick: true, autoClose: true, closeButton: false});
+        var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Identifiant</b> : " + feature.properties.id + 
+                            "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + 
+                            " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 + 
+                            " µg\/m&sup3;</p></p><p><b>PM1</b> : " + feature.properties.data.PM1 + 
+                            " µg\/m&sup3;</p>"+
+                            "<button type='button' class='button_nebulo' id='button_" + feature.properties.id + 
+                            "' value='" + feature.properties.id + "'>Show graph!</button>";
+        console.log("#button_" + feature.properties.id);
+        console.log(d3.select("#button_" + feature.properties.id));
+        d3.select("#button_" + feature.properties.id).on("click", function () { console.log('test')});
+        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: false, closeButton: true});
     }
 }).addTo(map);
 
 window.onload = function () {
-
 
     map.setView(coordsCenter, zoomLevel);
     map.clicked = 0;
@@ -231,8 +234,90 @@ window.onload = function () {
         clicked += 1;
     });
 
+    map.on('popupopen', function(e){
+        console.log("open popup");
+        console.log(e.popup.getElement());
+        //console.log(e.popup.getElement()._groups[0][0].children[0].children[0].children[0]);
+        
+        var popuptype = d3.select(e.popup.getElement())._groups[0][0].children[0].children[0].children[0].innerText;
+        
+        console.log(popuptype);
+        
+        if (popuptype == "Nebulo AirCarto"){   
+             
+        console.log(d3.select(e.popup.getElement()).select("button")._groups[0][0].value);
+        // let sensorid = d3.select(e.popup.getElement())._groups[0][0].children[0].children[0].children[6].value; 
+        let sensorid = d3.select(e.popup.getElement()).select("button")._groups[0][0].value;               
+               
+        let graph = false;
+        console.log(sensorid);
+            
+        d3.select('#button_'+ sensorid).on('click', function(){  
+            console.log("click")
+            console.log(d3.select('#graphic_panel').select('#chart'));
+            console.log("https://grafana.moduleair.fr/d-solo/ol4ZNiK4z/nebulo?orgId=1&var-device=" + sensorid + "&from=now-1h&to=now&theme=light&panelId=2");
+            d3.select('#graphic_panel').select('#chart').attr("src","https://grafana.moduleair.fr/d-solo/ol4ZNiK4z/nebulo?orgId=1&var-device=" + sensorid + "&from=now-1h&to=now&theme=light&panelId=2");
+        });
+    }
+
+    if (popuptype == "Sensor.Community"){   
+                 
+        let sensorid = d3.select(e.popup.getElement()).select("button")._groups[0][0].value;               
+        let graph = false;
+        console.log(sensorid);
+            
+        d3.select('#button_'+ sensorid).on('click', function(){  
+            console.log("click")
+            console.log(d3.select('#graphic_panel'));
+        console.log("https://maps.sensor.community/grafana/d/000000004/single-sensor-view-for-map?orgId=1&var-node=" + sensorid + "&viewPanel=2");
+        //d3.select('#graphic_panel').select('#chart').attr("src","https://maps.sensor.community/grafana/d/000000004/single-sensor-view-for-map?orgId=1&var-node=" + sensorid + "&viewPanel=2").attr("width","100px").attr("height","300px").attr("frameborder","0");
+
+
+        // <iframe src="https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view?orgId=1&amp;panelId=2&amp;var-node=1839" width="100%" height="300px" frameborder="0"></iframe>
+
+
+        d3.select('#graphic_panel').html("<iframe id='chart' src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node="+ sensorid +"&panelId=2' width='100%' height='100%' frameborder='0'></iframe>");
+        
+        
+        // // // var panel_str = "<iframe src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=2&var-node=" + sensorid + "' width='280' height='200' frameborder='0'></iframe>";
+        // // // var selector = "#graph"+sensorid;
+            
+        //<iframe src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=73276&from=1680260457387&to=1680346857388&panelId=2' width='450' height='200' frameborder='0'></iframe>
+        // // // if (graph == false){
+        // // //     d3.select(selector).html(panel_str);
+        // // //     graph = true;
+        // // //     d3.select('#button'+ sensorid ).html("Hide Graph!");
+            
+                           
+        // // // }else{
+        // // //     d3.select(selector).html("");
+        // // //     graph = false;
+        // // //     d3.select('#button'+ sensorid ).html("Show Graph!");
+        // // // }
+    
+
+{/* <iframe src="https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=73276&from=1680260457387&to=1680346857388&panelId=2" width="450" height="200" frameborder="0"></iframe> */}
+
+
+
+
+        });
+    }
+
+
+
+
+
+    })
+
 
     //    Events for the checkboxes
+
+    console.log(d3.select("#sc"));
+
+    d3.select("#sc").property('checked', false);
+    d3.select("#nebulo").property('checked', false);
+    d3.select("#atmosud").property('checked', false);
 
     d3.select("#sc").on("change", function () { switcher("sc")});
     d3.select("#nebulo").on("change", function () { switcher("nebulo")});
@@ -255,9 +340,6 @@ window.onload = function () {
             !(user_selected_value === document.querySelector(".selected").getAttribute("value")) && switchTo(user_selected_value)
         })
     });
-
-    d3.selectAll(".buttonnebulo").on("click", function () { nebuloGraph(3)});
-
 }
 
 function reloadMap(val) {
@@ -348,8 +430,8 @@ function colorScaler(option, value) {
 
 async function retrieveDataSC() {
 
-    var urlapi = "https://data.sensor.community/airrohr/v1/filter/box=43.439306,5.629051,43.13605,5.161638";
-
+    //var urlapi = "https://data.sensor.community/airrohr/v1/filter/box=43.439306,5.629051,43.13605,5.161638";
+    var urlapi = "https://data.sensor.community/airrohr/v1/filter/box=44.034295,6.718140,42.589489,2.763062";
 
     api.getData(urlapi, 1).then(function (result) {
         if (result.timestamp > timestamp_data) {
@@ -390,18 +472,19 @@ async function retrieveDataSC() {
     });
 }
 
-
 async function retrieveDataAtmoSud() {
 
-    var URL = "https://api.atmosud.org/observations/capteurs/mesures/dernieres?format=json&download=false&nb_dec=1&variable=PM1,PM2.5,PM10";
+    var URL = "https://api.atmosud.org/observations/capteurs/mesures/dernieres?temporalite=quart-horaire&format=json&download=false&nb_dec=1&variable=PM1,PM2.5,PM10";
+
+    //REVOIR LES API
 
     AtmoSuddata.getData(URL)
         .then(function (result) {
+            console.log(result);
             let sensorsAtmoSud = Array.from(new Set(result.map(({ id_site }) => id_site)));
             sensorsAtmoSud.forEach(function(e){
-
                 let sensorAtmosud =result.filter(i => i.id_site == e);
-                let Atmofeature = { "type": "Feature", "properties": { "id": sensorAtmosud[0].id_site, "data": {}}, "geometry": { "type": "Point", "coordinates": [sensorAtmosud[0].lon,sensorAtmosud[0].lat] } };
+                let Atmofeature = { "type": "Feature", "properties": { "id": sensorAtmosud[0].nom_site, "data": {}}, "geometry": { "type": "Point", "coordinates": [sensorAtmosud[0].lon,sensorAtmosud[0].lat] } };
 
                 sensorAtmosud.forEach(function(s){
                     if((s.variable == "PM1")|| (s.variable == "PM2.5") || (s.variable == "PM10")){
@@ -509,11 +592,12 @@ function switcher(key) {
 }
 
 
-function nebuloGraph(id){
-    document.getElementById('graphic_panel').style.display = "block";
-    
-    
-    }
+        // function nebuloGraph(){
+        //     document.getElementById('graphic_panel').style.display = "block";
+        //     console.log('test');
+            
+        //     }
+
 
 
 

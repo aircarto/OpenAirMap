@@ -17,14 +17,14 @@ a {
     text-decoration: none;
 }
 
-button {
+/* button {
     font-size: 12px;
     border-radius: 12px;
     padding: 6px 12px;
     cursor: pointer;
     background-color: grey;
     border: solid white;
-}
+} */
 
 ul {
     list-style-type: none;
@@ -420,19 +420,6 @@ input[type=checkbox]{
   color: white;
 }
 
-.leaflet-popup-content-wrapper {
-}
-
-.leaflet-popup-content-wrapper .leaflet-popup-content {
-background-color: white;
-padding: 5px;
-border-radius: 5px;
-}
-
-.leaflet-popup-tip-container {
-    background-color: white; 
-}
-
 #graphic_panel{
     position: absolute;
     top:0px;
@@ -441,5 +428,9 @@ border-radius: 5px;
     height: 400px;
     background-color: white;
     z-index: 900;
-    display: none;
+    display: block;
 }
+
+.leaflet-interactive {
+    cursor: help;
+  }
