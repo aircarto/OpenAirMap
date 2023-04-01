@@ -33,6 +33,31 @@ import '../images/labMarker.svg';
 import '../css/style.css';
 import '../css/leaflet.css';
 
+
+
+
+import '../images/nebuleair_iconV2_bon.png';
+import '../images/nebuleair_iconV2_moyen.png';
+import '../images/nebuleair_iconV2_degrade.png';
+import '../images/nebuleair_iconV2_mauvais.png';
+import '../images/nebuleair_iconV2_tresmauvais.png';
+import '../images/nebuleair_iconV2_extmauvais.png';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // copy favicons
 import '../favicons/android-chrome-192x192.png';
 import '../favicons/android-chrome-512x512.png';
@@ -75,8 +100,26 @@ const colorScalePM1 = scaleLinear()
 
 
 
+    var nebuleairIcon = L.Icon.extend({
+        options: {
+            iconSize: [80, 80],
+            iconAnchor: [0, 60]
+        }
+    });
 
-//config.scaleoptions
+
+    // var textSize = 45;
+    // var x_position = -26;
+    // var y_position = 54;
+
+
+    var nebuleairValue = L.DivIcon.extend({
+        className: 'value-label-popup',
+        // html: '<div id="textDiv" style="font-size: ' + textSize + 'px;"></div>',
+        // iconAnchor: [x_position, y_position],
+        // popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
+    });
+
 
 //REVOIR LES COULEURS
 
@@ -191,16 +234,23 @@ var SCSensorsMap = new L.geoJSON(SensorCommunityData, {
 }).addTo(map);
 
 
+
 var AirCartoSensorsMap = new L.geoJSON(NebuloData, {
     pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-            radius: 10,
-            fillColor: colorScaler(user_selected_value, feature.properties.data),
-            weight: 2,
-            stroke: true,
-            color: 'red',
-            fillOpacity: 1
-        })
+
+
+        let marker = L.marker(latlng, {icon:iconMaker(user_selected_value, feature.properties.data)});
+        let label = L.marker(latlng, {icon:labelMaker(user_selected_value, feature.properties.data)});
+
+        return L.featureGroup([marker, label]);
+
+        // return L.marker(latlng, {
+        //     icon:iconMaker(user_selected_value, feature.properties.data)
+        // });
+        
+        // && L.marker(latlng, {
+        //     icon:iconMaker2(user_selected_value, feature.properties.data)
+        // });
     },
     onEachFeature: function (feature, layer) {
         var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Identifiant</b> : " + feature.properties.id + 
@@ -379,7 +429,7 @@ function switchTo(user_selected_value) {
     document.querySelector('.selected').classList.remove("selected"); // remove class selected
     elem.classList.add("selected");
     reloadMap(user_selected_value)
-    switchLegend(user_selected_value)
+    // switchLegend(user_selected_value)
     closeMenu()
 }
 
@@ -426,6 +476,44 @@ function colorScaler(option, value) {
 
     } else { console.log(typeof value) };
 };
+
+
+function iconMaker(option, value) {
+
+    if((option == "PM10" && value.PM10 <= 20 ) || (option == "PM25" && value.PM25 <= 10 ) || (option == "PM1" && value.PM1 <= 10 ))
+    {
+        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_bon.png'});
+
+    }else if((option == "PM10" && value.PM10 > 20 && value.PM10 <= 40 ) || (option == "PM25" &&  value.PM25 > 10 && value.PM25 <= 20 ) || (option == "PM1" && value.PM1 > 10 && value.PM1 <= 20 ))
+    {
+        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_moyen.png'});
+
+    }else if((option == "PM10" && value.PM10 > 40 && value.PM10 <= 50 ) || (option == "PM25" &&  value.PM25 > 20 && value.PM25 <= 25 ) || (option == "PM1" && value.PM1 > 20 && value.PM1 <= 25 ))
+    {
+        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_degrade.png'});   
+    }else if((option == "PM10" && value.PM10 > 50 && value.PM10 <= 100 ) || (option == "PM25" &&  value.PM25 > 25 && value.PM25 <= 50 ) || (option == "PM1" && value.PM1 > 25 && value.PM1 <= 50 ))
+    {
+        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_mauvais.png'});
+    }else if((option == "PM10" && value.PM10 > 100 && value.PM10 <= 150 ) || (option == "PM25" &&  value.PM25 > 50 && value.PM25 <= 75 ) || (option == "PM1" && value.PM1 > 50 && value.PM1 <= 75 ))
+    {
+        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_tresmauvais.png'});
+    }else if((option == "PM10" && value.PM10 > 150) || (option == "PM25" &&  value.PM25 > 75) || (option == "PM1" && value.PM1 > 75))
+    {
+        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_extmauvais.png'});
+    }
+};
+
+function labelMaker(option, value) {
+
+    let html = "<div class='valuelabel' id>" + value[option] + "</div>";
+    // let html = value[option];
+
+
+    return new nebuleairValue({html: html});
+
+};
+
+
 
 
 async function retrieveDataSC() {

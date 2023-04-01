@@ -148,7 +148,7 @@ tr {
     cursor: pointer;
     position: fixed;
     bottom: 20px;
-    left: 8em;
+    left: 250px;
     z-index: 50;
     display: flex;
     align-items: center;
@@ -288,7 +288,7 @@ input[type=checkbox]{
     height: 15em;
     z-index: 5;
     padding: 20px;
-    max-width: 7em;
+    max-width: 200px;
     transition: all 0.3s;
     border: 1px solid #C2C2C2;
     font-size: 0.8em;
@@ -344,7 +344,7 @@ input[type=checkbox]{
 }
 
 #legend .labels {
-    width: 6.25em;
+    width: 100%;
     position: relative;
     display: grid;
 }
@@ -434,3 +434,32 @@ input[type=checkbox]{
 .leaflet-interactive {
     cursor: help;
   }
+
+
+  #legend_AQI .AQI_color {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    position: relative;
+    top: 3px;
+    margin-right: 4px;
+}
+
+.valuelabel{
+    font-size:45px;
+    background-color: transparent;
+}
+
+.valuelabel{
+    font-size:30px;
+    transform: translate(18px, -30px);
+}
+
+/* .value-label-popup{
+    font-size:45px;
+} */
+
+/* .leaflet-div-icon {
+    background:transparent;
+    border: 0px solid #666;
+  } */
