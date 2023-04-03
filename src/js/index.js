@@ -43,8 +43,11 @@ import '../images/nebuleair_iconV2_mauvais.png';
 import '../images/nebuleair_iconV2_tresmauvais.png';
 import '../images/nebuleair_iconV2_extmauvais.png';
 
+import '../images/sc_icon_bon.png';
+import '../images/sc_icon_moyen.png';
 
-
+import '../images/atmo_icon_bon.png';
+import '../images/atmo_icon_moyen.png';
 
 
 
@@ -100,25 +103,16 @@ const colorScalePM1 = scaleLinear()
 
 
 
-    var nebuleairIcon = L.Icon.extend({
-        options: {
-            iconSize: [80, 80],
-            iconAnchor: [0, 60]
-        }
-    });
+var nebuleairIcon = L.Icon.extend({
+    options: {
+        iconSize: [80, 80],
+        iconAnchor: [0, 60],
+    }
+});
 
-
-    // var textSize = 45;
-    // var x_position = -26;
-    // var y_position = 54;
-
-
-    var nebuleairValue = L.DivIcon.extend({
-        className: 'value-label-popup',
-        // html: '<div id="textDiv" style="font-size: ' + textSize + 'px;"></div>',
-        // iconAnchor: [x_position, y_position],
-        // popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
-    });
+var nebuleairValue = L.DivIcon.extend({
+    className: 'value-label-popup',
+});
 
 
 //REVOIR LES COULEURS
@@ -179,7 +173,22 @@ d3.select("#custom-select").select("select").property("value", config.sensor);
 
 
 
-
+// var PurpleAirStationsMap = new L.geoJSON(PurpleAirData, {
+//     pointToLayer: function (feature, latlng) {
+//         let marker = L.marker(latlng, { icon: iconMaker(user_selected_value, feature.properties.data,"purple") });
+//         let label = L.marker(latlng, { icon: labelMaker(user_selected_value, feature.properties.data) });
+//         return L.featureGroup([marker, label]);
+//     },
+//     onEachFeature: function (feature, layer) {
+//         var popupContent = "<h2>Purple Air</h2><p><b>Identifiant</b> : " + feature.properties.id + 
+//             "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + 
+//             " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 + 
+//             " µg\/m&sup3;</p><p><b>PM1</b> : " + feature.properties.data.PM1 + 
+//             " µg\/m&sup3;</p><button type='button' id='button_" + feature.properties.code_station + 
+//             "' value='" + feature.properties.code_station + "'>Graphique</button>";
+//         layer.bindPopup(popupContent, { closeOnClick: false, autoClose: true, closeButton: true });
+//     }
+// }).addTo(map);
 
 
 
@@ -189,18 +198,18 @@ d3.select("#custom-select").select("select").property("value", config.sensor);
 
 var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
     pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-            radius: 10,
-            fillColor: colorScaler(user_selected_value, feature.properties.data),
-            weight: 2,
-            stroke: true,
-            color: 'green',
-            fillOpacity: 1,
-        })
+        let marker = L.marker(latlng, { icon: iconMaker(user_selected_value, feature.properties.data,"atmo") });
+        let label = L.marker(latlng, { icon: labelMaker(user_selected_value, feature.properties.data) });
+        return L.featureGroup([marker, label]);
     },
     onEachFeature: function (feature, layer) {
-        var popupContent = "<h2>AtmoSud</h2><p><b>Identifiant</b> : " + feature.properties.id + "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 + " µg\/m&sup3;</p><p><b>PM1</b> : " + feature.properties.data.PM1 + " µg\/m&sup3;</p><button type='button' id='button" + feature.properties.code_station + "' value='" + feature.properties.code_station + "'>Graphique</button><div id='graph" + feature.properties.code_station + "'></div>";
-        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: true, closeButton: true});
+        var popupContent = "<h2>AtmoSud</h2><p><b>Identifiant</b> : " + feature.properties.id + 
+            "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + 
+            " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 + 
+            " µg\/m&sup3;</p><p><b>PM1</b> : " + feature.properties.data.PM1 + 
+            " µg\/m&sup3;</p><button type='button' id='button_" + feature.properties.code_station + 
+            "' value='" + feature.properties.code_station + "'>Graphique</button>";
+        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: true, closeButton: true });
     }
 
 
@@ -209,27 +218,21 @@ var AtmoSudStationsMap = new L.geoJSON(AtmoSudData, {
 
 var SCSensorsMap = new L.geoJSON(SensorCommunityData, {
     pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-            radius: 10,
-            fillColor: colorScaler(user_selected_value, feature.properties.data),
-            weight: 2,
-            stroke: true,
-            color: 'blue',
-            fillOpacity: 1
-        })
+        let marker = L.marker(latlng, { icon: iconMaker(user_selected_value, feature.properties.data,"sc") });
+        let label = L.marker(latlng, { icon: labelMaker(user_selected_value, feature.properties.data) });
+        return L.featureGroup([marker, label]);
     },
     onEachFeature: function (feature, layer) {
-        var popupContent = "<h2>Sensor.Community</h2><p><b>Identifiant</b> : " + feature.properties.id + 
-                           "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + 
-                           " µg\/m&sup3;</p><p><b>PM25</b> : " + feature.properties.data.PM25 + 
-                           " µg\/m&sup3;</p>"+
-                           "<button type='button' class='button_sc' id='button_" + feature.properties.id + 
-                           "' value='" + feature.properties.id + "'>Show graph!</button>";
-                        //    <div id='graph" + feature.properties.id + "'></div>";
+        var popupContent = "<h2>Sensor.Community</h2><p><b>Identifiant</b> : " + feature.properties.id +
+            "</p><p><b>PM10</b> : " + feature.properties.data.PM10 +
+            " µg\/m&sup3;</p><p><b>PM25</b> : " + feature.properties.data.PM25 +
+            " µg\/m&sup3;</p>" +
+            "<button type='button' class='button_sc' id='button_" + feature.properties.id +
+            "' value='" + feature.properties.id + "'>Graphique</button>";
         console.log("#button_" + feature.properties.id);
         console.log(d3.select("#button_" + feature.properties.id));
-        d3.select("#button_" + feature.properties.id).on("click", function () { console.log('test')});
-        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: false, closeButton: true });
+        d3.select("#button_" + feature.properties.id).on("click", function () { console.log('test') });
+        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: true, closeButton: true, offset: [5, 10] });
     }
 }).addTo(map);
 
@@ -237,33 +240,22 @@ var SCSensorsMap = new L.geoJSON(SensorCommunityData, {
 
 var AirCartoSensorsMap = new L.geoJSON(NebuloData, {
     pointToLayer: function (feature, latlng) {
-
-
-        let marker = L.marker(latlng, {icon:iconMaker(user_selected_value, feature.properties.data)});
-        let label = L.marker(latlng, {icon:labelMaker(user_selected_value, feature.properties.data)});
-
+        let marker = L.marker(latlng, { icon: iconMaker(user_selected_value, feature.properties.data,"nebuleair") });
+        let label = L.marker(latlng, { icon: labelMaker(user_selected_value, feature.properties.data) });
         return L.featureGroup([marker, label]);
-
-        // return L.marker(latlng, {
-        //     icon:iconMaker(user_selected_value, feature.properties.data)
-        // });
-        
-        // && L.marker(latlng, {
-        //     icon:iconMaker2(user_selected_value, feature.properties.data)
-        // });
     },
     onEachFeature: function (feature, layer) {
-        var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Identifiant</b> : " + feature.properties.id + 
-                            "</p><p><b>PM10</b> : " + feature.properties.data.PM10 + 
-                            " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 + 
-                            " µg\/m&sup3;</p></p><p><b>PM1</b> : " + feature.properties.data.PM1 + 
-                            " µg\/m&sup3;</p>"+
-                            "<button type='button' class='button_nebulo' id='button_" + feature.properties.id + 
-                            "' value='" + feature.properties.id + "'>Show graph!</button>";
+        var popupContent = "<h2>Nebulo AirCarto</h2><p><b>Identifiant</b> : " + feature.properties.id +
+            "</p><p><b>PM10</b> : " + feature.properties.data.PM10 +
+            " µg\/m&sup3;</p><p><b>PM2.5</b> : " + feature.properties.data.PM25 +
+            " µg\/m&sup3;</p></p><p><b>PM1</b> : " + feature.properties.data.PM1 +
+            " µg\/m&sup3;</p>" +
+            "<button type='button' class='button_nebulo' id='button_" + feature.properties.id +
+            "' value='" + feature.properties.id + "'>Graphique</button>";
         console.log("#button_" + feature.properties.id);
         console.log(d3.select("#button_" + feature.properties.id));
-        d3.select("#button_" + feature.properties.id).on("click", function () { console.log('test')});
-        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: false, closeButton: true});
+        d3.select("#button_" + feature.properties.id).on("click", function () { console.log('test') });
+        layer.bindPopup(popupContent, { closeOnClick: false, autoClose: true, closeButton: true, offset: [5, 10] });
     }
 }).addTo(map);
 
@@ -284,80 +276,47 @@ window.onload = function () {
         clicked += 1;
     });
 
-    map.on('popupopen', function(e){
-        console.log("open popup");
+    map.on('popupopen', function (e) {
         console.log(e.popup.getElement());
-        //console.log(e.popup.getElement()._groups[0][0].children[0].children[0].children[0]);
-        
         var popuptype = d3.select(e.popup.getElement())._groups[0][0].children[0].children[0].children[0].innerText;
-        
         console.log(popuptype);
-        
-        if (popuptype == "Nebulo AirCarto"){   
-             
-        console.log(d3.select(e.popup.getElement()).select("button")._groups[0][0].value);
-        // let sensorid = d3.select(e.popup.getElement())._groups[0][0].children[0].children[0].children[6].value; 
-        let sensorid = d3.select(e.popup.getElement()).select("button")._groups[0][0].value;               
-               
-        let graph = false;
-        console.log(sensorid);
-            
-        d3.select('#button_'+ sensorid).on('click', function(){  
-            console.log("click")
-            console.log(d3.select('#graphic_panel').select('#chart'));
-            console.log("https://grafana.moduleair.fr/d-solo/ol4ZNiK4z/nebulo?orgId=1&var-device=" + sensorid + "&from=now-1h&to=now&theme=light&panelId=2");
-            d3.select('#graphic_panel').select('#chart').attr("src","https://grafana.moduleair.fr/d-solo/ol4ZNiK4z/nebulo?orgId=1&var-device=" + sensorid + "&from=now-1h&to=now&theme=light&panelId=2");
-        });
-    }
+        if (popuptype == "Nebulo AirCarto") {
+            let sensorid = d3.select(e.popup.getElement()).select("button")._groups[0][0].value;
+            let graph = false;
+            console.log(sensorid);
+            d3.select('#button_' + sensorid).on('click', function () {
+                if (graph == false) {
+                    d3.select('#graphic_panel').style("display", "block");
+                    d3.select('#graphic_panel').select('#chart').attr("src", "https://grafana.moduleair.fr/d-solo/ol4ZNiK4z/nebulo?orgId=1&var-device=" + sensorid + "&from=now-1h&to=now&theme=light&panelId=2");
+                    graph = true;
+                    d3.select(e.popup.getElement()).select("button").text("Fermer");
+                } else {
+                    d3.select('#graphic_panel').style("display", "none");
+                    graph = false;
+                    d3.select(e.popup.getElement()).select("button").text("Graphique");              
+                }
+            });
+        }
 
-    if (popuptype == "Sensor.Community"){   
-                 
-        let sensorid = d3.select(e.popup.getElement()).select("button")._groups[0][0].value;               
-        let graph = false;
-        console.log(sensorid);
-            
-        d3.select('#button_'+ sensorid).on('click', function(){  
-            console.log("click")
-            console.log(d3.select('#graphic_panel'));
-        console.log("https://maps.sensor.community/grafana/d/000000004/single-sensor-view-for-map?orgId=1&var-node=" + sensorid + "&viewPanel=2");
-        //d3.select('#graphic_panel').select('#chart').attr("src","https://maps.sensor.community/grafana/d/000000004/single-sensor-view-for-map?orgId=1&var-node=" + sensorid + "&viewPanel=2").attr("width","100px").attr("height","300px").attr("frameborder","0");
+        if (popuptype == "Sensor.Community") {
 
+            let sensorid = d3.select(e.popup.getElement()).select("button")._groups[0][0].value;
+            let graph = false;
+            console.log(sensorid);
 
-        // <iframe src="https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view?orgId=1&amp;panelId=2&amp;var-node=1839" width="100%" height="300px" frameborder="0"></iframe>
-
-
-        d3.select('#graphic_panel').html("<iframe id='chart' src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node="+ sensorid +"&panelId=2' width='100%' height='100%' frameborder='0'></iframe>");
-        
-        
-        // // // var panel_str = "<iframe src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=2&var-node=" + sensorid + "' width='280' height='200' frameborder='0'></iframe>";
-        // // // var selector = "#graph"+sensorid;
-            
-        //<iframe src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=73276&from=1680260457387&to=1680346857388&panelId=2' width='450' height='200' frameborder='0'></iframe>
-        // // // if (graph == false){
-        // // //     d3.select(selector).html(panel_str);
-        // // //     graph = true;
-        // // //     d3.select('#button'+ sensorid ).html("Hide Graph!");
-            
-                           
-        // // // }else{
-        // // //     d3.select(selector).html("");
-        // // //     graph = false;
-        // // //     d3.select('#button'+ sensorid ).html("Show Graph!");
-        // // // }
-    
-
-{/* <iframe src="https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=73276&from=1680260457387&to=1680346857388&panelId=2" width="450" height="200" frameborder="0"></iframe> */}
-
-
-
-
-        });
-    }
-
-
-
-
-
+            d3.select('#button_' + sensorid).on('click', function () {
+                if (graph == false) {
+                    d3.select('#graphic_panel').style("display", "block");
+                    d3.select('#graphic_panel').html("<iframe id='chart' src='https://maps.sensor.community/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + sensorid + "&panelId=2' width='100%' height='100%' frameborder='0'></iframe>");
+                    graph = true;
+                    d3.select(e.popup.getElement()).select("button").text("Fermer");
+                } else {
+                    d3.select('#graphic_panel').style("display", "none");
+                    graph = false;
+                    d3.select(e.popup.getElement()).select("button").text("Graphique");              
+                }
+            });
+        }
     })
 
 
@@ -369,9 +328,9 @@ window.onload = function () {
     d3.select("#nebulo").property('checked', false);
     d3.select("#atmosud").property('checked', false);
 
-    d3.select("#sc").on("change", function () { switcher("sc")});
-    d3.select("#nebulo").on("change", function () { switcher("nebulo")});
-    d3.select("#atmosud").on("change", function () { switcher("atmosud")});
+    d3.select("#sc").on("change", function () { switcher("sc") });
+    d3.select("#nebulo").on("change", function () { switcher("nebulo") });
+    d3.select("#atmosud").on("change", function () { switcher("atmosud") });
 
 
     switchTo(user_selected_value)
@@ -394,33 +353,33 @@ window.onload = function () {
 
 function reloadMap(val) {
     console.log(val);
-// Ajouter if avec le logger
+    // Ajouter if avec le logger
     if (val == "PM10") {
 
         SCSensorsMap.clearLayers();
-        SCSensorsMap.addData(SensorCommunityData).bringToFront(); 
+        SCSensorsMap.addData(SensorCommunityData).bringToFront();
         AirCartoSensorsMap.clearLayers();
-        AirCartoSensorsMap.addData(NebuloData).bringToFront(); 
+        AirCartoSensorsMap.addData(NebuloData).bringToFront();
         AtmoSudStationsMap.clearLayers();
         AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
     };
 
     if (val == "PM25") {
         SCSensorsMap.clearLayers();
-        SCSensorsMap.addData(SensorCommunityData).bringToFront(); 
+        SCSensorsMap.addData(SensorCommunityData).bringToFront();
         AirCartoSensorsMap.clearLayers();
-        AirCartoSensorsMap.addData(NebuloData).bringToFront(); 
+        AirCartoSensorsMap.addData(NebuloData).bringToFront();
         AtmoSudStationsMap.clearLayers();
-        AtmoSudStationsMap.addData(AtmoSudData).bringToFront();  
+        AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
     };
 
     if (val == "PM1") {
         SCSensorsMap.clearLayers();
-        SCSensorsMap.addData(SensorCommunityData).bringToFront(); 
+        SCSensorsMap.addData(SensorCommunityData).bringToFront();
         AirCartoSensorsMap.clearLayers();
-        AirCartoSensorsMap.addData(NebuloData).bringToFront(); 
+        AirCartoSensorsMap.addData(NebuloData).bringToFront();
         AtmoSudStationsMap.clearLayers();
-        AtmoSudStationsMap.addData(AtmoSudData).bringToFront(); 
+        AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
     };
 }
 
@@ -468,7 +427,7 @@ function colorScaler(option, value) {
         if (value != null) {
             if (option == "PM10") { return colorScalePM10(value.PM10); };
             if (option == "PM25") { return colorScalePM25(value.PM25); };
-            if (option == "PM1") { if(value.PM1 == -1){return 'grey'}else{return colorScalePM1(value.PM1);} };
+            if (option == "PM1") { if (value.PM1 == -1) { return 'grey' } else { return colorScalePM1(value.PM1); } };
         } else {
             return 'grey';
             //'#808080'
@@ -478,29 +437,85 @@ function colorScaler(option, value) {
 };
 
 
-function iconMaker(option, value) {
+function iconMaker(option, value, type) {
 
-    if((option == "PM10" && value.PM10 <= 20 ) || (option == "PM25" && value.PM25 <= 10 ) || (option == "PM1" && value.PM1 <= 10 ))
-    {
-        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_bon.png'});
+    if(type == "nebuleair"){
+    if ((option == "PM10" && value.PM10 <= 20) || (option == "PM25" && value.PM25 <= 10) || (option == "PM1" && value.PM1 <= 10)) {
+        return new nebuleairIcon({ iconUrl: 'images/nebuleair_iconV2_bon.png' });
 
-    }else if((option == "PM10" && value.PM10 > 20 && value.PM10 <= 40 ) || (option == "PM25" &&  value.PM25 > 10 && value.PM25 <= 20 ) || (option == "PM1" && value.PM1 > 10 && value.PM1 <= 20 ))
-    {
-        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_moyen.png'});
+    } else if ((option == "PM10" && value.PM10 > 20 && value.PM10 <= 40) || (option == "PM25" && value.PM25 > 10 && value.PM25 <= 20) || (option == "PM1" && value.PM1 > 10 && value.PM1 <= 20)) {
+        return new nebuleairIcon({ iconUrl: 'images/nebuleair_iconV2_moyen.png' });
 
-    }else if((option == "PM10" && value.PM10 > 40 && value.PM10 <= 50 ) || (option == "PM25" &&  value.PM25 > 20 && value.PM25 <= 25 ) || (option == "PM1" && value.PM1 > 20 && value.PM1 <= 25 ))
-    {
-        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_degrade.png'});   
-    }else if((option == "PM10" && value.PM10 > 50 && value.PM10 <= 100 ) || (option == "PM25" &&  value.PM25 > 25 && value.PM25 <= 50 ) || (option == "PM1" && value.PM1 > 25 && value.PM1 <= 50 ))
-    {
-        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_mauvais.png'});
-    }else if((option == "PM10" && value.PM10 > 100 && value.PM10 <= 150 ) || (option == "PM25" &&  value.PM25 > 50 && value.PM25 <= 75 ) || (option == "PM1" && value.PM1 > 50 && value.PM1 <= 75 ))
-    {
-        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_tresmauvais.png'});
-    }else if((option == "PM10" && value.PM10 > 150) || (option == "PM25" &&  value.PM25 > 75) || (option == "PM1" && value.PM1 > 75))
-    {
-        return new nebuleairIcon({iconUrl: 'images/nebuleair_iconV2_extmauvais.png'});
+    } else if ((option == "PM10" && value.PM10 > 40 && value.PM10 <= 50) || (option == "PM25" && value.PM25 > 20 && value.PM25 <= 25) || (option == "PM1" && value.PM1 > 20 && value.PM1 <= 25)) {
+        return new nebuleairIcon({ iconUrl: 'images/nebuleair_iconV2_degrade.png' });
+    } else if ((option == "PM10" && value.PM10 > 50 && value.PM10 <= 100) || (option == "PM25" && value.PM25 > 25 && value.PM25 <= 50) || (option == "PM1" && value.PM1 > 25 && value.PM1 <= 50)) {
+        return new nebuleairIcon({ iconUrl: 'images/nebuleair_iconV2_mauvais.png' });
+    } else if ((option == "PM10" && value.PM10 > 100 && value.PM10 <= 150) || (option == "PM25" && value.PM25 > 50 && value.PM25 <= 75) || (option == "PM1" && value.PM1 > 50 && value.PM1 <= 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/nebuleair_iconV2_tresmauvais.png' });
+    } else if ((option == "PM10" && value.PM10 > 150) || (option == "PM25" && value.PM25 > 75) || (option == "PM1" && value.PM1 > 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/nebuleair_iconV2_extmauvais.png' });
     }
+}
+
+if(type == "sc"){
+    if ((option == "PM10" && value.PM10 <= 20) || (option == "PM25" && value.PM25 <= 10) || (option == "PM1" && value.PM1 <= 10)) {
+        return new nebuleairIcon({ iconUrl: 'images/sc_icon_bon.png' });
+
+    } else if ((option == "PM10" && value.PM10 > 20 && value.PM10 <= 40) || (option == "PM25" && value.PM25 > 10 && value.PM25 <= 20) || (option == "PM1" && value.PM1 > 10 && value.PM1 <= 20)) {
+        return new nebuleairIcon({ iconUrl: 'images/sc_icon_moyen.png' });
+
+    } else if ((option == "PM10" && value.PM10 > 40 && value.PM10 <= 50) || (option == "PM25" && value.PM25 > 20 && value.PM25 <= 25) || (option == "PM1" && value.PM1 > 20 && value.PM1 <= 25)) {
+        return new nebuleairIcon({ iconUrl: 'images/sc_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 50 && value.PM10 <= 100) || (option == "PM25" && value.PM25 > 25 && value.PM25 <= 50) || (option == "PM1" && value.PM1 > 25 && value.PM1 <= 50)) {
+        return new nebuleairIcon({ iconUrl: 'images/sc_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 100 && value.PM10 <= 150) || (option == "PM25" && value.PM25 > 50 && value.PM25 <= 75) || (option == "PM1" && value.PM1 > 50 && value.PM1 <= 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/sc_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 150) || (option == "PM25" && value.PM25 > 75) || (option == "PM1" && value.PM1 > 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/sc_icon_moyen.png' });
+    }
+}
+
+
+if(type == "atmo"){
+    if ((option == "PM10" && value.PM10 <= 20) || (option == "PM25" && value.PM25 <= 10) || (option == "PM1" && value.PM1 <= 10)) {
+        return new nebuleairIcon({ iconUrl: 'images/atmo_icon_bon.png' });
+
+    } else if ((option == "PM10" && value.PM10 > 20 && value.PM10 <= 40) || (option == "PM25" && value.PM25 > 10 && value.PM25 <= 20) || (option == "PM1" && value.PM1 > 10 && value.PM1 <= 20)) {
+        return new nebuleairIcon({ iconUrl: 'images/atmo_icon_moyen.png' });
+
+    } else if ((option == "PM10" && value.PM10 > 40 && value.PM10 <= 50) || (option == "PM25" && value.PM25 > 20 && value.PM25 <= 25) || (option == "PM1" && value.PM1 > 20 && value.PM1 <= 25)) {
+        return new nebuleairIcon({ iconUrl: 'images/atmo_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 50 && value.PM10 <= 100) || (option == "PM25" && value.PM25 > 25 && value.PM25 <= 50) || (option == "PM1" && value.PM1 > 25 && value.PM1 <= 50)) {
+        return new nebuleairIcon({ iconUrl: 'images/atmo_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 100 && value.PM10 <= 150) || (option == "PM25" && value.PM25 > 50 && value.PM25 <= 75) || (option == "PM1" && value.PM1 > 50 && value.PM1 <= 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/atmo_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 150) || (option == "PM25" && value.PM25 > 75) || (option == "PM1" && value.PM1 > 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/atmo_icon_moyen.png' });
+    }
+}
+
+if(type == "purple"){
+    if ((option == "PM10" && value.PM10 <= 20) || (option == "PM25" && value.PM25 <= 10) || (option == "PM1" && value.PM1 <= 10)) {
+        return new nebuleairIcon({ iconUrl: 'images/purple_icon_bon.png' });
+
+    } else if ((option == "PM10" && value.PM10 > 20 && value.PM10 <= 40) || (option == "PM25" && value.PM25 > 10 && value.PM25 <= 20) || (option == "PM1" && value.PM1 > 10 && value.PM1 <= 20)) {
+        return new nebuleairIcon({ iconUrl: 'images/purple_icon_moyen.png' });
+
+    } else if ((option == "PM10" && value.PM10 > 40 && value.PM10 <= 50) || (option == "PM25" && value.PM25 > 20 && value.PM25 <= 25) || (option == "PM1" && value.PM1 > 20 && value.PM1 <= 25)) {
+        return new nebuleairIcon({ iconUrl: 'images/purple_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 50 && value.PM10 <= 100) || (option == "PM25" && value.PM25 > 25 && value.PM25 <= 50) || (option == "PM1" && value.PM1 > 25 && value.PM1 <= 50)) {
+        return new nebuleairIcon({ iconUrl: 'images/purple_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 100 && value.PM10 <= 150) || (option == "PM25" && value.PM25 > 50 && value.PM25 <= 75) || (option == "PM1" && value.PM1 > 50 && value.PM1 <= 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/purple_icon_moyen.png' });
+    } else if ((option == "PM10" && value.PM10 > 150) || (option == "PM25" && value.PM25 > 75) || (option == "PM1" && value.PM1 > 75)) {
+        return new nebuleairIcon({ iconUrl: 'images/purple_icon_moyen.png' });
+    }
+}
+
+
+
+
+
 };
 
 function labelMaker(option, value) {
@@ -509,7 +524,7 @@ function labelMaker(option, value) {
     // let html = value[option];
 
 
-    return new nebuleairValue({html: html});
+    return new nebuleairValue({ html: html });
 
 };
 
@@ -570,17 +585,17 @@ async function retrieveDataAtmoSud() {
         .then(function (result) {
             console.log(result);
             let sensorsAtmoSud = Array.from(new Set(result.map(({ id_site }) => id_site)));
-            sensorsAtmoSud.forEach(function(e){
-                let sensorAtmosud =result.filter(i => i.id_site == e);
-                let Atmofeature = { "type": "Feature", "properties": { "id": sensorAtmosud[0].nom_site, "data": {}}, "geometry": { "type": "Point", "coordinates": [sensorAtmosud[0].lon,sensorAtmosud[0].lat] } };
+            sensorsAtmoSud.forEach(function (e) {
+                let sensorAtmosud = result.filter(i => i.id_site == e);
+                let Atmofeature = { "type": "Feature", "properties": { "id": sensorAtmosud[0].nom_site, "data": {} }, "geometry": { "type": "Point", "coordinates": [sensorAtmosud[0].lon, sensorAtmosud[0].lat] } };
 
-                sensorAtmosud.forEach(function(s){
-                    if((s.variable == "PM1")|| (s.variable == "PM2.5") || (s.variable == "PM10")){
-                        if(s.variable == "PM2.5"){
-                            Atmofeature.properties.data['PM25']= s.valeur;
+                sensorAtmosud.forEach(function (s) {
+                    if ((s.variable == "PM1") || (s.variable == "PM2.5") || (s.variable == "PM10")) {
+                        if (s.variable == "PM2.5") {
+                            Atmofeature.properties.data['PM25'] = s.valeur;
                         }
-                        else{
-                            Atmofeature.properties.data[s.variable]= s.valeur;
+                        else {
+                            Atmofeature.properties.data[s.variable] = s.valeur;
                         }
 
                     };
@@ -588,7 +603,7 @@ async function retrieveDataAtmoSud() {
 
                 AtmoSudData.features.push(Atmofeature);
             });
-                AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
+            AtmoSudStationsMap.addData(AtmoSudData).bringToFront();
         });
 }
 
@@ -615,7 +630,7 @@ async function retrieveDataNebulo() {
 
             NebuloData.features = mapper;
 
-                AirCartoSensorsMap.addData(NebuloData).bringToFront();
+            AirCartoSensorsMap.addData(NebuloData).bringToFront();
         });
 }
 
@@ -683,7 +698,7 @@ function switcher(key) {
         // function nebuloGraph(){
         //     document.getElementById('graphic_panel').style.display = "block";
         //     console.log('test');
-            
+
         //     }
 
 

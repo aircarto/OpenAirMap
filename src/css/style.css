@@ -185,7 +185,7 @@ tr {
 @media only screen and (min-width: 768px) {
     #modal {;
         width: 400px;
-        left: 9.5em;
+        left: 250px;
         bottom: 65px;
         height: initial;
         max-height: calc(100vh - 10em);
@@ -218,7 +218,6 @@ tr {
 .select-items > div {
     cursor: pointer;
     padding: 0.8em;
-    border-bottom: #E0E0E0 solid 1px;
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: auto;
@@ -287,7 +286,7 @@ input[type=checkbox]{
     bottom: 20px;
     height: 15em;
     z-index: 5;
-    padding: 20px;
+    padding: 5px;
     max-width: 200px;
     transition: all 0.3s;
     border: 1px solid #C2C2C2;
@@ -428,7 +427,7 @@ input[type=checkbox]{
     height: 400px;
     background-color: white;
     z-index: 900;
-    display: block;
+    display: none;
 }
 
 .leaflet-interactive {
@@ -446,14 +445,12 @@ input[type=checkbox]{
 }
 
 .valuelabel{
-    font-size:45px;
+    font-size:30px;
     background-color: transparent;
+    transform: translate(22px, -30px);
 }
 
-.valuelabel{
-    font-size:30px;
-    transform: translate(18px, -30px);
-}
+
 
 /* .value-label-popup{
     font-size:45px;
