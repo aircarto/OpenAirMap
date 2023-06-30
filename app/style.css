@@ -14,7 +14,7 @@ body {
 #logoAirCarto img {
     position: fixed;
     height: 60px;
-    right: 0px;
+    left: 0px;
     margin: 0px;
     border-radius: 0px;
 }
@@ -22,31 +22,20 @@ body {
 
 #div_buttonPM {
     position: fixed;
-    right: 940px;
+    right: 390px;
     top: 15px;
 }
 
-#div_button_purpleAir {
+
+#div_button_choixCapteur {
     position: fixed;
-    right: 755px;
+    right: 190px;
     top: 15px;
 }
 
-#div_button_modelisationAtmoSud {
+#div_button_monNebuleAir {
     position: fixed;
-    right: 585px;
-    top: 15px;
-}
-
-#div_button_stationsAtmoSud {
-    position: fixed;
-    right: 380px;
-    top: 15px;
-}
-
-#div_button_monNebulo {
-    position: fixed;
-    right: 250px;
+    right: 40px;
     top: 15px;
 }
 

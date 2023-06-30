@@ -5,6 +5,8 @@
 GET Data from AtmoSud API
 https://api.atmosud.org
 
+data_type inside URL (GET)
+
 1. Micro-Stations (DIAMS)  : micro_station
 2. Stations de Référence   : station_ref
 3. Modélisation IQAIR H    : mod_iqairh
@@ -20,7 +22,12 @@ $dotenv->load();
 
 $api_key_atmosud = $_ENV['PURPLEAIR_API_KEY'];
 
-$url = 'https://api.purpleair.com/v1/sensors?fields=name,latitude,longitude,pm1.0,pm2.5,pm10.0,last_seen&api_key='.$api_key_purple.'&nwlng=5.223793027379755&nwlat=43.38349241945991&selng=5.594581567660924&selat=43.22158944480793';
+$data_type=$_GET['data_type'];
+
+if ($data_type == 'micro_station') {
+    $url = 'https://api.atmosud.org/observations/capteurs/sites/live?format=json&download=false&delais=60&formatage=dict&token='.$api_key_atmosud;
+}
+
 
 $json_data = file_get_contents($url);
 
