@@ -4,8 +4,7 @@ var current_date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate(
 var api_key_atmo = "21d3ca8d59e93e7cee170cb388858ba4";
 
 
-// ******** ATMOSUD *************
-//on va chercher les coordonnées de AtmoSud (Stations)
+//on va chercher les coordonnées des Stations de Référence (fixe)
 function loadStationAtmo() {
     $.ajax({
         method: "GET",
@@ -22,7 +21,7 @@ function loadStationAtmo() {
     })
 };
 
-//on va chercher les coordonnées de AtmoSud (micro-capteurs Fixes)
+//on va chercher les coordonnées des micro-stations (fixes)
 
 function loadCapteurAtmo() {
     $.ajax({
