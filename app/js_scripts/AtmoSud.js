@@ -51,7 +51,8 @@ function loadCapteurAtmo() {
     })
 };
 
-
+//Modelisation
+// TODO: utiliser IQUAIR H
 function loadModelisatonAtmo() {
     console.log("Getting data from AtmoSud (modelisation)"); 
     var coumpound_map = "pm10";

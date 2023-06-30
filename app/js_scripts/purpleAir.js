@@ -2,10 +2,9 @@
 //on va chercher les coordonnées des Purple Air
 // TODO: ouvrir un popup avec l'historique des mesures
 function loadPurpleAir() {
-    var api_key_purple = "0C03EEE0-770A-11ED-B6F4-42010A800007";
     $.ajax({
         method: "GET",
-        url: "https://api.purpleair.com/v1/sensors?fields=name,latitude,longitude,pm1.0,pm2.5,pm10.0,last_seen&api_key="+api_key_purple+"&nwlng=5.223793027379755&nwlat=43.38349241945991&selng=5.594581567660924&selat=43.22158944480793",
+        url: "../php_scripts/PurpleAir.php",
     }).done(function (data) {
 
         console.log("Getting data from Purple Air");

@@ -1,10 +1,10 @@
 //on va chercher les coordonnées des Nebulo
-function loadNebulo() {
+function loadNebuleAir() {
     $.ajax({
         method: "GET",
-        url: "https://moduleair.fr/devices/API/nebulo_lastMeasure.php",
+        url: "../php_scripts/NebuleAir.php",
     }).done(function (data) {
-        console.log("Getting data for Nebulo:");
+        console.log("Getting data for NebuleAir:");
         console.log(data);
         $.each(data, function (key, value) {
 
