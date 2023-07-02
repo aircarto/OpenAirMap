@@ -28,6 +28,10 @@ if ($data_type == 'micro_station') {
     $url = 'https://api.atmosud.org/observations/capteurs/sites/live?format=json&download=false&delais=60&formatage=dict&token='.$api_key_atmosud;
 }
 
+if ($data_type == 'station_ref') {
+    $url = 'https://api.atmosud.org/observations/stations?polluant_id=39,24,68&format=json&download=false&token='.$api_key_atmosud;
+}
+
 
 $json_data = file_get_contents($url);
 

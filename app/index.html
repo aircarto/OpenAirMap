@@ -44,11 +44,11 @@
         NebuleAir</a></div>
 
     <div class="dropdown" id="div_button_choixCapteur">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 Choix des capteurs
             </button>
             <ul class="dropdown-menu">
-              <li><button class="dropdown-item active" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud</button></li>
+              <li><button class="dropdown-item" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud</button></li>
               <li><button class="dropdown-item" type="button" id="button_stationsRefAtmoSud">Stations de Référence AtmoSud</button></li>
               <li><button class="dropdown-item disabled" type="button" id="button_modelisationAtmoSud">Modélisation ICAIRh AtmoSud</button></li>
               <li><button class="dropdown-item" type="button" id="button_purpleAir">Capteurs PurpleAir</button></li>
@@ -100,13 +100,16 @@
 
 
     <script>
-        //on ajoute les fonctions sur les boutons
-        document.getElementById("button_stationsRefAtmoSud").addEventListener("click", loadStationRefAtmo);
-        document.getElementById("button_micro_stationsAtmoSud").addEventListener("click", loadMicroStationsAtmo);
-        document.getElementById("button_modelisationAtmoSud").addEventListener("click", loadModelisatonAtmo);
-        document.getElementById("button_purpleAir").addEventListener("click", loadPurpleAir);
+        //on ajoute les fonctions sur les boutons du dropdown
+        $("#button_stationsRefAtmoSud").click(loadMicroStationsAtmo);
+        $("#button_stationsRefAtmoSud").click(loadStationRefAtmo);
+        $("#button_stationsRefAtmoSud").click(loadModelisatonAtmo);
+        $("#button_stationsRefAtmoSud").click(loadPurpleAir);
 
-
+        //active le bouton cliqué
+        $('.dropdown-item').click(function() {
+            $(this).addClass('active');
+        });
 
         //on récupère les paramètres dans l'URL
         //http://moduleair.fr/nebulo/?compound=pm10

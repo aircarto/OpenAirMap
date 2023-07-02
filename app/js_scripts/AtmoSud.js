@@ -8,9 +8,9 @@ var api_key_atmo = "21d3ca8d59e93e7cee170cb388858ba4";
 function loadStationRefAtmo() {
     $.ajax({
         method: "GET",
-        url: "https://api.atmosud.org/observations/stations?polluant_id=39,24,68&format=json&download=false&token="+api_key_atmo,
+        url: "../php_scripts/AtmoSud.php?data_type=station_ref",
     }).done(function (data) {
-        console.log("Getting data from AtmoSud (Stations localisation"); //récupère lat et long de toutes les stations qui mesurent des PM
+        console.log("AtmoSud Station de Référence:"); //récupère lat et long de toutes les stations qui mesurent des PM
         console.log(data.stations);
         $.each(data.stations, function (key, value) {
             //on ajoute un point (marker) pour chaque sensor qui ouvre un popup lorsque l'on clique dessus
@@ -24,6 +24,9 @@ function loadStationRefAtmo() {
 //on va chercher les coordonnées des micro-stations (fixes)
 
 function loadMicroStationsAtmo() {
+    //une fois que l'on a appuyé sur le bouton il passe en bleu (valid)
+    $("#button_stationsRefAtmoSud").addClass('active');
+    // requete des datas
     $.ajax({
         method: "GET",
         url: "../php_scripts/AtmoSud.php?data_type=micro_station",
