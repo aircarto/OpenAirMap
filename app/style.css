@@ -39,6 +39,36 @@ body {
     top: 15px;
 }
 
+#div_button_seuils {
+    position: fixed;
+    right: 600px;
+    top: 15px;
+}
+
+#btn_bon {
+    background-color: #4FF0E6;
+    color: black;
+}
+#btn_moyen {
+    background-color: #51CCAA;
+    color: black;
+}
+#btn_degrade {
+    background-color: #EDE663;
+    color: black;
+}
+#btn_mauvais {
+    background-color: #ED5E58;
+    color: white;
+}
+#btn_tres_mauvais {
+    background-color: #881B33;
+    color: white;
+}
+#btn_extr_mauvais {
+    background-color: #74287D;
+    color: white;
+}
 .leaflet-popup-content {
     width: 600px;
 }

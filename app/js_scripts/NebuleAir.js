@@ -1,10 +1,15 @@
 //on va chercher les coordonnées des NebuleAir 
 function loadNebuleAir() {
+    console.log("Getting data for NebuleAir:");
+    const start = Date.now();
+
     $.ajax({
         method: "GET",
         url: "../php_scripts/NebuleAir.php",
     }).done(function (data) {
-        console.log("Getting data for NebuleAir:");
+        const end = Date.now();
+
+        console.log(`Data gathered in ${end - start} ms`);
         console.log(data);
         $.each(data, function (key, value) {
 
