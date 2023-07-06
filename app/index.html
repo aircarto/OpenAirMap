@@ -32,6 +32,23 @@
     <!-- LA CARTE -->
     <div id="map"></div>
 
+    <!-- Le spinner -->
+    <!-- <div class="spinner-border text-primary" role="status" id="spinnerNebuleAir">
+        <span class="visually-hidden">Loading...</span>
+      </div> -->
+
+      <!-- Toast de chargement des données -->
+      <div class="toast-container position-fixed end-0 p-3" style="bottom:10px;">
+        <div class="toast align-items-center" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+            <div class="toast-body">
+                Chargement des données <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Boutons PM1 PM2.5 PM10 -->
     <div class="btn-group" id="div_buttonPM" role="group" aria-label="Basic example">
         <button id="button_PM1" class="btn btn-primary" onclick="choosePM(1)">PM1</button>
@@ -112,10 +129,10 @@
 
     <script>
         //on ajoute les fonctions sur les boutons du dropdown
-        $("#button_stationsRefAtmoSud").click(loadMicroStationsAtmo);
+        $("#button_micro_stationsAtmoSud").click(loadMicroStationsAtmo);
         $("#button_stationsRefAtmoSud").click(loadStationRefAtmo);
-        $("#button_stationsRefAtmoSud").click(loadModelisatonAtmo);
-        $("#button_stationsRefAtmoSud").click(loadPurpleAir);
+        $("#button_modelisationAtmoSud").click(loadModelisatonAtmo);
+        $("#button_purpleAir").click(loadPurpleAir);
 
         //active le bouton cliqué
         $('.dropdown-item').click(function() {
@@ -145,10 +162,21 @@
             maxZoom: 18
         }).addTo(map);
 
+        //ouverture du toast
+        function openToast_loading(){
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show()
+        }
+
+
         // ************************
         //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
         $(document).ready(loadNebuleAir);
+        $(document).ready(openToast_loading);
+
         // ************************
+
 
         //fonction qui ouvre le side panel
         function OpenSidePanel(nomNebulo) {

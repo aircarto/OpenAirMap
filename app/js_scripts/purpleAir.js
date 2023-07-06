@@ -16,6 +16,8 @@ function loadPurpleAir() {
             var lat = value[3];
             var long = value[4]
             var pm1_value = value[5];
+            var pm25_value = value[6];
+            var pm10_value = value[7];
 
             last_seen = timeConverter(last_seen);
 
@@ -34,8 +36,12 @@ function loadPurpleAir() {
 
             //on créer un popup pour chaque PurpleAir
             var purpleAirPopup = '<img src="img/purpleAir/purpleAirLogo.jpg" alt="" class="card-img-top">' +
-                '<h3>PM1: ' + pm1_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
-                '<h4>Dernière mesure ' + last_seen + '</h4>' +
+            '<h3>PM1: ' + pm1_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
+            '<h3>PM2.5: ' + pm25_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
+            '<h3>PM110: ' + pm10_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
+
+            '<h4>Dernière mesure ' + last_seen + '</h4>' +
+
 
                 '<br>Capteur qualité de l\'air extérieur Purple Air <br>' +
                 '<br><a href="https://map.purpleair.com/"><button class="btn btn-primary">Plus d\'information sur map.purpleair.com</button></a>'
@@ -88,7 +94,7 @@ function loadPurpleAir() {
             // cutom text on the marker
             var myIcon = L.divIcon({
                 className: 'my-div-icon',
-                html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + Math.round(pm1_value) + '</div>',
+                html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + Math.round(pm25_value) + '</div>',
                 iconAnchor: [x_position, y_position],
                 popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
 
