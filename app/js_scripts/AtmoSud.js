@@ -19,6 +19,9 @@ function loadStationRefAtmo() {
 
         })
     })
+    .fail(function(){
+        console.log("Error while geting data from AtmoSud API");
+    })
 };
 
 //on va chercher les coordonnées des micro-stations (fixes)
@@ -50,6 +53,9 @@ function loadMicroStationsAtmo() {
                 .addTo(map)
 
         })
+    })
+    .fail(function(){
+        console.log("Error while geting data from AtmoSud API");
     })
 };
 

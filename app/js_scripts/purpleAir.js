@@ -115,4 +115,7 @@ function loadPurpleAir() {
                 });
         })
     })
+    .fail(function(){
+        console.log("Error while geting data from PurpleAir API");
+    })
 };

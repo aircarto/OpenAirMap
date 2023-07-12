@@ -125,5 +125,8 @@ function loadNebuleAir() {
             //.openPopup();
         });
 
+    })
+    .fail(function(){
+        console.log("Error while geting data from AirCarto API");
     });
 };
