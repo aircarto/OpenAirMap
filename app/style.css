@@ -45,6 +45,13 @@ body {
     top: 15px;
 }
 
+#button_horloge {
+    position: fixed;
+    left: 20px;
+    bottom: 15px;
+}
+
+
 #btn_bon {
     background-color: #4FF0E6;
     color: black;

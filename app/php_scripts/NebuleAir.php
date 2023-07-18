@@ -1,6 +1,6 @@
 <?php
 
-$url = 'https://moduleair.fr/devices/API/nebuleAir_lastMeasure.php';
+$url = 'https://aircarto.fr/API/nebuleAir/lastMeasure.php';
 
 $json_data = file_get_contents($url);
 

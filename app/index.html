@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="https://moduleair.fr/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://aircarto.fr/images/favicon.ico" />
+
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
@@ -68,11 +69,11 @@
                 Choix des capteurs
             </button>
             <ul class="dropdown-menu">
-              <li><button class="dropdown-item" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></button></li>
-              <li><button class="dropdown-item" type="button" id="button_stationsRefAtmoSud">Stations de Référence AtmoSud</button></li>
+              <li><button class="dropdown-item disabled" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud </button></li>
+              <li><button class="dropdown-item disabled" type="button" id="button_stationsRefAtmoSud">Stations de Référence AtmoSud</button></li>
               <li><button class="dropdown-item disabled" type="button" id="button_modelisationAtmoSud">Modélisation ICAIRh AtmoSud</button></li>
               <li><button class="dropdown-item" type="button" id="button_purpleAir">Capteurs PurpleAir</button></li>
-              <li><button class="dropdown-item" type="button" id="button_sensor_community">Capteurs Sensor.Community</button></li>
+              <li><button class="dropdown-item disabled" type="button" id="button_sensor_community">Capteurs Sensor.Community</button></li>
             </ul>
     </div>
 
@@ -86,9 +87,19 @@
         <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
     </div>
 
+    <!-- Horloge -->
+    <button type="button" class="btn btn-outline-primary" id="button_horloge"></button>
+
+    <script>
+        const hour = date.getHours();
+        const min = date.getMinutes();
+        document.getElementById("button_horloge").innerHTML = hour + ":" + min;
+
+
+    </script>
 
     <!-- Les Logos -->
-    <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div>
+    <!-- <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div> -->
 
     <!-- LE SIDE PANEL (id "sidePanel") -->
     <div class="row">
@@ -195,7 +206,7 @@
             console.log(nomNebulo);
             targetDiv.style.display = "block";
             document.getElementById("title_deviceName").innerHTML = nomNebulo;
-            document.getElementById("chartPM1_Nebulo").src = "https://grafana.moduleair.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + nomNebulo + "&from=now-1h&to=now&theme=light&panelId=10";
+            document.getElementById("chartPM1_Nebulo").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + nomNebulo + "&from=now-1h&to=now&theme=light&panelId=10";
             document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebulo + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
             document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebulo + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
             document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebulo + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
@@ -204,9 +215,9 @@
             document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebulo + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
         }
 
-        //changer la couleur du bouton en fonvction du choix (not working?)
+        //changer la couleur du bouton en fonction du choix (not working?)
         function chooseTime(nomNebulo, hours) {
-            document.getElementById("chartPM1_Nebulo").src = "https://grafana.moduleair.fr/d-solo/ol4ZNiK4z/nebulo?orgId=1&var-device=" + nomNebulo + "&from=now-" + hours + "h&to=now&theme=light&panelId=2";
+            document.getElementById("chartPM1_Nebulo").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebulo?orgId=1&var-device=" + nomNebulo + "&from=now-" + hours + "h&to=now&theme=light&panelId=10";
             if (hours == 24) {
                 //Not working???
                 document.getElementById("button24h").classList.replace("btn-outline-secondary", "btn-primary");

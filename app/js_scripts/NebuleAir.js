@@ -17,12 +17,12 @@ function loadNebuleAir() {
 
             var value_compound = Math.round(value[compoundUpper]);
 
-            //on créer un popup pour chaque Nebulo
+            //on créer un popup pour chaque Nebulo avec les "gauges"
             var nebuloPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
                 // '<h3>' + value['sensorId'] + '</h3>' +
-                '<iframe src="https://grafana.moduleair.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=' + value['sensorId'] + '&from=now-5m&to=now&theme=light&panelId=8" width="33%" frameborder="0"></iframe>' +
-                '<iframe src="https://grafana.moduleair.fr/d-solo/Hcs4NEb4z/nebuleair?var-device=' + value['sensorId'] + '&from=now-5m&to=now&orgId=1&theme=light&panelId=6" width="33%"  frameborder="0"></iframe>' +
-                '<iframe src="https://grafana.moduleair.fr/d-solo/Hcs4NEb4z/nebuleair?var-device=' + value['sensorId'] + '&from=now-5m&to=now&orgId=1&theme=light&panelId=4" width="33%"  frameborder="0"></iframe>' +
+                '<iframe src="https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=' + value['sensorId'] + '&from=now-5m&to=now&theme=light&panelId=8" width="33%" frameborder="0"></iframe>' +
+                '<iframe src="https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?var-device=' + value['sensorId'] + '&from=now-5m&to=now&orgId=1&theme=light&panelId=6" width="33%"  frameborder="0"></iframe>' +
+                '<iframe src="https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?var-device=' + value['sensorId'] + '&from=now-5m&to=now&orgId=1&theme=light&panelId=4" width="33%"  frameborder="0"></iframe>' +
 
                 '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
                 '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'

@@ -24,6 +24,18 @@ You can get your Purple Air API Key here [PurpleAir Develop](https://community.p
 
 You can get your AtmoSud API Key here [API AtmoSud](https://api.atmosud.org/register/form).
 
+Attention: to ensure the security of the .env file you should verify that it is not accessible from a client side browser. 
+
+The .htaccess should prevent access for Apache server but you need to set AllowOverride to "All" inside your Apache configuration file (apache2.conf):
+
+```
+<Directory /var/www/>
+	Options Indexes FollowSymLinks
+	AllowOverride All
+	Require all granted
+</Directory>
+```
+
 ## Sensors
 
 The app will get air quality data from multiples sensors and their API.
