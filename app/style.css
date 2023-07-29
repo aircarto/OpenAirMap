@@ -45,9 +45,16 @@ body {
     top: 15px;
 }
 
-#button_horloge {
+
+#div_button_pas_de_temps {
     position: fixed;
     left: 20px;
+    bottom: 15px;
+}
+
+#button_horloge {
+    position: fixed;
+    left: 330px;
     bottom: 15px;
 }
 

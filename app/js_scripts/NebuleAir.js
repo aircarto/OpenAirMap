@@ -1,6 +1,6 @@
 //on va chercher les coordonnées des NebuleAir 
 function loadNebuleAir() {
-    console.log("Getting data for NebuleAir !!!:");
+    console.log("%cNebuleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
     
     $.ajax({
@@ -9,9 +9,11 @@ function loadNebuleAir() {
     }).done(function (data) {
 
         closeToast_loading();
-        const end = Date.now();
 
-        console.log(`Data gathered in ${end - start} ms`);
+        const end = Date.now();
+        const requestTimer = (end - start)/1000;
+
+        console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
         console.log(data);
         $.each(data, function (key, value) {
 
@@ -30,7 +32,7 @@ function loadNebuleAir() {
 
             //custom icon setup
             var icon_param = {
-                iconUrl: 'img/nebulo_iconV2_bon.png',
+                iconUrl: 'img/nebulo/nebulo_iconV2_bon.png',
                 iconSize: [80, 80], // size of the icon
                 iconAnchor: [0, 60], // point of the icon which will correspond to marker's location
                 //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
@@ -40,23 +42,23 @@ function loadNebuleAir() {
 
             //MOYEN
             if (value_compound >= 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/nebulo_iconV2_moyen.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_moyen.png';
             }
             //DEGRADE
             if (value_compound >= 20 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/nebulo_iconV2_degrade.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_degrade.png';
             }
             //MAUVAIS
             if (value_compound >= 25 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/nebulo_iconV2_mauvais.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_mauvais.png';
             }
             //TRES MAUVAIS
             if (value_compound >= 50 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/nebulo_iconV2_tresmauvais.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_tresmauvais.png';
             }
             //extr MAUVAIS
             if (value_compound >= 75 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/nebulo_iconV2_extmauvais.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_extmauvais.png';
             }
 
 
@@ -64,23 +66,23 @@ function loadNebuleAir() {
 
             //MOYEN
             if (value_compound >= 20 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/nebulo_iconV2_moyen.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_moyen.png';
             }
             //DEGRADE
             if (value_compound >= 40 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/nebulo_iconV2_degrade.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_degrade.png';
             }
             //MAUVAIS
             if (value_compound >= 50 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/nebulo_iconV2_mauvais.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_mauvais.png';
             }
             //TRES MAUVAIS
             if (value_compound >= 100 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/nebulo_iconV2_tresmauvais.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_tresmauvais.png';
             }
             //extr MAUVAIS
             if (value_compound >= 150 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/nebulo_iconV2_extmauvais.png';
+                icon_param.iconUrl = 'img/nebulo/nebulo_iconV2_extmauvais.png';
             }
 
             //add icon to map

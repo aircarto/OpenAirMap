@@ -27,19 +27,26 @@ function loadStationRefAtmo() {
 //on va chercher les coordonnées des micro-stations (fixes)
 
 function loadMicroStationsAtmo() {
-    //une fois que l'on a appuyé sur le bouton il passe en bleu (valid)
-    $("#button_stationsRefAtmoSud").addClass('active');
+    console.log("%cAtmoSud Micro-Stations", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+    const start = Date.now();
+
+    //une fois que l'on a appuyé sur le bouton il passe en  (valid)
+    //$("#button_stationsRefAtmoSud").addClass('active');
     // requete des datas
     $.ajax({
         method: "GET",
         url: "../php_scripts/AtmoSud.php?data_type=micro_station",
     }).done(function (data) {
-        console.log("Getting data for AtmoSud Micro-Stations"); //récupère lat et long de toutes les stations qui mesurent des PM
+        const end = Date.now();
+        const requestTimer = (end - start)/1000;
+        console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
+        
         console.log(data);
+
         $.each(data, function (key, value) {
              //custom icon setup
              var icon_param = {
-                iconUrl: './img/capteursAtmo/logoCapteurAtmo_bon.png',
+                iconUrl: './img/microStationsAtmoSud/microStationAtmoSud_bon.png',
                 iconSize: [80, 80], // size of the icon
                 iconAnchor: [0, 60], // point of the icon which will correspond to marker's location
                 //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor

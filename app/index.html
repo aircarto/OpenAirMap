@@ -69,7 +69,7 @@
                 Choix des capteurs
             </button>
             <ul class="dropdown-menu">
-              <li><button class="dropdown-item disabled" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud </button></li>
+              <li><button class="dropdown-item" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud </button></li>
               <li><button class="dropdown-item disabled" type="button" id="button_stationsRefAtmoSud">Stations de Référence AtmoSud</button></li>
               <li><button class="dropdown-item disabled" type="button" id="button_modelisationAtmoSud">Modélisation ICAIRh AtmoSud</button></li>
               <li><button class="dropdown-item" type="button" id="button_purpleAir">Capteurs PurpleAir</button></li>
@@ -87,15 +87,19 @@
         <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
     </div>
 
-    <!-- Horloge -->
+    <!-- Boutons pas de temps -->
+    <div class="btn-group" id="div_button_pas_de_temps" role="group" aria-label="Basic example">
+        <button class="btn btn-primary" id="btn_quartHoraire" >Quart-horaire</button>
+        <button class="btn btn-outline-primary" id="btn_horaire">Horaire</button>
+        <button class="btn btn-outline-primary" id="btn_journalier">Journalier</button>
+    </div>
+
     <button type="button" class="btn btn-outline-primary" id="button_horloge"></button>
 
     <script>
         const hour = date.getHours();
         const min = date.getMinutes();
         document.getElementById("button_horloge").innerHTML = hour + ":" + min;
-
-
     </script>
 
     <!-- Les Logos -->
