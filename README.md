@@ -1,4 +1,4 @@
-# OpenAirMap dev
+# OpenAirMap
 
 ![mapImage](app/img/example_OpenAirMap.jpg)
 
