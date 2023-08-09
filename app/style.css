@@ -86,3 +86,42 @@ body {
 .leaflet-popup-content {
     width: 600px;
 }
+
+
+/* CSS des Gauges */
+.gauge-container {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 10px;
+    position: relative;
+    float: left;
+  }
+  .gauge-container > .gauge .dial {
+    stroke: #eee;
+    stroke-width: 2;
+    fill: rgba(0,0,0,0);
+  }
+  .gauge-container > .gauge .value {
+    stroke: rgb(252, 255, 47);
+    stroke-width: 2;
+    fill: rgba(0,0,0,0);
+  }
+  .gauge-container > .gauge .value-text {
+    fill: rgb(47, 227, 255);
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  .gauge-container.myStyle > .gauge .dial {
+    stroke: #334455; 
+    stroke-width: 2;
+  }
+  .gauge-container.myStyle > .gauge .value {
+    stroke: #C9DE3C;
+    stroke-width: 7;
+  }
+  .gauge-container.myStyle > .gauge .value-text {
+    fill: #C9DE3C;
+  } 

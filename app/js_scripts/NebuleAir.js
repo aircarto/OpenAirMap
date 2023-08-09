@@ -19,22 +19,23 @@ function loadNebuleAir() {
 
             var value_compound = Math.round(value[compoundUpper]);
 
-            //on créer un popup pour chaque Nebulo avec les "gauges"
+            //on créer un popup qui s'ouvre pour chaque NebuleAir avec les "gauges"
             var nebuloPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
-                // '<h3>' + value['sensorId'] + '</h3>' +
-                '<iframe src="https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=' + value['sensorId'] + '&from=now-5m&to=now&theme=light&panelId=8" width="33%" frameborder="0"></iframe>' +
-                '<iframe src="https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?var-device=' + value['sensorId'] + '&from=now-5m&to=now&orgId=1&theme=light&panelId=6" width="33%"  frameborder="0"></iframe>' +
-                '<iframe src="https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?var-device=' + value['sensorId'] + '&from=now-5m&to=now&orgId=1&theme=light&panelId=4" width="33%"  frameborder="0"></iframe>' +
+                '<div id="gauge-pm1-'+ value['sensorId'] +'" class="gauge-container myStyle"></div>'+
+                '<div id="gauge-pm25-'+ value['sensorId'] +'" class="gauge-container"></div>'+
+                '<div id="gauge-pm10-'+ value['sensorId'] +'" class="gauge-container"></div>'+
 
                 '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
                 '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
 
+                
 
-            //custom icon setup
+
+            //image des points sur la carte
             var icon_param = {
                 iconUrl: 'img/nebulo/nebulo_iconV2_bon.png',
                 iconSize: [80, 80], // size of the icon
-                iconAnchor: [0, 60], // point of the icon which will correspond to marker's location
+                iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
                 //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
             }
 
@@ -88,17 +89,26 @@ function loadNebuleAir() {
             //add icon to map
             var nebulo_icon = L.icon(icon_param);
 
-            //textSize
+            //textSize (if number under 10)
             var textSize = 45;
-            var x_position = -26;
-            var y_position = 54;
+            var x_position = -22;
+            var y_position = 62;
 
             //smaller text size if number is greater than 9
             if (value_compound >= 10) {
                 textSize = 38;
-                x_position = -18;
-                y_position = 47;
+                x_position = -14;
+                y_position = 56;
             }
+
+              //smaller text size if number is greater than 99
+              //TODO !!!
+              if (value_compound >= 100) {
+                textSize = 30;
+                x_position = -14;
+                y_position = 56;
+            }
+
 
             // cutom text on the marker
             var myIcon = L.divIcon({
@@ -120,9 +130,64 @@ function loadNebuleAir() {
                 .addTo(map)
                 .bindPopup(nebuloPopup, {
                     maxWidth: 4000
+                })
+                .on('click', function(){
+                    console.log("click event on " + value['sensorId'])
+                    //Ce n'est qu'une fois que l'on a cliqué sur le marker que l'on peut créer la gauge
+                    var id_gauge_pm1 = 'gauge-pm1-' + value['sensorId']
+                    var id_gauge_pm25 = 'gauge-pm25-' + value['sensorId']
+                    var id_gauge_pm10 = 'gauge-pm10-' + value['sensorId']
+
+                    var myGauge_pm1 = Gauge(document.getElementById(id_gauge_pm1),{
+                        dialRadius: 40,
+                        dialStartAngle: 135,
+                        dialEndAngle: 45,
+                        value: 0,
+                        max: 100,
+                        min: 0,
+                        showValue: true,
+                        gaugeColor: null,
+                        label: function(value) {
+                            return Math.round(value) + " ug/m3";
+                        },
+                    });
+
+                    var myGauge_pm25 = Gauge(document.getElementById(id_gauge_pm25),{
+                        dialRadius: 40,
+                        dialStartAngle: 135,
+                        dialEndAngle: 45,
+                        value: 0,
+                        max: 100,
+                        min: 0,
+                        showValue: true,
+                        gaugeColor: null,
+                        label: function(value) {
+                            return Math.round(value) + " ug/m3";
+                        },
+                    });
+
+                    var myGauge_pm10 = Gauge(document.getElementById(id_gauge_pm10),{
+                        dialRadius: 40,
+                        dialStartAngle: 135,
+                        dialEndAngle: 45,
+                        value: 0,
+                        max: 100,
+                        min: 0,
+                        showValue: true,
+                        gaugeColor: null,
+                        label: function(value) {
+                            return Math.round(value) + " ug/m3";
+                        },
+                    });
+
+                    myGauge_pm1.setValueAnimated(value['PM1'], 1);
+                    myGauge_pm25.setValueAnimated(value['PM25'], 1);
+                    myGauge_pm10.setValueAnimated(value['PM10'], 1);
+
                 });
+                
 
-
+                
 
             //.openPopup();
         });

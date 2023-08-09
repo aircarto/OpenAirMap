@@ -23,6 +23,8 @@
     <script src="js_scripts/purpleAir.js"></script>
     <script src="js_scripts/AtmoSud.js"></script>
     <script src="js_scripts/sensorCommunity.js"></script>
+    <!-- gauge.js -->
+    <script src="js_scripts/gauge.js"></script>
     <!-- style CSS  -->
     <link rel="stylesheet" href="style.css">
 
@@ -177,8 +179,15 @@
         //on y ajoute la couche OSM
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            maxZoom: 18
+            maxZoom: 21
         }).addTo(map);
+
+        //on ajoute un point de test
+        // var testPopup = '<div id="gauge-test" class="gauge-container"></div>'
+        // L.marker([43.29490421, 5.37188392]).addTo(map)
+        // .bindPopup(testPopup)
+        // .openPopup();
+
 
         //ouverture du toast
         function openToast_loading(){
