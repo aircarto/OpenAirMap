@@ -20,7 +20,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$api_key_atmosud = $_ENV['PURPLEAIR_API_KEY'];
+$api_key_atmosud = $_ENV['ATMOSUD_API_KEY'];
 
 $data_type=$_GET['data_type'];
 
