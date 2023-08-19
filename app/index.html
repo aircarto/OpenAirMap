@@ -96,12 +96,13 @@
         <button class="btn btn-outline-primary" id="btn_journalier">Journalier</button>
     </div>
 
+    <!-- Horloge -->
     <button type="button" class="btn btn-outline-primary" id="button_horloge"></button>
 
     <script>
         const hour = date.getHours();
         const min = date.getMinutes();
-        document.getElementById("button_horloge").innerHTML = hour + ":" + min;
+        document.getElementById("button_horloge").innerHTML = hour + ":" + (min<10?'0':'') + min;
     </script>
 
     <!-- Les Logos -->
