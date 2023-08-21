@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="https://aircarto.fr/images/favicon.ico" />
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <!-- AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- Bootstrap 5.3.0 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <!-- my files -->
+    <script src="js_scripts/NebuleAir.js"></script>
+    <script src="js_scripts/purpleAir.js"></script>
+    <script src="js_scripts/AtmoSudRef.js"></script>
+    <script src="js_scripts/AtmoSudMicro.js"></script>
+    <script src="js_scripts/sensorCommunity.js"></script>
+    <!-- gauge.js -->
+    <script src="js_scripts/gauge.js"></script>
+    <!-- style CSS  -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-hash/0.2.1/leaflet-hash.min.js"></script>
+
+    <title>Open Air Map</title>
+</head>
+
+<body>
+    <!-- LA CARTE -->
+    <div id="map"></div>
+
+    <!-- Le spinner -->
+    <!-- <div class="spinner-border text-primary" role="status" id="spinnerNebuleAir">
+        <span class="visually-hidden">Loading...</span>
+      </div> -->
+
+    <!-- Toast de chargement des données -->
+    <div class="toast-container position-fixed end-0 p-3" style="bottom:10px;">
+        <div class="toast align-items-center" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Chargement des données <span class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                </div>
+                <!-- <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button> -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Boutons PM1 PM2.5 PM10 -->
+    <div class="btn-group" id="div_buttonPM" role="group" aria-label="Basic example">
+        <button id="button_PM1" class="btn btn-primary" onclick="choosePM(1)">PM1</button>
+        <button id="button_PM25" class="btn btn-outline-primary" onclick="choosePM(25)">PM2.5</button>
+        <button id="button_PM10" class="btn btn-outline-primary" onclick="choosePM(10)">PM10</button>
+    </div>
+
+    <!-- Bouton mon NebuleAir -->
+    <div id="div_button_monNebuleAir"><a id="button_monNebuleAir" class="btn btn-primary" role="button"
+            href="https://nebuleair.fr/monNebuleAir.php">Mon
+            NebuleAir</a></div>
+
+    <!-- Bouton dropdown Choix des capteurs -->
+    <div class="dropdown" id="div_checkbox_choixCapteur">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            data-bs-auto-close="outside" aria-expanded="false">
+            Choix des capteurs
+        </button>
+        <ul class="dropdown-menu">
+            <li><input type="checkbox" id="checkbox_micro_stationsParticuliers"
+                    name="checkbox_micro_stationsParticuliers" onchange="switch1(this)"  /><label
+                    for="checkbox_micro_stationsParticuliers">Micro-stations NebuleAir particuliers</label></li>
+            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community"
+                    onchange="switch2(this)"  /><label for="checkbox_sensor_community"></label>Capteurs
+                Sensor.Community</label></li>
+            <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud"
+                    onchange="switch3(this)" checked /><label for="checkbox_stationsRefAtmoSud">Stations de Référence
+                    AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud"
+                    onchange="switch4(this)" /><label for="checkbox_micro_stationsAtmoSud">Micro-stations
+                    AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_modelisationAtmoSud" name="checkbox_modelisationAtmoSud" /><label
+                    for="checkbox_modelisationAtmoSud">Modélisation ICAIRh AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label
+                    for="checkbox_purpleAir">Capteurs PurpleAir</label></li>
+            <!-- <li><button class="dropdown-item" type="button" id="button_micro_stationsAtmoSud">Micro-stations AtmoSud </button></li>
+              <li><button class="dropdown-item disabled" type="button" id="button_stationsRefAtmoSud">Stations de Référence AtmoSud</button></li>
+              <li><button class="dropdown-item disabled" type="button" id="button_modelisationAtmoSud">Modélisation ICAIRh AtmoSud</button></li>
+              <li><button class="dropdown-item disabled" type="button" id="button_purpleAir">Capteurs PurpleAir</button></li>
+              <li><button class="dropdown-item" type="button" id="button_sensor_community">Capteurs Sensor.Community</button></li> -->
+        </ul>
+    </div>
+
+
+    <!-- Seuils PM -->
+    <div class="btn-group" id="div_button_seuils" role="group" aria-label="Basic example">
+        <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title="0 à 10 &#181;g/m&#179;">Bon</button>
+        <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title="11 à 20 &#181;g/m&#179;">Moyen</button>
+        <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title="21 à 25 &#181;g/m&#179;">Dégradé</button>
+        <button class="btn" id="btn_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title="26 à 50 &#181;g/m&#179;">Mauvais</button>
+        <button class="btn" id="btn_tres_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title="51 à 75 &#181;g/m&#179;">Très Mauvais</button>
+        <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
+    </div>
+
+    <!-- Boutons pas de temps -->
+    <div class="btn-group" id="div_button_pas_de_temps" role="group" aria-label="Basic example">
+        <button class="btn btn-primary" id="btn_quartHoraire">Quart-horaire</button>
+        <button class="btn btn-outline-primary" id="btn_horaire">Horaire</button>
+        <button class="btn btn-outline-primary" id="btn_journalier">Journalier</button>
+    </div>
+
+    <button type="button" class="btn btn-outline-primary" id="button_horloge"></button>
+
+    <script>
+        var date = new Date();
+        const hour = date.getHours();
+        const min = date.getMinutes();
+        document.getElementById("button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;
+    </script>
+
+    <!-- Les Logos -->
+    <!-- <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div> -->
+
+    <!-- LE SIDE PANEL (id "sidePanel") -->
+    <div class="row">
+        <div class="col-5">
+            <div class="card m-3" id="sidePanel" style="display: none;">
+                <!-- Bouton pour fermer le panel -->
+                <button type="button" class="btn-close position-absolute top-0 end-0" aria-label="Close"
+                    style="margin: 5px ;" onclick="CloseSidePanel()"></button>
+                <!-- <img src="img/Logo_Nebulo2.png" alt="" class="card-img-top"> -->
+
+                <div class="card-body">
+                    <!-- Nom du capteur en haut -->
+                    <h3 id="title_deviceName"></h3>
+                    <h5 class="card-title">Evolution des concentrations en particules fines (&#181;g/m<sup>3</sup>)</h5>
+
+                    <!--  Grafana iframe -->
+                    <iframe id="chartPM1_Nebulo" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
+
+                    <!-- <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the
+                        card's
+                        content.
+                    </p> -->
+                    <span id="button1h"></span>
+                    <span id="button3h"></span>
+                    <span id="button24h"></span>
+                    <span id="button48h"></span>
+                    <span id="button1s"></span>
+                    <span id="button1m"></span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+
+        //on ajoute les fonctions sur les boutons du dropdown
+        // $("#button_micro_stationsAtmoSud").click(loadMicroStationsAtmo);
+        // $("#button_stationsRefAtmoSud").click(loadStationRefAtmo);
+        // $("#button_modelisationAtmoSud").click(loadModelisatonAtmo);
+        // $("#button_purpleAir").click(loadPurpleAir);
+
+        //active le bouton cliqué
+        // $('.dropdown-item').click(function() {
+        //     $(this).addClass('active');
+        // });
+
+        //on récupère les paramètres dans l'URL
+        //http://moduleair.fr/nebulo/?compound=pm10
+        //si il n'y en pas on défini la variable comme étant PM1
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const compound = urlParams.get('compound');
+        const frequence = urlParams.get('frequence');
+        const source = urlParams.get('source');  // 1 souce comma separated ?
+
+        if (compound) {
+            var compoundUpper = compound.toUpperCase();
+            console.log(compoundUpper);
+        } else {
+            compoundUpper = "PM25";
+        }
+
+        if (frequence) {
+            var frequenceUpper = compound.toUpperCase();
+            console.log(frequenceUpper);
+        } else {
+            frequenceUpper = "15";
+        }
+
+
+        let coordsCenter = [43.29490421, 5.37188392];
+        let zoomLevel = 15;
+
+        //on crée la carte, centrée sur Marseille
+        var map = L.map('map', { zoomControl: false });
+
+        //on y ajoute la couche OSM
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            maxZoom: 21
+        }).addTo(map);
+
+        new L.Hash(map);
+
+        //         (function () {
+        //     let query_value;
+        //     const search_values = location.search.replace("?", "").split("&");
+        //     for (let i = 0; i < search_values.length; i++) {
+        //         query_value = search_values[i].split("=");
+        //         typeof query_value[0] != "sensor" && undefined
+        //             ? (user_selected_value = query_value[1])
+        //             : (user_selected_value = config.sensor);
+        //     }
+        // })();
+
+        if (location.hash) {
+            const hash_params = location.hash.split("/");
+            coordsCenter = [hash_params[1], hash_params[2]];
+            zoomLevel = hash_params[0].substring(1);
+        }
+
+        map.setView(coordsCenter, zoomLevel);
+
+        //on ajoute un point de test
+        // var testPopup = '<div id="gauge-test" class="gauge-container"></div>'
+        // L.marker([43.29490421, 5.37188392]).addTo(map)
+        // .bindPopup(testPopup)
+        // .openPopup();
+
+
+        var nebuleairParticuliers = new L.layerGroup();
+        var sensorCommunity = new L.layerGroup();
+        var stationsRefAtmoSud = new L.layerGroup();
+        var stationsMicroAtmoSud = new L.layerGroup();
+
+
+        if (document.getElementById('checkbox_micro_stationsParticuliers').checked) { map.addLayer(nebuleairParticuliers) }
+        if (document.getElementById('checkbox_sensor_community').checked) { map.addLayer(sensorCommunity) }
+        if (document.getElementById('checkbox_stationsRefAtmoSud').checked) { map.addLayer(stationsRefAtmoSud) }
+        if (document.getElementById('checkbox_micro_stationsAtmoSud').checked) { map.addLayer(stationsMicroAtmoSud) }
+
+        // Switch case
+        // reload
+
+        function switch1(checkboxElem) {
+            if (checkboxElem.checked) {
+                map.addLayer(nebuleairParticuliers);
+            } else {
+                map.removeLayer(nebuleairParticuliers);
+            }
+        }
+
+        function switch2(checkboxElem) {
+            console.log(checkboxElem)
+            if (checkboxElem.checked) {
+                map.addLayer(sensorCommunity);
+            } else {
+                map.removeLayer(sensorCommunity);
+            }
+        }
+
+        function switch3(checkboxElem) {
+            console.log(checkboxElem)
+            if (checkboxElem.checked) {
+                map.addLayer(stationsRefAtmoSud);
+            } else {
+                map.removeLayer(stationsRefAtmoSud);
+            }
+        }
+
+        function switch4(checkboxElem) {
+            console.log(checkboxElem)
+            if (checkboxElem.checked) {
+                map.addLayer(stationsMicroAtmoSud);
+            } else {
+                map.removeLayer(stationsMicroAtmoSud);
+            }
+        }
+
+
+function addOrUpdateUrlParam(name, value)
+{
+  var href = window.location.href;
+  var regex = new RegExp("[&\\?]" + name + "=");
+  if(regex.test(href))
+  {
+    regex = new RegExp("([&\\?])" + name + "=\\d+");
+    window.location.href = href.replace(regex, "$1" + name + "=" + value);
+  }
+  else
+  {
+    if(href.indexOf("?") > -1)
+      window.location.href = href + "&" + name + "=" + value;
+    else
+      window.location.href = href + "?" + name + "=" + value;
+  }
+}
+
+
+        //ouverture du toast
+        function openToast_loading() {
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            console.log("Showing loading toast");
+            toastBootstrap.show()
+        }
+        //fermeture du toast
+        function closeToast_loading() {
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            console.log("Hiding loading toast");
+            toastBootstrap.hide()
+        }
+
+
+        // ************************
+        //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
+        $(document).ready(loadNebuleAir);
+        $(document).ready(loadSensorCommunity);
+        $(document).ready(loadStationRefAtmo);
+        $(document).ready(loadStationMicroAtmo);
+        $(document).ready(openToast_loading);
+
+        // ************************
+
+
+        //fonction qui ouvre le side panel
+        function OpenSidePanel(nomNebuleAir) {
+            const targetDiv = document.getElementById("sidePanel");
+            console.log(nomNebuleAir);
+            targetDiv.style.display = "block";
+            document.getElementById("title_deviceName").innerHTML = nomNebuleAir;
+            document.getElementById("chartPM1_Nebulo").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + nomNebuleAir + "&from=now-1h&to=now&theme=light&panelId=10";
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+        }
+
+        //changer la couleur du bouton en fonction du choix (not working?)
+        function chooseTime(nomNebuleAir, hours) {
+            document.getElementById("chartPM1_Nebulo").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebulo?orgId=1&var-device=" + nomNebuleAir + "&from=now-" + hours + "h&to=now&theme=light&panelId=10";
+            if (hours == 24) {
+                //Not working???
+                document.getElementById("button24h").classList.replace("btn-outline-secondary", "btn-primary");
+                console.log("test");
+            }
+        }
+
+
+        //fonction qui ferme le side panel
+        function CloseSidePanel() {
+            const targetDiv = document.getElementById("sidePanel");
+            targetDiv.style.display = "none";
+        }
+
+        function choosePM(size) {
+            console.log(location.href)
+            var url = 'http://192.168.8.167/?compound=pm' + size + location.hash;
+            window.location.href = url;
+        }
+
+
+        // function chooseFrequence(size) {
+        //     console.log(location.href)
+        //     var url = 'http://192.168.8.167/?compound=pm' + size + location.hash;
+        //     window.location.href = url;
+        // }
+
+        //changement de couleurs des boutons
+        if (compoundUpper == "PM1") {
+            document.getElementById("button_PM25").classList.replace("btn-primary", "btn-outline-primary");
+            document.getElementById("button_PM10").classList.replace("btn-primary", "btn-outline-primary");
+            document.getElementById("button_PM1").classList.replace("btn-outline-primary", "btn-primary");
+
+        }
+        if (compoundUpper == "PM25") {
+            document.getElementById("button_PM25").classList.replace("btn-outline-primary", "btn-primary");
+            document.getElementById("button_PM10").classList.replace("btn-primary", "btn-outline-primary");
+            document.getElementById("button_PM1").classList.replace("btn-primary", "btn-outline-primary");
+        }
+        if (compoundUpper == "PM10") {
+            document.getElementById("button_PM25").classList.replace("btn-primary", "btn-outline-primary");
+            document.getElementById("button_PM1").classList.replace("btn-primary", "btn-outline-primary");
+            document.getElementById("button_PM10").classList.replace("btn-outline-primary", "btn-primary");
+
+        }
+
+
+    </script>
+
+    <!-- Bootstrap 5.3.0 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+        crossorigin="anonymous"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+</body>
+
+</html>
