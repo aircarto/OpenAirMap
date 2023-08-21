@@ -51,12 +51,10 @@ function loadNebuleAir() {
             //BON
             if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
-                console.log("BON");
             }
             //MOYEN
             if (value_compound >= 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_moyen.png';
-                console.log("MOYEN");
             }
             //DEGRADE
             if (value_compound >= 20 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {

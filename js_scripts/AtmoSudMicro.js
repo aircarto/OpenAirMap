@@ -15,6 +15,7 @@ function loadStationMicroAtmo() {
         $.each(data, function (key, item) {
 
         var value_compound;
+        console.log(item["valeur"]);
 
         switch (compoundUpper) {
             case "PM1":
@@ -35,6 +36,9 @@ function loadStationMicroAtmo() {
           }
 
           console.log(value_compound);
+
+          if(item.variable == "PM10" || item.variable == "PM2.5"|| item.variable == "PM1")
+          {
 
           var icon_param = {
             iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
@@ -160,6 +164,7 @@ function loadStationMicroAtmo() {
 
             })
             .addTo(stationsMicroAtmoSud);
+        }
         })
     })
     .fail(function(){

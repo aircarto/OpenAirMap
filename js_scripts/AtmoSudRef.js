@@ -36,6 +36,8 @@ function loadStationRefAtmo() {
 
           console.log(value_compound);
 
+          if(item.polluant_id == "68" || item.polluant_id == "39"|| item.polluant_id == "24"){
+
           var icon_param = {
             iconUrl: 'img/refStationsAtmoSud/refStationAtmoSud_default.png',
             iconSize: [80, 80], // size of the icon
@@ -63,11 +65,11 @@ function loadStationRefAtmo() {
         }
         //TRES MAUVAIS
         if (value_compound >= 50 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_tresmauvais.png';
+            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_tresMauvais.png';
         }
         //extr MAUVAIS
         if (value_compound >= 75 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_extmauvais.png';
+            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_extMauvais.png';
         }
 
 
@@ -90,11 +92,11 @@ function loadStationRefAtmo() {
         }
         //TRES MAUVAIS
         if (value_compound >= 100 && compoundUpper == "PM10") {
-            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_tresmauvais.png';
+            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_tresMauvais.png';
         }
         //extr MAUVAIS
         if (value_compound >= 150 && compoundUpper == "PM10") {
-            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_extmauvais.png';
+            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_extMauvais.png';
         }
 
         // //add icon to map
@@ -159,7 +161,7 @@ function loadStationRefAtmo() {
 
             })
             .addTo(stationsRefAtmoSud);
-
+        }
 
         })
     })

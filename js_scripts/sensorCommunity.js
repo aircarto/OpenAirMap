@@ -16,6 +16,8 @@ function loadSensorCommunity() {
         console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
         //console.log(data);
 
+        let sensorsList=[];
+
         $.each(data, function (key, item) {
 
             //console.log(item["sensordatavalues"]);
@@ -45,7 +47,12 @@ function loadSensorCommunity() {
               break;
           }
 
-                
+
+
+
+          if (value_compound != undefined && !sensorsList.includes(item['sensor']['id'])){
+
+            sensorsList.push(item['sensor']['id']);
 
             //image des points sur la carte
             var icon_param = {
@@ -57,7 +64,7 @@ function loadSensorCommunity() {
 
             //change icon color for PM1 and PM25
             if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_bon.png';
+                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_bon.png';
             }
             //MOYEN
             if (value_compound >= 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
@@ -73,17 +80,17 @@ function loadSensorCommunity() {
             }
             //TRES MAUVAIS
             if (value_compound >= 50 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_tresmauvais.png';
+                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_tresMauvais.png';
             }
             //extr MAUVAIS
             if (value_compound >= 75 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_extmauvais.png';
+                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_extMauvais.png';
             }
 
 
-            //change icon color for PM1 and PM25
+            //change icon color for PM10
             if (value_compound >= 0 && value_compound < 20 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_bon.png';
+                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_bon.png';
             }
             //MOYEN
             if (value_compound >= 20 && compoundUpper == "PM10") {
@@ -99,11 +106,11 @@ function loadSensorCommunity() {
             }
             //TRES MAUVAIS
             if (value_compound >= 100 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_tresmauvais.png';
+                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_tresMauvais.png';
             }
             //extr MAUVAIS
             if (value_compound >= 150 && compoundUpper == "PM10") {
-                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_extmauvais.png';
+                icon_param.iconUrl = 'img/SensorCommunity/SensorCommunity_extMauvais.png';
             }
 
             //add icon to map
@@ -172,7 +179,7 @@ function loadSensorCommunity() {
                 
 
             //.openPopup();
-
+            }
         
         });
 
