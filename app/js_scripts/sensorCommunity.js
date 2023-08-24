@@ -16,6 +16,10 @@ function loadSensorCommunity() {
         console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
         //console.log(data);
 
+        apiFetchSensorCommunity.data = data;
+        apiFetchSensorCommunity.timestamp = end;
+        apiFetchSensorCommunity.timespan = timespanLower;
+
         let sensorsList=[];
 
         $.each(data, function (key, item) {
@@ -46,9 +50,6 @@ function loadSensorCommunity() {
                     }
               break;
           }
-
-
-
 
           if (value_compound != undefined && !sensorsList.includes(item['sensor']['id'])){
 

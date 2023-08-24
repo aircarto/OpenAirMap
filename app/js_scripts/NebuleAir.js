@@ -2,10 +2,11 @@
 function loadNebuleAir() {
     console.log("%cNebuleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
-    
+
     $.ajax({
         method: "GET",
         url: "../php_scripts/NebuleAir.php",
+        data: ({timespan: timespanLower}),
     }).done(function (data) {
 
         closeToast_loading();
@@ -14,19 +15,15 @@ function loadNebuleAir() {
         const requestTimer = (end - start)/1000;
 
         console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
-        //console.log(data);
+        console.log(data);
+
+        apiFetchNebuleAir.data = data;
+        apiFetchNebuleAir.timestamp = end;
+        apiFetchNebuleAir.timespan = timespanLower;
+
         $.each(data, function (key, value) {
 
             var value_compound = Math.round(value[compoundUpper]);
-
-            //on créer un popup qui s'ouvre pour chaque NebuleAir avec les "gauges"
-            // var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
-            //     '<div id="gauge-pm1-'+ value['sensorId'] +'" class="gauge-container myStyle"></div>'+
-            //     '<div id="gauge-pm25-'+ value['sensorId'] +'" class="gauge-container"></div>'+
-            //     '<div id="gauge-pm10-'+ value['sensorId'] +'" class="gauge-container"></div>'+
-
-            //     '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
-            //     '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
 
             var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
             '<div id="gauges">'+
@@ -125,6 +122,7 @@ function loadNebuleAir() {
 
 
             // cutom text on the marker
+            if(value_compound != -1){
             var myIcon = L.divIcon({
                 className: 'my-div-icon',
                 html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -132,8 +130,16 @@ function loadNebuleAir() {
                 popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
 
             });
-            // you can set .my-div-icon styles in CSS
+          }else{
 
+            var myIcon = L.divIcon({
+              className: 'my-div-icon',
+              html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + '*' + '</div>',
+              iconAnchor: [x_position, y_position],
+              popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
+
+          });
+        }
 
             //on ajoute un point (marker) pour chaque sensor qui ouvre un popup lorsque l'on clique dessus
             L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })

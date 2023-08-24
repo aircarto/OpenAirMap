@@ -1,8 +1,21 @@
 <?php
 
-$url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=quart-horaire&metadata=false&only_validate_values=false&format=json&download=false';
+$timespan = $_GET['timespan']; 
 
-// https://api.atmosud.org/observations/stations/mesures/derniere?temporalite=quart-horaire&metadata=false&format=json&download=false
+switch ($timespan) {  
+    case 2:
+        exit;
+        break; 
+    case 15:
+        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=quart-horaire&metadata=false&only_validate_values=false&format=json&download=false';
+        break;
+    case 60:
+        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=horaire&metadata=false&only_validate_values=false&format=json&download=false';
+        break;
+    case 1440:
+        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=journali&metadata=false&only_validate_values=false&format=json&download=false';
+        break;
+}
 
 $json_data = file_get_contents($url);
 

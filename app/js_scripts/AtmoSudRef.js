@@ -5,13 +5,25 @@
 //on va chercher les coordonnées des Stations de Référence (fixe)
 function loadStationRefAtmo() {
     console.log("%cAtmoSud Ref", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
-
+    const start = Date.now();
+    
     $.ajax({
         method: "GET",
         url: "../php_scripts/AtmoSudRef.php",
+        data: ({timespan: timespanLower}),
     }).done(function (data) {
-        console.log("AtmoSud Stations de Référence:"); //récupère lat et long de toutes les stations qui mesurent des PM
+
+        closeToast_loading();
+
+        const end = Date.now();
+        const requestTimer = (end - start)/1000;
+        console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
         console.log(data.mesures);
+
+        apiFetchAtmoSudRef.data = data.mesures;
+        apiFetchAtmoSudRef.timestamp = end;
+        apiFetchAtmoSudRef.timespan = timespanLower;
+
         $.each(data.mesures, function (key, item) {
  
         var value_compound;

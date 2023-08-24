@@ -9,36 +9,63 @@ function loadStationMicroAtmo() {
     $.ajax({
         method: "GET",
         url: "../php_scripts/AtmoSudMicro.php",
+        data: ({timespan: timespanLower}),
     }).done(function (data) {
-        console.log("AtmoSud Microstations:"); //récupère lat et long de toutes les stations qui mesurent des PM
+        closeToast_loading();
+
+        const end = Date.now();
+        const requestTimer = (end - start)/1000;
+        console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
         console.log(data);
-        $.each(data, function (key, item) {
 
-        var value_compound;
-        console.log(item["valeur"]);
-
-        switch (compoundUpper) {
+        apiFetchAtmoSudMicro.data = data;
+        apiFetchAtmoSudMicro.timestamp = end;
+        apiFetchAtmoSudMicro.timespan = timespanLower;
+        
+        var compoundFunction;
+                switch (compoundUpper) {
             case "PM1":
-                if (item.variable == "PM1"){
-                    value_compound = Math.round(item["valeur"]);
-                    }
+                compoundFunction = "PM1";
               break;
             case "PM25":
-                if (item.variable == "PM2.5"){
-                    value_compound = Math.round(item["valeur"]);
-                    }
+                compoundFunction = "PM2.5";
               break;
             case "PM10":
-                if (item.variable == "PM10"){
-                    value_compound = Math.round(item["valeur"]);
-                    }
+                compoundFunction = "PM10";
               break;
           }
 
+        var filtered = data.filter((e) => e.variable == compoundFunction);
+
+        $.each(filtered, function (key, item) {
+
+        var value_compound = Math.round(item["valeur"]);
+
+
+        // switch (compoundUpper) {
+        //     case "PM1":
+        //         if (item.variable == "PM1"){
+        //             }
+        //       break;
+        //     case "PM25":
+        //         if (item.variable == "PM2.5"){
+        //             var value_compound = Math.round(item["valeur"]);
+        //             }
+        //       break;
+        //     case "PM10":
+        //         if (item.variable == "PM10"){
+        //             var value_compound = Math.round(item["valeur"]);
+        //             }
+        //       break;
+        //       default:
+        //         value_compound = undefined;
+        //       break;
+        //   }
+
           console.log(value_compound);
 
-          if(item.variable == "PM10" || item.variable == "PM2.5"|| item.variable == "PM1")
-          {
+        //   if((item.variable == "PM10" || item.variable == "PM2.5"|| item.variable == "PM1") && item["valeur"] != null  && value_compound != undefined)  // will give undefined in Math.round
+        //   {
 
           var icon_param = {
             iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
@@ -164,7 +191,7 @@ function loadStationMicroAtmo() {
 
             })
             .addTo(stationsMicroAtmoSud);
-        }
+        // }
         })
     })
     .fail(function(){
