@@ -54,7 +54,7 @@ body {
 
 #button_horloge {
     position: fixed;
-    left: 330px;
+    left: 500px;
     bottom: 15px;
 }
 
@@ -133,7 +133,7 @@ body {
 
 
     #gauges {
-      width: 100%;
+      width: 600px;
       height: 200px;
       display: flex;                  /* establish flex container */
       flex-direction: row;            /* default value; can be omitted */
@@ -143,15 +143,29 @@ body {
 
     #chartdiv1 {
         width: 200px;
-        height: 200px;
+        height: 220px;
       }
 
       #chartdiv2 {
-        width: 200px%;
-        height: 200px;
+        width: 200px;
+        height: 220px;
       }
 
       #chartdiv3 {
-        width: 200px%;
-        height: 200px;
+        width: 200px;
+        height: 220px;
+      }
+
+      #div_button_seuils_PM10{
+        visibility: hidden;
+        position:absolute;
+        top: 0px;
+        left: 0px;
+      }
+
+      #div_button_seuils_PM125{
+        visibility: visible;
+        position:absolute;
+        top: 0px;
+        left: 0px;
       }

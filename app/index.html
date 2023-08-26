@@ -25,12 +25,8 @@
     <script src="js_scripts/AtmoSudRef.js"></script>
     <script src="js_scripts/AtmoSudMicro.js"></script>
     <script src="js_scripts/sensorCommunity.js"></script>
-    <!-- gauge.js -->
-    <script src="js_scripts/gauge.js"></script>
     <!-- style CSS  -->
     <link rel="stylesheet" href="style.css">
-
-
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
@@ -59,7 +55,7 @@
     </div>
 
     <!-- Boutons PM1 PM2.5 PM10 -->
-    <div class="btn-group" id="div_buttonPM" role="group" aria-label="Basic example">
+    <div class="btn-group" id="div_buttonPM" role="group">
         <button id="button_PM1" class="btn btn-outline-primary">PM1</button>  
         <button id="button_PM25" class="btn btn-primary">PM2.5</button>
         <button id="button_PM10" class="btn btn-outline-primary">PM10</button>
@@ -86,7 +82,7 @@
 
 
     <!-- Seuils PM -->
-    <div class="btn-group" id="div_button_seuils_PM125" role="group" aria-label="Basic example">
+    <div class="btn-group" id="div_button_seuils_PM125" role="group">
         <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom"
             data-bs-title="0 à 10 &#181;g/m&#179;">Bon</button>
         <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom"
@@ -101,23 +97,23 @@
             data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
     </div>
 
-    <!-- <div class="btn-group" id="div_button_seuils_PM10" role="group" aria-label="Basic example">
+    <div class="btn-group" id="div_button_seuils_PM10" role="group">
         <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="0 à 10 &#181;g/m&#179;">Bon</button>
+            data-bs-title="0 à 20 &#181;g/m&#179;">Bon</button>
         <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="11 à 20 &#181;g/m&#179;">Moyen</button>
+            data-bs-title="21 à 40 &#181;g/m&#179;">Moyen</button>
         <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="21 à 25 &#181;g/m&#179;">Dégradé</button>
+            data-bs-title="41 à 50 &#181;g/m&#179;">Dégradé</button>
         <button class="btn" id="btn_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="26 à 50 &#181;g/m&#179;">Mauvais</button>
+            data-bs-title="51 à 100 &#181;g/m&#179;">Mauvais</button>
         <button class="btn" id="btn_tres_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="51 à 75 &#181;g/m&#179;">Très Mauvais</button>
+            data-bs-title="101 à 150 &#181;g/m&#179;">Très Mauvais</button>
         <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
-    </div> -->
+            data-bs-title=">150 &#181;g/m&#179;">Extr. Mauvais</button>
+    </div>
 
     <!-- Boutons pas de temps -->
-    <div class="btn-group" id="div_button_pas_de_temps" role="group" aria-label="Basic example">
+    <div class="btn-group" id="div_button_pas_de_temps" role="group">
         <button class="btn btn-primary" id="btn_actuel">Actuel</button>
         <button class="btn btn-outline-primary" id="btn_quartHoraire">Quart-horaire</button>
         <button class="btn btn-outline-primary" id="btn_horaire">Horaire</button>
@@ -228,9 +224,6 @@
 
         function switchNebuleAir() {
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-                // console.log(Date.now()-apiFetchNebuleAir.timestamp);
-                // console.log(apiFetchNebuleAir.data.length);
-                // console.log(timespanLower * 60 * 1000);
                 if(apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now()-apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000))
                 {
                     console.log("Reload NebuleAir!");
@@ -291,6 +284,20 @@
             document.querySelector("#button_PM25").classList.replace("btn-primary", "btn-outline-primary");
             document.querySelector("#button_PM1").classList.replace("btn-outline-primary", "btn-primary");
             compoundUpper = "PM1";
+            document.querySelector("#div_button_seuils_PM10").style.visibility = "hidden";
+            document.querySelector("#div_button_seuils_PM125").style.visibility = "visible";
+
+            if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
+            }
+
+            if (document.querySelector("#checkbox_sensor_community").checked) {
+            sensorCommunity.clearLayers();
+            changeSensorCommunity();
+            }
+
         }
 
         function choosePM25() {
@@ -298,6 +305,18 @@
             document.querySelector("#button_PM25").classList.replace("btn-outline-primary", "btn-primary");
             document.querySelector("#button_PM1").classList.replace("btn-primary", "btn-outline-primary");
             compoundUpper = "PM25";
+            document.querySelector("#div_button_seuils_PM10").style.visibility = "hidden";
+            document.querySelector("#div_button_seuils_PM125").style.visibility = "visible";
+            
+            if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+            nebuleairParticuliers.clearLayers();
+            changeNebuleAir();
+            }
+
+            if (document.querySelector("#checkbox_sensor_community").checked) {
+            sensorCommunity.clearLayers();
+            changeSensorCommunity();
+            }
         }
 
         function choosePM10() {
@@ -305,6 +324,19 @@
             document.querySelector("#button_PM25").classList.replace("btn-primary", "btn-outline-primary");
             document.querySelector("#button_PM1").classList.replace("btn-primary", "btn-outline-primary");
             compoundUpper = "PM10";
+            document.querySelector("#div_button_seuils_PM10").style.visibility = "visible";
+            document.querySelector("#div_button_seuils_PM125").style.visibility = "hidden";
+
+            if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+            nebuleairParticuliers.clearLayers();
+            changeNebuleAir();
+            }
+
+
+            if (document.querySelector("#checkbox_sensor_community").checked) {
+            sensorCommunity.clearLayers();
+            changeSensorCommunity();
+            }
         }
 
         document.querySelector("#btn_actuel").addEventListener("click", chooseActuel)
@@ -404,6 +436,9 @@
         }
 
 
+        var root1;
+        var root2;
+        var root3;
 
 
         // function chooseFrequence(size) {
