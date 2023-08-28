@@ -13,7 +13,7 @@ switch ($timespan) {
         $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=horaire&metadata=false&only_validate_values=false&format=json&download=false';
         break;
     case 1440:
-        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=journali&metadata=false&only_validate_values=false&format=json&download=false';
+        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=journali%C3%A8re&metadata=false&only_validate_values=false&format=json&download=false';
         break;
 }
 

@@ -27,18 +27,15 @@ function loadSensorCommunity() {
 
         var value_compound;
         var filtered;
-        // = Math.round(value[compoundUpper]);
 
         var sensorCommunityPopup = '<img src="img/LogoSensorCommunity.png" alt="" class="card-img-top">' +
         '<div id="gauges">'+
         '<div id="chartdiv1"></div>'+
         '<div id="chartdiv2"></div>'+
         '<div id="chartdiv3"></div>'+
-        '</div>';
-        
-        // +
-        // '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
-        // '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
+        '</div>'+
+        '<br>Capteur qualité de l\'air extérieur (sensor.sommunity-' + item.sensor.id + ') <br>' +
+        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>';
 
 
         switch (compoundUpper) {
@@ -781,19 +778,15 @@ function changeSensorCommunity() {
 
       var value_compound;
       var filtered;
-      // = Math.round(value[compoundUpper]);
-
+      
       var sensorCommunityPopup = '<img src="img/LogoSensorCommunity.png" alt="" class="card-img-top">' +
       '<div id="gauges">'+
       '<div id="chartdiv1"></div>'+
       '<div id="chartdiv2"></div>'+
       '<div id="chartdiv3"></div>'+
-      '</div>';
-      
-      // +
-      // '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
-      // '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
-
+      '</div>'+
+      '<br>Capteur qualité de l\'air extérieur (sensor.community-' + item.sensor.id + ') <br>' +
+      '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>';
 
       switch (compoundUpper) {
           case "PM1":

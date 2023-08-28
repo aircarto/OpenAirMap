@@ -147,7 +147,7 @@
                     <h5 class="card-title">Evolution des concentrations en particules fines (&#181;g/m<sup>3</sup>)</h5>
 
                     <!--  Grafana iframe -->
-                    <iframe id="chartPM1_Nebulo" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
+                    <iframe id="chartSensor" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
 
                     <!-- <p class="card-text">
                         Some quick example text to build on the card title and make up the bulk of the
@@ -237,6 +237,8 @@
         }
 
         function switchSensorCommunity() {
+
+            if(timespanLower != 15){
             if (document.querySelector("#checkbox_sensor_community").checked) {
                 if(apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now()-apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000))
                 {
@@ -247,9 +249,15 @@
             } else {
                 map.removeLayer(sensorCommunity);
             }
+        }else{
+            alert("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
+        }
+
         }
 
         function switchRefAtmo() {
+
+        if(timespanLower != 2){
             if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) { //ATTENTION CAS 2mins
                 if(apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now()-apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000))
                 {
@@ -260,9 +268,18 @@
             } else {
                 map.removeLayer(stationsRefAtmoSud);
             }
+        }else{
+            alert("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
+            document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
+
+        }
+
+
         }
 
         function switchMicroAtmo() {
+        
+            if(timespanLower != 15 & timespanLower != 60 & timespanLower != 1440){
             if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
                 if(apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now()-apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000))
                 {
@@ -273,6 +290,9 @@
             } else {
                 map.removeLayer(stationsMicroAtmoSud);
             }
+        }else{
+            alert("Pas de données à intervalles 15 minutes, 1 heure ou 1 jour pour les microstations AtmoSud");
+        }
         }
 
         document.querySelector("#button_PM1").addEventListener("click", choosePM1)
@@ -404,23 +424,41 @@
 
 
         //fonction qui ouvre le side panel
-        function OpenSidePanel(nomNebuleAir) {
+        function OpenSidePanel(sensor) {
             const targetDiv = document.getElementById("sidePanel");
-            console.log(nomNebuleAir);
+            console.log(sensor);
             targetDiv.style.display = "block";
-            document.getElementById("title_deviceName").innerHTML = nomNebuleAir;
-            document.getElementById("chartPM1_Nebulo").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + nomNebuleAir + "&from=now-1h&to=now&theme=light&panelId=10";
-            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
-            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
-            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
-            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
-            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + nomNebuleAir + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+            document.getElementById("title_deviceName").innerHTML = sensor;
+
+            if (sensor.includes("nebuleair"))
+            {
+                let id = sensor.split("-")[1];
+                console.log(id);
+
+            document.getElementById("chartSensor").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + sensor + "&from=now-1h&to=now&theme=light&panelId=10";
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+
+
+            }
+
+            if (sensor.includes("sensor.community"))
+            {
+                let id = sensor.split("-")[1];
+                console.log(id);
+
+                document.getElementById("chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d/000000004/single-sensor-view?orgId=1&var-node="+ id;
+
+            }
         }
 
         //changer la couleur du bouton en fonction du choix (not working?)
-        function chooseTime(nomNebuleAir, hours) {
-            document.getElementById("chartPM1_Nebulo").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebulo?orgId=1&var-device=" + nomNebuleAir + "&from=now-" + hours + "h&to=now&theme=light&panelId=10";
+        function chooseTime(sensor, hours) {
+            document.getElementById("chartSensor").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebulo?orgId=1&var-device=" + sensor + "&from=now-" + hours + "h&to=now&theme=light&panelId=10";
             if (hours == 24) {
                 //Not working???
                 document.getElementById("button24h").classList.replace("btn-outline-secondary", "btn-primary");
@@ -441,21 +479,15 @@
         var root3;
 
 
-        // function chooseFrequence(size) {
-        //     console.log(location.href)
-        //     var url = 'http://192.168.8.167/?compound=pm' + size + location.hash;
-        //     window.location.href = url;
-        // }
-
-        //changement de couleurs des boutons
-
-
-
 
         setInterval(function () {
 console.log("Setinterval:");
 console.log(timespanLower * 60 * 1000);
-        }, timespanLower * 60 * 1000)  //Reload every 15 min
+
+
+
+
+        }, timespanLower * 60 * 1000)  
 
 // ON ne fetch pas tout
 var apiFetchNebuleAir = {"data":[], "timespan":null, "timestamp":null};
@@ -501,13 +533,6 @@ const getOffsetHours = date.getTimezoneOffset() * 60000;
 const logTimestamp = dateParser(timestamp_data).getTime();
 const lastUpdateTimestamp = logTimestamp + -getOffsetHours;  //COMPRENDS PAS!!!
 const dateFormater = locale.format("%d.%m.%Y %H:%M");
-
-// document.querySelector("#lastUpdate").innerText =
-//     translate.tr(lang, "Last update") +
-//     " " +
-//     dateFormater(lastUpdateTimestamp);
-// document.querySelector("#menuButton").innerText =
-//     document.querySelector(".selected").innerText;
 
 }
 
