@@ -7,26 +7,88 @@ function loadSensorCommunity() {
         url: "../php_scripts/SensorCommunity.php",
     }).done(function (data) {
 
+      console.log(data);
+
         closeToast_loading();
+
+        var sensors = ["SDS011","SDS021","PMS1003","PMS3003","PMS5003","PMS6003","PMS7003","HPM","SPS30","NextPM","IPS-7100"];
+
+        var filter_sensors = data.filter((e) => sensors.includes(e.sensor.sensor_type.name));
 
         const end = Date.now();
         const requestTimer = (end - start)/1000;
 
         console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
-        //console.log(data);
-
-        apiFetchSensorCommunity.data = data;
+      
+        apiFetchSensorCommunity.data = filter_sensors;
         apiFetchSensorCommunity.timestamp = end;
         apiFetchSensorCommunity.timespan = timespanLower;
 
         let sensorsList=[];
 
-        $.each(data, function (key, item) {
-
-            //console.log(item["sensordatavalues"]);
+        $.each(filter_sensors, function (key, item) {
 
         var value_compound;
         var filtered;
+
+
+        const timestamp_UTC = new Date(item.timestamp);  
+
+        const offset = -(new Date().getTimezoneOffset())/60;
+        const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset)); // ON FORCE L OFFSET
+
+        var date_texte ="";
+        if(timestamp_UTC.getDate()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getDate();
+        }else{
+          date_texte += timestamp_UTC.getDate();
+        }
+        date_texte += "/";
+        if((timestamp_UTC.getMonth()+1)< 10){
+          date_texte += "0";
+          date_texte += (timestamp_UTC.getMonth()+1);
+        }else{
+          date_texte += (timestamp_UTC.getMonth()+1);
+        }
+        date_texte += "/";
+        date_texte += timestamp_UTC.getFullYear();
+        date_texte += ", ";
+        if(timestamp_UTC.getHours()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getHours();
+        }else{
+          date_texte += timestamp_UTC.getHours();
+        }
+        date_texte += ":";
+        if(timestamp_UTC.getMinutes()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getMinutes();
+        }else{
+          date_texte += timestamp_UTC.getMinutes();
+        }
+        date_texte += ":";
+        if(timestamp_UTC.getSeconds()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getSeconds();
+        }else{
+          date_texte += timestamp_UTC.getSeconds();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         var sensorCommunityPopup = '<img src="img/LogoSensorCommunity.png" alt="" class="card-img-top">' +
         '<div id="gauges">'+
@@ -34,9 +96,9 @@ function loadSensorCommunity() {
         '<div id="chartdiv2"></div>'+
         '<div id="chartdiv3"></div>'+
         '</div>'+
+        '<br>Mesure :' + date_texte + '<br>' +
         '<br>Capteur qualité de l\'air extérieur (sensor.sommunity-' + item.sensor.id + ') <br>' +
         '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>';
-
 
         switch (compoundUpper) {
             case "PM1":
@@ -59,7 +121,8 @@ function loadSensorCommunity() {
               break;
           }
 
-          if (value_compound != undefined && !sensorsList.includes(item['sensor']['id'])){
+
+          if (!sensorsList.includes(item['sensor']['id'])){
 
             sensorsList.push(item['sensor']['id']);
 
@@ -774,8 +837,6 @@ function changeSensorCommunity() {
 
       $.each(apiFetchSensorCommunity.data, function (key, item) {
 
-          //console.log(item["sensordatavalues"]);
-
       var value_compound;
       var filtered;
       
@@ -809,8 +870,9 @@ function changeSensorCommunity() {
             break;
         }
 
-        if (value_compound != undefined && !sensorsList.includes(item['sensor']['id'])){
+        if (!sensorsList.includes(item['sensor']['id'])){
 
+          console.log(item['sensor']['id']);
           sensorsList.push(item['sensor']['id']);
 
           //image des points sur la carte

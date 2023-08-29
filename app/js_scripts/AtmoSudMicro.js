@@ -37,17 +37,59 @@ function loadStationMicroAtmo() {
         console.log(data);
 
         $.each(filtered, function (key, item) {
-
+        
         var value_compound = Math.round(item["valeur"]);
 
-          console.log(value_compound);
+        const timestamp_UTC = new Date(item.time);
 
+        const offset = -(new Date().getTimezoneOffset())/60;
+        //const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset));
+
+        var date_texte ="";
+        if(timestamp_UTC.getDate()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getDate();
+        }else{
+          date_texte += timestamp_UTC.getDate();
+        }
+        date_texte += "/";
+        if((timestamp_UTC.getMonth()+1)< 10){
+          date_texte += "0";
+          date_texte += (timestamp_UTC.getMonth()+1);
+        }else{
+          date_texte += (timestamp_UTC.getMonth()+1);
+        }
+        date_texte += "/";
+        date_texte += timestamp_UTC.getFullYear();
+        date_texte += ", ";
+        if(timestamp_UTC.getHours()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getHours();
+        }else{
+          date_texte += timestamp_UTC.getHours();
+        }
+        date_texte += ":";
+        if(timestamp_UTC.getMinutes()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getMinutes();
+        }else{
+          date_texte += timestamp_UTC.getMinutes();
+        }
+        date_texte += ":";
+        if(timestamp_UTC.getSeconds()< 10){
+          date_texte += "0";
+          date_texte += timestamp_UTC.getSeconds();
+        }else{
+          date_texte += timestamp_UTC.getSeconds();
+        }
+        
             var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
             '<div id="gauges">'+
             '<div id="chartdiv1"></div>'+
             '<div id="chartdiv2"></div>'+
             '<div id="chartdiv3"></div>'+
             '</div>'+
+            '<br>Mesure :' + date_texte + '<br>' +
             '<br>Capteur qualité de l\'air extérieur (microstationAtmoSud-' + item.id_site + ') <br>' +
             '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>';
     

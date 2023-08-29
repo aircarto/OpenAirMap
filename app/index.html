@@ -9,15 +9,12 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://aircarto.fr/images/favicon.ico" />
 
     <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- Bootstrap 5.3.0 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <!-- my files -->
     <script src="js_scripts/NebuleAir.js"></script>
@@ -46,8 +43,7 @@
         <div class="toast align-items-center" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    Chargement des données <span class="spinner-border spinner-border-sm" role="status"
-                        aria-hidden="true"></span>
+                    Chargement des données <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </div>
                 <!-- <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button> -->
             </div>
@@ -56,7 +52,7 @@
 
     <!-- Boutons PM1 PM2.5 PM10 -->
     <div class="btn-group" id="div_buttonPM" role="group">
-        <button id="button_PM1" class="btn btn-outline-primary">PM1</button>  
+        <button id="button_PM1" class="btn btn-outline-primary">PM1</button>
         <button id="button_PM25" class="btn btn-primary">PM2.5</button>
         <button id="button_PM10" class="btn btn-outline-primary">PM10</button>
     </div>
@@ -66,15 +62,15 @@
 
     <!-- Bouton dropdown Choix des capteurs -->
     <div class="dropdown" id="div_checkbox_choixCapteur">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            data-bs-auto-close="outside" aria-expanded="false">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             Choix des capteurs
         </button>
         <ul class="dropdown-menu">
-            <li><input type="checkbox" id="checkbox_micro_stationsParticuliers"name="checkbox_micro_stationsParticuliers"/><label for="checkbox_micro_stationsParticuliers">Micro-stations NebuleAir particuliers</label></li>
-            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community"/><label for="checkbox_sensor_community"></label>Capteurs Sensor.Community</label></li>
-            <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud"/><label for="checkbox_stationsRefAtmoSud">Stations de Référence AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud"/><label for="checkbox_micro_stationsAtmoSud">Micro-stations AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" /><label for="checkbox_micro_stationsParticuliers">Micro-stations NebuleAir particuliers</label></li>
+            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>Capteurs Sensor.Community</label>
+            </li>
+            <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud" /><label for="checkbox_stationsRefAtmoSud">Stations de Référence AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" /><label for="checkbox_micro_stationsAtmoSud">Micro-stations AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_modelisationAtmoSud" name="checkbox_modelisationAtmoSud" /><label for="checkbox_modelisationAtmoSud">Modélisation ICAIRh AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label for="checkbox_purpleAir">Capteurs PurpleAir</label></li>
         </ul>
@@ -83,33 +79,21 @@
 
     <!-- Seuils PM -->
     <div class="btn-group" id="div_button_seuils_PM125" role="group">
-        <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="0 à 10 &#181;g/m&#179;">Bon</button>
-        <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="11 à 20 &#181;g/m&#179;">Moyen</button>
-        <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="21 à 25 &#181;g/m&#179;">Dégradé</button>
-        <button class="btn" id="btn_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="26 à 50 &#181;g/m&#179;">Mauvais</button>
-        <button class="btn" id="btn_tres_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="51 à 75 &#181;g/m&#179;">Très Mauvais</button>
-        <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
+        <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="0 à 10 &#181;g/m&#179;">Bon</button>
+        <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="11 à 20 &#181;g/m&#179;">Moyen</button>
+        <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="21 à 25 &#181;g/m&#179;">Dégradé</button>
+        <button class="btn" id="btn_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="26 à 50 &#181;g/m&#179;">Mauvais</button>
+        <button class="btn" id="btn_tres_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="51 à 75 &#181;g/m&#179;">Très Mauvais</button>
+        <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=">75 &#181;g/m&#179;">Extr. Mauvais</button>
     </div>
 
     <div class="btn-group" id="div_button_seuils_PM10" role="group">
-        <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="0 à 20 &#181;g/m&#179;">Bon</button>
-        <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="21 à 40 &#181;g/m&#179;">Moyen</button>
-        <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="41 à 50 &#181;g/m&#179;">Dégradé</button>
-        <button class="btn" id="btn_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="51 à 100 &#181;g/m&#179;">Mauvais</button>
-        <button class="btn" id="btn_tres_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="101 à 150 &#181;g/m&#179;">Très Mauvais</button>
-        <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title=">150 &#181;g/m&#179;">Extr. Mauvais</button>
+        <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="0 à 20 &#181;g/m&#179;">Bon</button>
+        <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="21 à 40 &#181;g/m&#179;">Moyen</button>
+        <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="41 à 50 &#181;g/m&#179;">Dégradé</button>
+        <button class="btn" id="btn_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="51 à 100 &#181;g/m&#179;">Mauvais</button>
+        <button class="btn" id="btn_tres_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="101 à 150 &#181;g/m&#179;">Très Mauvais</button>
+        <button class="btn" id="btn_extr_mauvais" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=">150 &#181;g/m&#179;">Extr. Mauvais</button>
     </div>
 
     <!-- Boutons pas de temps -->
@@ -137,8 +121,7 @@
         <div class="col-5">
             <div class="card m-3" id="sidePanel" style="display: none;">
                 <!-- Bouton pour fermer le panel -->
-                <button type="button" class="btn-close position-absolute top-0 end-0" aria-label="Close"
-                    style="margin: 5px ;" onclick="CloseSidePanel()"></button>
+                <button type="button" class="btn-close position-absolute top-0 end-0" aria-label="Close" style="margin: 5px ;" onclick="CloseSidePanel()"></button>
                 <!-- <img src="img/Logo_Nebulo2.png" alt="" class="card-img-top"> -->
 
                 <div class="card-body">
@@ -148,6 +131,8 @@
 
                     <!--  Grafana iframe -->
                     <iframe id="chartSensor" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
+                    <div id="chartSensor2"></div>
+
 
                     <!-- <p class="card-text">
                         Some quick example text to build on the card title and make up the bulk of the
@@ -169,7 +154,6 @@
     </div>
 
     <script>
-
         var compoundUpper = "PM25";
         var timespanLower = 2;
 
@@ -177,7 +161,9 @@
         let zoomLevel = 15;
 
         //on crée la carte, centrée sur Marseille
-        var map = L.map('map', { zoomControl: false });
+        var map = L.map('map', {
+            zoomControl: false
+        });
 
         //on y ajoute la couche OSM
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -211,10 +197,18 @@
         document.querySelector("#checkbox_modelisationAtmoSud").checked = false;
         document.querySelector("#checkbox_purpleAir").checked = false;
 
-        if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) { map.addLayer(nebuleairParticuliers) }
-        if (document.querySelector("#checkbox_sensor_community").checked) { map.addLayer(sensorCommunity) }
-        if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) { map.addLayer(stationsRefAtmoSud) }
-        if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) { map.addLayer(stationsMicroAtmoSud) }
+        if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+            map.addLayer(nebuleairParticuliers)
+        }
+        if (document.querySelector("#checkbox_sensor_community").checked) {
+            map.addLayer(sensorCommunity)
+        }
+        if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+            map.addLayer(stationsRefAtmoSud)
+        }
+        if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+            map.addLayer(stationsMicroAtmoSud)
+        }
 
 
         document.querySelector("#checkbox_micro_stationsParticuliers").addEventListener("change", switchNebuleAir)
@@ -224,12 +218,11 @@
 
         function switchNebuleAir() {
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-                if(apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now()-apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000))
-                {
+                if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000)) {
                     console.log("Reload NebuleAir!");
                     loadNebuleAir();
                 }
-                    map.addLayer(nebuleairParticuliers);
+                map.addLayer(nebuleairParticuliers);
 
             } else {
                 map.removeLayer(nebuleairParticuliers);
@@ -238,61 +231,58 @@
 
         function switchSensorCommunity() {
 
-            if(timespanLower != 15){
-            if (document.querySelector("#checkbox_sensor_community").checked) {
-                if(apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now()-apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000))
-                {
-                    console.log("Reload Sensor.Community!");
-                    loadSensorCommunity();
+            if (timespanLower != 15) {
+                if (document.querySelector("#checkbox_sensor_community").checked) {
+                    if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000)) {
+                        console.log("Reload Sensor.Community!");
+                        loadSensorCommunity();
+                    }
+                    map.addLayer(sensorCommunity);
+                } else {
+                    map.removeLayer(sensorCommunity);
                 }
-                map.addLayer(sensorCommunity);
             } else {
-                map.removeLayer(sensorCommunity);
+                alert("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
             }
-        }else{
-            alert("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
-        }
 
         }
 
         function switchRefAtmo() {
 
-        if(timespanLower != 2){
-            if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) { //ATTENTION CAS 2mins
-                if(apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now()-apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000))
-                {
-                    console.log("Reload AtmoSud Ref!");
-                    loadStationRefAtmo();
+            if (timespanLower != 2) {
+                if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) { //ATTENTION CAS 2mins
+                    if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000)) {
+                        console.log("Reload AtmoSud Ref!");
+                        loadStationRefAtmo();
+                    }
+                    map.addLayer(stationsRefAtmoSud);
+                } else {
+                    map.removeLayer(stationsRefAtmoSud);
                 }
-                map.addLayer(stationsRefAtmoSud);
             } else {
-                map.removeLayer(stationsRefAtmoSud);
-            }
-        }else{
-            alert("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
-            document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
+                alert("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
+                document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
 
-        }
+            }
 
 
         }
 
         function switchMicroAtmo() {
-        
-            if(timespanLower != 15 & timespanLower != 60 & timespanLower != 1440){
-            if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
-                if(apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now()-apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000))
-                {
-                    console.log("Reload AtmoSud Micro");
-                    loadStationMicroAtmo();
+
+            if (timespanLower != 15 & timespanLower != 60 & timespanLower != 1440) {
+                if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+                    if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000)) {
+                        console.log("Reload AtmoSud Micro");
+                        loadStationMicroAtmo();
+                    }
+                    map.addLayer(stationsMicroAtmoSud);
+                } else {
+                    map.removeLayer(stationsMicroAtmoSud);
                 }
-                map.addLayer(stationsMicroAtmoSud);
             } else {
-                map.removeLayer(stationsMicroAtmoSud);
+                alert("Pas de données à intervalles 15 minutes, 1 heure ou 1 jour pour les microstations AtmoSud");
             }
-        }else{
-            alert("Pas de données à intervalles 15 minutes, 1 heure ou 1 jour pour les microstations AtmoSud");
-        }
         }
 
         document.querySelector("#button_PM1").addEventListener("click", choosePM1)
@@ -314,8 +304,8 @@
             }
 
             if (document.querySelector("#checkbox_sensor_community").checked) {
-            sensorCommunity.clearLayers();
-            changeSensorCommunity();
+                sensorCommunity.clearLayers();
+                changeSensorCommunity();
             }
 
         }
@@ -327,15 +317,15 @@
             compoundUpper = "PM25";
             document.querySelector("#div_button_seuils_PM10").style.visibility = "hidden";
             document.querySelector("#div_button_seuils_PM125").style.visibility = "visible";
-            
+
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-            nebuleairParticuliers.clearLayers();
-            changeNebuleAir();
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
             }
 
             if (document.querySelector("#checkbox_sensor_community").checked) {
-            sensorCommunity.clearLayers();
-            changeSensorCommunity();
+                sensorCommunity.clearLayers();
+                changeSensorCommunity();
             }
         }
 
@@ -348,14 +338,14 @@
             document.querySelector("#div_button_seuils_PM125").style.visibility = "hidden";
 
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-            nebuleairParticuliers.clearLayers();
-            changeNebuleAir();
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
             }
 
 
             if (document.querySelector("#checkbox_sensor_community").checked) {
-            sensorCommunity.clearLayers();
-            changeSensorCommunity();
+                sensorCommunity.clearLayers();
+                changeSensorCommunity();
             }
         }
 
@@ -430,28 +420,274 @@
             targetDiv.style.display = "block";
             document.getElementById("title_deviceName").innerHTML = sensor;
 
-            if (sensor.includes("nebuleair"))
-            {
+            if (sensor.includes("nebuleair")) {
                 let id = sensor.split("-")[1];
                 console.log(id);
 
-            document.getElementById("chartSensor").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + sensor + "&from=now-1h&to=now&theme=light&panelId=10";
-            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
-            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
-            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
-            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
-            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+                document.getElementById("chartSensor").style.display = 'block';
+                document.getElementById("chartSensor2").style.display = 'none';
+                document.getElementById("chartSensor").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + sensor + "&from=now-1h&to=now&theme=light&panelId=10";
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
 
 
             }
 
-            if (sensor.includes("sensor.community"))
-            {
+            if (sensor.includes("sensor.community")) {
                 let id = sensor.split("-")[1];
                 console.log(id);
 
-                document.getElementById("chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d/000000004/single-sensor-view?orgId=1&var-node="+ id;
+                document.getElementById("chartSensor").style.display = 'block';
+                document.getElementById("chartSensor2").style.display = 'none';
+                document.getElementById("chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + id + "&panelId=2";
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+
+            }
+
+            if (sensor.includes("microstationAtmoSud")) {
+                var id = sensor.split("-")[1];
+
+                console.log("%cAtmoSud Micro 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
+                const end = new Date();
+                const end_string = end.toISOString();
+                const get_start = end.setHours(end.getHours() - 1);
+                const start = new Date(get_start);
+                const start_string = start.toISOString()
+                console.log(start_string);
+                console.log(end_string);
+
+                //ATTENTION, ON EST EN UTC
+
+                $.ajax({
+                        method: "GET",
+                        url: "../php_scripts/AtmoSudMicro_1sensor.php",
+                        data: ({
+                            id_site: id,
+                            debut: start_string,
+                            fin: end_string
+                        }),
+                    }).done(function(data) {
+                        console.log(data);
+
+                        var filter_PM1 = data.filter((e) => e.variable == "PM1");
+                        var filter_PM25 = data.filter((e) => e.variable == "PM2.5");
+                        var filter_PM10 = data.filter((e) => e.variable == "PM10");
+
+
+                        var data_PM1 = filter_PM1.map(function(e){
+                            return {value:e.valeur, date:new Date(e.time).getTime()}
+                        } );
+                        var data_PM25 = filter_PM25.map(function(e){
+                            return {value:e.valeur, date:new Date(e.time).getTime()}
+                        } );
+                        var data_PM10 = filter_PM10.map(function(e){
+                            return {value:e.valeur, date:new Date(e.time).getTime()}
+                        } );
+
+
+                        if (root4 != undefined) {
+                            console.log("DISPOSE")
+                            root4.dispose();
+                        }
+
+
+                        setTimeout(function() {
+                            am5.ready(function() {
+
+                                // Create root element
+                                // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
+                                root4 = am5.Root.new("chartSensor2");
+
+
+                                // Set themes
+                                // https://www.amcharts.com/docs/v5/concepts/themes/ 
+                                root4.setThemes([
+                                    am5themes_Animated.new(root4)
+                                ]);
+
+
+                                // Create chart
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                                var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
+                                    panX: true,
+                                    panY: true,
+                                    wheelX: "panX",
+                                    wheelY: "zoomX",
+                                    maxTooltipDistance: 0,
+                                    pinchZoomX: true
+                                }));
+
+                                // Create axes
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                                var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
+                                    maxDeviation: 0.2,
+                                    baseInterval: {
+                                        timeUnit: "minute",
+                                        count: 1
+                                    },
+                                    renderer: am5xy.AxisRendererX.new(root4, {}),
+                                    tooltip: am5.Tooltip.new(root4, {})
+                                }));
+
+                                var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
+                                    renderer: am5xy.AxisRendererY.new(root4, {})
+                                }));
+
+                                var series_PM1 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                                        name: "PM1",
+                                        xAxis: xAxis,
+                                        yAxis: yAxis,
+                                        valueYField: "value",
+                                        valueXField: "date",
+                                        legendValueText: "{valueY}",
+                                        tooltip: am5.Tooltip.new(root4, {
+                                            pointerOrientation: "horizontal",
+                                            labelText: "{valueY}"
+                                        })
+                                    }));
+
+                                series_PM1.data.setAll(data_PM1);
+                                series_PM1.appear();
+
+                                var series_PM25 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                                        name: "PM2.5",
+                                        xAxis: xAxis,
+                                        yAxis: yAxis,
+                                        valueYField: "value",
+                                        valueXField: "date",
+                                        legendValueText: "{valueY}",
+                                        tooltip: am5.Tooltip.new(root4, {
+                                            pointerOrientation: "horizontal",
+                                            labelText: "{valueY}"
+                                        })
+                                    }));
+
+                                series_PM25.data.setAll(data_PM25);
+                                series_PM25.appear();
+
+
+                                var series_PM10 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                                        name: "PM10",
+                                        xAxis: xAxis,
+                                        yAxis: yAxis,
+                                        valueYField: "value",
+                                        valueXField: "date",
+                                        legendValueText: "{valueY}",
+                                        tooltip: am5.Tooltip.new(root4, {
+                                            pointerOrientation: "horizontal",
+                                            labelText: "{valueY}"
+                                        })
+                                    }));
+
+                                series_PM10.data.setAll(data_PM10);
+                                series_PM10.appear();
+
+                                // Add cursor
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                                var cursor = chart4.set("cursor", am5xy.XYCursor.new(root4, {
+                                    behavior: "none"
+                                }));
+                                cursor.lineY.set("visible", false);
+
+
+                                // Add scrollbar
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+                                chart4.set("scrollbarX", am5.Scrollbar.new(root4, {
+                                    orientation: "horizontal"
+                                }));
+
+                                chart4.set("scrollbarY", am5.Scrollbar.new(root4, {
+                                    orientation: "vertical"
+                                }));
+
+
+                                // Add legend
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                                var legend = chart4.rightAxesContainer.children.push(am5.Legend.new(root4, {
+                                    width: 200,
+                                    paddingLeft: 15,
+                                    height: am5.percent(100)
+                                }));
+
+                                // When legend item container is hovered, dim all the series except the hovered one
+                                legend.itemContainers.template.events.on("pointerover", function(e) {
+                                    var itemContainer = e.target;
+
+                                    // As series list is data of a legend, dataContext is series
+                                    var series = itemContainer.dataItem.dataContext;
+
+                                    chart4.series.each(function(chartSeries) {
+                                        if (chartSeries != series) {
+                                            chartSeries.strokes.template.setAll({
+                                                strokeOpacity: 0.15,
+                                                stroke: am5.color(0x000000)
+                                            });
+                                        } else {
+                                            chartSeries.strokes.template.setAll({
+                                                strokeWidth: 3
+                                            });
+                                        }
+                                    })
+                                })
+
+                                // When legend item container is unhovered, make all series as they are
+                                legend.itemContainers.template.events.on("pointerout", function(e) {
+                                    var itemContainer = e.target;
+                                    var series = itemContainer.dataItem.dataContext;
+
+                                    chart4.series.each(function(chartSeries) {
+                                        chartSeries.strokes.template.setAll({
+                                            strokeOpacity: 1,
+                                            strokeWidth: 1,
+                                            stroke: chartSeries.get("fill")
+                                        });
+                                    });
+                                })
+
+                                legend.itemContainers.template.set("width", am5.p100);
+                                legend.valueLabels.template.setAll({
+                                    width: am5.p100,
+                                    textAlign: "right"
+                                });
+
+                                // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+                                legend.data.setAll(chart4.series.values);
+
+
+                                // Make stuff animate on load
+                                // https://www.amcharts.com/docs/v5/concepts/animations/
+                                chart4.appear(1000, 100);
+
+                            })
+                        }, 1000); // end am5.ready()
+
+
+
+
+
+
+                    })
+                    .fail(function() {
+                        console.log("Error while geting data from AtmoSud API");
+                    });
+
+                document.getElementById("chartSensor").style.display = 'none';
+                document.getElementById("chartSensor2").style.display = 'block';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
 
             }
         }
@@ -466,6 +702,230 @@
             }
         }
 
+                //changer la couleur du bouton en fonction du choix (not working?)
+        function chooseTimeAtmoMicro(sensor, hours) {
+            console.log(sensor);
+            console.log(hours);
+
+            console.log("%cAtmoSud Micro 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
+                const end = new Date();
+                const end_string = end.toISOString();
+                const get_start = end.setHours(end.getHours() - hours);
+                const start = new Date(get_start);
+                const start_string = start.toISOString()
+                console.log(start_string);
+                console.log(end_string);
+
+                //ATTENTION, ON EST EN UTC
+
+                $.ajax({
+                        method: "GET",
+                        url: "../php_scripts/AtmoSudMicro_1sensor.php",
+                        data: ({
+                            id_site: sensor,
+                            debut: start_string,
+                            fin: end_string
+                        }),
+                    }).done(function(data) {
+                        console.log(data);
+
+                        var filter_PM1 = data.filter((e) => e.variable == "PM1");
+                        var filter_PM25 = data.filter((e) => e.variable == "PM2.5");
+                        var filter_PM10 = data.filter((e) => e.variable == "PM10");
+
+
+                        var data_PM1 = filter_PM1.map(function(e){
+                            return {value:e.valeur, date:new Date(e.time).getTime()}
+                        } );
+                        var data_PM25 = filter_PM25.map(function(e){
+                            return {value:e.valeur, date:new Date(e.time).getTime()}
+                        } );
+                        var data_PM10 = filter_PM10.map(function(e){
+                            return {value:e.valeur, date:new Date(e.time).getTime()}
+                        } );
+
+
+                        if (root4 != undefined) {
+                            console.log("DISPOSE")
+                            root4.dispose();
+                        }
+
+
+                        setTimeout(function() {
+                            am5.ready(function() {
+
+                                // Create root element
+                                // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
+                                root4 = am5.Root.new("chartSensor2");
+
+
+                                // Set themes
+                                // https://www.amcharts.com/docs/v5/concepts/themes/ 
+                                root4.setThemes([
+                                    am5themes_Animated.new(root4)
+                                ]);
+
+
+                                // Create chart
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                                var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
+                                    panX: true,
+                                    panY: true,
+                                    wheelX: "panX",
+                                    wheelY: "zoomX",
+                                    maxTooltipDistance: 0,
+                                    pinchZoomX: true
+                                }));
+
+                                // Create axes
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                                var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
+                                    maxDeviation: 0.2,
+                                    baseInterval: {
+                                        timeUnit: "minute",
+                                        count: 1
+                                    },
+                                    renderer: am5xy.AxisRendererX.new(root4, {}),
+                                    tooltip: am5.Tooltip.new(root4, {})
+                                }));
+
+                                var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
+                                    renderer: am5xy.AxisRendererY.new(root4, {})
+                                }));
+
+                                var series_PM1 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                                        name: "PM1",
+                                        xAxis: xAxis,
+                                        yAxis: yAxis,
+                                        valueYField: "value",
+                                        valueXField: "date",
+                                        legendValueText: "{valueY}",
+                                        tooltip: am5.Tooltip.new(root4, {
+                                            pointerOrientation: "horizontal",
+                                            labelText: "{valueY}"
+                                        })
+                                    }));
+                                console.log(data_PM1);
+                                series_PM1.data.setAll(data_PM1);
+                                series_PM1.appear();
+
+                                var series_PM25 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                                        name: "PM2.5",
+                                        xAxis: xAxis,
+                                        yAxis: yAxis,
+                                        valueYField: "value",
+                                        valueXField: "date",
+                                        legendValueText: "{valueY}",
+                                        tooltip: am5.Tooltip.new(root4, {
+                                            pointerOrientation: "horizontal",
+                                            labelText: "{valueY}"
+                                        })
+                                    }));
+
+                                series_PM25.data.setAll(data_PM25);
+                                series_PM25.appear();
+
+
+                                var series_PM10 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                                        name: "PM10",
+                                        xAxis: xAxis,
+                                        yAxis: yAxis,
+                                        valueYField: "value",
+                                        valueXField: "date",
+                                        legendValueText: "{valueY}",
+                                        tooltip: am5.Tooltip.new(root4, {
+                                            pointerOrientation: "horizontal",
+                                            labelText: "{valueY}"
+                                        })
+                                    }));
+
+                                series_PM10.data.setAll(data_PM10);
+                                series_PM10.appear();
+
+                                // Add cursor
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                                var cursor = chart4.set("cursor", am5xy.XYCursor.new(root4, {
+                                    behavior: "none"
+                                }));
+                                cursor.lineY.set("visible", false);
+
+
+                                // Add scrollbar
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+                                chart4.set("scrollbarX", am5.Scrollbar.new(root4, {
+                                    orientation: "horizontal"
+                                }));
+
+                                chart4.set("scrollbarY", am5.Scrollbar.new(root4, {
+                                    orientation: "vertical"
+                                }));
+
+
+                                // Add legend
+                                // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                                var legend = chart4.rightAxesContainer.children.push(am5.Legend.new(root4, {
+                                    width: 200,
+                                    paddingLeft: 15,
+                                    height: am5.percent(100)
+                                }));
+
+                                // When legend item container is hovered, dim all the series except the hovered one
+                                legend.itemContainers.template.events.on("pointerover", function(e) {
+                                    var itemContainer = e.target;
+
+                                    // As series list is data of a legend, dataContext is series
+                                    var series = itemContainer.dataItem.dataContext;
+
+                                    chart4.series.each(function(chartSeries) {
+                                        if (chartSeries != series) {
+                                            chartSeries.strokes.template.setAll({
+                                                strokeOpacity: 0.15,
+                                                stroke: am5.color(0x000000)
+                                            });
+                                        } else {
+                                            chartSeries.strokes.template.setAll({
+                                                strokeWidth: 3
+                                            });
+                                        }
+                                    })
+                                })
+
+                                // When legend item container is unhovered, make all series as they are
+                                legend.itemContainers.template.events.on("pointerout", function(e) {
+                                    var itemContainer = e.target;
+                                    var series = itemContainer.dataItem.dataContext;
+
+                                    chart4.series.each(function(chartSeries) {
+                                        chartSeries.strokes.template.setAll({
+                                            strokeOpacity: 1,
+                                            strokeWidth: 1,
+                                            stroke: chartSeries.get("fill")
+                                        });
+                                    });
+                                })
+
+                                legend.itemContainers.template.set("width", am5.p100);
+                                legend.valueLabels.template.setAll({
+                                    width: am5.p100,
+                                    textAlign: "right"
+                                });
+
+                                // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+                                legend.data.setAll(chart4.series.values);
+
+
+                                // Make stuff animate on load
+                                // https://www.amcharts.com/docs/v5/concepts/animations/
+                                chart4.appear(1000, 100);
+
+                            })
+                        }, 1000); // end am5.ready()
+                    })
+                    .fail(function() {
+                        console.log("Error while geting data from AtmoSud API");
+                    });
+        }
+
 
         //fonction qui ferme le side panel
         function CloseSidePanel() {
@@ -477,81 +937,90 @@
         var root1;
         var root2;
         var root3;
+        var root4; //chart in sidebar
+
+
+        setInterval(function() {
+            console.log("Setinterval:");
+            console.log(timespanLower * 60 * 1000);
 
 
 
-        setInterval(function () {
-console.log("Setinterval:");
-console.log(timespanLower * 60 * 1000);
+
+        }, timespanLower * 60 * 1000)
+
+        // ON ne fetch pas tout
+        var apiFetchNebuleAir = {
+            "data": [],
+            "timespan": null,
+            "timestamp": null
+        };
+        var apiFetchAtmoSudRef = {
+            "data": [],
+            "timespan": null,
+            "timestamp": null
+        };
+        var apiFetchAtmoSudMicro = {
+            "data": [],
+            "timespan": null,
+            "timestamp": null
+        };
+        var apiFetchSensorCommunity = {
+            "data": [],
+            "timespan": null,
+            "timestamp": null
+        };
+
+
+        // var lastFetchTimeNebuleAir,lastFetchTime,lastFetchTime,lastFetchTime,lastFetchTime;
+
+        // if (!lastFetchTimeTHP || now - lastFetchTime >= 5 * 60 * 1000) {
+
+        //     lastFetchTime = now;
+        // }else{
 
 
 
+        // }
 
-        }, timespanLower * 60 * 1000)  
+        // async function retrieveDataReload() {
 
-// ON ne fetch pas tout
-var apiFetchNebuleAir = {"data":[], "timespan":null, "timestamp":null};
-var apiFetchAtmoSudRef = {"data":[], "timespan":null, "timestamp":null};
-var apiFetchAtmoSudMicro = {"data":[], "timespan":null, "timestamp":null};
-var apiFetchSensorCommunity = {"data":[], "timespan":null, "timestamp":null};
+        // console.log("retrieveDataReload()");
+        // console.log(compoundUpper);
+        // console.log(timespanLower);
 
+        // const now = new Date();
 
-// var lastFetchTimeNebuleAir,lastFetchTime,lastFetchTime,lastFetchTime,lastFetchTime;
+        // if (compoundUpper == "PM1"){
 
-// if (!lastFetchTimeTHP || now - lastFetchTime >= 5 * 60 * 1000) {
+        // }
 
-//     lastFetchTime = now;
-// }else{
+        // if (compoundUpper == "PM25"){
 
+        // }
 
+        // if (compoundUpper == "PM10"){
 
-// }
+        // }
 
-async function retrieveDataReload() {
+        // const date = new Date();
+        // const dateParser = timeParse("%Y-%m-%d %H:%M:%S");
+        // const getOffsetHours = date.getTimezoneOffset() * 60000;
+        // const logTimestamp = dateParser(timestamp_data).getTime();
+        // const lastUpdateTimestamp = logTimestamp + -getOffsetHours;  //COMPRENDS PAS!!!
+        // const dateFormater = locale.format("%d.%m.%Y %H:%M");
 
-console.log("retrieveDataReload()");
-console.log(compoundUpper);
-console.log(timespanLower);
-
-const now = new Date();
-
-if (compoundUpper == "PM1"){
-
-}
-
-if (compoundUpper == "PM25"){
-
-}
-
-if (compoundUpper == "PM10"){
-
-}
-
-const date = new Date();
-const dateParser = timeParse("%Y-%m-%d %H:%M:%S");
-const getOffsetHours = date.getTimezoneOffset() * 60000;
-const logTimestamp = dateParser(timestamp_data).getTime();
-const lastUpdateTimestamp = logTimestamp + -getOffsetHours;  //COMPRENDS PAS!!!
-const dateFormater = locale.format("%d.%m.%Y %H:%M");
-
-}
-
-
-
+        // }
     </script>
 
     <!-- Bootstrap 5.3.0 -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
-        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
     <script>
         var tooltipTriggerList = [].slice.call(
             document.querySelectorAll('[data-bs-toggle="tooltip"]')
         );
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     </script>

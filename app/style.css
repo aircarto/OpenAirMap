@@ -39,13 +39,6 @@ body {
     top: 15px;
 }
 
-#div_button_seuils {
-    position: fixed;
-    right: 600px;
-    top: 15px;
-}
-
-
 #div_button_pas_de_temps {
     position: fixed;
     left: 20px;
@@ -159,13 +152,24 @@ body {
       #div_button_seuils_PM10{
         visibility: hidden;
         position:absolute;
-        top: 0px;
-        left: 0px;
+        right: 600px;
+        top: 15px;
       }
 
       #div_button_seuils_PM125{
         visibility: visible;
         position:absolute;
-        top: 0px;
-        left: 0px;
+        right: 600px;
+        top: 15px;
+      }
+
+      #chartSensor{
+        display: none;
+      }
+
+      #chartSensor2{
+        display: none;
+        width: 100%;
+        height: 300px;
+        max-width: 100%;
       }

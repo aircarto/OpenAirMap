@@ -24,7 +24,49 @@ function loadNebuleAir() {
         $.each(data, function (key, value) {
 
             var value_compound = Math.round(value[compoundUpper]);
-            console.log(value_compound);
+
+            const timestamp_UTC = new Date(value.time);  // ATTENTION HEURE LOCALE POUR NEBULEAIR
+
+            const offset = -(new Date().getTimezoneOffset())/60;
+            //const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset));
+    
+            var date_texte ="";
+            if(timestamp_UTC.getDate()< 10){
+              date_texte += "0";
+              date_texte += timestamp_UTC.getDate();
+            }else{
+              date_texte += timestamp_UTC.getDate();
+            }
+            date_texte += "/";
+            if((timestamp_UTC.getMonth()+1)< 10){
+              date_texte += "0";
+              date_texte += (timestamp_UTC.getMonth()+1);
+            }else{
+              date_texte += (timestamp_UTC.getMonth()+1);
+            }
+            date_texte += "/";
+            date_texte += timestamp_UTC.getFullYear();
+            date_texte += ", ";
+            if(timestamp_UTC.getHours()< 10){
+              date_texte += "0";
+              date_texte += timestamp_UTC.getHours();
+            }else{
+              date_texte += timestamp_UTC.getHours();
+            }
+            date_texte += ":";
+            if(timestamp_UTC.getMinutes()< 10){
+              date_texte += "0";
+              date_texte += timestamp_UTC.getMinutes();
+            }else{
+              date_texte += timestamp_UTC.getMinutes();
+            }
+            date_texte += ":";
+            if(timestamp_UTC.getSeconds()< 10){
+              date_texte += "0";
+              date_texte += timestamp_UTC.getSeconds();
+            }else{
+              date_texte += timestamp_UTC.getSeconds();
+            }
 
             var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
             '<div id="gauges">'+
@@ -32,6 +74,7 @@ function loadNebuleAir() {
             '<div id="chartdiv2"></div>'+
             '<div id="chartdiv3"></div>'+
             '</div>' +
+            '<br>Mesure :' + date_texte + '<br>' +
             '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
             '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
 
@@ -45,7 +88,7 @@ function loadNebuleAir() {
             }
 
             //change icon color for PM1 and PM25
-
+            if(value.connected){
             //BON
             if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
@@ -97,7 +140,7 @@ function loadNebuleAir() {
             if (value_compound >= 150 && compoundUpper == "PM10") {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_extmauvais.png';
             }
-
+          }
             //add icon to map
             var nebuleAir_icon = L.icon(icon_param);
 
@@ -123,7 +166,7 @@ function loadNebuleAir() {
 
 
             // cutom text on the marker
-            if(value_compound != -1){
+            if(value.connected){
             var myIcon = L.divIcon({
                 className: 'my-div-icon',
                 html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -144,12 +187,10 @@ function loadNebuleAir() {
 
             //on ajoute un point (marker) pour chaque sensor qui ouvre un popup lorsque l'on clique dessus
             L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
-                // .addTo(map)
                 .addTo(nebuleairParticuliers)
 
             //on ajoute le texte sur les points
             L.marker([value['latitude'], value['longitude']], { icon: myIcon })
-                // .addTo(map)
                 .bindPopup(nebuleAirPopup, {
                     maxWidth: 4000
                     // autoclose:false,
@@ -249,12 +290,17 @@ function loadNebuleAir() {
                         }
                       })
                     
-                      label1.set("text", Math.round(value1).toString());
+                      if(value.connected){
+                        label1.set("text", Math.round(value1).toString());
+                        }else{
+                        label1.set("text", "N/A");
+                        }
                     
                       clockHand1.pin.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                       clockHand1.hand.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                     });
-                    
+
+                    if(value.connected){
                     setTimeout(function () {
                       axisDataItem1.animate({
                         key: "value",
@@ -263,6 +309,10 @@ function loadNebuleAir() {
                         easing: am5.ease.out(am5.ease.cubic)
                       });
                     }, 1000)
+                  }else{
+                    document.querySelector("#chartdiv1").style.opacity = 0.2;
+                    document.querySelector("#chartdiv1").style.filter = "alpha(opacity = 20)";
+                  }
                     
                     chart1.bulletsContainer.set("mask", undefined);
                     
@@ -432,12 +482,17 @@ function loadNebuleAir() {
                         }
                       })
                     
-                      label2.set("text", Math.round(value2).toString());
+                      if(value.connected){
+                        label2.set("text", Math.round(value2).toString());
+                        }else{
+                        label2.set("text", "N/A");
+                        }
                     
                       clockHand2.pin.animate({ key: "fill", to: fill2, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                       clockHand2.hand.animate({ key: "fill", to: fill2, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                     });
                     
+                  if(value.connected){
                     setTimeout(function () {
                       axisDataItem2.animate({
                         key: "value",
@@ -446,6 +501,11 @@ function loadNebuleAir() {
                         easing: am5.ease.out(am5.ease.cubic)
                       });
                     }, 1000)
+
+                  }else{
+                    document.querySelector("#chartdiv2").style.opacity = 0.2;
+                    document.querySelector("#chartdiv2").style.filter = "alpha(opacity = 20)";
+                  }
                     
                     chart2.bulletsContainer.set("mask", undefined);
                     
@@ -616,12 +676,17 @@ function loadNebuleAir() {
                         }
                       })
                     
-                      label3.set("text", Math.round(value3).toString());
+                      if(value.connected){
+                        label3.set("text", Math.round(value3).toString());
+                        }else{
+                        label3.set("text", "N/A");
+                        }
                     
                       clockHand3.pin.animate({ key: "fill", to: fill3, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                       clockHand3.hand.animate({ key: "fill", to: fill3, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                     });
-                    
+                  
+                  if(value.connected){
                     setTimeout(function () {
                       axisDataItem3.animate({
                         key: "value",
@@ -631,6 +696,12 @@ function loadNebuleAir() {
                       });
                     }, 1000)
                     
+                  }else{
+                    document.querySelector("#chartdiv3").style.opacity = 0.2;
+                    document.querySelector("#chartdiv3").style.filter = "alpha(opacity = 20)";
+                  }
+
+
                     chart3.bulletsContainer.set("mask", undefined);
                     
                     
@@ -762,6 +833,7 @@ function changeNebuleAir() {
 
           //change icon color for PM1 and PM25
 
+          if(value.connected){
           //BON
           if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
               icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
@@ -813,7 +885,7 @@ function changeNebuleAir() {
           if (value_compound >= 150 && compoundUpper == "PM10") {
               icon_param.iconUrl = 'img/nebuleAir/nebuleAir_extmauvais.png';
           }
-
+        }
           //add icon to map
           var nebuleAir_icon = L.icon(icon_param);
 
@@ -837,9 +909,8 @@ function changeNebuleAir() {
               y_position = 56;
           }
 
-
           // cutom text on the marker
-          if(value_compound != -1){
+          if(value.connected){
           var myIcon = L.divIcon({
               className: 'my-div-icon',
               html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -965,12 +1036,17 @@ function changeNebuleAir() {
                       }
                     })
                   
-                    label1.set("text", Math.round(value1).toString());
-                  
+                    if(value.connected){
+                      label1.set("text", Math.round(value1).toString());
+                      }else{
+                      label1.set("text", "N/A");
+                      }
+                                        
                     clockHand1.pin.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                     clockHand1.hand.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                   });
-                  
+
+                  if(value.connected){
                   setTimeout(function () {
                     axisDataItem1.animate({
                       key: "value",
@@ -979,6 +1055,10 @@ function changeNebuleAir() {
                       easing: am5.ease.out(am5.ease.cubic)
                     });
                   }, 1000)
+                }else{
+                  document.querySelector("#chartdiv1").style.opacity = 0.2;
+                  document.querySelector("#chartdiv1").style.filter = "alpha(opacity = 20)";
+                }
                   
                   chart1.bulletsContainer.set("mask", undefined);
                   
@@ -1148,12 +1228,18 @@ function changeNebuleAir() {
                       }
                     })
                   
-                    label2.set("text", Math.round(value2).toString());
+                      if(value.connected){
+                        label2.set("text", Math.round(value2).toString());
+                        }else{
+                        label2.set("text", "N/A");
+                        }
                   
                     clockHand2.pin.animate({ key: "fill", to: fill2, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                     clockHand2.hand.animate({ key: "fill", to: fill2, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                   });
-                  
+
+
+                if(value.connected){
                   setTimeout(function () {
                     axisDataItem2.animate({
                       key: "value",
@@ -1162,7 +1248,11 @@ function changeNebuleAir() {
                       easing: am5.ease.out(am5.ease.cubic)
                     });
                   }, 1000)
-                  
+                }else{
+                  document.querySelector("#chartdiv2").style.opacity = 0.2;
+                  document.querySelector("#chartdiv2").style.filter = "alpha(opacity = 20)";
+                }
+
                   chart2.bulletsContainer.set("mask", undefined);
                   
                   
@@ -1332,8 +1422,12 @@ function changeNebuleAir() {
                       }
                     })
                   
-                    label3.set("text", Math.round(value3).toString());
-                  
+                    if(value.connected){
+                      label3.set("text", Math.round(value3).toString());
+                      }else{
+                      label3.set("text", "N/A");
+                      }
+
                     clockHand3.pin.animate({ key: "fill", to: fill3, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                     clockHand3.hand.animate({ key: "fill", to: fill3, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
                   });
