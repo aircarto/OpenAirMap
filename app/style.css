@@ -51,6 +51,11 @@ body {
     bottom: 15px;
 }
 
+#button_screenshot{
+  position: fixed;
+  left: 600px;
+  bottom: 15px;
+}
 
 #btn_bon {
     background-color: #4FF0E6;

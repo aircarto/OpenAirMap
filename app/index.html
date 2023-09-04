@@ -104,13 +104,16 @@
 
     <!-- Boutons pas de temps -->
     <div class="btn-group" id="div_button_pas_de_temps" role="group">
-        <button class="btn btn-primary" id="btn_actuel">2 minutes</button>
+        <button class="btn btn-outline-primary" id="btn_actuel">2 minutes</button>
         <button class="btn btn-outline-primary" id="btn_quartHoraire">Quart-horaire</button>
-        <button class="btn btn-outline-primary" id="btn_horaire">Horaire</button>
+        <button class="btn btn-primary" id="btn_horaire">Horaire</button>
         <button class="btn btn-outline-primary" id="btn_journalier">Journalier</button>
     </div>
 
     <button type="button" class="btn btn-outline-primary" id="button_horloge"></button>
+
+    <button type="button" class="btn btn-outline-primary" id="button_screenshot">Faire une photo</button>
+
 
     <!-- Les Logos -->
     <!-- <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div> -->
@@ -148,9 +151,10 @@
 
                 </div>
             </div>
-        </div>
-
+        </div> 
     </div>
+
+    <!-- <div id="capture"></div> -->
 
     <script>
 
@@ -161,7 +165,7 @@
 
 
         var compoundUpper = "PM25";
-        var timespanLower = 2;
+        var timespanLower = 60;
 
         let coordsCenter = [43.29490421, 5.37188392];
         let zoomLevel = 15;
@@ -240,22 +244,19 @@
 
         // ************************
         //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
-        $(document).ready(loadNebuleAir);
+        //$(document).ready(loadNebuleAir);
         // $(document).ready(loadSensorCommunity);
-        // $(document).ready(loadStationRefAtmo);
+         $(document).ready(loadStationRefAtmo);
         // $(document).ready(loadStationMicroAtmo);
         $(document).ready(openToast_loading);
 
         // ************************
 
+        document.querySelector("#button_screenshot").addEventListener("click", screenShot);
 
-
-
-
-
-        document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
+        document.querySelector("#checkbox_micro_stationsParticuliers").checked = false;
         document.querySelector("#checkbox_sensor_community").checked = false;
-        document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
+        document.querySelector("#checkbox_stationsRefAtmoSud").checked = true;
         document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
         document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
@@ -409,6 +410,11 @@ function switchModelisationICAIRAtmo() {
                 changeSensorCommunity();
             }
 
+            if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+            stationsRefAtmoSud.clearLayers();
+            changeStationRefAtmo();
+            }
+
             if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
                 modelisationPMAtmoSud.clearLayers();
                 loadModelisationPMAtmo();
@@ -440,6 +446,11 @@ function switchModelisationICAIRAtmo() {
                 changeSensorCommunity();
             }
 
+            if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+            stationsRefAtmoSud.clearLayers();
+            changeStationRefAtmo();
+            }
+
             if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
                 modelisationPMAtmoSud.clearLayers();
                 loadModelisationPMAtmo();
@@ -467,6 +478,11 @@ function switchModelisationICAIRAtmo() {
             if (document.querySelector("#checkbox_sensor_community").checked) {
                 sensorCommunity.clearLayers();
                 changeSensorCommunity();
+            }
+
+            if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+            stationsRefAtmoSud.clearLayers();
+            changeStationRefAtmo();
             }
 
             if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
@@ -630,7 +646,7 @@ function switchModelisationICAIRAtmo() {
 
             if (sensor.includes("stationRefAtmoSud")) {
                 var id = sensor.split("-")[1];
-                // load1MicroAtmo(id,1); //1 heure par défaut
+                load1RefAtmo(id,1); //1 heure par défaut
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
                 document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
@@ -667,6 +683,24 @@ function switchModelisationICAIRAtmo() {
             targetDiv.style.display = "none";
         }
 
+        function screenShot() {
+            console.log("Screenshot!");
+    //   html2canvas(document.body, {
+    //   allowTaint : false,
+    //   logging : true,
+    //   taintTest: false,
+    //   useCORS: true,
+    //   onrendered: function(canvas) {
+    //     // canvas is the final rendered <canvas> element
+    //     dataURL = canvas.toDataURL("image/png");  
+    //     console.log(dataURL);
+  
+    //     window.location.href=dataURL;       
+    //     window.open(dataURL);
+
+    //   }
+    // }); 
+        }
 
         setInterval(function() {
             console.log("Setinterval:");
