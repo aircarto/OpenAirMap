@@ -76,20 +76,6 @@ function loadSensorCommunity() {
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         var sensorCommunityPopup = '<img src="img/LogoSensorCommunity.png" alt="" class="card-img-top">' +
         '<div id="gauges">'+
         '<div id="chartdiv1"></div>'+
@@ -972,7 +958,7 @@ function changeSensorCommunity() {
           // cutom text on the marker
           var myIcon = L.divIcon({
               className: 'my-div-icon',
-              html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + '*' + '</div>',
+              html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + 'N' + '</div>',
               iconAnchor: [x_position, y_position],
               popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
 
