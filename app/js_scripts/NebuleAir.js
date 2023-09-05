@@ -17,11 +17,13 @@ function loadNebuleAir() {
         console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");
         console.log(data);
 
-        apiFetchNebuleAir.data = data;
+        var connected = data.filter((e) => e.connected == true);
+
+        apiFetchNebuleAir.data = connected;
         apiFetchNebuleAir.timestamp = end;
         apiFetchNebuleAir.timespan = timespanLower;
 
-        $.each(data, function (key, value) {
+        $.each(connected, function (key, value) {
 
             var value_compound = Math.round(value[compoundUpper]);
 
@@ -1540,3 +1542,231 @@ function changeNebuleAir() {
             
       });
 };
+
+function load1NebuleAir(id,hours){
+
+  console.log("%cNebuleAir 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
+  const end = new Date();
+  const end_string = end.toISOString();
+  const get_start = end.setHours(end.getHours() - hours);
+  const start = new Date(get_start);
+  const start_string = start.toISOString()
+  console.log(start_string);
+  console.log(end_string);
+
+  console.log(id)
+
+  //ATTENTION, ON EST EN UTC
+
+  $.ajax({
+          method: "GET",
+          url: "../php_scripts/NebuleAir_1sensor.php",
+          data: ({
+              id: id,
+              debut: start_string,
+              fin: end_string
+          }),
+      }).done(function(data) {
+          console.log(data);
+
+          // var filter_PM1 = data.filter((e) => e.variable == "PM1");
+          // var filter_PM25 = data.filter((e) => e.variable == "PM2.5");
+          // var filter_PM10 = data.filter((e) => e.variable == "PM10");
+
+
+          var data_PM1 = data.map(function(e){
+              return {value:e.PM1, date:new Date(e.time).getTime()}
+          } );
+          var data_PM25 = data.map(function(e){
+              return {value:e.PM25, date:new Date(e.time).getTime()}
+          } );
+          var data_PM10 = data.map(function(e){
+              return {value:e.PM10, date:new Date(e.time).getTime()}
+          } );
+
+
+          if (root4 != undefined) {
+              console.log("DISPOSE")
+              root4.dispose();
+          }
+
+
+          setTimeout(function() {
+              am5.ready(function() {
+
+                  // Create root element
+                  // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
+                  root4 = am5.Root.new("chartSensor2");
+
+
+                  // Set themes
+                  // https://www.amcharts.com/docs/v5/concepts/themes/ 
+                  root4.setThemes([
+                      am5themes_Animated.new(root4)
+                  ]);
+
+
+                  // Create chart
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                  var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
+                      panX: true,
+                      panY: true,
+                      wheelX: "panX",
+                      wheelY: "zoomX",
+                      maxTooltipDistance: 0,
+                      pinchZoomX: true
+                  }));
+
+                  // Create axes
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                  var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
+                      maxDeviation: 0.2,
+                      baseInterval: {
+                          timeUnit: "minute",
+                          count: 1
+                      },
+                      renderer: am5xy.AxisRendererX.new(root4, {}),
+                      tooltip: am5.Tooltip.new(root4, {})
+                  }));
+
+                  var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
+                      renderer: am5xy.AxisRendererY.new(root4, {})
+                  }));
+
+                  var series_PM1 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                          name: "PM1",
+                          xAxis: xAxis,
+                          yAxis: yAxis,
+                          valueYField: "value",
+                          valueXField: "date",
+                          legendValueText: "{valueY}",
+                          tooltip: am5.Tooltip.new(root4, {
+                              pointerOrientation: "horizontal",
+                              labelText: "{valueY}"
+                          })
+                      }));
+
+                  series_PM1.data.setAll(data_PM1);
+                  series_PM1.appear();
+
+                  var series_PM25 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                          name: "PM2.5",
+                          xAxis: xAxis,
+                          yAxis: yAxis,
+                          valueYField: "value",
+                          valueXField: "date",
+                          legendValueText: "{valueY}",
+                          tooltip: am5.Tooltip.new(root4, {
+                              pointerOrientation: "horizontal",
+                              labelText: "{valueY}"
+                          })
+                      }));
+
+                  series_PM25.data.setAll(data_PM25);
+                  series_PM25.appear();
+
+
+                  var series_PM10 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                          name: "PM10",
+                          xAxis: xAxis,
+                          yAxis: yAxis,
+                          valueYField: "value",
+                          valueXField: "date",
+                          legendValueText: "{valueY}",
+                          tooltip: am5.Tooltip.new(root4, {
+                              pointerOrientation: "horizontal",
+                              labelText: "{valueY}"
+                          })
+                      }));
+
+                  series_PM10.data.setAll(data_PM10);
+                  series_PM10.appear();
+
+                  // Add cursor
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                  var cursor = chart4.set("cursor", am5xy.XYCursor.new(root4, {
+                      behavior: "none"
+                  }));
+                  cursor.lineY.set("visible", false);
+
+
+                  // Add scrollbar
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+                  chart4.set("scrollbarX", am5.Scrollbar.new(root4, {
+                      orientation: "horizontal"
+                  }));
+
+                  chart4.set("scrollbarY", am5.Scrollbar.new(root4, {
+                      orientation: "vertical"
+                  }));
+
+
+                  // Add legend
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                  var legend = chart4.rightAxesContainer.children.push(am5.Legend.new(root4, {
+                      width: 200,
+                      paddingLeft: 15,
+                      height: am5.percent(100)
+                  }));
+
+                  // When legend item container is hovered, dim all the series except the hovered one
+                  legend.itemContainers.template.events.on("pointerover", function(e) {
+                      var itemContainer = e.target;
+
+                      // As series list is data of a legend, dataContext is series
+                      var series = itemContainer.dataItem.dataContext;
+
+                      chart4.series.each(function(chartSeries) {
+                          if (chartSeries != series) {
+                              chartSeries.strokes.template.setAll({
+                                  strokeOpacity: 0.15,
+                                  stroke: am5.color(0x000000)
+                              });
+                          } else {
+                              chartSeries.strokes.template.setAll({
+                                  strokeWidth: 3
+                              });
+                          }
+                      })
+                  })
+
+                  // When legend item container is unhovered, make all series as they are
+                  legend.itemContainers.template.events.on("pointerout", function(e) {
+                      var itemContainer = e.target;
+                      var series = itemContainer.dataItem.dataContext;
+
+                      chart4.series.each(function(chartSeries) {
+                          chartSeries.strokes.template.setAll({
+                              strokeOpacity: 1,
+                              strokeWidth: 1,
+                              stroke: chartSeries.get("fill")
+                          });
+                      });
+                  })
+
+                  legend.itemContainers.template.set("width", am5.p100);
+                  legend.valueLabels.template.setAll({
+                      width: am5.p100,
+                      textAlign: "right"
+                  });
+
+                  // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+                  legend.data.setAll(chart4.series.values);
+
+                  var exporting = am5plugins_exporting.Exporting.new(root4, {
+menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
+dataSource: data
+});
+
+                  // Make stuff animate on load
+                  // https://www.amcharts.com/docs/v5/concepts/animations/
+                  chart4.appear(1000, 100);
+
+              })
+          }, 1000); // end am5.ready()
+
+      })
+      .fail(function() {
+          console.log("Error while geting data from AtmoSud API");
+      });
+}

@@ -1580,6 +1580,8 @@ function load1MicroAtmo(id,hours){
   console.log(start_string);
   console.log(end_string);
 
+  console.log(id);
+
   //ATTENTION, ON EST EN UTC
 
   $.ajax({

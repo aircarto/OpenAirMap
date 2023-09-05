@@ -129,7 +129,7 @@
                 <div class="card-body">
                     <!-- Nom du capteur en haut -->
                     <h3 id="title_deviceName"></h3>
-                    <h5 class="card-title">Evolution des concentrations en particules fines (&#181;g/m<sup>3</sup>)</h5>
+                    <h5 class="card-title" id="card-title"></h5>
 
                     <!--  Grafana iframe -->
                     <iframe id="chartSensor" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
@@ -160,9 +160,12 @@
 
         var date = new Date();
         const hour = date.getHours();
+        const get_hour_minus1 = date.setHours(date.getHours() - 1);
+        const hour_minus1 = new Date(get_hour_minus1);
+        const hour0 = hour_minus1.getHours();
         const min = date.getMinutes();
-        document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
-
+        // document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
+        document.querySelector("#button_horloge").innerHTML = hour0 + ":" + "00" + " à " + hour + ":" + "00"; 
 
         var compoundUpper = "PM25";
         var timespanLower = 60;
@@ -565,7 +568,8 @@ function switchModelisationICAIRAtmo() {
             const start = new Date(get_start);
             const hour1 = start.getHours();
             const min1 = start.getMinutes();
-            document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ; 
+            // document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ; 
+            document.querySelector("#button_horloge").innerHTML = hour1 + ":" + "00" + " à " + hour2 + ":" + "00"; 
 
         
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
@@ -642,27 +646,41 @@ function switchModelisationICAIRAtmo() {
             targetDiv.style.display = "block";
             document.getElementById("title_deviceName").innerHTML = sensor;
 
+            switch(timespanLower) {
+  case 2:
+    var tempo = " à 2 minutes ";
+    break;
+  case 15:
+  var tempo = " quart-horaires ";
+    break;
+    case 60:
+    var tempo = " horaires ";
+    break;
+    case 1440:
+    var tempo = " journalières ";
+    break;
+} 
+
+
+            document.getElementById("card-title").innerText = 'Evolution des concentrations' + tempo + 'en particules fines (µg/m3)';
+
             if (sensor.includes("nebuleair")) {
                 let id = sensor.split("-")[1];
-                console.log(id);
-
-                document.getElementById("chartSensor").style.display = 'block';
-                document.getElementById("chartSensor2").style.display = 'none';
-                document.getElementById("chartSensor").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebuleair?orgId=1&var-device=" + sensor + "&from=now-1h&to=now&theme=light&panelId=10";
-                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
-                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
-                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
-                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
-                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+                load1NebuleAir(id,1); //1 heure par défaut
+                document.getElementById("chartSensor").style.display = 'none';
+                document.getElementById("chartSensor2").style.display = 'block';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
 
 
             }
 
             if (sensor.includes("sensor.community")) {
                 let id = sensor.split("-")[1];
-                console.log(id);
-
                 document.getElementById("chartSensor").style.display = 'block';
                 document.getElementById("chartSensor2").style.display = 'none';
                 document.getElementById("chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + id + "&panelId=2";
@@ -711,6 +729,12 @@ function switchModelisationICAIRAtmo() {
                 document.getElementById("button24h").classList.replace("btn-outline-secondary", "btn-primary");
                 console.log("test");
             }
+        }
+
+        function chooseTimeNebuleAir(sensor, hours) {
+            console.log(sensor);
+            console.log(hours);
+            load1NebuleAir(sensor,hours)
         }
 
                 //changer la couleur du bouton en fonction du choix (not working?)
