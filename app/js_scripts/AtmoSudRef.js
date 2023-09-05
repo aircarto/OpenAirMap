@@ -1685,8 +1685,11 @@ function load1RefAtmo(id,hours){
   const get_start = end.setHours(end.getHours() - hours);
   const start = new Date(get_start);
   const start_string = start.toISOString()
+  console.log(id);
+  console.log(hours);
   console.log(start_string);
   console.log(end_string);
+  console.log(timespanLower);
 
   //ATTENTION, ON EST EN UTC
 
@@ -1702,20 +1705,24 @@ function load1RefAtmo(id,hours){
       }).done(function(data) {
           console.log(data);
 
-          var filter_PM1 = data.filter((e) => e.variable == "PM1");
-          var filter_PM25 = data.filter((e) => e.variable == "PM2.5");
-          var filter_PM10 = data.filter((e) => e.variable == "PM10");
+          var filter_PM1 = data.mesures.filter((e) => e.polluant_id == "68");
+          var filter_PM25 = data.mesures.filter((e) => e.polluant_id == "39");
+          var filter_PM10 = data.mesures.filter((e) => e.polluant_id == "24");
 
 
           var data_PM1 = filter_PM1.map(function(e){
-              return {value:e.valeur, date:new Date(e.time).getTime()}
+              return {value:e.valeur, date:new Date(e.date_debut).getTime()}  //+ 60*60*1000 to get date_fin ? + UTC automatique?
           } );
           var data_PM25 = filter_PM25.map(function(e){
-              return {value:e.valeur, date:new Date(e.time).getTime()}
+              return {value:e.valeur, date:new Date(e.date_debut).getTime()}
           } );
           var data_PM10 = filter_PM10.map(function(e){
-              return {value:e.valeur, date:new Date(e.time).getTime()}
+              return {value:e.valeur, date:new Date(e.date_debut).getTime()}
           } );
+
+          console.log(data_PM1);
+          console.log(data_PM25);
+          console.log(data_PM10);
 
 
           if (root4 != undefined) {
@@ -1842,6 +1849,18 @@ function load1RefAtmo(id,hours){
                       height: am5.percent(100)
                   }));
 
+
+                  // var legend = chart.children.push(am5.Legend.new(root4, {
+                  //   centerX: am5.percent(50),
+                  //   x: am5.percent(50),
+                  //   layout: am5.GridLayout.new(root, {
+                  //     maxColumns: 3,
+                  //     fixedWidthGrid: true
+                  //   })
+                  }));
+
+
+
                   // When legend item container is hovered, dim all the series except the hovered one
                   legend.itemContainers.template.events.on("pointerover", function(e) {
                       var itemContainer = e.target;
@@ -1888,7 +1907,7 @@ function load1RefAtmo(id,hours){
 
                   var exporting = am5plugins_exporting.Exporting.new(root4, {
 menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
-dataSource: data
+dataSource: data.mesures
 });
 
                   // Make stuff animate on load

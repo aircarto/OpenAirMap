@@ -509,10 +509,18 @@ function switchModelisationICAIRAtmo() {
         const min = date.getMinutes();
         document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par 
         
-        if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked = true){
+        if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
+                alert("Pas de données à intervalles 2 minutes pour les microstations AtmoSud");
             }
+
+        if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
+            document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
+            map.removeLayer(stationsRefAtmoSud);
+            alert("Pas de données à intervalles 1 jour pour les stations de référence AtmoSud");
+        }
+
         }
 
         function choose15() {
@@ -530,6 +538,17 @@ function switchModelisationICAIRAtmo() {
             const hour1 = start.getHours();
             const min1 = start.getMinutes();
             document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ;  
+
+            if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
+            if (apiFetchAtmoSudRef.timespan != 15 || apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > 15 * 60 * 1000))
+            {
+                stationsRefAtmoSud.clearLayers();
+                loadStationRefAtmo();
+            }else{
+                stationsRefAtmoSud.clearLayers();
+                changeStationRefAtmo();
+            }
+            }
         }
 
         function choose60() {
@@ -549,9 +568,21 @@ function switchModelisationICAIRAtmo() {
             document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ; 
 
         
-            if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked = true){
+            if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
+                alert("Pas de données à intervalles 1 heure pour les microstations AtmoSud");
+            }
+
+            if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
+            if (apiFetchAtmoSudRef.timespan != 60 || apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > 60 * 60 * 1000))
+            {
+                stationsRefAtmoSud.clearLayers();
+                loadStationRefAtmo();
+            }else{
+                stationsRefAtmoSud.clearLayers();
+                changeStationRefAtmo();
+            }
             }
         }
 
@@ -569,9 +600,22 @@ function switchModelisationICAIRAtmo() {
             const mois = datemoins1.getMonth() + 1;
             document.querySelector("#button_horloge").innerHTML = (jour < 10 ? '0' : '') + jour + "/" + (mois < 10 ? '0' : '') + mois;  //2min par défaut
 
-            if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked = true){
+            if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
+                alert("Pas de données à intervalles 1 jour pour les microstations AtmoSud");
+            }
+
+            if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
+                if (apiFetchAtmoSudRef.timespan != 1440 || apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > 1440 * 60 * 1000))
+            {
+                stationsRefAtmoSud.clearLayers();
+                loadStationRefAtmo();
+            }else{
+                stationsRefAtmoSud.clearLayers();
+                changeStationRefAtmo();
+            }
+
             }
 
         }
@@ -649,12 +693,12 @@ function switchModelisationICAIRAtmo() {
                 load1RefAtmo(id,1); //1 heure par défaut
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
-                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
-                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
-                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
-                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
-                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',1)" class="btn btn-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48)" class="btn btn-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168)" class="btn btn-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720)" class="btn btn-secondary btn-sm">1 mois</button>';
             }
 
         }
@@ -674,6 +718,13 @@ function switchModelisationICAIRAtmo() {
             console.log(sensor);
             console.log(hours);
             load1MicroAtmo(sensor,hours)
+        }
+
+
+        function chooseTimeAtmoRef(sensor, hours) {
+            console.log(sensor);
+            console.log(hours);
+            load1RefAtmo(sensor,hours)
         }
 
 
