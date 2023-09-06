@@ -11,6 +11,12 @@
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script> -->
+
+
+
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- Bootstrap 5.3.0 -->
@@ -34,12 +40,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-hash/0.2.1/leaflet-hash.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+    
 
 
     <title>Open Air Map</title>
 </head>
 
 <body>
+
+    <script>
+        HTMLCanvasElement.prototype.getContext = function(origFn) {
+          return function(type, attribs) {
+            attribs = attribs || {};
+            attribs.preserveDrawingBuffer = true;
+            return origFn.call(this, type, attribs);
+          };
+        }(HTMLCanvasElement.prototype.getContext);
+        </script>
+
     <!-- LA CARTE -->
     <div id="map"></div>
 
@@ -112,7 +131,7 @@
 
     <button type="button" class="btn btn-outline-primary" id="button_horloge"></button>
 
-    <button type="button" class="btn btn-outline-primary" id="button_screenshot">Faire une photo</button>
+    <button type="button" class="btn btn-primary" id="button_screenshot">Faire une photo</button>
 
 
     <!-- Les Logos -->
@@ -175,7 +194,8 @@
 
         //on crée la carte, centrée sur Marseille
         var map = L.map('map', {
-            zoomControl: false
+            zoomControl: false,
+            renderer: L.canvas()
         });
 
                 // ON ne fetch pas tout
@@ -213,6 +233,12 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             maxZoom: 21
         }).addTo(map);
+
+
+        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+
+
+
 
     // L.tileLayer.wms('https://azurh-geoservices.atmosud.org/geoserver/azur_heure/ows', {
     //         version: '1.1.1',
@@ -760,22 +786,55 @@ function switchModelisationICAIRAtmo() {
 
         function screenShot() {
             console.log("Screenshot!");
-    //   html2canvas(document.body, {
-    //   allowTaint : false,
-    //   logging : true,
-    //   taintTest: false,
-    //   useCORS: true,
-    //   onrendered: function(canvas) {
-    //     // canvas is the final rendered <canvas> element
-    //     dataURL = canvas.toDataURL("image/png");  
-    //     console.log(dataURL);
-  
-    //     window.location.href=dataURL;       
-    //     window.open(dataURL);
 
-    //   }
-    // }); 
-        }
+
+    html2canvas(document.body,{
+        logging: false,
+        useCORS:true  //REVOIR LES OPTIONS
+    }).then(function(canvas) {
+        canvas.toBlob(function(blob) {
+            window.saveAs(blob, "screenshot.png");
+        });
+    });
+
+
+    // html2canvas(document.body,{
+    //     onrendered: function(canvas){
+
+    //         canvas.toBlob(function(blob) {
+    //         window.saveAs(blob, "screenshot.png");
+    //     });
+
+    //     }
+    // });
+    
+    
+
+
+
+    // html2canvas(document.body).then(function(canvas) {
+  	// var link =  document.createElement("a");
+    // link.setAttribute('download', 'MintyPaper.png');
+    // link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+    // link.click();
+	// });
+
+
+
+
+
+
+
+
+
+
+}
+
+
+       
+
+
+
 
         setInterval(function() {
             console.log("Setinterval:");

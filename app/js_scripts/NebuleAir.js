@@ -1692,22 +1692,30 @@ function load1NebuleAir(id,hours){
 
                   // Add scrollbar
                   // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-                  chart4.set("scrollbarX", am5.Scrollbar.new(root4, {
-                      orientation: "horizontal"
-                  }));
+                  // chart4.set("scrollbarX", am5.Scrollbar.new(root4, {
+                  //     orientation: "horizontal"
+                  // }));
 
-                  chart4.set("scrollbarY", am5.Scrollbar.new(root4, {
-                      orientation: "vertical"
-                  }));
+                  // chart4.set("scrollbarY", am5.Scrollbar.new(root4, {
+                  //     orientation: "vertical"
+                  // }));
 
 
                   // Add legend
                   // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                  var legend = chart4.rightAxesContainer.children.push(am5.Legend.new(root4, {
-                      width: 200,
-                      paddingLeft: 15,
-                      height: am5.percent(100)
-                  }));
+                  // var legend = chart4.rightAxesContainer.children.push(am5.Legend.new(root4, {
+                  //     width: 200,
+                  //     paddingLeft: 15,
+                  //     height: am5.percent(100)
+                  // }));
+
+
+                  var legend = chart4.bottomAxesContainer.children.push(am5.Legend.new(root4, {
+                    width: 400,
+                    height: am5.percent(20),
+                    layout: root4.horizontalLayout,
+                }));
+
 
                   // When legend item container is hovered, dim all the series except the hovered one
                   legend.itemContainers.template.events.on("pointerover", function(e) {
