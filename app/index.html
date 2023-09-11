@@ -561,11 +561,43 @@ function switchModelisationICAIRAtmo() {
 
             const end = new Date();
             const hour2 = end.getHours();
-            const min2 = end.getMinutes();
+            const min_ori2 = end.getMinutes();
+
+            if (min_ori2 <= 15)
+            {
+               var  min2 = 0;
+            }else if(min_ori2 > 15 && min_ori2 <=30)
+            {
+                var  min2 = 15;
+            }else if(min_ori2 > 30 && min_ori2 <=45)
+            {
+                var  min2 = 30;
+            }else
+            {
+                var min2 =45;
+
+            }
+
             const get_start = end.setMinutes(end.getMinutes() - 15);
             const start = new Date(get_start);
             const hour1 = start.getHours();
-            const min1 = start.getMinutes();
+            const min_ori1 = start.getMinutes();
+
+            if (min_ori1 <= 15)
+            {
+               var  min1 = 0;
+            }else if(min_ori1 > 15 && min_ori1 <=30)
+            {
+                var  min1 = 15;
+            }else if(min_ori1 > 30 && min_ori1 <=45)
+            {
+                var  min1 = 30;
+            }else
+            {
+                var min1 =45;
+
+            }
+        
             document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ;  
 
             if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
