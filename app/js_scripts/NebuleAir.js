@@ -786,7 +786,7 @@ function loadNebuleAir() {
                 xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
                 
-                })},1000) // end am5.ready()
+                })}, 1000) // end am5.ready()
               
             })
             .addTo(nebuleairParticuliers);
@@ -1406,7 +1406,7 @@ function loadNebuleAir() {
             xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
             
-            })},1000) // end am5.ready()
+            })}, 1000) // end am5.ready()
           
         })
           .addTo(nebuleairParticuliers);
@@ -2138,7 +2138,7 @@ function changeNebuleAir() {
                   xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
                   
-                  })},1000) // end am5.ready()
+                  })}, 1000) // end am5.ready()
                 
               })
               .addTo(nebuleairParticuliers);
@@ -2756,7 +2756,7 @@ function changeNebuleAir() {
           xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
           
-          })},1000) // end am5.ready()
+          })}, 1000) // end am5.ready()
         
       })
         .addTo(nebuleairParticuliers);
@@ -2768,7 +2768,7 @@ function changeNebuleAir() {
       });
 };
 
-function load1NebuleAir(id,hours){
+function load1NebuleAir(id,hours,timespan){
 
   console.log("%cNebuleAir 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
   const end = new Date();
@@ -2782,9 +2782,9 @@ function load1NebuleAir(id,hours){
   console.log(id);
 
   let chartTitleText = "";
-  chartTitleText += "NebuleAir-" + id + ", moyennes ";
+  chartTitleText += "NebuleAir-" + id + ", moyennes";
 
-  switch(timespanLower) {
+  switch(timespan) {
     case 2:
       chartTitleText += " à 2 minutes, ";
         break;
@@ -2807,7 +2807,8 @@ function load1NebuleAir(id,hours){
           data: ({
               id: id,
               debut: start_string,
-              fin: end_string
+              fin: end_string,
+              timespan : timespan
           }),
       }).done(function(data) {
           console.log(data);

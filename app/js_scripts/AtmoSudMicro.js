@@ -766,7 +766,7 @@ function loadStationMicroAtmo() {
                     xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
                     
-                    })},1000) // end am5.ready()
+                    })}, 1000) // end am5.ready()
                   
             })
             .addTo(stationsMicroAtmoSud);
@@ -1354,7 +1354,7 @@ function loadStationMicroAtmo() {
               xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
               
-              })},1000) // end am5.ready()
+              })}, 1000) // end am5.ready()
             
       })
             .addTo(stationsMicroAtmoSud)
@@ -2117,7 +2117,7 @@ function changeStationMicroAtmo() {
               xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
               
-              })},1000) // end am5.ready()
+              })}, 1000) // end am5.ready()
             
       })
       .addTo(stationsMicroAtmoSud);
@@ -2707,7 +2707,7 @@ function changeStationMicroAtmo() {
             xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
             
-            })},1000) // end am5.ready()
+            })}, 1000) // end am5.ready()
           
     })
       .addTo(stationsMicroAtmoSud)

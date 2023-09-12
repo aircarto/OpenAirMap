@@ -123,9 +123,9 @@
 
     <!-- Boutons pas de temps -->
     <div class="btn-group" id="div_button_pas_de_temps" role="group">
-        <button class="btn btn-outline-primary" id="btn_actuel">2 minutes</button>
+        <button class="btn btn btn-primary" id="btn_actuel">2 minutes</button>
         <button class="btn btn-outline-primary" id="btn_quartHoraire">Quart-horaire</button>
-        <button class="btn btn-primary" id="btn_horaire">Horaire</button>
+        <button class="btn btn-outline-primary" id="btn_horaire">Horaire</button>
         <button class="btn btn-outline-primary" id="btn_journalier">Journalier</button>
     </div>
 
@@ -160,14 +160,18 @@
                         card's
                         content.
                     </p> -->
+                    <div id="historique">Historique</div>
                     <span id="button1h"></span>
                     <span id="button3h"></span>
                     <span id="button24h"></span>
                     <span id="button48h"></span>
                     <span id="button1s"></span>
                     <span id="button1m"></span>
-
-
+                    <div id="pdt">Pas de temps</div>
+                    <span id="button2m"></span>
+                    <span id="button15m"></span>
+                    <span id="button60m"></span>
+                    <span id="button1440m"></span>
                 </div>
             </div>
         </div> 
@@ -183,11 +187,14 @@
         const hour_minus1 = new Date(get_hour_minus1);
         const hour0 = hour_minus1.getHours();
         const min = date.getMinutes();
-        // document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
-        document.querySelector("#button_horloge").innerHTML = hour0 + ":" + "00" + " à " + hour + ":" + "00"; 
+        document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
+        //document.querySelector("#button_horloge").innerHTML = hour0 + ":" + "00" + " à " + hour + ":" + "00"; 
 
         var compoundUpper = "PM25";
-        var timespanLower = 60;
+        var timespanLower = 2;
+        // var timespanGraph;
+        var timeLength = 3;
+        // var timeLengthGraph;
 
         let coordsCenter = [43.29490421, 5.37188392];
         let zoomLevel = 15;
@@ -273,19 +280,19 @@
 
         // ************************
         //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
-        //$(document).ready(loadNebuleAir);
+        $(document).ready(loadNebuleAir);
         // $(document).ready(loadSensorCommunity);
-         $(document).ready(loadStationRefAtmo);
+        //$(document).ready(loadStationRefAtmo);
         // $(document).ready(loadStationMicroAtmo);
-        $(document).ready(openToast_loading);
+        //$(document).ready(openToast_loading);
 
         // ************************
 
         document.querySelector("#button_screenshot").addEventListener("click", screenShot);
 
-        document.querySelector("#checkbox_micro_stationsParticuliers").checked = false;
+        document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
         document.querySelector("#checkbox_sensor_community").checked = false;
-        document.querySelector("#checkbox_stationsRefAtmoSud").checked = true;
+        document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
         document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
         document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
@@ -324,6 +331,13 @@
 
         function switchNebuleAir() {
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+
+                if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && apiFetchNebuleAir.timespan != timespanLower )) {
+                        console.log("timespan change!");
+                        console.log("Reload NebuleAir!");
+                        loadNebuleAir();
+                    }
+
                 if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000)) {
                     console.log("Reload NebuleAir!");
                     loadNebuleAir();
@@ -339,6 +353,12 @@
 
             if (timespanLower != 15) {
                 if (document.querySelector("#checkbox_sensor_community").checked) {
+
+                    if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && apiFetchSensorCommunity.timespan != timespanLower )) {
+                        console.log("timespan change!");
+                        console.log("Reload Sensor.Community!");
+                        loadSensorCommunity();
+                    }
                     if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000)) {
                         console.log("Reload Sensor.Community!");
                         loadSensorCommunity();
@@ -358,7 +378,13 @@
 
             if (timespanLower != 2) {
                 if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) { //ATTENTION CAS 2mins
-                    if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000)) {
+                    if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && apiFetchAtmoSudRef.timespan != timespanLower )) {
+                        console.log("timespan change!");
+                        console.log("Reload AtmoSud Ref!");
+                        loadStationRefAtmo();
+                    }
+                    
+                    if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && apiFetchAtmoSudRef.timespan == timespanLower && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000)) {
                         console.log("Reload AtmoSud Ref!");
                         loadStationRefAtmo();
                     }
@@ -379,6 +405,12 @@
 
             if (timespanLower != 2 & timespanLower != 60 & timespanLower != 1440) {
                 if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+                    if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && apiFetchAtmoSudMicro.timespan != timespanLower )) {
+                        console.log("timespan change!");
+                        console.log("Reload AtmoSud Micro!");
+                        loadStationMicroAtmo();
+                    }
+
                     if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000)) {
                         console.log("Reload AtmoSud Micro");
                         loadStationMicroAtmo();
@@ -722,19 +754,25 @@ function switchModelisationICAIRAtmo() {
 
             document.getElementById("card-title").innerText = 'Evolution des concentrations' + tempo + 'en particules fines (µg/m3)';
 
+           var timespanGraph = timespanLower;
+           var timeLengthGraph = timeLength;
+
             if (sensor.includes("nebuleair")) {
                 let id = sensor.split("-")[1];
-                load1NebuleAir(id,3); //1 heure par défaut
+                load1NebuleAir(id,timeLengthGraph,timespanGraph);
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
-                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1)" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 24)" class="btn btn-outline-secondary btn-sm">24h</button>';
-                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
-                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-
-
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
+                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+               buttonsSwitcher(timeLengthGraph,timespanGraph);
             }
 
             if (sensor.includes("sensor.community")) {
@@ -748,12 +786,16 @@ function switchModelisationICAIRAtmo() {
                 document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
                 document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
                 document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTime(\'' + sensor + '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-secondary btn-sm">2m</button>';
+                document.getElementById("button15m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
 
             }
 
             if (sensor.includes("microstationAtmoSud")) {
                 var id = sensor.split("-")[1];
-                load1MicroAtmo(id,3); //1 heure par défaut
+                load1MicroAtmo(id,timeLength); 
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
                 document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\',1)" class="btn btn-outline-secondary btn-sm">1h</button>';
@@ -762,24 +804,33 @@ function switchModelisationICAIRAtmo() {
                 document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
                 document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
                 document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoMicro(\'' + id + '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+
+                document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+                document.getElementById("button15m").innerHTML = '<button type="button" class="btn btn-secondary btn-sm">15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
             }
 
             if (sensor.includes("stationRefAtmoSud")) {
                 var id = sensor.split("-")[1];
-                load1RefAtmo(id,3); //1 heure par défaut
+                load1RefAtmo(id,timeLengthGraph,timespanGraph); 
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
-                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',1)" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24)" class="btn btn-outline-secondary btn-sm">24h</button>';
-                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
-                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720),' + timespanGraph + '" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+                buttonsSwitcher(timeLengthGraph,timespanGraph);
             }
 
         }
 
-        //changer la couleur du bouton en fonction du choix (not working?)
         function chooseTime(sensor, hours) {
             document.getElementById("chartSensor").src = "https://grafana.aircarto.fr/d-solo/Hcs4NEb4z/nebulo?orgId=1&var-device=" + sensor + "&from=now-" + hours + "h&to=now&theme=light&panelId=10";
             if (hours == 24) {
@@ -787,14 +838,25 @@ function switchModelisationICAIRAtmo() {
             }
         }
 
-        function chooseTimeNebuleAir(sensor, hours) {
+        function chooseTimeNebuleAir(sensor, hours, timespan) {
+            timeLengthGraph = hours;
+            timespanGraph = timespan;
             console.log(sensor);
             console.log(hours);
-            load1NebuleAir(sensor,hours);
-            buttonsSwitcher(hours);
-
+            console.log(timespan);
+            load1NebuleAir(sensor,timeLengthGraph,timespanGraph);
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
+            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            buttonsSwitcher(timeLengthGraph,timespanGraph);
         }
-
                 //changer la couleur du bouton en fonction du choix (not working?)
         function chooseTimeAtmoMicro(sensor, hours) {
             console.log(sensor);
@@ -804,12 +866,25 @@ function switchModelisationICAIRAtmo() {
         }
 
 
-        function chooseTimeAtmoRef(sensor, hours) {
+        function chooseTimeAtmoRef(sensor, hours, timespan) {
+            timeLengthGraph = hours;
+            timespanGraph = timespan;
             console.log(sensor);
             console.log(hours);
-            load1RefAtmo(sensor,hours)
-            buttonsSwitcher(hours);
-        }
+            console.log(timespan);
+            load1RefAtmo(sensor,timeLengthGraph,timespanGraph);
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            buttonsSwitcher(timeLengthGraph,timespanGraph);
+            }
 
 
         //fonction qui ferme le side panel
@@ -819,7 +894,9 @@ function switchModelisationICAIRAtmo() {
         }
 
 
-function buttonsSwitcher(hours){
+function buttonsSwitcher(hours,timespan){
+    console.log(hours);
+    console.log(timespan);
     switch (hours) {
             case 1:
                 document.getElementById("button1h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
@@ -830,7 +907,6 @@ function buttonsSwitcher(hours){
                 document.getElementById("button1m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
                 break;
             case 3:
-                console.log('fsafafasf');
                 document.getElementById("button1h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
                 document.getElementById("button3h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
                 document.getElementById("button24h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
@@ -869,6 +945,33 @@ function buttonsSwitcher(hours){
                 document.getElementById("button48h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
                 document.getElementById("button1s").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
                 document.getElementById("button1m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                break;
+            }
+
+            switch (timespan) {
+            case 2:
+                document.getElementById("button2m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("button15m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button60m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button1440m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 15:
+                document.getElementById("button2m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button15m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("button60m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button1440m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 60:
+                document.getElementById("button2m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button15m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button60m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("button1440m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 1440:
+                document.getElementById("button2m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button15m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button60m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("button1440m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
                 break;
             }
 }

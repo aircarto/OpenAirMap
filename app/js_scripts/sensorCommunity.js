@@ -176,13 +176,13 @@ function loadSensorCommunity() {
 
             //textSize (if number under 10)
             var textSize = 45;
-            var x_position = -22;
+            var x_position = -17;
             var y_position = 62;
 
             //smaller text size if number is greater than 9
             if (value_compound >= 10) {
                 textSize = 38;
-                x_position = -14;
+                x_position = -9;
                 y_position = 56;
             }
 
@@ -190,7 +190,7 @@ function loadSensorCommunity() {
               //TODO !!!
               if (value_compound >= 100) {
                 textSize = 30;
-                x_position = -14;
+                x_position = -9;
                 y_position = 56;
             }
 
@@ -788,7 +788,7 @@ function loadSensorCommunity() {
                 xAxis2.get("renderer").grid.template.set("forceHidden", true);
                 xAxis3.get("renderer").grid.template.set("forceHidden", true);
                 
-                })},1000) // end am5.ready()
+                })}, 1000) // end am5.ready()
                 
             })
             .addTo(sensorCommunity);
@@ -1381,7 +1381,7 @@ function loadSensorCommunity() {
               xAxis2.get("renderer").grid.template.set("forceHidden", true);
               xAxis3.get("renderer").grid.template.set("forceHidden", true);
               
-              })},1000) // end am5.ready()
+              })}, 1000) // end am5.ready()
               
           })
             .addTo(sensorCommunity)
@@ -1505,13 +1505,13 @@ function changeSensorCommunity() {
 
           //textSize (if number under 10)
           var textSize = 45;
-          var x_position = -22;
+          var x_position = -17;
           var y_position = 62;
 
           //smaller text size if number is greater than 9
           if (value_compound >= 10) {
               textSize = 38;
-              x_position = -14;
+              x_position = -9;
               y_position = 56;
           }
 
@@ -1519,7 +1519,7 @@ function changeSensorCommunity() {
             //TODO !!!
             if (value_compound >= 100) {
               textSize = 30;
-              x_position = -14;
+              x_position = -9;
               y_position = 56;
           }
 
@@ -2114,7 +2114,7 @@ function changeSensorCommunity() {
               xAxis2.get("renderer").grid.template.set("forceHidden", true);
               xAxis3.get("renderer").grid.template.set("forceHidden", true);
               
-              })},1000) // end am5.ready()
+              })}, 1000) // end am5.ready()
               
           })
           .addTo(sensorCommunity);
@@ -2704,7 +2704,7 @@ function changeSensorCommunity() {
             xAxis2.get("renderer").grid.template.set("forceHidden", true);
             xAxis3.get("renderer").grid.template.set("forceHidden", true);
             
-            })},1000) // end am5.ready()
+            })}, 1000) // end am5.ready()
             
         })
           .addTo(sensorCommunity);

@@ -809,7 +809,7 @@ function loadStationRefAtmo() {
                 xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
                 
-                })},1000) // end am5.ready()
+                })}, 1000) // end am5.ready()
         })
         .addTo(stationsRefAtmoSud);
 
@@ -1431,7 +1431,7 @@ function loadStationRefAtmo() {
               xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
               
-              })},1000) // end am5.ready()
+              })}, 1000) // end am5.ready()
       })
         .addTo(stationsRefAtmoSud);
 
@@ -2236,7 +2236,7 @@ function changeStationRefAtmo() {
               xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
               
-              })},1000) // end am5.ready()
+              })}, 1000) // end am5.ready()
       })
       .addTo(stationsRefAtmoSud);
 
@@ -2858,7 +2858,7 @@ function changeStationRefAtmo() {
             xAxis3.get("renderer").grid.template.set("forceHidden", true);
 
             
-            })},1000) // end am5.ready()
+            })}, 1000) // end am5.ready()
     })
       .addTo(stationsRefAtmoSud)
 
@@ -2871,7 +2871,7 @@ function changeStationRefAtmo() {
 };
 
 
-function load1RefAtmo(id,hours){
+function load1RefAtmo(id,hours,timespan){
 
   console.log("%cAtmoSud Ref 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
   const end = new Date();
@@ -2890,7 +2890,7 @@ function load1RefAtmo(id,hours){
   let chartTitleText = "";
   chartTitleText += "AtmoSudRef-" + id + ", moyennes ";
 
-  switch(timespanLower) {
+  switch(timespan) {
     case 2:
       chartTitleText += " à 2 minutes, ";
         break;
@@ -2914,7 +2914,7 @@ function load1RefAtmo(id,hours){
               id_site: id,
               debut: start_string,
               fin: end_string,
-              timespan: timespanLower
+              timespan: timespan
           }),
       }).done(function(data) {
           console.log(data);
@@ -3000,7 +3000,7 @@ function load1RefAtmo(id,hours){
                           })
                       }));
 
-                  series_PM1.set("stroke", am5.color(0x00ff00));
+                  // series_PM1.set("stroke", am5.color(0x00ff00));
 
 
                   series_PM1.data.setAll(data_PM1);
@@ -3020,7 +3020,7 @@ function load1RefAtmo(id,hours){
                       }));
 
                   
-                  series_PM25.set("stroke", am5.color(0x0000ff));
+                  // series_PM25.set("stroke", am5.color(0x0000ff));
                   series_PM25.data.setAll(data_PM25);
                   series_PM25.appear();
 
@@ -3038,7 +3038,7 @@ function load1RefAtmo(id,hours){
                           })
                       }));
 
-                  series_PM10.set("stroke", am5.color(0xff0000))
+                  // series_PM10.set("stroke", am5.color(0xff0000))
 
                   series_PM10.data.setAll(data_PM10);
                   series_PM10.appear();
