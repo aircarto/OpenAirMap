@@ -29,6 +29,10 @@
     <script src="js_scripts/AtmoSudMicro.js"></script>
     <script src="js_scripts/sensorCommunity.js"></script>
     <script src="js_scripts/AtmoSudModelisation.js"></script>
+
+    <script src="geojson/paca.geojson"></script>
+
+
     <!-- style CSS  -->
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
@@ -41,8 +45,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
-    
 
+    <!-- <script src="https://cdn.rawgit.com/hayeswise/Leaflet.PointInPolygon/v1.0.0/wise-leaflet-pip.js"></script> -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.snogylop@0.4.0/src/leaflet.snogylop.min.js"></script>
 
     <title>Open Air Map</title>
 </head>
@@ -192,9 +198,7 @@
 
         var compoundUpper = "PM25";
         var timespanLower = 2;
-        // var timespanGraph;
         var timeLength = 3;
-        // var timeLengthGraph;
 
         let coordsCenter = [43.29490421, 5.37188392];
         let zoomLevel = 15;
@@ -227,6 +231,11 @@
             "timestamp": null
         };
 
+        var apiFetchPurpleAir = {
+            "data": [],
+            "timespan": null,
+            "timestamp": null
+        };
 
 
         var root1;
@@ -239,24 +248,7 @@
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             maxZoom: 21
-        }).addTo(map);
-
-
-        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
-
-
-
-
-    // L.tileLayer.wms('https://azurh-geoservices.atmosud.org/geoserver/azur_heure/ows', {
-    //         version: '1.1.1',
-    //         // layers: 'paca_' + variable + '_' + hour,
-    //         layers: 'paca_pm10_h11',
-    //         format: 'image/png',
-    //         crs: L.CRS.EPSG4326,
-    //         transparent: true,
-    //         opacity: 0.6,
-    //         pane: 'raster'
-    //       }).addTo(map);;   
+        }).addTo(map); 
 
         new L.Hash(map);
 
@@ -268,12 +260,15 @@
 
         map.setView(coordsCenter, zoomLevel);
 
+        var polygonPACA = L.geoJSON(paca,{fillOpacity:0.2, color:'black', weight:0, invert:true}).addTo(map);
+
         var nebuleairParticuliers = new L.layerGroup();
         var sensorCommunity = new L.layerGroup();
         var stationsRefAtmoSud = new L.layerGroup();
         var stationsMicroAtmoSud = new L.layerGroup();
         var modelisationPMAtmoSud = new L.layerGroup();
         var modelisationICAIRAtmoSud = new L.layerGroup();
+        var purpleAir = new L.layerGroup();
 
         // Switch case
         // reload
@@ -284,6 +279,7 @@
         // $(document).ready(loadSensorCommunity);
         //$(document).ready(loadStationRefAtmo);
         // $(document).ready(loadStationMicroAtmo);
+        //$(document).ready(loadPurpleAir);
         //$(document).ready(openToast_loading);
 
         // ************************
@@ -319,6 +315,10 @@
             map.addLayer(modelisationICAIRAtmoSud)
         }
 
+        if (document.querySelector("#checkbox_purpleAir").checked) {
+            map.addLayer(purpleAir)
+        }
+
 
         document.querySelector("#checkbox_micro_stationsParticuliers").addEventListener("change", switchNebuleAir)
         document.querySelector("#checkbox_sensor_community").addEventListener("change", switchSensorCommunity)
@@ -326,6 +326,8 @@
         document.querySelector("#checkbox_micro_stationsAtmoSud").addEventListener("change", switchMicroAtmo)
         document.querySelector("#checkbox_modelisationPMAtmoSud").addEventListener("change", switchModelisationPMAtmo)
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").addEventListener("change", switchModelisationICAIRAtmo)
+        document.querySelector("#checkbox_purpleAir").addEventListener("change", switchPurpleAir)
+
 
 
 
@@ -443,6 +445,30 @@ function switchModelisationICAIRAtmo() {
             map.removeLayer(modelisationICAIRAtmoSud);
                 }
 }
+
+
+function switchPurpleAir() {
+            if (document.querySelector("#checkbox_purpleAir").checked) {
+
+                if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && apiFetchPurpleAir.timespan != timespanLower )) {
+                        console.log("timespan change!");
+                        console.log("Reload PurpleAir!");
+                        loadPurpleAir();
+                    }
+
+                if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > timespanLower * 60 * 1000)) {
+                    console.log("Reload PurpleAir!");
+                    loadPurpleAir();
+                }
+                map.addLayer(purpleAir);
+
+            } else {
+                map.removeLayer(purpleAir);
+            }
+        }
+
+
+
 
         document.querySelector("#button_PM1").addEventListener("click", choosePM1)
         document.querySelector("#button_PM25").addEventListener("click", choosePM25)

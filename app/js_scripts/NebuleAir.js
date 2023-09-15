@@ -1,4 +1,3 @@
-//on va chercher les coordonnées des NebuleAir 
 function loadNebuleAir() {
     console.log("%cNebuleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
@@ -9,7 +8,7 @@ function loadNebuleAir() {
         data: ({timespan: timespanLower}),
     }).done(function (data) {
 
-        closeToast_loading();
+        //closeToast_loading();
 
         const end = Date.now();
         const requestTimer = (end - start)/1000;
@@ -19,6 +18,15 @@ function loadNebuleAir() {
 
         var displayed = data.filter((e) => e.displayMap == true);
 
+
+        // var displayed = data.filter(function(e){
+
+
+
+
+        // });
+
+
         console.log(displayed);
 
         apiFetchNebuleAir.data = displayed;
@@ -26,6 +34,26 @@ function loadNebuleAir() {
         apiFetchNebuleAir.timespan = timespanLower;
 
         $.each(displayed, function (key, value) {
+
+          // var polygonPACA = L.geoJSON(paca,{fillOpacity:0, color:'black', weight:1}).addTo(map);
+          // var layerID;
+
+          // console.log(polygonPACA);
+
+          // polygonPACA.eachLayer(function(e){layerID  = e._leaflet_id;});
+
+          // console.log(polygonPACA._layers[layerID]);
+
+
+          // // polygonPACA.eachLayer(function(memberLayer) {
+          // //   if (memberLayer.contains(L.latLng(value['latitude'], value['longitude']))) {
+          // //     console.log(memberLayer.feature.properties);
+          // //   }
+          // // });
+
+
+
+          // if (polygonPACA._layers[layerID].contains(L.latLng(value['latitude'], value['longitude']))){
 
             var value_compound = Math.round(value[compoundUpper]);
 
@@ -1411,7 +1439,8 @@ function loadNebuleAir() {
         })
           .addTo(nebuleairParticuliers);
 
-        }  
+        }
+      // }  
         });
 
     })
@@ -1420,7 +1449,6 @@ function loadNebuleAir() {
     });
 };
 
-//on va chercher les coordonnées des NebuleAir 
 function changeNebuleAir() {
       $.each(apiFetchNebuleAir.data, function (key, value) {
 

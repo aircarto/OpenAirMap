@@ -1,12 +1,11 @@
-// ****** PURPLE AIR ************
-//on va chercher les coordonnées des Purple Air
-// TODO: ouvrir un popup avec l'historique des mesures
 function loadPurpleAir() {
+    console.log("%cPurpleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+    const start = Date.now();
     $.ajax({
         method: "GET",
         url: "../php_scripts/PurpleAir.php",
     }).done(function (data) {
-
+        console.log(data);
         console.log("Getting data from Purple Air");
         console.log(data.data);
 
