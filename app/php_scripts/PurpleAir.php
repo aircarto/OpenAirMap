@@ -1,13 +1,15 @@
 <?php
 
-use Dotenv\Dotenv;
+// use Dotenv\Dotenv;
 
-require '../../vendor/autoload.php';
+// require '../../vendor/autoload.php';
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+// $dotenv = Dotenv::createImmutable(__DIR__);
+// $dotenv->load();
 
-$api_key_purple = $_ENV['PURPLEAIR_API_KEY'];
+// $api_key_purple = $_ENV['PURPLEAIR_API_KEY'];
+
+$api_key_purple = '0C03EEE0-770A-11ED-B6F4-42010A800007';
 
 $url = 'https://api.purpleair.com/v1/sensors?fields=name,latitude,longitude,pm1.0,pm2.5,pm10.0,last_seen&api_key='.$api_key_purple.'&nwlng=5.223793027379755&nwlat=43.38349241945991&selng=5.594581567660924&selat=43.22158944480793';
 

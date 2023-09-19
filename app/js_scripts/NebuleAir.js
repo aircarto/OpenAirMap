@@ -18,15 +18,6 @@ function loadNebuleAir() {
 
         var displayed = data.filter((e) => e.displayMap == true);
 
-
-        // var displayed = data.filter(function(e){
-
-
-
-
-        // });
-
-
         console.log(displayed);
 
         apiFetchNebuleAir.data = displayed;

@@ -211,10 +211,10 @@
         });
 
                 // ON ne fetch pas tout
-                var apiFetchNebuleAir = {
-            "data": [],
-            "timespan": null,
-            "timestamp": null
+        var apiFetchNebuleAir = {
+        "data": [],
+        "timespan": null,
+        "timestamp": null
         };
         var apiFetchAtmoSudRef = {
             "data": [],
@@ -336,15 +336,15 @@
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
 
                 if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && apiFetchNebuleAir.timespan != timespanLower )) {
-                        console.log("timespan change!");
                         console.log("Reload NebuleAir!");
                         loadNebuleAir();
-                    }
-
-                if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000)) {
+                    }else{
+                        if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000)) {
                     console.log("Reload NebuleAir!");
                     loadNebuleAir();
                 }
+            
+            }
                 map.addLayer(nebuleairParticuliers);
 
             } else {
@@ -358,14 +358,15 @@
                 if (document.querySelector("#checkbox_sensor_community").checked) {
 
                     if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && apiFetchSensorCommunity.timespan != timespanLower )) {
-                        console.log("timespan change!");
                         console.log("Reload Sensor.Community!");
                         loadSensorCommunity();
-                    }
+                    }else{
+                    
                     if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000)) {
                         console.log("Reload Sensor.Community!");
                         loadSensorCommunity();
                     }
+                }
                     map.addLayer(sensorCommunity);
                 } else {
                     map.removeLayer(sensorCommunity);
@@ -382,15 +383,15 @@
             if (timespanLower != 2) {
                 if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) { //ATTENTION CAS 2mins
                     if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && apiFetchAtmoSudRef.timespan != timespanLower )) {
-                        console.log("timespan change!");
                         console.log("Reload AtmoSud Ref!");
                         loadStationRefAtmo();
-                    }
+                    }else{
                     
                     if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && apiFetchAtmoSudRef.timespan == timespanLower && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000)) {
                         console.log("Reload AtmoSud Ref!");
                         loadStationRefAtmo();
                     }
+                }
                     map.addLayer(stationsRefAtmoSud);
                 } else {
                     map.removeLayer(stationsRefAtmoSud);
@@ -409,15 +410,15 @@
             if (timespanLower != 2 & timespanLower != 60 & timespanLower != 1440) {
                 if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
                     if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && apiFetchAtmoSudMicro.timespan != timespanLower )) {
-                        console.log("timespan change!");
                         console.log("Reload AtmoSud Micro!");
                         loadStationMicroAtmo();
-                    }
+                    }else{
 
                     if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000)) {
                         console.log("Reload AtmoSud Micro");
                         loadStationMicroAtmo();
                     }
+                }
                     map.addLayer(stationsMicroAtmoSud);
                 } else {
                     map.removeLayer(stationsMicroAtmoSud);
@@ -452,15 +453,15 @@ function switchPurpleAir() {
             if (document.querySelector("#checkbox_purpleAir").checked) {
 
                 if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && apiFetchPurpleAir.timespan != timespanLower )) {
-                        console.log("timespan change!");
                         console.log("Reload PurpleAir!");
                         loadPurpleAir();
-                    }
+                    }else{
 
                 if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > timespanLower * 60 * 1000)) {
                     console.log("Reload PurpleAir!");
                     loadPurpleAir();
                 }
+            }
                 map.addLayer(purpleAir);
 
             } else {
