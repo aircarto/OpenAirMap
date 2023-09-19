@@ -261,7 +261,7 @@ function loadNebuleAir() {
                 
                 axisRenderer1.grid.template.setAll({
                   stroke: root1.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8
                 });
 
@@ -454,7 +454,7 @@ function loadNebuleAir() {
                 
                 axisRenderer2.grid.template.setAll({
                   stroke: root2.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8,
                 });
                 
@@ -644,7 +644,7 @@ function loadNebuleAir() {
                 
                 axisRenderer3.grid.template.setAll({
                   stroke: root3.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8,
                 });
 
@@ -881,7 +881,7 @@ function loadNebuleAir() {
             
             axisRenderer1.grid.template.setAll({
               stroke: root1.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8
             });
 
@@ -1074,7 +1074,7 @@ function loadNebuleAir() {
             
             axisRenderer2.grid.template.setAll({
               stroke: root2.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8,
             });
             
@@ -1264,7 +1264,7 @@ function loadNebuleAir() {
             
             axisRenderer3.grid.template.setAll({
               stroke: root3.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8,
             });
 
@@ -3056,6 +3056,6 @@ dataSource: data
         }
       })
       .fail(function() {
-          console.log("Error while geting data from AtmoSud API");
+          console.log("Error while geting data from Aircarto API");
       });
 }

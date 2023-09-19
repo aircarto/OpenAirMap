@@ -243,7 +243,7 @@ function loadStationMicroAtmo() {
                     
                     axisRenderer1.grid.template.setAll({
                       stroke: root1.interfaceColors.get("background"),
-                      visible: true,
+                      visible: false,
                       strokeOpacity: 0.8
                     });
 
@@ -427,7 +427,7 @@ function loadStationMicroAtmo() {
                     
                     axisRenderer2.grid.template.setAll({
                       stroke: root2.interfaceColors.get("background"),
-                      visible: true,
+                      visible: false,
                       strokeOpacity: 0.8,
                     });
                     
@@ -607,7 +607,7 @@ function loadStationMicroAtmo() {
                     
                     axisRenderer3.grid.template.setAll({
                       stroke: root3.interfaceColors.get("background"),
-                      visible: true,
+                      visible: false,
                       strokeOpacity: 0.8,
                     });
 
@@ -831,7 +831,7 @@ function loadStationMicroAtmo() {
               
               axisRenderer1.grid.template.setAll({
                 stroke: root1.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1015,7 +1015,7 @@ function loadStationMicroAtmo() {
               
               axisRenderer2.grid.template.setAll({
                 stroke: root2.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
               
@@ -1195,7 +1195,7 @@ function loadStationMicroAtmo() {
               
               axisRenderer3.grid.template.setAll({
                 stroke: root3.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
 
@@ -1594,7 +1594,7 @@ function changeStationMicroAtmo() {
               
               axisRenderer1.grid.template.setAll({
                 stroke: root1.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1778,7 +1778,7 @@ function changeStationMicroAtmo() {
               
               axisRenderer2.grid.template.setAll({
                 stroke: root2.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
               
@@ -1958,7 +1958,7 @@ function changeStationMicroAtmo() {
               
               axisRenderer3.grid.template.setAll({
                 stroke: root3.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
 
@@ -2184,7 +2184,7 @@ function changeStationMicroAtmo() {
             
             axisRenderer1.grid.template.setAll({
               stroke: root1.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8
             });
 
@@ -2368,7 +2368,7 @@ function changeStationMicroAtmo() {
             
             axisRenderer2.grid.template.setAll({
               stroke: root2.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8,
             });
             
@@ -2548,7 +2548,7 @@ function changeStationMicroAtmo() {
             
             axisRenderer3.grid.template.setAll({
               stroke: root3.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8,
             });
 

@@ -253,7 +253,7 @@ function loadStationRefAtmo() {
                 
                 axisRenderer1.grid.template.setAll({
                   stroke: root1.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8
                 });
 
@@ -446,7 +446,7 @@ function loadStationRefAtmo() {
                 
                 axisRenderer2.grid.template.setAll({
                   stroke: root2.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8,
                 });
                 
@@ -638,7 +638,7 @@ function loadStationRefAtmo() {
                 
                 axisRenderer3.grid.template.setAll({
                   stroke: root3.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8,
                 });
 
@@ -875,7 +875,7 @@ function loadStationRefAtmo() {
               
               axisRenderer1.grid.template.setAll({
                 stroke: root1.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1068,7 +1068,7 @@ function loadStationRefAtmo() {
               
               axisRenderer2.grid.template.setAll({
                 stroke: root2.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
               
@@ -1260,7 +1260,7 @@ function loadStationRefAtmo() {
               
               axisRenderer3.grid.template.setAll({
                 stroke: root3.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
 
@@ -1680,7 +1680,7 @@ function changeStationRefAtmo() {
               
               axisRenderer1.grid.template.setAll({
                 stroke: root1.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1873,7 +1873,7 @@ function changeStationRefAtmo() {
               
               axisRenderer2.grid.template.setAll({
                 stroke: root2.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
               
@@ -2065,7 +2065,7 @@ function changeStationRefAtmo() {
               
               axisRenderer3.grid.template.setAll({
                 stroke: root3.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8,
               });
 
@@ -2302,7 +2302,7 @@ function changeStationRefAtmo() {
             
             axisRenderer1.grid.template.setAll({
               stroke: root1.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8
             });
 
@@ -2495,7 +2495,7 @@ function changeStationRefAtmo() {
             
             axisRenderer2.grid.template.setAll({
               stroke: root2.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8,
             });
             
@@ -2687,7 +2687,7 @@ function changeStationRefAtmo() {
             
             axisRenderer3.grid.template.setAll({
               stroke: root3.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8,
             });
 

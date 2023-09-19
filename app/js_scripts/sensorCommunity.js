@@ -260,7 +260,7 @@ function loadSensorCommunity() {
                 
                 axisRenderer1.grid.template.setAll({
                   stroke: root1.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8
                 });
 
@@ -457,7 +457,7 @@ function loadSensorCommunity() {
                 
                 axisRenderer2.grid.template.setAll({
                   stroke: root2.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8
                 });
                 
@@ -632,7 +632,7 @@ function loadSensorCommunity() {
                 
                 axisRenderer3.grid.template.setAll({
                   stroke: root3.interfaceColors.get("background"),
-                  visible: true,
+                  visible: false,
                   strokeOpacity: 0.8
                 });
 
@@ -853,7 +853,7 @@ function loadSensorCommunity() {
               
               axisRenderer1.grid.template.setAll({
                 stroke: root1.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1050,7 +1050,7 @@ function loadSensorCommunity() {
               
               axisRenderer2.grid.template.setAll({
                 stroke: root2.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
               
@@ -1225,7 +1225,7 @@ function loadSensorCommunity() {
               
               axisRenderer3.grid.template.setAll({
                 stroke: root3.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1589,7 +1589,7 @@ function changeSensorCommunity() {
               
               axisRenderer1.grid.template.setAll({
                 stroke: root1.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -1786,7 +1786,7 @@ function changeSensorCommunity() {
               
               axisRenderer2.grid.template.setAll({
                 stroke: root2.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
               
@@ -1961,7 +1961,7 @@ function changeSensorCommunity() {
               
               axisRenderer3.grid.template.setAll({
                 stroke: root3.interfaceColors.get("background"),
-                visible: true,
+                visible: false,
                 strokeOpacity: 0.8
               });
 
@@ -2179,7 +2179,7 @@ function changeSensorCommunity() {
             
             axisRenderer1.grid.template.setAll({
               stroke: root1.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8
             });
 
@@ -2376,7 +2376,7 @@ function changeSensorCommunity() {
             
             axisRenderer2.grid.template.setAll({
               stroke: root2.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8
             });
             
@@ -2551,7 +2551,7 @@ function changeSensorCommunity() {
             
             axisRenderer3.grid.template.setAll({
               stroke: root3.interfaceColors.get("background"),
-              visible: true,
+              visible: false,
               strokeOpacity: 0.8
             });
 
