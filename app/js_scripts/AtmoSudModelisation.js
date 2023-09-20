@@ -5,7 +5,7 @@ function loadModelisationPMAtmo() {  //Normalement h24 pour heure actuelle.
     switch(compoundUpper) {
       case 'PM1':
         var string_layer = 'paca_pm1_h24';
-        alert("Pas de modélisation AtmoSud pour les PM1");
+        openToast("Pas de modélisation AtmoSud pour les PM1");
         break;
       case 'PM25':
         var string_layer = 'paca_pm2_5_h24';

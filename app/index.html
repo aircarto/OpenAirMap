@@ -29,6 +29,7 @@
     <script src="js_scripts/AtmoSudMicro.js"></script>
     <script src="js_scripts/sensorCommunity.js"></script>
     <script src="js_scripts/AtmoSudModelisation.js"></script>
+    <script src="js_scripts/api_purpleair.js"></script>
 
     <script src="geojson/paca.geojson"></script>
 
@@ -69,16 +70,30 @@
     <div id="map"></div>
 
     <!-- Toast de chargement des données -->
-    <div class="toast-container position-fixed end-0 p-3" style="bottom:10px;">
-        <div class="toast align-items-center" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <!-- <div class="toast-container position-fixed end-0 p-3" style="bottom:10px;">
+        <div class="toast align-items-center" id="loadToast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
                     Chargement des données <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                </div>
+                </div> -->
                 <!-- <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button> -->
+            <!-- </div>
+        </div>
+    </div> -->
+
+       <!-- Toast de chargement des données -->
+       <div class="toast-container position-fixed end-0 p-3" style="bottom:10px;">
+        <div class="toast align-items-center" id="messageToast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Attention: <span id="message"></span>
+                </div>
             </div>
         </div>
     </div>
+
+
+
 
     <!-- Boutons PM1 PM2.5 PM10 -->
     <div class="btn-group" id="div_buttonPM" role="group">
@@ -372,7 +387,7 @@
                     map.removeLayer(sensorCommunity);
                 }
             } else {
-                alert("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
+                openToast("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
                 document.querySelector("#checkbox_sensor_community").checked = false;
             }
 
@@ -397,9 +412,8 @@
                     map.removeLayer(stationsRefAtmoSud);
                 }
             } else {
-                alert("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
+                openToast("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
                 document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
-
             }
 
 
@@ -424,7 +438,7 @@
                     map.removeLayer(stationsMicroAtmoSud);
                 }
             } else {
-                alert("Pas de données à intervalles 2 minutes, 1 heure ou 1 jour pour les microstations AtmoSud");
+                openToast("Pas de données à intervalles 2 minutes, 1 heure ou 1 jour pour les microstations AtmoSud");
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
             }
         }
@@ -616,14 +630,25 @@ function switchPurpleAir() {
         if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
-                alert("Pas de données à intervalles 2 minutes pour les microstations AtmoSud");
+                openToast("Pas de données à intervalles 2 minutes pour les microstations AtmoSud");
             }
 
         if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
             document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
             map.removeLayer(stationsRefAtmoSud);
-            alert("Pas de données à intervalles 1 jour pour les stations de référence AtmoSud");
+            openToast("Pas de données à intervalles 1 jour pour les stations de référence AtmoSud");
         }
+
+        if(document.querySelector("#checkbox_purpleAir").checked){
+            if (apiFetchPurpleAir.timespan != 2 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 15 * 60 * 1000))
+            {
+                purpleAir.clearLayers();
+                loadPurpleAir();
+            }else{
+                purpleAir.clearLayers();
+                changePurpleAir();
+            }
+            }
 
         }
 
@@ -685,6 +710,17 @@ function switchPurpleAir() {
                 changeStationRefAtmo();
             }
             }
+
+            if(document.querySelector("#checkbox_purpleAir").checked){
+            if (apiFetchPurpleAir.timespan != 15 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 15 * 60 * 1000))
+            {
+                purpleAir.clearLayers();
+                loadPurpleAir();
+            }else{
+                purpleAir.clearLayers();
+                changePurpleAir();
+            }
+            }
         }
 
         function choose60() {
@@ -708,7 +744,7 @@ function switchPurpleAir() {
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
-                alert("Pas de données à intervalles 1 heure pour les microstations AtmoSud");
+                openToast("Pas de données à intervalles 1 heure pour les microstations AtmoSud");
             }
 
             if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
@@ -719,6 +755,17 @@ function switchPurpleAir() {
             }else{
                 stationsRefAtmoSud.clearLayers();
                 changeStationRefAtmo();
+            }
+            }
+
+            if(document.querySelector("#checkbox_purpleAir").checked){
+            if (apiFetchPurpleAir.timespan != 60 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 15 * 60 * 1000))
+            {
+                purpleAir.clearLayers();
+                loadPurpleAir();
+            }else{
+                purpleAir.clearLayers();
+                changePurpleAir();
             }
             }
         }
@@ -740,7 +787,7 @@ function switchPurpleAir() {
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
-                alert("Pas de données à intervalles 1 jour pour les microstations AtmoSud");
+                openToast("Pas de données à intervalles 1 jour pour les microstations AtmoSud");
             }
 
             if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
@@ -755,20 +802,47 @@ function switchPurpleAir() {
 
             }
 
+            if(document.querySelector("#checkbox_purpleAir").checked){
+            if (apiFetchPurpleAir.timespan != 1440 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 15 * 60 * 1000))
+            {
+                purpleAir.clearLayers();
+                loadPurpleAir();
+            }else{
+                purpleAir.clearLayers();
+                changePurpleAir();
+            }
+            }
+
         }
 
-        //ouverture du toast
-        function openToast_loading() {
-            const toastLiveExample = document.getElementById('liveToast')
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            console.log("Showing loading toast");
+        // //ouverture du toast
+        // function openToast_loading() {
+        //     const toastLiveExample = document.getElementById('loadToast')
+        //     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        //     console.log("Showing loading toast");
+        //     toastBootstrap.show()
+        // }
+        // //fermeture du toast
+        // function closeToast_loading() {
+        //     const toastLiveExample = document.getElementById('loadToast')
+        //     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        //     console.log("Hiding loading toast");
+        //     toastBootstrap.hide()
+        // }
+
+                //ouverture du toast
+        function openToast(message) {
+            let toastDiv= document.getElementById('messageToast');
+            document.getElementById('message').innerText = message;
+            let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastDiv);
+            console.log("Showing message toast");
             toastBootstrap.show()
         }
         //fermeture du toast
-        function closeToast_loading() {
-            const toastLiveExample = document.getElementById('liveToast')
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            console.log("Hiding loading toast");
+        function closeToast() {
+            let toastDiv = document.getElementById('messageToast');
+            let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastDiv);
+            console.log("Hiding messgae toast");
             toastBootstrap.hide()
         }
 
@@ -1141,6 +1215,9 @@ function screenShot() {
         }
 
         if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked) {
+        }
+
+        if (document.querySelector("#checkbox_purpleAir").checked) {
         }
 
         }, timespanLower * 60 * 1000)

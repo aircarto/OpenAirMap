@@ -7,9 +7,6 @@ function loadStationRefAtmo() {
         url: "../php_scripts/AtmoSudRef.php",
         data: ({timespan: timespanLower}),
     }).done(function (data) {
-
-        closeToast_loading();
-
         const end = Date.now();
         const requestTimer = (end - start)/1000;
         console.log(`Data gathered in %c${requestTimer} sec`, "color: red;");

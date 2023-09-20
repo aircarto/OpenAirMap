@@ -8,8 +8,6 @@ function loadNebuleAir() {
         data: ({timespan: timespanLower}),
     }).done(function (data) {
 
-        //closeToast_loading();
-
         const end = Date.now();
         const requestTimer = (end - start)/1000;
 
@@ -1430,8 +1428,7 @@ function loadNebuleAir() {
         })
           .addTo(nebuleairParticuliers);
 
-        }
-      // }  
+        } 
         });
 
     })
@@ -2833,8 +2830,7 @@ function load1NebuleAir(id,hours,timespan){
           console.log(data);
 
           if (data == null){
-            alert("Ce NebuleAir n'a pas produit de donnée sur l'intervalle.")
-
+            openToast("Ce NebuleAir n'a pas produit de donnée sur l'intervalle.")
           }else{
 
           var data_PM1 = data.map(function(e){
