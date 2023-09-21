@@ -976,6 +976,40 @@ function switchPurpleAir() {
             }
             }
 
+            if (sensor.includes("purpleair")) {
+                let id = sensor.split("-")[1];
+                load1PurpleAir(id,timeLengthGraph,timespanGraph);
+                document.getElementById("chartSensor").style.display = 'none';
+                document.getElementById("chartSensor2").style.display = 'block';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+                document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
+                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+               buttonsSwitcher(timeLengthGraph,timespanGraph);
+
+               if(timespanGraph == 2 || timespanGraph == 15){
+              document.getElementById("button1a").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button1a").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("button2m").children[0].setAttribute("disabled","");
+              document.getElementById("button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button2m").children[0].removeAttribute("disabled");
+              document.getElementById("button15m").children[0].removeAttribute("disabled");
+            }
+
+            }
+
         }
 
         function chooseTimeSensorCommunity(sensor, hours) {
