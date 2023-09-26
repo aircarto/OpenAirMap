@@ -9,8 +9,6 @@ function loadSensorCommunity() {
 
       console.log(data);
 
-        closeToast_loading();
-
         var sensors = ["SDS011","SDS021","PMS1003","PMS3003","PMS5003","PMS6003","PMS7003","HPM","SPS30","NextPM","IPS-7100"];
         var PACA = [10383,11396,30225,54593,61673,65706,67671,69087,69315,69349,73276,77775,79683];
 
