@@ -158,8 +158,8 @@
     <!-- Les Logos -->
     <!-- <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div> -->
 
-    <!-- LE SIDE PANEL (id "sidePanel") -->
-    <div class="row">
+    <!-- LE SIDE PANEL avec les graphiques (id "sidePanel") -->
+    <div class="row text-center">
         <div class="col-5">
             <div class="card m-3" id="sidePanel" style="display: none;">
                 <!-- Bouton pour fermer le panel -->
@@ -168,7 +168,8 @@
 
                 <div class="card-body">
                     <!-- Nom du capteur en haut -->
-                    <h3 id="title_deviceName"></h3>
+                    <!-- <h3 id="title_deviceName"></h3> -->
+                    <button type="button" class="btn btn-outline-primary btn-lg disabled" id="title_deviceName"></button>
                     <h5 class="card-title" id="card-title"></h5>
 
                     <!--  Grafana iframe -->

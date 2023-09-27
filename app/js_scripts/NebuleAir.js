@@ -52,6 +52,9 @@ function loadNebuleAir() {
             //const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset));
     
             var date_texte ="";
+            var horaire_texte="";
+            
+            //date 
             if(timestamp_UTC.getDate()< 10){
               date_texte += "0";
               date_texte += timestamp_UTC.getDate();
@@ -67,26 +70,20 @@ function loadNebuleAir() {
             }
             date_texte += "/";
             date_texte += timestamp_UTC.getFullYear();
-            date_texte += ", ";
+            
+            //horaire
             if(timestamp_UTC.getHours()< 10){
-              date_texte += "0";
-              date_texte += timestamp_UTC.getHours();
+              horaire_texte += "0";
+              horaire_texte += timestamp_UTC.getHours();
             }else{
-              date_texte += timestamp_UTC.getHours();
+              horaire_texte += timestamp_UTC.getHours();
             }
-            date_texte += ":";
+            horaire_texte += "h";
             if(timestamp_UTC.getMinutes()< 10){
-              date_texte += "0";
-              date_texte += timestamp_UTC.getMinutes();
+              horaire_texte += "0";
+              horaire_texte += timestamp_UTC.getMinutes();
             }else{
-              date_texte += timestamp_UTC.getMinutes();
-            }
-            date_texte += ":";
-            if(timestamp_UTC.getSeconds()< 10){
-              date_texte += "0";
-              date_texte += timestamp_UTC.getSeconds();
-            }else{
-              date_texte += timestamp_UTC.getSeconds();
+              horaire_texte += timestamp_UTC.getMinutes();
             }
 
             var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
@@ -95,9 +92,13 @@ function loadNebuleAir() {
             '<div id="chartdiv2"></div>'+
             '<div id="chartdiv3"></div>'+
             '</div>' +
-            '<br>Mesure :' + date_texte + '<br>' +
-            '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
-            '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
+            '<div class="text-center" style="padding-top:15px">'+
+            '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
+            '<br>Qualité connexion WIFI ' + value['wifi_signal'] +'<br>' +
+            //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
+            '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
+            '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
+            '</div>'
 
             
             //image des points sur la carte
