@@ -1,4 +1,5 @@
 .env
 .DS_Store
 app/js_scripts/api_purpleair.js
+.vendor
 
