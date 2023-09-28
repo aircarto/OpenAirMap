@@ -60,10 +60,12 @@ function loadPurpleAir() {
             '<div id="chartdiv2"></div>'+
             '<div id="chartdiv3"></div>'+
             '</div>' +
-            '<br>Mesure :' + date_texte + '<br>' +
-            '<br>Capteur qualité de l\'air extérieur (' + sensorid + ', '+ location +') <br>' +
-            '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair' + sensorid + '\')" disabled>Voir les données</button>'
-
+            '<div class="text-center" style="padding-top:15px">'+
+            '<br>Dernière mesure effectuée le ' + date_texte + '<br>' +
+            '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
+            '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
+            '</div>';
+    
 
             var icon_param = {
                 iconUrl: 'img/purpleAir/purpleAir_default.png',
@@ -1430,12 +1432,12 @@ function changePurpleAir() {
             var a = new Date(UNIX_timestamp * 1000);
             var months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
             var year = a.getFullYear();
-            var month = months[a.getMonth()];
+            var month = a.getMonth() + 1;
             var date = a.getDate();
             var hour = a.getHours();
             var min = a.getMinutes();
             var sec = a.getSeconds();
-            var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+            var time = date + '/' + month + '/' + year + ' à ' + hour + 'h' + min;
             return time;
         }
 
@@ -1445,10 +1447,11 @@ function changePurpleAir() {
         '<div id="chartdiv2"></div>'+
         '<div id="chartdiv3"></div>'+
         '</div>' +
-        '<br>Mesure :' + date_texte + '<br>' +
-        '<br>Capteur qualité de l\'air extérieur (' + sensorid + ', '+ location +') <br>' +
-        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'
-
+        '<div class="text-center" style="padding-top:15px">'+
+        '<br>Dernière mesure effectuée le ' + date_texte + '<br>' +
+        '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
+        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
+        '</div>';
 
         var icon_param = {
             iconUrl: 'img/purpleAir/purpleAir_default.png',
