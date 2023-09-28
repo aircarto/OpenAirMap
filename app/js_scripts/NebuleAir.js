@@ -86,6 +86,9 @@ function loadNebuleAir() {
               horaire_texte += timestamp_UTC.getMinutes();
             }
 
+            var wifiLevel = 2 * (parseInt(value['wifi_signal']) + 100);
+            if(wifiLevel > 100){wifiLevel = 100}
+
             var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
             '<div id="gauges">'+
             '<div id="chartdiv1"></div>'+
@@ -94,11 +97,11 @@ function loadNebuleAir() {
             '</div>' +
             '<div class="text-center" style="padding-top:15px">'+
             '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
-            '<br>Qualité connexion WIFI ' + value['wifi_signal'] +'<br>' +
+            '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
             //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
             '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-            '</div>'
+            '</div>';
 
             
             //image des points sur la carte
@@ -1449,9 +1452,13 @@ function changeNebuleAir() {
           '<div id="chartdiv2"></div>'+
           '<div id="chartdiv3"></div>'+
           '</div>' +
-          '<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
-          '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'
-
+          '<div class="text-center" style="padding-top:15px">'+
+          '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
+          '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
+          //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
+          '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
+          '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
+          '</div>'
           
           //image des points sur la carte
           var icon_param = {
