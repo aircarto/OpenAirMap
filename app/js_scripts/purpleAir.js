@@ -39,21 +39,6 @@ function loadPurpleAir() {
               pm10_value == -1.0;
             }
 
-            date_texte = timeConverter(last_seen);
-
-            function timeConverter(UNIX_timestamp) {
-                var a = new Date(UNIX_timestamp * 1000);
-                var months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
-                var year = a.getFullYear();
-                var month = months[a.getMonth()];
-                var date = a.getDate();
-                var hour = a.getHours();
-                var min = a.getMinutes();
-                var sec = a.getSeconds();
-                var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-                return time;
-            }
-
             var purpleAirPopup = '<img src="img/LogoPurpleAir.png" alt="" class="card-img-top">' +
             '<div id="gauges">'+
             '<div id="chartdiv1"></div>'+
@@ -61,7 +46,7 @@ function loadPurpleAir() {
             '<div id="chartdiv3"></div>'+
             '</div>' +
             '<div class="text-center" style="padding-top:15px">'+
-            '<br>Dernière mesure effectuée le ' + date_texte + '<br>' +
+            '<br>Dernière mesure effectuée ' + timeDateCounter(last_seen * 1000) + '<br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
             '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
             '</div>';
@@ -1426,20 +1411,6 @@ function changePurpleAir() {
           pm10_value == -1.0;
         }
 
-        date_texte = timeConverter(last_seen);
-
-        function timeConverter(UNIX_timestamp) {
-            var a = new Date(UNIX_timestamp * 1000);
-            var months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
-            var year = a.getFullYear();
-            var month = a.getMonth() + 1;
-            var date = a.getDate();
-            var hour = a.getHours();
-            var min = a.getMinutes();
-            var sec = a.getSeconds();
-            var time = date + '/' + month + '/' + year + ' à ' + hour + 'h' + min;
-            return time;
-        }
 
         var purpleAirPopup = '<img src="img/LogoPurpleAir.png" alt="" class="card-img-top">' +
         '<div id="gauges">'+
@@ -1448,7 +1419,7 @@ function changePurpleAir() {
         '<div id="chartdiv3"></div>'+
         '</div>' +
         '<div class="text-center" style="padding-top:15px">'+
-        '<br>Dernière mesure effectuée le ' + date_texte + '<br>' +
+        '<br>Dernière mesure effectuée ' + timeDateCounter(last_seen * 1000) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
         '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
         '</div>';
@@ -3047,3 +3018,4 @@ function load1PurpleAir(id,hours,timespan){
           console.log("Error while geting data from Aircarto API");
       });
 }
+

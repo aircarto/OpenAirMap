@@ -1222,6 +1222,64 @@ function screenShot() {
 }
 
 
+function timeDateCounter(timestamp){
+
+const timestamp_UTC = new Date(timestamp);
+const now = Date.now();
+
+let difference = Math.floor((now - timestamp_UTC)/86400000);
+
+var date_texte ="";
+let horaire_texte="";
+
+switch(difference) {
+  case 0:
+    date_texte = "aujourd'hui";
+    break;
+  case 1:
+    date_texte = "hier";
+    break;
+  case 2:
+    date_texte = "avant-hier";
+    break;
+  default:
+    date_texte += "le ";
+    if(timestamp_UTC.getDate()< 10){
+    date_texte += "0";
+    date_texte += timestamp_UTC.getDate();
+  }else{
+    date_texte += timestamp_UTC.getDate();
+  }
+  date_texte += "/";
+  if((timestamp_UTC.getMonth()+1)< 10){
+    date_texte += "0";
+    date_texte += (timestamp_UTC.getMonth()+1);
+  }else{
+    date_texte += (timestamp_UTC.getMonth()+1);
+  }
+  date_texte += "/";
+  date_texte += timestamp_UTC.getFullYear();
+} 
+
+//horaire
+if(timestamp_UTC.getHours()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getHours();
+}else{
+horaire_texte += timestamp_UTC.getHours();
+}
+horaire_texte += "h";
+if(timestamp_UTC.getMinutes()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getMinutes();
+}else{
+horaire_texte += timestamp_UTC.getMinutes();
+} 
+
+return date_texte + " à " + horaire_texte;
+}
+
+
         setInterval(function() {
             console.log("Setinterval:");
             console.log(timespanLower * 60 * 1000);
