@@ -51,6 +51,7 @@ function loadPurpleAir() {
             '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
             '</div>';
     
+            var purpleAirTootip = sensorid.toString();
 
             var icon_param = {
                 iconUrl: 'img/purpleAir/purpleAir_default.png',
@@ -154,6 +155,7 @@ function loadPurpleAir() {
             .addTo(purpleAir);
 
             L.marker([lat, long], { icon: myIcon })
+            .bindTooltip(purpleAirTootip,{direction: 'center'})
             .bindPopup(purpleAirPopup, {
                 maxWidth: 4000
                 // autoclose:false,
@@ -770,6 +772,7 @@ function loadPurpleAir() {
           });
         
           L.marker([lat, long], { icon: purpleAir_icon })
+          .bindTooltip(purpleAirTootip,{direction: 'center'})
           .bindPopup(purpleAirPopup, {
               maxWidth: 4000
               // autoclose:false,
@@ -1424,6 +1427,8 @@ function changePurpleAir() {
         '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
         '</div>';
 
+        var purpleAirTootip = sensorid.toString();
+
         var icon_param = {
             iconUrl: 'img/purpleAir/purpleAir_default.png',
             iconSize: [80, 80], // size of the icon
@@ -1525,6 +1530,7 @@ function changePurpleAir() {
         .addTo(purpleAir);
 
         L.marker([lat, long], { icon: myIcon })
+        .bindTooltip(purpleAirTootip,{direction: 'center'})
         .bindPopup(purpleAirPopup, {
             maxWidth: 4000
             // autoclose:false,
@@ -2142,6 +2148,7 @@ function changePurpleAir() {
         });
       
         L.marker([lat, long], { icon: purpleAir_icon })
+        .bindTooltip(purpleAirTootip,{direction: 'center'})
         .bindPopup(purpleAirPopup, {
             maxWidth: 4000
             // autoclose:false,

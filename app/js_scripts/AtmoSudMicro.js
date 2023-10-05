@@ -48,6 +48,8 @@ function loadStationMicroAtmo() {
         '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
         '</div>';
 
+        var AtmoSudMicroTootip = item.nom_site;
+
           var icon_param = {
             iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
             iconSize: [80, 80], // size of the icon
@@ -148,6 +150,7 @@ function loadStationMicroAtmo() {
 
         //on ajoute le texte sur les points
         L.marker([item['lat'], item['lon']], { icon: myIcon })
+        .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
             .bindPopup(AtmoSudMicroPopup, {
                 maxWidth: 4000
             })
@@ -736,6 +739,7 @@ function loadStationMicroAtmo() {
 
         });
         L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSud_icon })
+        .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
         .bindPopup(AtmoSudMicroPopup, {
           maxWidth: 4000
       })
@@ -1355,7 +1359,8 @@ function changeStationMicroAtmo() {
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
           '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
           '</div>';
-  
+        
+        var AtmoSudMicroTootip = item.nom_site;
 
         var icon_param = {
           iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
@@ -1458,6 +1463,7 @@ function changeStationMicroAtmo() {
 
   //on ajoute le texte sur les points
   L.marker([item['lat'], item['lon']], { icon: myIcon })
+      .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
       .bindPopup(AtmoSudMicroPopup, {
           maxWidth: 4000
       })
@@ -2048,6 +2054,7 @@ function changeStationMicroAtmo() {
 
       });
       L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSud_icon })
+      .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
       .bindPopup(AtmoSudMicroPopup, {
         maxWidth: 4000
     })

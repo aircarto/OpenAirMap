@@ -42,6 +42,7 @@ function loadNebuleAir() {
             '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
             '</div>';
 
+            var nebuleAirTootip = value['sensorId'];
             
             //image des points sur la carte
             var icon_param = {
@@ -143,6 +144,7 @@ function loadNebuleAir() {
             .addTo(nebuleairParticuliers);
 
             L.marker([value['latitude'], value['longitude']], { icon: myIcon })
+            .bindTooltip(nebuleAirTootip,{direction: 'center'})
             .bindPopup(nebuleAirPopup, {
                 maxWidth: 4000
                 // autoclose:false,
@@ -763,6 +765,7 @@ function loadNebuleAir() {
           });
 
           L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
+          .bindTooltip(nebuleAirTootip,{direction: 'center'})
           .bindPopup(nebuleAirPopup, {
             maxWidth: 4000
             // autoclose:false,
@@ -1397,7 +1400,9 @@ function changeNebuleAir() {
           //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
           '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-          '</div>'
+          '</div>';
+
+          var nebuleAirTootip = value['sensorId'];
           
           //image des points sur la carte
           var icon_param = {
@@ -1498,6 +1503,7 @@ function changeNebuleAir() {
               .addTo(nebuleairParticuliers);
 
           L.marker([value['latitude'], value['longitude']], { icon: myIcon })
+              .bindTooltip(nebuleAirTootip,{direction: 'center'})
               .bindPopup(nebuleAirPopup, {
                   maxWidth: 4000
                   // autoclose:false,
@@ -2116,6 +2122,7 @@ function changeNebuleAir() {
         });
 
         L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
+        .bindTooltip(nebuleAirTootip,{direction: 'center'})
         .bindPopup(nebuleAirPopup, {
           maxWidth: 4000
           // autoclose:false,

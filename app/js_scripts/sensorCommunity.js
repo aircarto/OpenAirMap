@@ -42,6 +42,8 @@ function loadSensorCommunity() {
         '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
         '</div>';
 
+        var sensorCommunityTootip = item.sensor.id.toString();
+
         switch (compoundUpper) {
             case "PM1":
                 filtered = item["sensordatavalues"].filter((e) => e.value_type == "P0");
@@ -166,7 +168,7 @@ function loadSensorCommunity() {
 
         //on ajoute le texte sur les points
         L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
-            //.addTo(map)
+            .bindTooltip(sensorCommunityTootip,{direction: 'center'})
             .bindPopup(sensorCommunityPopup, {
                 maxWidth: 4000
             })
@@ -760,6 +762,7 @@ function loadSensorCommunity() {
             });
 
             L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
+            .bindTooltip(sensorCommunityTootip,{direction: 'center'})
             .bindPopup(sensorCommunityPopup, {
               maxWidth: 4000
           })
@@ -1373,6 +1376,8 @@ function changeSensorCommunity() {
       '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
       '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
       '</div>';
+
+      var sensorCommunityTootip = item.sensor.id.toString();
       
       switch (compoundUpper) {
           case "PM1":
@@ -1498,7 +1503,7 @@ function changeSensorCommunity() {
 
       //on ajoute le texte sur les points
       L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
-          //.addTo(map)
+          .bindTooltip(sensorCommunityTootip,{direction: 'center'})
           .bindPopup(sensorCommunityPopup, {
               maxWidth: 4000
           })
@@ -2089,6 +2094,7 @@ function changeSensorCommunity() {
           });
 
           L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
+          .bindTooltip(sensorCommunityTootip,{direction: 'center'})
           .bindPopup(sensorCommunityPopup, {
             maxWidth: 4000
         })

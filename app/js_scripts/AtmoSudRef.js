@@ -56,7 +56,7 @@ function loadStationRefAtmo() {
           '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
           '</div>';
   
-
+          var AtmoSudRefTootip = item.nom_station;
 
           if((item.polluant_id == "68" || item.polluant_id == "39"|| item.polluant_id == "24") && value_compound != undefined ){
 
@@ -159,7 +159,7 @@ function loadStationRefAtmo() {
         .addTo(stationsRefAtmoSud);
 
         L.marker([item['lat'], item['lon']], { icon: myIcon })
-        // .addTo(map)
+        .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
         .bindPopup(AtmoSudRefPopup, {
             maxWidth: 4000
         })
@@ -782,6 +782,7 @@ function loadStationRefAtmo() {
         });
         
         L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
+        .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
         .bindPopup(AtmoSudRefPopup, {
           maxWidth: 4000
       })
@@ -1546,6 +1547,7 @@ function changeStationRefAtmo() {
       .addTo(stationsRefAtmoSud);
 
       L.marker([item['lat'], item['lon']], { icon: myIcon })
+      .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
       .bindPopup(AtmoSudRefPopup, {
           maxWidth: 4000
       })
@@ -2168,6 +2170,7 @@ function changeStationRefAtmo() {
       });
 
       L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
+      .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
       .bindPopup(AtmoSudRefPopup, {
         maxWidth: 4000
     })
