@@ -39,7 +39,7 @@ function loadSensorCommunity() {
         '<div class="text-center" style="padding-top:15px">'+
         '<br>Dernière mesure effectuée ' + timeDateCounter(item.timestamp) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
-        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
+        '<button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
         '</div>';
 
         var sensorCommunityTootip = item.sensor.id.toString();
@@ -1374,7 +1374,7 @@ function changeSensorCommunity() {
       '<div class="text-center" style="padding-top:15px">'+
       '<br>Dernière mesure effectuée ' + timeDateCounter(item.timestamp) + '<br>' +
       '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
-      '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
+      '<button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
       '</div>';
 
       var sensorCommunityTootip = item.sensor.id.toString();

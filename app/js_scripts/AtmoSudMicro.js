@@ -45,7 +45,7 @@ function loadStationMicroAtmo() {
         '<div class="text-center" style="padding-top:15px">'+
         '<br>Dernière mesure effectuée ' + timeDateCounter(item.time) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
-        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
+        '<button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
         '</div>';
 
         var AtmoSudMicroTootip = item.nom_site;
@@ -1357,7 +1357,7 @@ function changeStationMicroAtmo() {
           '<div class="text-center" style="padding-top:15px">'+
           '<br>Dernière mesure effectuée ' + timeDateCounter(item.time) + '<br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
-          '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
+          '<button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
           '</div>';
         
         var AtmoSudMicroTootip = item.nom_site;

@@ -178,3 +178,7 @@ body {
         height: 300px;
         max-width: 100%;
       }
+
+      #messageToast{
+        background-color: red;
+      }

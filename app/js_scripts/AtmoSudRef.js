@@ -53,7 +53,7 @@ function loadStationRefAtmo() {
           '<div class="text-center" style="padding-top:15px">'+
           '<br>Dernière mesure effectuée ' + timeDateCounter(item.date_debut) + '<br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
-          '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
+          '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
           '</div>';
   
           var AtmoSudRefTootip = item.nom_station;
@@ -1442,7 +1442,7 @@ function changeStationRefAtmo() {
         '<div class="text-center" style="padding-top:15px">'+
         '<br>Dernière mesure effectuée ' + timeDateCounter(item.date_debut) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
-        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
+        '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
         '</div>';
 
 
