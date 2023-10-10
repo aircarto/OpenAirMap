@@ -47,7 +47,7 @@ function loadNebuleAir() {
             //image des points sur la carte
             var icon_param = {
                 iconUrl: 'img/nebuleAir/nebuleAir_default.png',
-                iconSize: [80, 80], // size of the icon
+                iconSize: [20, 20], // size of the icon
                 iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
                 //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
             }
@@ -57,26 +57,32 @@ function loadNebuleAir() {
             //BON
             if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
+                icon_param.iconSize = [80, 80];
             }
             //MOYEN
             if (value_compound >= 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_moyen.png';
+                icon_param.iconSize = [80, 80];
             }
             //DEGRADE
             if (value_compound >= 20 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_degrade.png';
+                icon_param.iconSize = [80, 80];
             }
             //MAUVAIS
             if (value_compound >= 25 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_mauvais.png';
+                icon_param.iconSize = [80, 80];
             }
             //TRES MAUVAIS
             if (value_compound >= 50 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_tresmauvais.png';
+                icon_param.iconSize = [80, 80];
             }
             //extr MAUVAIS
             if (value_compound >= 75 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_extmauvais.png';
+                icon_param.iconSize = [80, 80];
             }
 
 
@@ -84,26 +90,32 @@ function loadNebuleAir() {
             //BON
             if (value_compound >= 0 && value_compound < 20 && compoundUpper == "PM10") {
               icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
+              icon_param.iconSize = [80, 80];
             }
             //MOYEN
             if (value_compound >= 20 && compoundUpper == "PM10") {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_moyen.png';
+                icon_param.iconSize = [80, 80];
             }
             //DEGRADE
             if (value_compound >= 40 && compoundUpper == "PM10") {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_degrade.png';
+                icon_param.iconSize = [80, 80];
             }
             //MAUVAIS
             if (value_compound >= 50 && compoundUpper == "PM10") {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_mauvais.png';
+                icon_param.iconSize = [80, 80];
             }
             //TRES MAUVAIS
             if (value_compound >= 100 && compoundUpper == "PM10") {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_tresmauvais.png';
+                icon_param.iconSize = [80, 80];
             }
             //extr MAUVAIS
             if (value_compound >= 150 && compoundUpper == "PM10") {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_extmauvais.png';
+                icon_param.iconSize = [80, 80];
             }
           }
             //add icon to map
@@ -1372,7 +1384,7 @@ function loadNebuleAir() {
             })}, 1000) // end am5.ready()
           
         })
-          .addTo(nebuleairParticuliers);
+          .addTo(nebuleairParticuliers).setZIndexOffset(-1000);
 
         } 
         });
@@ -1407,7 +1419,7 @@ function changeNebuleAir() {
           //image des points sur la carte
           var icon_param = {
               iconUrl: 'img/nebuleAir/nebuleAir_default.png',
-              iconSize: [80, 80], // size of the icon
+              iconSize: [20, 20], // size of the icon
               iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
               //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
           }
@@ -2729,7 +2741,7 @@ function changeNebuleAir() {
           })}, 1000) // end am5.ready()
         
       })
-        .addTo(nebuleairParticuliers);
+        .addTo(nebuleairParticuliers).setZIndexOffset(-1000);;
 
 
 
