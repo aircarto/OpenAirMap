@@ -1283,14 +1283,13 @@ return date_texte + " à " + horaire_texte;
         setInterval(function() {
             console.log("Setinterval:");
             console.log(timespanLower * 60 * 1000);
-
-            // map.removeLayer(nebuleairParticuliers);  //A VOIR SI AUTO ???
-
+            console.log(Date.now() - apiFetchNebuleAir.timestamp);
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-            if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000)) {
+            if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
                     console.log("Reload NebuleAir!");
                     loadNebuleAir();
+                    openToast("Données NebuleAir rechargées");
                 }
                 // map.addLayer(nebuleairParticuliers);
         }
