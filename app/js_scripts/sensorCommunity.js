@@ -1,6 +1,7 @@
 function loadSensorCommunity() {
     console.log("%cSensor.Community", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
+    sensorCommunity.clearLayers();
     
     $.ajax({
         method: "GET",
@@ -1343,7 +1344,7 @@ function loadSensorCommunity() {
               })}, 1000) // end am5.ready()
               
           })
-            .addTo(sensorCommunity)
+            .addTo(sensorCommunity).setZIndexOffset(-1000);
 
         }
             }
@@ -2672,7 +2673,7 @@ function changeSensorCommunity() {
             })}, 1000) // end am5.ready()
             
         })
-          .addTo(sensorCommunity);
+          .addTo(sensorCommunity).setZIndexOffset(-1000);;
 
       }
               

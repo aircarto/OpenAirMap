@@ -1287,29 +1287,47 @@ return date_texte + " à " + horaire_texte;
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
             if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
-                    console.log("Reload NebuleAir!");
                     loadNebuleAir();
                     openToast("Données NebuleAir rechargées");
                 }
-                // map.addLayer(nebuleairParticuliers);
         }
 
         if (document.querySelector("#checkbox_sensor_community").checked) {
+            if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000 - 1000)) {
+                    loadSensorCommunity();
+                    openToast("Données Sensor.Community rechargées");
+                }
         }
 
         if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+            if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000 - 1000)) {
+                    loadStationRefAtmo();
+                    openToast("Données Atmo sations de reférence rechargées");
+                }
         }
 
         if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+            if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000 - 1000)) {
+                    loadStationMicroAtmo();
+                    openToast("Données Atmo microstations rechargées");
+                }
         }
 
-        if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
+        if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked && timespanLower == 60) {
+            loadModelisationPMAtmo();
+            openToast("Modélisation Atmo PM rechargée");
         }
 
-        if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked) {
+        if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked && timespanLower == 60) {
+            loadModelisationICAIRAtmo();
+            openToast("Modélisation Atmo ICAIR rechargée");
         }
 
         if (document.querySelector("#checkbox_purpleAir").checked) {
+            if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
+                    loadPurpleAir();
+                    openToast("Données PurpleAir rechargées");
+                }
         }
 
         }, timespanLower * 60 * 1000)

@@ -1,7 +1,8 @@
 function loadStationMicroAtmo() {
     console.log("%cAtmoSud Micro", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
-    
+    stationsMicroAtmoSud.clearLayers();
+
     $.ajax({
         method: "GET",
         url: "../php_scripts/AtmoSudMicro.php",
@@ -1317,7 +1318,7 @@ function loadStationMicroAtmo() {
               })}, 1000) // end am5.ready()
             
       })
-            .addTo(stationsMicroAtmoSud)
+            .addTo(stationsMicroAtmoSud).setZIndexOffset(-1000);
     }
         })
     })
@@ -2632,7 +2633,7 @@ function changeStationMicroAtmo() {
             })}, 1000) // end am5.ready()
           
     })
-      .addTo(stationsMicroAtmoSud)
+      .addTo(stationsMicroAtmoSud).setZIndexOffset(-1000);
   }
       })
     }

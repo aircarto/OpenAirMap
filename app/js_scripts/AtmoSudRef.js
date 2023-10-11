@@ -1,6 +1,7 @@
 function loadStationRefAtmo() {
     console.log("%cAtmoSud Ref", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
+    stationsRefAtmoSud.clearLayers();
     
     $.ajax({
         method: "GET",
@@ -1391,7 +1392,7 @@ function loadStationRefAtmo() {
               
               })}, 1000) // end am5.ready()
       })
-        .addTo(stationsRefAtmoSud);
+        .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
 
     }
         }
@@ -2779,7 +2780,7 @@ function changeStationRefAtmo() {
             
             })}, 1000) // end am5.ready()
     })
-      .addTo(stationsRefAtmoSud)
+      .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
 
 
   }

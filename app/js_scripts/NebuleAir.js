@@ -2730,11 +2730,7 @@ function changeNebuleAir() {
           })}, 1000) // end am5.ready()
         
       })
-        .addTo(nebuleairParticuliers).setZIndexOffset(-1000);;
-
-
-
-        
+        .addTo(nebuleairParticuliers).setZIndexOffset(-1000);  
       }     
       });
 };

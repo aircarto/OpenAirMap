@@ -1,6 +1,7 @@
 function loadPurpleAir() {
     console.log("%cPurpleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
+    purpleAir.clearLayers();
 
     if(timespanLower != 2){
       openToast("PurpleAir ne propose pas de moyennes quart-horaires, horaires et journalières pour les PM1 et les PM10");
@@ -1378,10 +1379,7 @@ function loadPurpleAir() {
                 })}, 1000) // end am5.ready()
               
             })
-            .addTo(purpleAir);
-
-
-
+            .addTo(purpleAir).setZIndexOffset(-1000);
             }
         })
     })
@@ -2755,7 +2753,7 @@ function changePurpleAir() {
               })}, 1000) // end am5.ready()
             
           })
-          .addTo(purpleAir);
+          .addTo(purpleAir).setZIndexOffset(-1000);
       
         }
     })
