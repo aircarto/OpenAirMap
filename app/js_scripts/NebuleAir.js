@@ -6,7 +6,7 @@ function loadNebuleAir() {
     $.ajax({
         method: "GET",
         url: "../php_scripts/NebuleAir.php",
-        data: ({timespan: timespanLower}),
+        // data: ({timespan: timespanLower}),
     }).done(function (data) {
 
         const end = Date.now();
@@ -25,7 +25,39 @@ function loadNebuleAir() {
 
         $.each(displayed, function (key, value) {
 
-            var value_compound = Math.round(value[compoundUpper]);
+          var value_compound;
+
+            switch(timespanLower) {
+              case 2:
+                if (value[compoundUpper] != null){
+                  value_compound = Math.round(value[compoundUpper]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+              case 15:
+                if (value[compoundUpper + "_qh"] != null){
+                  value_compound = Math.round(value[compoundUpper + "_qh"]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+              case 60:
+                if (value[compoundUpper + "_h"] != null){
+                  value_compound = Math.round(value[compoundUpper + "_h"]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+              case 1440:
+                if (value[compoundUpper + "_d"] != null){
+                  value_compound = Math.round(value[compoundUpper + "_d"]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+            } 
+
 
             var wifiLevel = 2 * (parseInt(value['wifi_signal']) + 100);
             if(wifiLevel > 100){wifiLevel = 100}
@@ -54,7 +86,7 @@ function loadNebuleAir() {
             }
 
             //change icon color for PM1 and PM25
-            if(value.connected){
+            if(value.connected && value_compound != null){
             //BON
             if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
@@ -107,6 +139,7 @@ function loadNebuleAir() {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_extmauvais.png';
             }
           }
+
             //add icon to map
             var nebuleAir_icon = L.icon(icon_param);
 
@@ -132,7 +165,7 @@ function loadNebuleAir() {
 
 
             // cutom text on the marker
-            if(value.connected){
+            if(value.connected && value_compound != null){
             var myIcon = L.divIcon({
                 className: 'my-div-icon',
                 html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -1387,7 +1420,38 @@ function loadNebuleAir() {
 function changeNebuleAir() {
       $.each(apiFetchNebuleAir.data, function (key, value) {
 
-          var value_compound = Math.round(value[compoundUpper]);
+          var value_compound;
+
+          switch(timespanLower) {
+            case 2:
+              if (value[compoundUpper] != null){
+                value_compound = Math.round(value[compoundUpper]);
+              }else{
+                value_compound = null;
+              }
+              break;
+            case 15:
+              if (value[compoundUpper + "_qh"] != null){
+                value_compound = Math.round(value[compoundUpper + "_qh"]);
+              }else{
+                value_compound = null;
+              }
+              break;
+            case 60:
+              if (value[compoundUpper + "_h"] != null){
+                value_compound = Math.round(value[compoundUpper + "_h"]);
+              }else{
+                value_compound = null;
+              }
+              break;
+            case 1440:
+              if (value[compoundUpper + "_d"] != null){
+                value_compound = Math.round(value[compoundUpper + "_d"]);
+              }else{
+                value_compound = null;
+              }
+              break;
+          } 
 
           var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
           '<div id="gauges">'+
@@ -1415,7 +1479,7 @@ function changeNebuleAir() {
 
           //change icon color for PM1 and PM25
 
-          if(value.connected){
+          if(value.connected && value_compound != null){
           //BON
           if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
               icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
@@ -1492,7 +1556,7 @@ function changeNebuleAir() {
           }
 
           // cutom text on the marker
-          if(value.connected){
+          if(value.connected && value_compound != null){
           var myIcon = L.divIcon({
               className: 'my-div-icon',
               html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
