@@ -1258,10 +1258,37 @@ function screenShot() {
 
 function timeDateCounter(timestamp){
 
-const timestamp_UTC = new Date(timestamp);
+var timestamp_UTC;
+const UTCoffset = -new Date().getTimezoneOffset() / 60;
+console.log(UTCoffset);
+
+//console.log(timestamp.replace(' ','T') + '.000Z');
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+console.log(isSafari);
+
+if(isSafari){
+    if(timestamp != null){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+    }else{
+        return "Pas de donnée disponible"
+    }
+}else{
+if(timestamp != null){
+        timestamp_UTC = new Date(timestamp);
+    }else{
+        return "Pas de donnée disponible"
+    }
+}
+
+
+console.log(timestamp_UTC);
 const now = Date.now();
+console.log(new Date(now))
+console.log(UTCoffset);
 
 let difference = Math.floor((now - timestamp_UTC)/86400000);
+console.log(difference);
+console.log(now - timestamp_UTC);
 
 var date_texte ="";
 let horaire_texte="";
@@ -1312,57 +1339,58 @@ horaire_texte += timestamp_UTC.getMinutes();
 
 return date_texte + " à " + horaire_texte;
 }
-        setInterval(function() {
-            console.log("Setinterval:");
-            console.log(timespanLower * 60 * 1000);
-            console.log(Date.now() - apiFetchNebuleAir.timestamp);
 
-        if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-            if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
-                    loadNebuleAir();
-                    openToast("Données NebuleAir rechargées");
-                }
+setInterval(function() {
+    console.log("Setinterval:");
+    console.log(timespanLower * 60 * 1000);
+    console.log(Date.now() - apiFetchNebuleAir.timestamp);
+
+if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+    if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadNebuleAir();
+            openToast("Données NebuleAir rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_sensor_community").checked) {
-            if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000 - 1000)) {
-                    loadSensorCommunity();
-                    openToast("Données Sensor.Community rechargées");
-                }
+if (document.querySelector("#checkbox_sensor_community").checked) {
+    if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadSensorCommunity();
+            openToast("Données Sensor.Community rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
-            if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000 - 1000)) {
-                    loadStationRefAtmo();
-                    openToast("Données Atmo sations de reférence rechargées");
-                }
+if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+    if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadStationRefAtmo();
+            openToast("Données Atmo sations de reférence rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
-            if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000 - 1000)) {
-                    loadStationMicroAtmo();
-                    openToast("Données Atmo microstations rechargées");
-                }
+if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+    if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadStationMicroAtmo();
+            openToast("Données Atmo microstations rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked && timespanLower == 60) {
-            loadModelisationPMAtmo();
-            openToast("Modélisation Atmo PM rechargée");
+if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked && timespanLower == 60) {
+    loadModelisationPMAtmo();
+    openToast("Modélisation Atmo PM rechargée");
+}
+
+if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked && timespanLower == 60) {
+    loadModelisationICAIRAtmo();
+    openToast("Modélisation Atmo ICAIR rechargée");
+}
+
+if (document.querySelector("#checkbox_purpleAir").checked) {
+    if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadPurpleAir();
+            openToast("Données PurpleAir rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked && timespanLower == 60) {
-            loadModelisationICAIRAtmo();
-            openToast("Modélisation Atmo ICAIR rechargée");
-        }
-
-        if (document.querySelector("#checkbox_purpleAir").checked) {
-            if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
-                    loadPurpleAir();
-                    openToast("Données PurpleAir rechargées");
-                }
-        }
-
-        }, timespanLower * 60 * 1000)
+}, timespanLower * 60 * 1000)
 
 
     </script>
