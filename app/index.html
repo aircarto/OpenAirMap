@@ -1268,7 +1268,15 @@ console.log(isSafari);
 
 if(isSafari){
     if(timestamp != null){
+        if(typeof timestamp == 'string'){
+            if (!timestamp.includes('T')){
         timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+            }else{
+                timestamp_UTC = new Date(timestamp);
+            }
+        }else{
+            timestamp_UTC = new Date(timestamp);
+        }
     }else{
         return "Pas de donnée disponible"
     }
