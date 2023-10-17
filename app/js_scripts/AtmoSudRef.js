@@ -60,12 +60,12 @@ $.ajax({
 
   $.each(data.mesures, function (key, item) {
     
-    stationsRefAtmoSud.eachLayer(function (layer) {
-      if (layer._icon.className.includes(item.id_station)){
-        console.log("REMOVED LAYER");
-        stationsRefAtmoSud.removeLayer(layer)
-      }  
-    })
+    // stationsRefAtmoSud.eachLayer(function (layer) {
+    //   if (layer._icon.className.includes(item.id_station) && item.valeur != null){
+    //     console.log("REMOVED LAYER");
+    //     stationsRefAtmoSud.removeLayer(layer)
+    //   }  
+    // })
 
   var value_compound;
 
@@ -100,6 +100,7 @@ $.ajax({
     '<div id="chartdiv3"></div>'+
     '</div>'+
     '<div class="text-center" style="padding-top:15px">'+
+    '<h1>'+ item.nom_station +'</h1>' +
     '<br>Dernière mesure effectuée ' + timeDateCounter(item.date_debut) + '<br>' +
     '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
     '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
@@ -1496,12 +1497,12 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 
       $.each(apiFetchAtmoSudRef.data, function (key, item) {
 
-        stationsRefAtmoSud.eachLayer(function (layer) {
-          if (layer._icon.className.includes(item.id_station)){
-            console.log("REMOVED LAYER");
-            stationsRefAtmoSud.removeLayer(layer)
-          }  
-        })
+        // stationsRefAtmoSud.eachLayer(function (layer) {
+        //   if (layer._icon.className.includes(item.id_station) && item.valeur != null){
+        //     console.log("REMOVED LAYER");
+        //     stationsRefAtmoSud.removeLayer(layer)
+        //   }  
+        // })
     
 
       var value_compound;
@@ -1537,6 +1538,7 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
         '<div id="chartdiv3"></div>'+
         '</div>'+
         '<div class="text-center" style="padding-top:15px">'+
+        '<h1>'+ item.nom_station +'</h1>' +
         '<br>Dernière mesure effectuée ' + timeDateCounter(item.date_debut) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
