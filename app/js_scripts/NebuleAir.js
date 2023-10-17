@@ -1475,7 +1475,7 @@ function changeNebuleAir() {
           //image des points sur la carte
           var icon_param = {
               iconUrl: 'img/nebuleAir/nebuleAir_default.png',
-              iconSize: [20, 20], // size of the icon
+              iconSize: [80, 80], // size of the icon
               iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
               //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
           }
