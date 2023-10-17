@@ -72,7 +72,7 @@ function loadStationRefAtmo() {
 
         //BON
         if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_moyen.png';
+            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_bon.png';
         }
         //MOYEN
         if (value_compound >= 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
@@ -99,7 +99,7 @@ function loadStationRefAtmo() {
         //change icon color for PM1 and PM25
         //BON
         if (value_compound >= 0 && value_compound < 20 && compoundUpper == "PM10") {
-            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_moyen.png';
+            icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_bon.png';
         }
         //MOYEN
         if (value_compound >= 20 && compoundUpper == "PM10") {
@@ -1446,6 +1446,7 @@ function changeStationRefAtmo() {
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
         '</div>';
 
+        var AtmoSudRefTootip = item.nom_station;
 
         if((item.polluant_id == "68" || item.polluant_id == "39"|| item.polluant_id == "24") && value_compound != undefined ){
 
@@ -1460,7 +1461,7 @@ function changeStationRefAtmo() {
 
       //BON
       if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-          icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_moyen.png';
+          icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_bon.png';
       }
       //MOYEN
       if (value_compound >= 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
@@ -1487,7 +1488,7 @@ function changeStationRefAtmo() {
       //change icon color for PM1 and PM25
       //BON
       if (value_compound >= 0 && value_compound < 20 && compoundUpper == "PM10") {
-          icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_moyen.png';
+          icon_param.iconUrl = 'img/refStationsAtmoSud/refStationAtmoSud_bon.png';
       }
       //MOYEN
       if (value_compound >= 20 && compoundUpper == "PM10") {
