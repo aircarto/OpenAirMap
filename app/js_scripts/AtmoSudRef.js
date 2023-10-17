@@ -60,13 +60,6 @@ $.ajax({
 
   $.each(data.mesures, function (key, item) {
     
-    // stationsRefAtmoSud.eachLayer(function (layer) {
-    //   if (layer._icon.className.includes(item.id_station) && item.valeur != null){
-    //     console.log("REMOVED LAYER");
-    //     stationsRefAtmoSud.removeLayer(layer)
-    //   }  
-    // })
-
   var value_compound;
 
   switch (compoundUpper) {
@@ -196,6 +189,14 @@ $.ajax({
 
 
   if (value_compound != undefined && value_compound != -1 ){
+
+    stationsRefAtmoSud.eachLayer(function (layer) {
+      if (layer._icon.className.includes(item.id_station) && item.valeur != null){
+        console.log("REMOVED LAYER");
+        stationsRefAtmoSud.removeLayer(layer)
+      }  
+    })
+
   // cutom text on the marker
   var myIcon = L.divIcon({
       className: 'my-div-icon',
@@ -819,6 +820,14 @@ $.ajax({
   .addTo(stationsRefAtmoSud);
 
 }else{
+
+  stationsRefAtmoSud.eachLayer(function (layer) {
+    if (layer._icon.className.includes(item.id_station) && item.valeur != null){
+      console.log("REMOVED LAYER");
+      stationsRefAtmoSud.removeLayer(layer)
+    }  
+  })
+  
   // cutom text on the marker
   var myIcon = L.divIcon({
       className: 'my-div-icon',
@@ -1635,6 +1644,14 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 
       if (value_compound != undefined && value_compound != -1 )
       {
+
+        stationsRefAtmoSud.eachLayer(function (layer) {
+          if (layer._icon.className.includes(item.id_station) && item.valeur != null){
+            console.log("REMOVED LAYER");
+            stationsRefAtmoSud.removeLayer(layer)
+          }  
+        })
+
       // cutom text on the marker
       var myIcon = L.divIcon({
           className: 'my-div-icon',
@@ -2261,6 +2278,14 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 
   }else{
       // cutom text on the marker
+
+      stationsRefAtmoSud.eachLayer(function (layer) {
+        if (layer._icon.className.includes(item.id_station) && item.valeur != null){
+          console.log("REMOVED LAYER");
+          stationsRefAtmoSud.removeLayer(layer)
+        }  
+      })
+
       var myIcon = L.divIcon({
           className: 'my-div-icon',
           html: '<div id="textDiv" style="font-size: ' + textSize + 'px;"></div>',
