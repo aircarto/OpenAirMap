@@ -1453,6 +1453,9 @@ function changeNebuleAir() {
               break;
           } 
 
+          var wifiLevel = 2 * (parseInt(value['wifi_signal']) + 100);
+          if(wifiLevel > 100){wifiLevel = 100}
+
           var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
           '<div id="gauges">'+
           '<div id="chartdiv1"></div>'+
