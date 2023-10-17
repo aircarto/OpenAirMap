@@ -182,3 +182,7 @@ body {
       #messageToast{
         background-color: red;
       }
+
+      .dropdown-menu{
+        width:350px;
+      }
