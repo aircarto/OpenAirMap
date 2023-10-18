@@ -237,6 +237,7 @@
             "timespan": null,
             "timestamp": null
         };
+        var apiFetchAtmoSudRefList = [];
         var apiFetchAtmoSudMicro = {
             "data": [],
             "timespan": null,
@@ -277,7 +278,7 @@
 
         map.setView(coordsCenter, zoomLevel);
 
-        var polygonPACA = L.geoJSON(paca,{fillOpacity:0.2, color:'black', weight:0, invert:true}).addTo(map);
+        // var polygonPACA = L.geoJSON(paca,{fillOpacity:0.2, color:'black', weight:0, invert:true}).addTo(map);
 
         var nebuleairParticuliers = new L.layerGroup();
         var sensorCommunity = new L.layerGroup();
@@ -336,7 +337,6 @@
             map.addLayer(purpleAir)
         }
 
-
         document.querySelector("#checkbox_micro_stationsParticuliers").addEventListener("change", switchNebuleAir)
         document.querySelector("#checkbox_sensor_community").addEventListener("change", switchSensorCommunity)
         document.querySelector("#checkbox_stationsRefAtmoSud").addEventListener("change", switchRefAtmo)
@@ -344,9 +344,6 @@
         document.querySelector("#checkbox_modelisationPMAtmoSud").addEventListener("change", switchModelisationPMAtmo)
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").addEventListener("change", switchModelisationICAIRAtmo)
         document.querySelector("#checkbox_purpleAir").addEventListener("change", switchPurpleAir)
-
-
-
 
         function switchNebuleAir() {
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
@@ -416,8 +413,6 @@
                 openToast("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
                 document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
             }
-
-
         }
 
         function switchMicroAtmo() {
@@ -444,7 +439,6 @@
             }
         }
 
-
 function switchModelisationPMAtmo() {
     if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
         loadModelisationPMAtmo();
@@ -462,7 +456,6 @@ function switchModelisationICAIRAtmo() {
             map.removeLayer(modelisationICAIRAtmoSud);
                 }
 }
-
 
 function switchPurpleAir() {
             if (document.querySelector("#checkbox_purpleAir").checked) {
@@ -483,9 +476,6 @@ function switchPurpleAir() {
                 map.removeLayer(purpleAir);
             }
         }
-
-
-
 
         document.querySelector("#button_PM1").addEventListener("click", choosePM1)
         document.querySelector("#button_PM25").addEventListener("click", choosePM25)
@@ -627,6 +617,18 @@ function switchPurpleAir() {
         const hour = date.getHours();
         const min = date.getMinutes();
         document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par 
+
+
+        if(document.querySelector("#checkbox_micro_stationsParticuliers").checked){
+            if (apiFetchNebuleAir.timespan != 2 || apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > 2 * 60 * 1000))
+            {
+                nebuleairParticuliers.clearLayers();
+                loadNebuleAir();
+            }else{
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
+            }
+            }
         
         if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
@@ -641,7 +643,7 @@ function switchPurpleAir() {
         }
 
         if(document.querySelector("#checkbox_purpleAir").checked){
-            if (apiFetchPurpleAir.timespan != 2 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 15 * 60 * 1000))
+            if (apiFetchPurpleAir.timespan != 2 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 2 * 60 * 1000))
             {
                 purpleAir.clearLayers();
                 loadPurpleAir();
@@ -701,6 +703,18 @@ function switchPurpleAir() {
         
             document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ;  
 
+
+            if(document.querySelector("#checkbox_micro_stationsParticuliers").checked){
+            if (apiFetchNebuleAir.timespan != 15 || apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > 15 * 60 * 1000))
+            {
+                nebuleairParticuliers.clearLayers();
+                loadNebuleAir();
+            }else{
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
+            }
+            }
+
             if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
             if (apiFetchAtmoSudRef.timespan != 15 || apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > 15 * 60 * 1000))
             {
@@ -741,6 +755,17 @@ function switchPurpleAir() {
             // document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ; 
             document.querySelector("#button_horloge").innerHTML = hour1 + ":" + "00" + " à " + hour2 + ":" + "00"; 
 
+
+            if(document.querySelector("#checkbox_micro_stationsParticuliers").checked){
+            if (apiFetchNebuleAir.timespan != 60 || apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > 60 * 60 * 1000))
+            {
+                nebuleairParticuliers.clearLayers();
+                loadNebuleAir();
+            }else{
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
+            }
+            }
         
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
@@ -760,7 +785,7 @@ function switchPurpleAir() {
             }
 
             if(document.querySelector("#checkbox_purpleAir").checked){
-            if (apiFetchPurpleAir.timespan != 60 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 15 * 60 * 1000))
+            if (apiFetchPurpleAir.timespan != 60 || apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > 60 * 60 * 1000))
             {
                 purpleAir.clearLayers();
                 loadPurpleAir();
@@ -784,6 +809,19 @@ function switchPurpleAir() {
             const jour = datemoins1.getDate();
             const mois = datemoins1.getMonth() + 1;
             document.querySelector("#button_horloge").innerHTML = (jour < 10 ? '0' : '') + jour + "/" + (mois < 10 ? '0' : '') + mois;  //2min par défaut
+
+
+            if(document.querySelector("#checkbox_micro_stationsParticuliers").checked){
+            if (apiFetchNebuleAir.timespan != 1440 || apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > 1440 * 60 * 1000))
+            {
+                nebuleairParticuliers.clearLayers();
+                loadNebuleAir();
+            }else{
+                nebuleairParticuliers.clearLayers();
+                changeNebuleAir();
+            }
+            }
+
 
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
@@ -868,7 +906,6 @@ function switchPurpleAir() {
                 var tempo = " journalières ";
                 break;
             } 
-
 
             document.getElementById("card-title").innerText = 'Evolution des concentrations' + tempo + 'en particules fines (µg/m3)';
 
@@ -1008,9 +1045,7 @@ function switchPurpleAir() {
               document.getElementById("button2m").children[0].removeAttribute("disabled");
               document.getElementById("button15m").children[0].removeAttribute("disabled");
             }
-
             }
-
         }
 
         function chooseTimeSensorCommunity(sensor, hours) {
@@ -1222,40 +1257,157 @@ function screenShot() {
 }
 
 
-        setInterval(function() {
-            console.log("Setinterval:");
-            console.log(timespanLower * 60 * 1000);
+function timeDateCounter(timestamp){
 
-            // map.removeLayer(nebuleairParticuliers);  //A VOIR SI AUTO ???
+var timestamp_UTC;
+const UTCoffset = -new Date().getTimezoneOffset() / 60;
+console.log(UTCoffset);
 
+//console.log(timestamp.replace(' ','T') + '.000Z');
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+console.log(isSafari);
 
-        if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
-            if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000)) {
-                    console.log("Reload NebuleAir!");
-                    loadNebuleAir();
-                }
-                // map.addLayer(nebuleairParticuliers);
+if(isSafari){
+    if(timestamp != null){
+        if(typeof timestamp == 'string'){
+            if (!timestamp.includes('T')){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+            }else{
+                timestamp_UTC = new Date(timestamp);
+            }
+        }else{
+            timestamp_UTC = new Date(timestamp);
         }
-
-        if (document.querySelector("#checkbox_sensor_community").checked) {
+    }else{
+        return "Pas de donnée disponible"
+    }
+}else{
+if(timestamp != null){
+    if(typeof timestamp == 'string'){
+    if (!timestamp.includes('T')){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+    }else{
+        timestamp_UTC = new Date(timestamp);
         }
+    }else{
+        timestamp_UTC = new Date(timestamp);
+    }
+    }else{
+        return "Pas de donnée disponible"
+    }
+}
 
-        if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+
+console.log(timestamp_UTC);
+const now = Date.now();
+console.log(new Date(now))
+console.log(UTCoffset);
+
+let difference = Math.floor((now - timestamp_UTC)/86400000);
+console.log(difference);
+console.log(now - timestamp_UTC);
+
+var date_texte ="";
+let horaire_texte="";
+
+switch(difference) {
+  case 0:
+    date_texte = "aujourd'hui";
+    break;
+  case 1:
+    date_texte = "hier";
+    break;
+  case 2:
+    date_texte = "avant-hier";
+    break;
+  default:
+    date_texte += "le ";
+    if(timestamp_UTC.getDate()< 10){
+    date_texte += "0";
+    date_texte += timestamp_UTC.getDate();
+  }else{
+    date_texte += timestamp_UTC.getDate();
+  }
+  date_texte += "/";
+  if((timestamp_UTC.getMonth()+1)< 10){
+    date_texte += "0";
+    date_texte += (timestamp_UTC.getMonth()+1);
+  }else{
+    date_texte += (timestamp_UTC.getMonth()+1);
+  }
+  date_texte += "/";
+  date_texte += timestamp_UTC.getFullYear();
+} 
+
+//horaire
+if(timestamp_UTC.getHours()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getHours();
+}else{
+horaire_texte += timestamp_UTC.getHours();
+}
+horaire_texte += "h";
+if(timestamp_UTC.getMinutes()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getMinutes();
+}else{
+horaire_texte += timestamp_UTC.getMinutes();
+} 
+
+return date_texte + " à " + horaire_texte;
+}
+
+setInterval(function() {
+    console.log("Setinterval:");
+    console.log(timespanLower * 60 * 1000);
+    console.log(Date.now() - apiFetchNebuleAir.timestamp);
+
+if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+    if (apiFetchNebuleAir.data.length == 0 || (apiFetchNebuleAir.data.length != 0 && Date.now() - apiFetchNebuleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadNebuleAir();
+            openToast("Données NebuleAir rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+if (document.querySelector("#checkbox_sensor_community").checked) {
+    if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && Date.now() - apiFetchSensorCommunity.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadSensorCommunity();
+            openToast("Données Sensor.Community rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
+if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+    if (apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadStationRefAtmo();
+            openToast("Données Atmo sations de reférence rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked) {
+if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+    if (apiFetchAtmoSudMicro.data.length == 0 || (apiFetchAtmoSudMicro.data.length != 0 && Date.now() - apiFetchAtmoSudMicro.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadStationMicroAtmo();
+            openToast("Données Atmo microstations rechargées");
         }
+}
 
-        if (document.querySelector("#checkbox_purpleAir").checked) {
+if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked && timespanLower == 60) {
+    loadModelisationPMAtmo();
+    openToast("Modélisation Atmo PM rechargée");
+}
+
+if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked && timespanLower == 60) {
+    loadModelisationICAIRAtmo();
+    openToast("Modélisation Atmo ICAIR rechargée");
+}
+
+if (document.querySelector("#checkbox_purpleAir").checked) {
+    if (apiFetchPurpleAir.data.length == 0 || (apiFetchPurpleAir.data.length != 0 && Date.now() - apiFetchPurpleAir.timestamp > timespanLower * 60 * 1000 - 1000)) {
+            loadPurpleAir();
+            openToast("Données PurpleAir rechargées");
         }
+}
 
-        }, timespanLower * 60 * 1000)
+}, timespanLower * 60 * 1000)
 
 
     </script>

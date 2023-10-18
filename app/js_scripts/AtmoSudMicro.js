@@ -1,7 +1,8 @@
 function loadStationMicroAtmo() {
     console.log("%cAtmoSud Micro", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
-    
+    stationsMicroAtmoSud.clearLayers();
+
     $.ajax({
         method: "GET",
         url: "../php_scripts/AtmoSudMicro.php",
@@ -35,46 +36,6 @@ function loadStationMicroAtmo() {
         $.each(filtered, function (key, item) {
         
         var value_compound = Math.round(item["valeur"]);
-
-        const timestamp_UTC = new Date(item.time);
-
-        const offset = -(new Date().getTimezoneOffset())/60;
-        //const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset));
-
-        var date_texte ="";
-        var horaire_texte="";
-        
-        //date 
-        if(timestamp_UTC.getDate()< 10){
-          date_texte += "0";
-          date_texte += timestamp_UTC.getDate();
-        }else{
-          date_texte += timestamp_UTC.getDate();
-        }
-        date_texte += "/";
-        if((timestamp_UTC.getMonth()+1)< 10){
-          date_texte += "0";
-          date_texte += (timestamp_UTC.getMonth()+1);
-        }else{
-          date_texte += (timestamp_UTC.getMonth()+1);
-        }
-        date_texte += "/";
-        date_texte += timestamp_UTC.getFullYear();
-        
-        //horaire
-        if(timestamp_UTC.getHours()< 10){
-          horaire_texte += "0";
-          horaire_texte += timestamp_UTC.getHours();
-        }else{
-          horaire_texte += timestamp_UTC.getHours();
-        }
-        horaire_texte += "h";
-        if(timestamp_UTC.getMinutes()< 10){
-          horaire_texte += "0";
-          horaire_texte += timestamp_UTC.getMinutes();
-        }else{
-          horaire_texte += timestamp_UTC.getMinutes();
-        }
         
         var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
         '<div id="gauges">'+
@@ -83,10 +44,12 @@ function loadStationMicroAtmo() {
         '<div id="chartdiv3"></div>'+
         '</div>'+
         '<div class="text-center" style="padding-top:15px">'+
-        '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
+        '<br>Dernière mesure effectuée ' + timeDateCounter(item.time) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
-        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
+        '<button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
         '</div>';
+
+        var AtmoSudMicroTootip = item.nom_site;
 
           var icon_param = {
             iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
@@ -188,6 +151,7 @@ function loadStationMicroAtmo() {
 
         //on ajoute le texte sur les points
         L.marker([item['lat'], item['lon']], { icon: myIcon })
+        .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
             .bindPopup(AtmoSudMicroPopup, {
                 maxWidth: 4000
             })
@@ -776,6 +740,7 @@ function loadStationMicroAtmo() {
 
         });
         L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSud_icon })
+        .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
         .bindPopup(AtmoSudMicroPopup, {
           maxWidth: 4000
       })
@@ -1353,7 +1318,7 @@ function loadStationMicroAtmo() {
               })}, 1000) // end am5.ready()
             
       })
-            .addTo(stationsMicroAtmoSud)
+            .addTo(stationsMicroAtmoSud).setZIndexOffset(-1000);
     }
         })
     })
@@ -1383,46 +1348,6 @@ function changeStationMicroAtmo() {
       $.each(filtered, function (key, item) {
       
       var value_compound = Math.round(item["valeur"]);
-
-      const timestamp_UTC = new Date(item.time);
-
-      const offset = -(new Date().getTimezoneOffset())/60;
-      //const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset));
-
-      var date_texte ="";
-      var horaire_texte="";
-      
-      //date 
-      if(timestamp_UTC.getDate()< 10){
-        date_texte += "0";
-        date_texte += timestamp_UTC.getDate();
-      }else{
-        date_texte += timestamp_UTC.getDate();
-      }
-      date_texte += "/";
-      if((timestamp_UTC.getMonth()+1)< 10){
-        date_texte += "0";
-        date_texte += (timestamp_UTC.getMonth()+1);
-      }else{
-        date_texte += (timestamp_UTC.getMonth()+1);
-      }
-      date_texte += "/";
-      date_texte += timestamp_UTC.getFullYear();
-      
-      //horaire
-      if(timestamp_UTC.getHours()< 10){
-        horaire_texte += "0";
-        horaire_texte += timestamp_UTC.getHours();
-      }else{
-        horaire_texte += timestamp_UTC.getHours();
-      }
-      horaire_texte += "h";
-      if(timestamp_UTC.getMinutes()< 10){
-        horaire_texte += "0";
-        horaire_texte += timestamp_UTC.getMinutes();
-      }else{
-        horaire_texte += timestamp_UTC.getMinutes();
-      }
       
           var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
           '<div id="gauges">'+
@@ -1431,11 +1356,12 @@ function changeStationMicroAtmo() {
           '<div id="chartdiv3"></div>'+
           '</div>'+
           '<div class="text-center" style="padding-top:15px">'+
-          '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
+          '<br>Dernière mesure effectuée ' + timeDateCounter(item.time) + '<br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
-          '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
+          '<button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
           '</div>';
-  
+        
+        var AtmoSudMicroTootip = item.nom_site;
 
         var icon_param = {
           iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
@@ -1538,6 +1464,7 @@ function changeStationMicroAtmo() {
 
   //on ajoute le texte sur les points
   L.marker([item['lat'], item['lon']], { icon: myIcon })
+      .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
       .bindPopup(AtmoSudMicroPopup, {
           maxWidth: 4000
       })
@@ -2128,6 +2055,7 @@ function changeStationMicroAtmo() {
 
       });
       L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSud_icon })
+      .bindTooltip(AtmoSudMicroTootip,{direction: 'center'})
       .bindPopup(AtmoSudMicroPopup, {
         maxWidth: 4000
     })
@@ -2705,7 +2633,7 @@ function changeStationMicroAtmo() {
             })}, 1000) // end am5.ready()
           
     })
-      .addTo(stationsMicroAtmoSud)
+      .addTo(stationsMicroAtmoSud).setZIndexOffset(-1000);
   }
       })
     }

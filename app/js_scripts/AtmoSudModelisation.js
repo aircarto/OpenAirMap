@@ -2,6 +2,8 @@ function loadModelisationPMAtmo() {  //Normalement h24 pour heure actuelle.
 
     //https://api.atmosud.org/prevision/cartes/horaires/liste
 
+    modelisationPMAtmoSud.clearLayers();
+
     switch(compoundUpper) {
       case 'PM1':
         var string_layer = 'paca_pm1_h24';
@@ -37,6 +39,7 @@ function loadModelisationICAIRAtmo() {
 
   //https://api.atmosud.org/prevision/cartes/horaires/liste
 
+  modelisationICAIRAtmoSud.clearLayers();
 
 new L.tileLayer.wms('https://azurh-geoservices.atmosud.org/geoserver/azur_heure/ows', {
       version: '1.1.1',

@@ -1,6 +1,7 @@
 function loadPurpleAir() {
     console.log("%cPurpleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
+    purpleAir.clearLayers();
 
     if(timespanLower != 2){
       openToast("PurpleAir ne propose pas de moyennes quart-horaires, horaires et journalières pour les PM1 et les PM10");
@@ -39,21 +40,6 @@ function loadPurpleAir() {
               pm10_value == -1.0;
             }
 
-            date_texte = timeConverter(last_seen);
-
-            function timeConverter(UNIX_timestamp) {
-                var a = new Date(UNIX_timestamp * 1000);
-                var months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
-                var year = a.getFullYear();
-                var month = months[a.getMonth()];
-                var date = a.getDate();
-                var hour = a.getHours();
-                var min = a.getMinutes();
-                var sec = a.getSeconds();
-                var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-                return time;
-            }
-
             var purpleAirPopup = '<img src="img/LogoPurpleAir.png" alt="" class="card-img-top">' +
             '<div id="gauges">'+
             '<div id="chartdiv1"></div>'+
@@ -61,11 +47,12 @@ function loadPurpleAir() {
             '<div id="chartdiv3"></div>'+
             '</div>' +
             '<div class="text-center" style="padding-top:15px">'+
-            '<br>Dernière mesure effectuée le ' + date_texte + '<br>' +
+            '<br>Dernière mesure effectuée ' + timeDateCounter(last_seen * 1000) + '<br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
-            '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
+            '<button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
             '</div>';
     
+            var purpleAirTootip = sensorid.toString();
 
             var icon_param = {
                 iconUrl: 'img/purpleAir/purpleAir_default.png',
@@ -169,6 +156,7 @@ function loadPurpleAir() {
             .addTo(purpleAir);
 
             L.marker([lat, long], { icon: myIcon })
+            .bindTooltip(purpleAirTootip,{direction: 'center'})
             .bindPopup(purpleAirPopup, {
                 maxWidth: 4000
                 // autoclose:false,
@@ -785,6 +773,7 @@ function loadPurpleAir() {
           });
         
           L.marker([lat, long], { icon: purpleAir_icon })
+          .bindTooltip(purpleAirTootip,{direction: 'center'})
           .bindPopup(purpleAirPopup, {
               maxWidth: 4000
               // autoclose:false,
@@ -1390,10 +1379,7 @@ function loadPurpleAir() {
                 })}, 1000) // end am5.ready()
               
             })
-            .addTo(purpleAir);
-
-
-
+            .addTo(purpleAir).setZIndexOffset(-1000);
             }
         })
     })
@@ -1426,20 +1412,6 @@ function changePurpleAir() {
           pm10_value == -1.0;
         }
 
-        date_texte = timeConverter(last_seen);
-
-        function timeConverter(UNIX_timestamp) {
-            var a = new Date(UNIX_timestamp * 1000);
-            var months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
-            var year = a.getFullYear();
-            var month = a.getMonth() + 1;
-            var date = a.getDate();
-            var hour = a.getHours();
-            var min = a.getMinutes();
-            var sec = a.getSeconds();
-            var time = date + '/' + month + '/' + year + ' à ' + hour + 'h' + min;
-            return time;
-        }
 
         var purpleAirPopup = '<img src="img/LogoPurpleAir.png" alt="" class="card-img-top">' +
         '<div id="gauges">'+
@@ -1448,10 +1420,12 @@ function changePurpleAir() {
         '<div id="chartdiv3"></div>'+
         '</div>' +
         '<div class="text-center" style="padding-top:15px">'+
-        '<br>Dernière mesure effectuée le ' + date_texte + '<br>' +
+        '<br>Dernière mesure effectuée ' + timeDateCounter(last_seen * 1000) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
-        '<br><button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
+        '<button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
         '</div>';
+
+        var purpleAirTootip = sensorid.toString();
 
         var icon_param = {
             iconUrl: 'img/purpleAir/purpleAir_default.png',
@@ -1554,6 +1528,7 @@ function changePurpleAir() {
         .addTo(purpleAir);
 
         L.marker([lat, long], { icon: myIcon })
+        .bindTooltip(purpleAirTootip,{direction: 'center'})
         .bindPopup(purpleAirPopup, {
             maxWidth: 4000
             // autoclose:false,
@@ -2171,6 +2146,7 @@ function changePurpleAir() {
         });
       
         L.marker([lat, long], { icon: purpleAir_icon })
+        .bindTooltip(purpleAirTootip,{direction: 'center'})
         .bindPopup(purpleAirPopup, {
             maxWidth: 4000
             // autoclose:false,
@@ -2777,7 +2753,7 @@ function changePurpleAir() {
               })}, 1000) // end am5.ready()
             
           })
-          .addTo(purpleAir);
+          .addTo(purpleAir).setZIndexOffset(-1000);
       
         }
     })
@@ -3047,3 +3023,4 @@ function load1PurpleAir(id,hours,timespan){
           console.log("Error while geting data from Aircarto API");
       });
 }
+

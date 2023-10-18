@@ -1,11 +1,12 @@
 function loadNebuleAir() {
     console.log("%cNebuleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
+    nebuleairParticuliers.clearLayers();
 
     $.ajax({
         method: "GET",
         url: "../php_scripts/NebuleAir.php",
-        data: ({timespan: timespanLower}),
+        // data: ({timespan: timespanLower}),
     }).done(function (data) {
 
         const end = Date.now();
@@ -24,67 +25,39 @@ function loadNebuleAir() {
 
         $.each(displayed, function (key, value) {
 
-          // var polygonPACA = L.geoJSON(paca,{fillOpacity:0, color:'black', weight:1}).addTo(map);
-          // var layerID;
+          var value_compound;
 
-          // console.log(polygonPACA);
+            switch(timespanLower) {
+              case 2:
+                if (value[compoundUpper] != null){
+                  value_compound = Math.round(value[compoundUpper]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+              case 15:
+                if (value[compoundUpper + "_qh"] != null){
+                  value_compound = Math.round(value[compoundUpper + "_qh"]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+              case 60:
+                if (value[compoundUpper + "_h"] != null){
+                  value_compound = Math.round(value[compoundUpper + "_h"]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+              case 1440:
+                if (value[compoundUpper + "_d"] != null){
+                  value_compound = Math.round(value[compoundUpper + "_d"]);
+                }else{
+                  value_compound = null;
+                }
+                break;
+            } 
 
-          // polygonPACA.eachLayer(function(e){layerID  = e._leaflet_id;});
-
-          // console.log(polygonPACA._layers[layerID]);
-
-
-          // // polygonPACA.eachLayer(function(memberLayer) {
-          // //   if (memberLayer.contains(L.latLng(value['latitude'], value['longitude']))) {
-          // //     console.log(memberLayer.feature.properties);
-          // //   }
-          // // });
-
-
-
-          // if (polygonPACA._layers[layerID].contains(L.latLng(value['latitude'], value['longitude']))){
-
-            var value_compound = Math.round(value[compoundUpper]);
-
-            const timestamp_UTC = new Date(value.time);  // ATTENTION HEURE LOCALE POUR NEBULEAIR
-
-            const offset = -(new Date().getTimezoneOffset())/60;
-            //const  timestamp_local = new Date(timestamp_UTC.setHours(timestamp_UTC.getHours() + offset));
-    
-            var date_texte ="";
-            var horaire_texte="";
-            
-            //date 
-            if(timestamp_UTC.getDate()< 10){
-              date_texte += "0";
-              date_texte += timestamp_UTC.getDate();
-            }else{
-              date_texte += timestamp_UTC.getDate();
-            }
-            date_texte += "/";
-            if((timestamp_UTC.getMonth()+1)< 10){
-              date_texte += "0";
-              date_texte += (timestamp_UTC.getMonth()+1);
-            }else{
-              date_texte += (timestamp_UTC.getMonth()+1);
-            }
-            date_texte += "/";
-            date_texte += timestamp_UTC.getFullYear();
-            
-            //horaire
-            if(timestamp_UTC.getHours()< 10){
-              horaire_texte += "0";
-              horaire_texte += timestamp_UTC.getHours();
-            }else{
-              horaire_texte += timestamp_UTC.getHours();
-            }
-            horaire_texte += "h";
-            if(timestamp_UTC.getMinutes()< 10){
-              horaire_texte += "0";
-              horaire_texte += timestamp_UTC.getMinutes();
-            }else{
-              horaire_texte += timestamp_UTC.getMinutes();
-            }
 
             var wifiLevel = 2 * (parseInt(value['wifi_signal']) + 100);
             if(wifiLevel > 100){wifiLevel = 100}
@@ -96,13 +69,13 @@ function loadNebuleAir() {
             '<div id="chartdiv3"></div>'+
             '</div>' +
             '<div class="text-center" style="padding-top:15px">'+
-            '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
+            '<br>Dernière mesure effectuée ' + timeDateCounter(value.timeUTC) + '<br>' +
             '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
-            //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
             '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
             '</div>';
 
+            var nebuleAirTootip = value['sensorId'];
             
             //image des points sur la carte
             var icon_param = {
@@ -113,7 +86,7 @@ function loadNebuleAir() {
             }
 
             //change icon color for PM1 and PM25
-            if(value.connected){
+            if(value.connected && value_compound != null){
             //BON
             if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
@@ -166,6 +139,7 @@ function loadNebuleAir() {
                 icon_param.iconUrl = 'img/nebuleAir/nebuleAir_extmauvais.png';
             }
           }
+
             //add icon to map
             var nebuleAir_icon = L.icon(icon_param);
 
@@ -191,7 +165,7 @@ function loadNebuleAir() {
 
 
             // cutom text on the marker
-            if(value.connected){
+            if(value.connected && value_compound != null){
             var myIcon = L.divIcon({
                 className: 'my-div-icon',
                 html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -204,6 +178,7 @@ function loadNebuleAir() {
             .addTo(nebuleairParticuliers);
 
             L.marker([value['latitude'], value['longitude']], { icon: myIcon })
+            .bindTooltip(nebuleAirTootip,{direction: 'center'})
             .bindPopup(nebuleAirPopup, {
                 maxWidth: 4000
                 // autoclose:false,
@@ -824,6 +799,7 @@ function loadNebuleAir() {
           });
 
           L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
+          .bindTooltip(nebuleAirTootip,{direction: 'center'})
           .bindPopup(nebuleAirPopup, {
             maxWidth: 4000
             // autoclose:false,
@@ -1430,7 +1406,7 @@ function loadNebuleAir() {
             })}, 1000) // end am5.ready()
           
         })
-          .addTo(nebuleairParticuliers);
+          .addTo(nebuleairParticuliers).setZIndexOffset(-1000);
 
         } 
         });
@@ -1444,7 +1420,41 @@ function loadNebuleAir() {
 function changeNebuleAir() {
       $.each(apiFetchNebuleAir.data, function (key, value) {
 
-          var value_compound = Math.round(value[compoundUpper]);
+          var value_compound;
+
+          switch(timespanLower) {
+            case 2:
+              if (value[compoundUpper] != null){
+                value_compound = Math.round(value[compoundUpper]);
+              }else{
+                value_compound = null;
+              }
+              break;
+            case 15:
+              if (value[compoundUpper + "_qh"] != null){
+                value_compound = Math.round(value[compoundUpper + "_qh"]);
+              }else{
+                value_compound = null;
+              }
+              break;
+            case 60:
+              if (value[compoundUpper + "_h"] != null){
+                value_compound = Math.round(value[compoundUpper + "_h"]);
+              }else{
+                value_compound = null;
+              }
+              break;
+            case 1440:
+              if (value[compoundUpper + "_d"] != null){
+                value_compound = Math.round(value[compoundUpper + "_d"]);
+              }else{
+                value_compound = null;
+              }
+              break;
+          } 
+
+          var wifiLevel = 2 * (parseInt(value['wifi_signal']) + 100);
+          if(wifiLevel > 100){wifiLevel = 100}
 
           var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
           '<div id="gauges">'+
@@ -1453,12 +1463,14 @@ function changeNebuleAir() {
           '<div id="chartdiv3"></div>'+
           '</div>' +
           '<div class="text-center" style="padding-top:15px">'+
-          '<br>Dernière mesure effectuée le ' + date_texte + ' à '+ horaire_texte +'<br>' +
+          '<br>Dernière mesure effectuée ' + timeDateCounter(value.timeUTC) + '<br>' +
           '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
           //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
           '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-          '</div>'
+          '</div>';
+
+          var nebuleAirTootip = value['sensorId'];
           
           //image des points sur la carte
           var icon_param = {
@@ -1470,7 +1482,7 @@ function changeNebuleAir() {
 
           //change icon color for PM1 and PM25
 
-          if(value.connected){
+          if(value.connected && value_compound != null){
           //BON
           if (value_compound >= 0 && value_compound < 10 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
               icon_param.iconUrl = 'img/nebuleAir/nebuleAir_bon.png';
@@ -1547,7 +1559,7 @@ function changeNebuleAir() {
           }
 
           // cutom text on the marker
-          if(value.connected){
+          if(value.connected && value_compound != null){
           var myIcon = L.divIcon({
               className: 'my-div-icon',
               html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -1559,6 +1571,7 @@ function changeNebuleAir() {
               .addTo(nebuleairParticuliers);
 
           L.marker([value['latitude'], value['longitude']], { icon: myIcon })
+              .bindTooltip(nebuleAirTootip,{direction: 'center'})
               .bindPopup(nebuleAirPopup, {
                   maxWidth: 4000
                   // autoclose:false,
@@ -2177,6 +2190,7 @@ function changeNebuleAir() {
         });
 
         L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
+        .bindTooltip(nebuleAirTootip,{direction: 'center'})
         .bindPopup(nebuleAirPopup, {
           maxWidth: 4000
           // autoclose:false,
@@ -2783,11 +2797,7 @@ function changeNebuleAir() {
           })}, 1000) // end am5.ready()
         
       })
-        .addTo(nebuleairParticuliers);
-
-
-
-        
+        .addTo(nebuleairParticuliers).setZIndexOffset(-1000);  
       }     
       });
 };
