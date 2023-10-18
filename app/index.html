@@ -111,9 +111,15 @@
             Choix des capteurs
         </button>
         <ul class="dropdown-menu">
-            <li><input type="checkbox" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" /><label for="checkbox_micro_stationsParticuliers">Micro-stations NebuleAir particuliers</label></li>
-            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>Capteurs Sensor.Community</label>
-            </li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
+
+            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>Capteurs Sensor.Community</label></li>
             <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud" /><label for="checkbox_stationsRefAtmoSud">Stations de Référence AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" /><label for="checkbox_micro_stationsAtmoSud">Micro-stations AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_modelisationPMAtmoSud" name="checkbox_modelisationPMAtmoSud" /><label for="checkbox_modelisationPMAtmoSud">Modélisation horaire PM AtmoSud</label></li>
@@ -294,6 +300,7 @@
         // ************************
         //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
         $(document).ready(loadNebuleAir);
+    
         // $(document).ready(loadSensorCommunity);
         //$(document).ready(loadStationRefAtmo);
         // $(document).ready(loadStationMicroAtmo);
@@ -302,9 +309,11 @@
 
         // ************************
 
+
+
         document.querySelector("#button_screenshot").addEventListener("click", screenShot);
 
-        document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
+        document.querySelector("#checkbox_micro_stationsParticuliers").classList.add("active");
         document.querySelector("#checkbox_sensor_community").checked = false;
         document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
         document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
@@ -312,7 +321,7 @@
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
         document.querySelector("#checkbox_purpleAir").checked = false;
 
-        if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
+        if (document.querySelector("#checkbox_micro_stationsParticuliers").classList.contains("active")) {
             map.addLayer(nebuleairParticuliers)
         }
         if (document.querySelector("#checkbox_sensor_community").checked) {
