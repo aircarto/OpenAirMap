@@ -110,21 +110,8 @@
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             Choix des capteurs
         </button>
-        <ul class="dropdown-menu">
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-            <li><button class="dropdown-item" type="button" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" >Micro-stations NebuleAir particuliers</button></li>
-
-            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>Capteurs Sensor.Community</label></li>
-            <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud" /><label for="checkbox_stationsRefAtmoSud">Stations de Référence AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" /><label for="checkbox_micro_stationsAtmoSud">Micro-stations AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_modelisationPMAtmoSud" name="checkbox_modelisationPMAtmoSud" /><label for="checkbox_modelisationPMAtmoSud">Modélisation horaire PM AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_modelisationICAIRAtmoSud" name="checkbox_modelisationICAIRAtmoSud" /><label for="checkbox_modelisationICAIRAtmoSud">Modélisation horaire ICAIRh AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label for="checkbox_purpleAir">Capteurs PurpleAir</label></li>
+        <ul class="dropdown-menu" id="dropDownLayerButton">
+            
         </ul>
     </div>
 
@@ -310,16 +297,35 @@
         // ************************
 
 
-
         document.querySelector("#button_screenshot").addEventListener("click", screenShot);
 
-        document.querySelector("#checkbox_micro_stationsParticuliers").classList.add("active");
-        document.querySelector("#checkbox_sensor_community").checked = false;
-        document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
-        document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
-        document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
-        document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
-        document.querySelector("#checkbox_purpleAir").checked = false;
+        // Butons DropDown
+
+        const dropdownButton = document.getElementById("dropDownLayerButton");
+
+        var dropDownList = [
+            {"id":"#checkbox_micro_stationsParticuliers", "Display_name":"Capteurs NebuleAir", "mapLayer":"nebuleairParticuliers", "switchFunction":"switchNebuleAir"},
+            {"id":"#checkbox_sensor_community", "Display_name":"Capteurs Sensor.Community", "mapLayer":"sensorCommunity", "switchFunction":"switchNebuleAir"},
+            {"id":"#checkbox_purpleAir", "Display_name":"Capteurs PurpleAir", "mapLayer":"purpleAir", "switchFunction":"switchNebuleAir"},
+            {"id":"#checkbox_stationsRefAtmoSud", "Display_name":"Stations de références AtmoSud", "mapLayer":"stationsRefAtmoSud", "switchFunction":"switchNebuleAir"},
+            {"id":"#checkbox_micro_stationsAtmoSud", "Display_name":"Micro-stations AtmoSud", "mapLayer":"stationsMicroAtmoSud", "switchFunction":"switchNebuleAir"},
+            {"id":"#checkbox_modelisationPMAtmoSud", "Display_name":"Modélisation horaire PM", "mapLayer":"modelisationPMAtmoSud", "switchFunction":"switchNebuleAir"},
+            {"id":"#checkbox_modelisationICAIRAtmoSud", "Display_name":"Modélisation IQAIRh", "mapLayer":"modelisationICAIRAtmoSud", "switchFunction":"switchNebuleAir"}
+            ];
+        
+        dropDownList.forEach(element => {
+            console.log(element["id"]);
+            dropdownButton.innerHTML += `<li><button class="dropdown-item active" type="button" id="${element["id"]}" name="${element["id"]}" >${element["Display_name"]}</button></li>`;
+             
+        });
+
+        // document.querySelector("#checkbox_micro_stationsParticuliers").classList.add("active");
+        // document.querySelector("#checkbox_sensor_community").checked = false;
+        // document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
+        // document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
+        // document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
+        // document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
+        // document.querySelector("#checkbox_purpleAir").checked = false;
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").classList.contains("active")) {
             map.addLayer(nebuleairParticuliers)

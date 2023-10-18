@@ -123,12 +123,12 @@ body {
   .gauge-container.myStyle > .gauge .value-text {
     fill: #C9DE3C;
   } 
-
+/*
   .dropdown-menu{
     --bs-dropdown-min-width: 20rem !important;
     --bs-dropdown-padding-x: 1rem !important;
     }
-
+*/
 
     #gauges {
       width: 600px;
