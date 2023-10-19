@@ -299,33 +299,46 @@
 
         document.querySelector("#button_screenshot").addEventListener("click", screenShot);
 
-        // Butons DropDown
+        // Buttons DropDown
 
         const dropdownButton = document.getElementById("dropDownLayerButton");
 
         var dropDownList = [
-            {"id":"#checkbox_micro_stationsParticuliers", "Display_name":"Capteurs NebuleAir", "mapLayer":"nebuleairParticuliers", "switchFunction":"switchNebuleAir"},
-            {"id":"#checkbox_sensor_community", "Display_name":"Capteurs Sensor.Community", "mapLayer":"sensorCommunity", "switchFunction":"switchNebuleAir"},
-            {"id":"#checkbox_purpleAir", "Display_name":"Capteurs PurpleAir", "mapLayer":"purpleAir", "switchFunction":"switchNebuleAir"},
-            {"id":"#checkbox_stationsRefAtmoSud", "Display_name":"Stations de références AtmoSud", "mapLayer":"stationsRefAtmoSud", "switchFunction":"switchNebuleAir"},
-            {"id":"#checkbox_micro_stationsAtmoSud", "Display_name":"Micro-stations AtmoSud", "mapLayer":"stationsMicroAtmoSud", "switchFunction":"switchNebuleAir"},
-            {"id":"#checkbox_modelisationPMAtmoSud", "Display_name":"Modélisation horaire PM", "mapLayer":"modelisationPMAtmoSud", "switchFunction":"switchNebuleAir"},
-            {"id":"#checkbox_modelisationICAIRAtmoSud", "Display_name":"Modélisation IQAIRh", "mapLayer":"modelisationICAIRAtmoSud", "switchFunction":"switchNebuleAir"}
+            {"id":"#checkbox_micro_stationsParticuliers", "Display_name":"Capteurs NebuleAir", "mapLayer":"nebuleairParticuliers", "switchFunction":"switchNebuleAir", "activeStart":true},
+            {"id":"#checkbox_sensor_community", "Display_name":"Capteurs Sensor.Community", "mapLayer":"sensorCommunity", "switchFunction":"switchSensorCommunity", "activeStart":false},
+            {"id":"#checkbox_purpleAir", "Display_name":"Capteurs PurpleAir", "mapLayer":"purpleAir", "switchFunction":"switchPurpleAir", "activeStart":false},
+            {"id":"#checkbox_stationsRefAtmoSud", "Display_name":"Stations de références AtmoSud", "mapLayer":"stationsRefAtmoSud", "switchFunction":"switchRefAtmo", "activeStart":false},
+            {"id":"#checkbox_micro_stationsAtmoSud", "Display_name":"Micro-stations AtmoSud", "mapLayer":"stationsMicroAtmoSud", "switchFunction":"switchMicroAtmo", "activeStart":false},
+            {"id":"#checkbox_modelisationPMAtmoSud", "Display_name":"Modélisation horaire PM", "mapLayer":"modelisationPMAtmoSud", "switchFunction":"switchModelisationPMAtmo", "activeStart":false},
+            {"id":"#checkbox_modelisationICAIRAtmoSud", "Display_name":"Modélisation IQAIRh", "mapLayer":"modelisationICAIRAtmoSud", "switchFunction":"switchModelisationICAIRAtmo", "activeStart":false}
             ];
         
+        
         dropDownList.forEach(element => {
-            console.log(element["id"]);
-            dropdownButton.innerHTML += `<li><button class="dropdown-item active" type="button" id="${element["id"]}" name="${element["id"]}" >${element["Display_name"]}</button></li>`;
-             
+            const li = document.createElement("li");
+            const button = document.createElement("button");
+            
+            button.className = "dropdown-item";
+            if (element["activeStart"]) {
+                button.classList.add("active");
+                console.log(element["mapLayer"]);
+                console.log(typeof element["mapLayer"]);
+                console.log(typeof nebuleairParticuliers);
+
+                map.addLayer(element["mapLayer"]);
+                //map.addLayer(nebuleairParticuliers)
+
+            }
+            button.setAttribute("type", "button");
+            button.setAttribute("id", element["id"]);
+            const textNode = document.createTextNode(element["Display_name"]);
+            
+            button.appendChild(textNode);
+            li.appendChild(button);
+            dropdownButton.appendChild(li);
         });
 
-        // document.querySelector("#checkbox_micro_stationsParticuliers").classList.add("active");
-        // document.querySelector("#checkbox_sensor_community").checked = false;
-        // document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
-        // document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
-        // document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
-        // document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
-        // document.querySelector("#checkbox_purpleAir").checked = false;
+
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").classList.contains("active")) {
             map.addLayer(nebuleairParticuliers)
