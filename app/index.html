@@ -21,6 +21,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- Bootstrap 5.3.0 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Cookies -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 
     <!-- my files -->
     <script src="js_scripts/NebuleAir.js"></script>
@@ -199,6 +201,54 @@
             </div>
         </div> 
     </div>
+
+      <!-- Modal General Infos -->
+      <div class="modal fade" id="welcome_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Welcome to OpenAirMap</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row justify-content-md-center mb-2">
+                      <div class="col-lg-4"><img src="img/logoAirCarto.png" class="img-fluid" alt="..."></div>
+                      <div class="col-lg-4"><img src="img/LogoAtmoSud.png" class="img-fluid" alt="..."></div>
+                    </div>
+                    <div class="row">
+                        L'application OpenAirMap est un projet open source porté par AirCarto et AtmoSud pour afficher en temps réel les mesures de qualité de l'air effectué par
+            les stations de mesures et les micro-capteurs.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuer</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal screen too smalll -->
+    <div class="modal fade" id="screen_tooSmall_Modal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel2">Attention</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            L'application OpenAirMap n'est pas encore optimisée pour être consultée sur un smartphone.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">D'accord</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+  
+
 
     <!-- <div id="capture"></div> -->
 
@@ -1422,6 +1472,21 @@ if (document.querySelector("#checkbox_purpleAir").checked) {
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+
+        const screenTooSmall_modal = new bootstrap.Modal('#screen_tooSmall_Modal');
+        if (screen.width < 1080) {
+            screenTooSmall_modal.show();
+        }
+        //welcome mdodal
+        const welcomeModal = new bootstrap.Modal('#welcome_Modal');
+        
+        if (Cookies.get('welcome') == null) {
+            welcomeModal.show();
+            Cookies.set('welcome', 'oui', { expires: 7 });
+        }
+       
+
+        
     </script>
 </body>
 
