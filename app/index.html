@@ -405,9 +405,15 @@
         document.querySelector("#checkbox_wind").addEventListener("change", switchWind)
 
         function switchWind() {
+
             if (document.querySelector("#checkbox_wind").checked) {
 
-                $.getJSON("https://meteo.atmosud.org/20231023/wind_field_23.json", function(data) {
+                const current_time = new Date();
+                console.log(current_time);
+                let wind_link = "https://meteo.atmosud.org/20231023/wind_field_" + current_time.getHours() +".json";  // VERIFIER UTC?
+                console.log(wind_link);
+
+                $.getJSON(wind_link, function(data) {
                  velocityLayer =  L.velocityLayer({
                                         displayValues: false,
                                         displayOptions: false,
