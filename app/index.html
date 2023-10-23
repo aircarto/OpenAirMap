@@ -32,12 +32,16 @@
     <script src="js_scripts/sensorCommunity.js"></script>
     <script src="js_scripts/AtmoSudModelisation.js"></script>
     <script src="js_scripts/api_purpleair.js"></script>
+    <script src="js_scripts/leaflet-velocity.min.js"></script>
 
     <script src="geojson/paca.geojson"></script>
 
 
     <!-- style CSS  -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/leaflet-velocity.min.css">
+
+
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
@@ -121,6 +125,7 @@
             <li><input type="checkbox" id="checkbox_modelisationPMAtmoSud" name="checkbox_modelisationPMAtmoSud" /><label for="checkbox_modelisationPMAtmoSud">Modélisation horaire PM AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_modelisationICAIRAtmoSud" name="checkbox_modelisationICAIRAtmoSud" /><label for="checkbox_modelisationICAIRAtmoSud">Modélisation horaire ICAIRh AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label for="checkbox_purpleAir">Capteurs PurpleAir</label></li>
+            <li><input type="checkbox" id="checkbox_wind" name="checkbox_wind" /><label for="checkbox_wind">Vents</label></li>
         </ul>
     </div>
 
@@ -337,6 +342,7 @@
         var modelisationPMAtmoSud = new L.layerGroup();
         var modelisationICAIRAtmoSud = new L.layerGroup();
         var purpleAir = new L.layerGroup();
+        var velocityLayer;
 
         // Switch case
         // reload
@@ -361,6 +367,8 @@
         document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
         document.querySelector("#checkbox_purpleAir").checked = false;
+        document.querySelector("#checkbox_wind").checked = false;
+
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
             map.addLayer(nebuleairParticuliers)
@@ -394,6 +402,29 @@
         document.querySelector("#checkbox_modelisationPMAtmoSud").addEventListener("change", switchModelisationPMAtmo)
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").addEventListener("change", switchModelisationICAIRAtmo)
         document.querySelector("#checkbox_purpleAir").addEventListener("change", switchPurpleAir)
+        document.querySelector("#checkbox_wind").addEventListener("change", switchWind)
+
+        function switchWind() {
+            if (document.querySelector("#checkbox_wind").checked) {
+
+                $.getJSON("https://meteo.atmosud.org/20231023/wind_field_23.json", function(data) {
+                 velocityLayer =  L.velocityLayer({
+                                        displayValues: false,
+                                        displayOptions: false,
+                                        data: data,
+                                        velocityScale: 0.015,
+                                        colorScale: ["#71C3F2", "#447591"],
+                                        minVelocity: 1,
+                                        maxVelocity: 10,
+                                        overlayName: 'wind_layer',
+                                    }).addTo(map);
+                });
+
+            } else {
+                velocityLayer.remove();
+            }
+        }
+
 
         function switchNebuleAir() {
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
