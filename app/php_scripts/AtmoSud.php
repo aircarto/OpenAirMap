@@ -1,7 +1,10 @@
 <?php
 
-/*
+  // https://api.atmosud.org/icair/horaire/stations/now?format=json&download=false
+  // https://api.atmosud.org/observations/capteurs/mesures/dernieres?nom_campagne=DIAMS&format=json&download=false&nb_dec=0
+  // https://api.atmosud.org/observations/stations/mesures/derniere?temporalite=horaire&metadata=false&format=json&download=false
 
+/*
 GET Data from AtmoSud API
 https://api.atmosud.org
 

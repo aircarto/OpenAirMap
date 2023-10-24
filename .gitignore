@@ -1,3 +1,5 @@
 node_modules
 .env
 vendor/
+.DS_Store
+app/js_scripts/api_purpleair.js

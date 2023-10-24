@@ -27,7 +27,7 @@ body {
 }
 
 
-#div_button_choixCapteur {
+#div_checkbox_choixCapteur {
     position: fixed;
     right: 190px;
     top: 15px;
@@ -39,13 +39,6 @@ body {
     top: 15px;
 }
 
-#div_button_seuils {
-    position: fixed;
-    right: 600px;
-    top: 15px;
-}
-
-
 #div_button_pas_de_temps {
     position: fixed;
     left: 20px;
@@ -54,10 +47,15 @@ body {
 
 #button_horloge {
     position: fixed;
-    left: 330px;
+    left: 500px;
     bottom: 15px;
 }
 
+#button_screenshot{
+  position: fixed;
+  left: 700px;
+  bottom: 15px;
+}
 
 #btn_bon {
     background-color: #4FF0E6;
@@ -125,3 +123,72 @@ body {
   .gauge-container.myStyle > .gauge .value-text {
     fill: #C9DE3C;
   } 
+
+  .dropdown-menu{
+    --bs-dropdown-min-width: 20rem !important;
+    --bs-dropdown-padding-x: 1rem !important;
+    }
+
+
+    #gauges {
+      width: 600px;
+      height: 200px;
+      display: flex;                  /* establish flex container */
+      flex-direction: row;            /* default value; can be omitted */
+      flex-wrap: nowrap;              /* default value; can be omitted */
+      justify-content: space-between; 
+    }
+
+    #chartdiv1 {
+        width: 200px;
+        height: 220px;
+      }
+
+      #chartdiv2 {
+        width: 200px;
+        height: 220px;
+      }
+
+      #chartdiv3 {
+        width: 200px;
+        height: 220px;
+      }
+
+      #div_button_seuils_PM10{
+        visibility: hidden;
+        position:absolute;
+        right: 600px;
+        top: 15px;
+      }
+
+      #div_button_seuils_PM125{
+        visibility: visible;
+        position:absolute;
+        right: 600px;
+        top: 15px;
+      }
+
+      #chartSensor{
+        display: none;
+      }
+
+      #chartSensor2{
+        display: none;
+        width: 100%;
+        height: 300px;
+        max-width: 100%;
+      }
+
+      #messageToast{
+        background-color: red;
+      }
+
+      .dropdown-menu{
+        width:350px;
+      }
+
+      #compoundList{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
