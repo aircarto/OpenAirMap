@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 // $timespan = $_GET['timespan']; 
 
 // switch ($timespan) {
@@ -18,9 +19,16 @@
 // }
 
 $url = 'https://aircarto.fr/API_V2/capteurs/metadata?capteurType=NebuleAir';
+=======
+$url = 'https://aircarto.fr/API/nebuleAir/lastMeasure.php';
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c
 
 $json_data = file_get_contents($url);
 
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
+<<<<<<< HEAD
 echo $json_data;
+=======
+echo $json_data;
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c

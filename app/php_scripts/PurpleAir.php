@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 $timespan = $_GET['timespan'];
 
 $api_key_purple = $_GET['key'];
@@ -37,6 +38,18 @@ switch ($timespan) {
         $url = 'https://api.purpleair.com/v1/sensors?fields=name,latitude,longitude,pm2.5_24hour,last_seen&api_key='.$api_key_purple.'&location_type=0&nwlng=-5.523&nwlat=50.990&selng=7.298&selat=42.143';
         break;
 }
+=======
+use Dotenv\Dotenv;
+
+require '../../vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$api_key_purple = $_ENV['PURPLEAIR_API_KEY'];
+
+$url = 'https://api.purpleair.com/v1/sensors?fields=name,latitude,longitude,pm1.0,pm2.5,pm10.0,last_seen&api_key='.$api_key_purple.'&nwlng=5.223793027379755&nwlat=43.38349241945991&selng=5.594581567660924&selat=43.22158944480793';
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c
 
 $json_data = file_get_contents($url);
 

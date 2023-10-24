@@ -1,4 +1,5 @@
 function loadPurpleAir() {
+<<<<<<< HEAD
     console.log("%cPurpleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
     const start = Date.now();
     purpleAir.clearLayers();
@@ -11,6 +12,11 @@ function loadPurpleAir() {
         method: "GET",
         url: "../php_scripts/PurpleAir.php",
         data: ({timespan: timespanLower, key: PURPLEAIR_API_KEY}),
+=======
+    $.ajax({
+        method: "GET",
+        url: "../php_scripts/PurpleAir.php",
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c
     }).done(function (data) {
         console.log(data.data);
         const end = Date.now();
@@ -29,6 +35,7 @@ function loadPurpleAir() {
             var location = value[2];
             var lat = value[3];
             var long = value[4]
+<<<<<<< HEAD
 
             if (timespanLower == 2){
               var pm1_value = value[5];
@@ -56,6 +63,42 @@ function loadPurpleAir() {
 
             var icon_param = {
                 iconUrl: 'img/purpleAir/purpleAir_default.png',
+=======
+            var pm1_value = value[5];
+            var pm25_value = value[6];
+            var pm10_value = value[7];
+
+            last_seen = timeConverter(last_seen);
+
+            function timeConverter(UNIX_timestamp) {
+                var a = new Date(UNIX_timestamp * 1000);
+                var months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+                var year = a.getFullYear();
+                var month = months[a.getMonth()];
+                var date = a.getDate();
+                var hour = a.getHours();
+                var min = a.getMinutes();
+                var sec = a.getSeconds();
+                var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+                return time;
+            }
+
+            //on créer un popup pour chaque PurpleAir
+            var purpleAirPopup = '<img src="img/purpleAir/purpleAirLogo.jpg" alt="" class="card-img-top">' +
+            '<h3>PM1: ' + pm1_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
+            '<h3>PM2.5: ' + pm25_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
+            '<h3>PM110: ' + pm10_value + '<span>&#181;</span>g/m<span>&#179;</span></h3>' +
+
+            '<h4>Dernière mesure ' + last_seen + '</h4>' +
+
+
+                '<br>Capteur qualité de l\'air extérieur Purple Air <br>' +
+                '<br><a href="https://map.purpleair.com/"><button class="btn btn-primary">Plus d\'information sur map.purpleair.com</button></a>'
+
+            //inage for the sensors on the map
+            var icon_param_purpleAir = {
+                iconUrl: 'img/purpleAir/purpleAir_bon.png',
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c
                 iconSize: [80, 80], // size of the icon
                 iconAnchor: [0, 60], // point of the icon which will correspond to marker's location
                 //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
@@ -147,7 +190,11 @@ function loadPurpleAir() {
          if (!isNaN(value_compound)){
             var myIcon = L.divIcon({
                 className: 'my-div-icon',
+<<<<<<< HEAD
                 html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
+=======
+                html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + Math.round(pm25_value) + '</div>',
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c
                 iconAnchor: [x_position, y_position],
                 popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
             });
@@ -2757,6 +2804,7 @@ function changePurpleAir() {
       
         }
     })
+<<<<<<< HEAD
    
 };
 
@@ -3024,3 +3072,9 @@ function load1PurpleAir(id,hours,timespan){
       });
 }
 
+=======
+    .fail(function(){
+        console.log("Error while geting data from PurpleAir API");
+    })
+};
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c

@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 .env
 .DS_Store
 app/js_scripts/api_purpleair.js
 .vendor
 
+=======
+node_modules
+.env
+vendor/
+>>>>>>> 5f03ae27dff159b543f865095a3e914a9810a80c
