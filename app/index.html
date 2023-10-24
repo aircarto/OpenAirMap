@@ -409,8 +409,28 @@
             if (document.querySelector("#checkbox_wind").checked) {
 
                 const current_time = new Date();
-                console.log(current_time);
-                let wind_link = "https://meteo.atmosud.org/20231023/wind_field_" + current_time.getHours() +".json";  // VERIFIER UTC?
+                let day = String(current_time.getFullYear());
+                if((current_time.getMonth()+1)< 10){
+                    day += "0";
+                    day += (current_time.getMonth()+1);
+                }else{
+                    day += (current_time.getMonth()+1);
+                }
+                if(current_time.getDate()< 10){
+                    day += "0";
+                    day += current_time.getDate();
+                }else{
+                    day += current_time.getDate();
+                }
+                let hour ="";
+                if(current_time.getHours()< 10){
+                    hour += "0";
+                    hour += current_time.getHours();
+                }else{
+                    hour += current_time.getHours();
+                }
+
+                let wind_link = "https://meteo.atmosud.org/"+ day +"/wind_field_" + hour +".json";  
                 console.log(wind_link);
 
                 $.getJSON(wind_link, function(data) {
@@ -1495,6 +1515,57 @@ if (document.querySelector("#checkbox_purpleAir").checked) {
 }
 
 }, timespanLower * 60 * 1000)
+
+
+
+setInterval(function() {
+
+if (document.querySelector("#checkbox_wind").checked) {
+
+    velocityLayer.remove();
+    const current_time = new Date();
+                let day = String(current_time.getFullYear());
+                if((current_time.getMonth()+1)< 10){
+                    day += "0";
+                    day += (current_time.getMonth()+1);
+                }else{
+                    day += (current_time.getMonth()+1);
+                }
+                if(current_time.getDate()< 10){
+                    day += "0";
+                    day += current_time.getDate();
+                }else{
+                    day += current_time.getDate();
+                }
+                let hour ="";
+                if(current_time.getHours()< 10){
+                    hour += "0";
+                    hour += current_time.getHours();
+                }else{
+                    hour += current_time.getHours();
+                }
+
+                let wind_link = "https://meteo.atmosud.org/"+ day +"/wind_field_" + hour +".json";  
+                console.log(wind_link);
+
+                $.getJSON(wind_link, function(data) {
+                 velocityLayer =  L.velocityLayer({
+                                        displayValues: false,
+                                        displayOptions: false,
+                                        data: data,
+                                        velocityScale: 0.015,
+                                        colorScale: ["#71C3F2", "#447591"],
+                                        minVelocity: 1,
+                                        maxVelocity: 10,
+                                        overlayName: 'wind_layer',
+                                    }).addTo(map);
+                });
+
+            openToast("Données Vent rechargées");
+}
+
+}, 60 * 60 * 1000)
+
 
 
     </script>
