@@ -47,7 +47,7 @@ function loadPurpleAir() {
             '<div id="chartdiv3"></div>'+
             '</div>' +
             '<div class="text-center" style="padding-top:15px">'+
-            '<br>Dernière mesure effectuée ' + timeDateCounter(last_seen * 1000) + '<br>' +
+            '<br>Dernière mesure effectuée :' + timeDateCounter(last_seen * 1000) + '<br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
             '<button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
             '</div>';
@@ -1420,7 +1420,7 @@ function changePurpleAir() {
         '<div id="chartdiv3"></div>'+
         '</div>' +
         '<div class="text-center" style="padding-top:15px">'+
-        '<br>Dernière mesure effectuée ' + timeDateCounter(last_seen * 1000) + '<br>' +
+        '<br>Dernière mesure effectuée :' + timeDateCounter(last_seen * 1000) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">purpleair-' + sensorid + '</button>'+
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'purpleair-' + sensorid + '\')" disabled>Voir les données</button>'+
         '</div>';

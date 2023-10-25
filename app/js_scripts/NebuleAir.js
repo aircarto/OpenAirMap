@@ -62,18 +62,33 @@ function loadNebuleAir() {
             var wifiLevel = 2 * (parseInt(value['wifi_signal']) + 100);
             if(wifiLevel > 100){wifiLevel = 100}
 
-            var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
-            '<div id="gauges">'+
-            '<div id="chartdiv1"></div>'+
-            '<div id="chartdiv2"></div>'+
-            '<div id="chartdiv3"></div>'+
-            '</div>' +
-            '<div class="text-center" style="padding-top:15px">'+
-            '<br>Dernière mesure effectuée ' + timeDateCounter(value.timeUTC) + '<br>' +
-            '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
-            '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
-            '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-            '</div>';
+            if (value.connected){
+              var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
+              '<div id="gauges">'+
+              '<div id="chartdiv1"></div>'+
+              '<div id="chartdiv2"></div>'+
+              '<div id="chartdiv3"></div>'+
+              '</div>' +
+              '<div class="text-center" style="padding-top:15px">'+
+              '<br>Dernière mesure effectuée :' + timeDateCounter(value.timeUTC) + '<br>' +
+              '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
+              '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
+              '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
+              '</div>';
+            }else{
+              var nebuleAirPopup = '<img src="img/LogoNebuleAir.png" alt="" class="card-img-top">' +
+              '<div id="gauges">'+
+              '<div id="chartdiv1"></div>'+
+              '<div id="chartdiv2"></div>'+
+              '<div id="chartdiv3"></div>'+
+              '</div>' +
+              '<div class="text-center" style="padding-top:15px">'+
+              '<br>Dernière mesure effectuée :' + timeDateCounter(value.timeUTC) + '<br>' +
+              '<br>Capteur déconnecté<br>' +
+              '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
+              '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
+              '</div>';
+            }
 
             var nebuleAirTootip = value['sensorId'];
             
@@ -1463,7 +1478,7 @@ function changeNebuleAir() {
           '<div id="chartdiv3"></div>'+
           '</div>' +
           '<div class="text-center" style="padding-top:15px">'+
-          '<br>Dernière mesure effectuée ' + timeDateCounter(value.timeUTC) + '<br>' +
+          '<br>Dernière mesure effectuée :' + timeDateCounter(value.timeUTC) + '<br>' +
           '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
           //'<br>Capteur qualité de l\'air extérieur (' + value['sensorId'] + ') <br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+

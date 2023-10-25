@@ -94,7 +94,7 @@ $.ajax({
     '</div>'+
     '<div class="text-center" style="padding-top:15px">'+
     '<h1>'+ item.nom_station +'</h1>' +
-    '<br>Dernière mesure effectuée ' + timeDateCounter(item.date_debut) + '<br>' +
+    '<br>Dernière mesure effectuée :' + timeDateCounter(item.date_debut) + '<br>' +
     '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
     '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
     '</div>';
@@ -1548,7 +1548,7 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
         '</div>'+
         '<div class="text-center" style="padding-top:15px">'+
         '<h1>'+ item.nom_station +'</h1>' +
-        '<br>Dernière mesure effectuée ' + timeDateCounter(item.date_debut) + '<br>' +
+        '<br>Dernière mesure effectuée :' + timeDateCounter(item.date_debut) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
         '</div>';
