@@ -1170,6 +1170,23 @@ function switchPurpleAir() {
             console.log(sensor);
             console.log(hours);
             console.log(timespan);
+
+            switch(timespan) {
+            case 2:
+                var tempo = " à 2 minutes ";
+                break;
+            case 15:
+                var tempo = " quart-horaires ";
+                break;
+            case 60:
+                var tempo = " horaires ";
+                break;
+            case 1440:
+                var tempo = " journalières ";
+                break;
+            } 
+
+            document.getElementById("card-title").innerText = 'Evolution des concentrations' + tempo + 'en particules fines (µg/m3)';
             load1NebuleAir(sensor,timeLengthGraph,timespanGraph);
             document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
             document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
@@ -1468,6 +1485,145 @@ horaire_texte += timestamp_UTC.getMinutes();
 
 return date_texte + " à " + horaire_texte;
 }
+
+
+
+function timeDateCounter2(timestamp,timestamp2){
+
+var timestamp_UTC;
+const UTCoffset = -new Date().getTimezoneOffset() / 60;
+console.log(UTCoffset);
+
+//console.log(timestamp.replace(' ','T') + '.000Z');
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+console.log(isSafari);
+
+if(isSafari){
+    if(timestamp != null){
+        if(typeof timestamp == 'string'){
+            if (!timestamp.includes('T')){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+            }else{
+                timestamp_UTC = new Date(timestamp);
+            }
+        }else{
+            timestamp_UTC = new Date(timestamp);
+        }
+    }else{
+        if(timestamp2 != null){
+        if(typeof timestamp2 == 'string'){
+            if (!timestamp2.includes('T')){
+        timestamp_UTC = new Date(timestamp2.replace(" ","T")+"+00:00");
+            }else{
+                timestamp_UTC = new Date(timestamp2);
+            }
+        }else{
+            timestamp_UTC = new Date(timestamp2);
+        }
+    }else{
+        return " pas de donnée disponible";
+        }
+    }
+}else{
+if(timestamp != null){
+    if(typeof timestamp == 'string'){
+    if (!timestamp.includes('T')){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+    }else{
+        timestamp_UTC = new Date(timestamp);
+        }
+    }else{
+        timestamp_UTC = new Date(timestamp);
+    }
+    }else{
+
+        if(timestamp2 != null){
+    if(typeof timestamp2 == 'string'){
+    if (!timestamp2.includes('T')){
+        timestamp_UTC = new Date(timestamp2.replace(" ","T")+"+00:00");
+    }else{
+        timestamp_UTC = new Date(timestamp2);
+        }
+    }else{
+        timestamp_UTC = new Date(timestamp2);
+    }
+    }else{
+        return " pas de donnée disponible";
+        }  
+    }
+}
+
+
+console.log(timestamp_UTC);
+const now = new Date(Date.now());
+
+// let difference = now.getTime() - timestamp_UTC.getTime();
+
+
+let difference = Math.floor((now - timestamp_UTC)/86400000);
+console.log(difference);
+console.log(now - timestamp_UTC);
+
+var date_texte ="";
+let horaire_texte="";
+
+switch(difference) {
+  case 0:
+    if(now.getDay() == timestamp_UTC.getDay()){
+    date_texte = " aujourd'hui";
+    }else{
+        date_texte = " hier";
+    }
+    break;
+  case 1:
+    date_texte = " hier";
+    break;
+  case 2:
+    date_texte = " avant-hier";
+    break;
+  default:
+    date_texte += "il y a " + String(difference) + " jours";
+//     if(timestamp_UTC.getDate()< 10){
+//     date_texte += "0";
+//     date_texte += timestamp_UTC.getDate();
+//   }else{
+//     date_texte += timestamp_UTC.getDate();
+//   }
+//   date_texte += "/";
+//   if((timestamp_UTC.getMonth()+1)< 10){
+//     date_texte += "0";
+//     date_texte += (timestamp_UTC.getMonth()+1);
+//   }else{
+//     date_texte += (timestamp_UTC.getMonth()+1);
+//   }
+//   date_texte += "/";
+//   date_texte += timestamp_UTC.getFullYear();
+} 
+
+//horaire
+if(timestamp_UTC.getHours()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getHours();
+}else{
+horaire_texte += timestamp_UTC.getHours();
+}
+horaire_texte += "h";
+if(timestamp_UTC.getMinutes()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getMinutes();
+}else{
+horaire_texte += timestamp_UTC.getMinutes();
+} 
+
+return date_texte + " à " + horaire_texte;
+}
+
+
+
+
+
+
+
 
 setInterval(function() {
     console.log("Setinterval:");
