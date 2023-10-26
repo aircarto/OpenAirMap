@@ -2999,6 +2999,7 @@ function load1NebuleAir(id,hours,timespan){
                     centerX: am5.percent(50)
                   }));
 
+
                   var exporting = am5plugins_exporting.Exporting.new(root4, {
 menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
 dataSource: data
@@ -3070,6 +3071,7 @@ dataSource: data
                       wheelX: "panX",
                       wheelY: "zoomX",
                       maxTooltipDistance: 0,
+                      // maxTooltipDistanceBy: "x",
                       pinchZoomX: true
                   }));
 
@@ -3141,8 +3143,12 @@ dataSource: data
                   // Add cursor
                   // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
                   var cursor = chart4.set("cursor", am5xy.XYCursor.new(root4, {
-                      behavior: "none"
+                    behavior: "zoomX",
+                    xAxis: xAxis,
+                    snapToSeries: [ series_PM1, series_PM25, series_PM10 ],
+                    // snapToSeriesBy: "x"
                   }));
+                  cursor.lineX.set("visible", true);
                   cursor.lineY.set("visible", false);
 
                   var legend = chart4.bottomAxesContainer.children.push(am5.Legend.new(root4, {
