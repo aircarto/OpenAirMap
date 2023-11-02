@@ -47,7 +47,7 @@ body {
 
 #button_horloge {
     position: fixed;
-    left: 500px;
+    left: 420px;
     bottom: 15px;
 }
 
@@ -55,6 +55,7 @@ body {
   position: fixed;
   left: 700px;
   bottom: 15px;
+  display: none;
 }
 
 #btn_bon {
@@ -177,10 +178,6 @@ body {
         width: 100%;
         height: 300px;
         max-width: 100%;
-      }
-
-      #messageToast{
-        background-color: red;
       }
 
       .dropdown-menu{
