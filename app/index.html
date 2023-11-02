@@ -1878,6 +1878,10 @@ if (document.querySelector("#checkbox_wind").checked) {
         const screenTooSmall_modal = new bootstrap.Modal('#screen_tooSmall_Modal');
         if (screen.width < 1080) {
             screenTooSmall_modal.show();
+            var btns = document.getElementsByClassName('btn');
+            for (const btn of btns) {
+                btn.classList.add('btn-sm');
+                }
         }
         //welcome mdodal
         const welcomeModal = new bootstrap.Modal('#welcome_Modal');
