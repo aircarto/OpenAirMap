@@ -44,7 +44,7 @@ function loadStationMicroAtmo() {
         '<div id="chartdiv3"></div>'+
         '</div>'+
         '<div class="text-center" style="padding-top:15px">'+
-        '<br>Dernière mesure effectuée ' + timeDateCounter(item.time) + '<br>' +
+        '<br>Dernière mesure effectuée :' + timeDateCounter(item.time) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
         '</div>';
@@ -1356,7 +1356,7 @@ function changeStationMicroAtmo() {
           '<div id="chartdiv3"></div>'+
           '</div>'+
           '<div class="text-center" style="padding-top:15px">'+
-          '<br>Dernière mesure effectuée ' + timeDateCounter(item.time) + '<br>' +
+          '<br>Dernière mesure effectuée :' + timeDateCounter(item.time) + '<br>' +
           '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">microstationAtmoSud-' + item.id_site + '</button>'+
           '<button class="btn btn-primary" onclick="OpenSidePanel(\'microstationAtmoSud-' + item.id_site + '\')">Voir les données</button>'+
           '</div>';

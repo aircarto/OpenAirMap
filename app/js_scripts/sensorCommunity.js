@@ -13,7 +13,8 @@ function loadSensorCommunity() {
         var sensors = ["SDS011","SDS021","PMS1003","PMS3003","PMS5003","PMS6003","PMS7003","HPM","SPS30","NextPM","IPS-7100"];
         var PACA = [10383,11396,30225,54593,61673,65706,67671,69087,69315,69349,73276,77775,79683];
 
-        var filter_sensors = data.filter((e) => sensors.includes(e.sensor.sensor_type.name)  &&  PACA.includes(e.sensor.id));
+        // var filter_sensors = data.filter((e) => sensors.includes(e.sensor.sensor_type.name)  &&  PACA.includes(e.sensor.id));
+        var filter_sensors = data.filter((e) => sensors.includes(e.sensor.sensor_type.name));
 
         const end = Date.now();
         const requestTimer = (end - start)/1000;
@@ -38,7 +39,7 @@ function loadSensorCommunity() {
         '<div id="chartdiv3"></div>'+
         '</div>'+
         '<div class="text-center" style="padding-top:15px">'+
-        '<br>Dernière mesure effectuée ' + timeDateCounter(item.timestamp) + '<br>' +
+        '<br>Dernière mesure effectuée :' + timeDateCounter(item.timestamp) + '<br>' +
         '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
         '</div>';
@@ -1373,7 +1374,7 @@ function changeSensorCommunity() {
       '<div id="chartdiv3"></div>'+
       '</div>'+
       '<div class="text-center" style="padding-top:15px">'+
-      '<br>Dernière mesure effectuée ' + timeDateCounter(item.timestamp) + '<br>' +
+      '<br>Dernière mesure effectuée :' + timeDateCounter(item.timestamp) + '<br>' +
       '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
       '<button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
       '</div>';

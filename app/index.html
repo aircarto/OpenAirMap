@@ -32,12 +32,16 @@
     <script src="js_scripts/sensorCommunity.js"></script>
     <script src="js_scripts/AtmoSudModelisation.js"></script>
     <script src="js_scripts/api_purpleair.js"></script>
+    <script src="js_scripts/leaflet-velocity.min.js"></script>
 
     <script src="geojson/paca.geojson"></script>
 
 
     <!-- style CSS  -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/leaflet-velocity.min.css">
+
+
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
@@ -113,14 +117,14 @@
             Choix des capteurs
         </button>
         <ul class="dropdown-menu">
-            <li><input type="checkbox" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" /><label for="checkbox_micro_stationsParticuliers">Micro-stations NebuleAir particuliers</label></li>
-            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>Capteurs Sensor.Community</label>
-            </li>
-            <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud" /><label for="checkbox_stationsRefAtmoSud">Stations de Référence AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" /><label for="checkbox_micro_stationsAtmoSud">Micro-stations AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_modelisationPMAtmoSud" name="checkbox_modelisationPMAtmoSud" /><label for="checkbox_modelisationPMAtmoSud">Modélisation horaire PM AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_modelisationICAIRAtmoSud" name="checkbox_modelisationICAIRAtmoSud" /><label for="checkbox_modelisationICAIRAtmoSud">Modélisation horaire ICAIRh AtmoSud</label></li>
-            <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label for="checkbox_purpleAir">Capteurs PurpleAir</label></li>
+            <li><input type="checkbox" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" /><label for="checkbox_micro_stationsParticuliers">&ensp;Capteurs NebuleAir</label></li>
+            <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>&ensp;Capteurs Sensor.Community</label></li>
+            <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label for="checkbox_purpleAir">&ensp;Capteurs PurpleAir</label></li>
+            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" /><label for="checkbox_micro_stationsAtmoSud">&ensp;Micro-stations AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud" /><label for="checkbox_stationsRefAtmoSud">&ensp;Stations de Référence AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_modelisationPMAtmoSud" name="checkbox_modelisationPMAtmoSud" /><label for="checkbox_modelisationPMAtmoSud">&ensp;Modélisation horaire PM AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_modelisationICAIRAtmoSud" name="checkbox_modelisationICAIRAtmoSud" /><label for="checkbox_modelisationICAIRAtmoSud">&ensp;Modélisation horaire ICAIRh AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_wind" name="checkbox_wind" /><label for="checkbox_wind">&ensp;Vents</label></li>
         </ul>
     </div>
 
@@ -337,6 +341,7 @@
         var modelisationPMAtmoSud = new L.layerGroup();
         var modelisationICAIRAtmoSud = new L.layerGroup();
         var purpleAir = new L.layerGroup();
+        var velocityLayer;
 
         // Switch case
         // reload
@@ -361,6 +366,8 @@
         document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
         document.querySelector("#checkbox_purpleAir").checked = false;
+        document.querySelector("#checkbox_wind").checked = false;
+
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
             map.addLayer(nebuleairParticuliers)
@@ -394,6 +401,63 @@
         document.querySelector("#checkbox_modelisationPMAtmoSud").addEventListener("change", switchModelisationPMAtmo)
         document.querySelector("#checkbox_modelisationICAIRAtmoSud").addEventListener("change", switchModelisationICAIRAtmo)
         document.querySelector("#checkbox_purpleAir").addEventListener("change", switchPurpleAir)
+        document.querySelector("#checkbox_wind").addEventListener("change", switchWind)
+
+        function switchWind() {
+            console.log(timespanLower);
+
+            if (document.querySelector("#checkbox_wind").checked && timespanLower != 1440) {
+
+                const current_time = new Date();
+                let day = String(current_time.getFullYear());
+                if((current_time.getMonth()+1)< 10){
+                    day += "0";
+                    day += (current_time.getMonth()+1);
+                }else{
+                    day += (current_time.getMonth()+1);
+                }
+                if(current_time.getDate()< 10){
+                    day += "0";
+                    day += current_time.getDate();
+                }else{
+                    day += current_time.getDate();
+                }
+                let hour ="";
+                if(current_time.getHours()< 10){
+                    hour += "0";
+                    hour += current_time.getHours();
+                }else{
+                    hour += current_time.getHours();
+                }
+
+                let wind_link = "https://meteo.atmosud.org/"+ day +"/wind_field_" + hour +".json";  
+                console.log(wind_link);
+
+                $.getJSON(wind_link, function(data) {
+                 velocityLayer =  L.velocityLayer({
+                                        displayValues: false,
+                                        displayOptions: false,
+                                        data: data,
+                                        velocityScale: 0.002,
+                                        colorScale: ["#71C3F2", "#447591"],
+                                        minVelocity: 1,
+                                        maxVelocity: 5,
+                                        overlayName: 'wind_layer',
+                                    }).addTo(map);
+                });
+
+            } else {
+                if (velocityLayer != undefined){
+                velocityLayer.remove();
+                }
+                if(timespanLower == 1440)
+                {
+                    openToast("La modélisation des vents présente des observations horaires.");
+                }
+                document.querySelector("#checkbox_wind").checked = false;
+            }
+        }
+
 
         function switchNebuleAir() {
             if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
@@ -417,7 +481,7 @@
 
         function switchSensorCommunity() {
 
-            if (timespanLower != 15) {
+            if (timespanLower != 15 && timespanLower != 60 && timespanLower != 1440) {
                 if (document.querySelector("#checkbox_sensor_community").checked) {
 
                     if (apiFetchSensorCommunity.data.length == 0 || (apiFetchSensorCommunity.data.length != 0 && apiFetchSensorCommunity.timespan != timespanLower )) {
@@ -435,7 +499,7 @@
                     map.removeLayer(sensorCommunity);
                 }
             } else {
-                openToast("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
+                openToast("Pas de moyennes quart-horaire, horaire et journalière pour les capteurs Sensor.Community.");
                 document.querySelector("#checkbox_sensor_community").checked = false;
             }
 
@@ -490,20 +554,34 @@
         }
 
 function switchModelisationPMAtmo() {
-    if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
+    if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked && timespanLower != 1440) {
         loadModelisationPMAtmo();
           map.addLayer(modelisationPMAtmoSud);
                 } else {
+                    if(modelisationPMAtmoSud != undefined){
             map.removeLayer(modelisationPMAtmoSud);
+                    }
+                if (timespanLower == 1440)
+                   {
+                    openToast("La modélisation des particules fines présente des observations horaires.");
+                   }
+                   document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
                 }
 }
 
 function switchModelisationICAIRAtmo() {
-    if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked) {
+    if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked && timespanLower != 1440) {
         loadModelisationICAIRAtmo();
           map.addLayer(modelisationICAIRAtmoSud);
                 } else {
+                    if(modelisationICAIRAtmoSud != undefined){
             map.removeLayer(modelisationICAIRAtmoSud);
+                    }
+                   if (timespanLower == 1440)
+                   {
+                    openToast("La modélisation ICAIRh présente des observations horaires.");
+                   }
+                   document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
                 }
 }
 
@@ -683,13 +761,13 @@ function switchPurpleAir() {
         if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
-                openToast("Pas de données à intervalles 2 minutes pour les microstations AtmoSud");
+                openToast("Pas de données à intervalle 2 minutes pour les microstations AtmoSud");
             }
 
         if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
             document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
             map.removeLayer(stationsRefAtmoSud);
-            openToast("Pas de données à intervalles 1 jour pour les stations de référence AtmoSud");
+            openToast("Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud");
         }
 
         if(document.querySelector("#checkbox_purpleAir").checked){
@@ -765,6 +843,12 @@ function switchPurpleAir() {
             }
             }
 
+            if(document.querySelector("#checkbox_sensor_community").checked){
+            document.querySelector("#checkbox_sensor_community").checked = false;
+            map.removeLayer(sensorCommunity);
+            openToast("Pas de données à intervalle 15 minutes pour les capteurs Sensor.Community");
+        }
+
             if(document.querySelector("#checkbox_stationsRefAtmoSud").checked){
             if (apiFetchAtmoSudRef.timespan != 15 || apiFetchAtmoSudRef.data.length == 0 || (apiFetchAtmoSudRef.data.length != 0 && Date.now() - apiFetchAtmoSudRef.timestamp > 15 * 60 * 1000))
             {
@@ -817,6 +901,12 @@ function switchPurpleAir() {
             }
             }
         
+            if(document.querySelector("#checkbox_sensor_community").checked){
+            document.querySelector("#checkbox_sensor_community").checked = false;
+            map.removeLayer(sensorCommunity);
+            openToast("Pas de données à intervalle 1 heure pour les capteurs Sensor.Community");
+        }
+
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
                 map.removeLayer(stationsMicroAtmoSud);
@@ -872,6 +962,11 @@ function switchPurpleAir() {
             }
             }
 
+            if(document.querySelector("#checkbox_sensor_community").checked){
+            document.querySelector("#checkbox_sensor_community").checked = false;
+            map.removeLayer(sensorCommunity);
+            openToast("Pas de données à intervalle 1 jour pour les capteurs Sensor.Community");
+        }
 
             if(document.querySelector("#checkbox_micro_stationsAtmoSud").checked){
                 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
@@ -900,6 +995,24 @@ function switchPurpleAir() {
                 purpleAir.clearLayers();
                 changePurpleAir();
             }
+            }
+
+            if(document.querySelector("#checkbox_wind").checked){
+                document.querySelector("#checkbox_wind").checked = false;
+            map.removeLayer(velocityLayer);
+            openToast("La modélisation des vents présente des observations horaires.");
+            }
+
+            if(document.querySelector("#checkbox_modelisationPMAtmoSud").checked){
+                document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
+            map.removeLayer(modelisationPMAtmoSud);
+            openToast("La modélisation des particules fines présente des observations horaires.");
+            }
+
+            if(document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked){
+                document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
+            map.removeLayer(modelisationICAIRAtmoSud);
+            openToast("La modélisation ICAIRh présente des observations horaires.");
             }
 
         }
@@ -1113,6 +1226,23 @@ function switchPurpleAir() {
             console.log(sensor);
             console.log(hours);
             console.log(timespan);
+
+            switch(timespan) {
+            case 2:
+                var tempo = " à 2 minutes ";
+                break;
+            case 15:
+                var tempo = " quart-horaires ";
+                break;
+            case 60:
+                var tempo = " horaires ";
+                break;
+            case 1440:
+                var tempo = " journalières ";
+                break;
+            } 
+
+            document.getElementById("card-title").innerText = 'Evolution des concentrations' + tempo + 'en particules fines (µg/m3)';
             load1NebuleAir(sensor,timeLengthGraph,timespanGraph);
             document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
             document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
@@ -1329,7 +1459,7 @@ if(isSafari){
             timestamp_UTC = new Date(timestamp);
         }
     }else{
-        return "Pas de donnée disponible"
+        return " pas de donnée disponible"
     }
 }else{
 if(timestamp != null){
@@ -1343,15 +1473,16 @@ if(timestamp != null){
         timestamp_UTC = new Date(timestamp);
     }
     }else{
-        return "Pas de donnée disponible"
+        return " pas de donnée disponible"
     }
 }
 
 
 console.log(timestamp_UTC);
-const now = Date.now();
-console.log(new Date(now))
-console.log(UTCoffset);
+const now = new Date(Date.now());
+
+// let difference = now.getTime() - timestamp_UTC.getTime();
+
 
 let difference = Math.floor((now - timestamp_UTC)/86400000);
 console.log(difference);
@@ -1362,31 +1493,35 @@ let horaire_texte="";
 
 switch(difference) {
   case 0:
-    date_texte = "aujourd'hui";
+    if(now.getDay() == timestamp_UTC.getDay()){
+    date_texte = " aujourd'hui";
+    }else{
+        date_texte = " hier";
+    }
     break;
   case 1:
-    date_texte = "hier";
+    date_texte = " hier";
     break;
   case 2:
-    date_texte = "avant-hier";
+    date_texte = " avant-hier";
     break;
   default:
-    date_texte += "le ";
-    if(timestamp_UTC.getDate()< 10){
-    date_texte += "0";
-    date_texte += timestamp_UTC.getDate();
-  }else{
-    date_texte += timestamp_UTC.getDate();
-  }
-  date_texte += "/";
-  if((timestamp_UTC.getMonth()+1)< 10){
-    date_texte += "0";
-    date_texte += (timestamp_UTC.getMonth()+1);
-  }else{
-    date_texte += (timestamp_UTC.getMonth()+1);
-  }
-  date_texte += "/";
-  date_texte += timestamp_UTC.getFullYear();
+    date_texte += "il y a " + String(difference) + " jours";
+//     if(timestamp_UTC.getDate()< 10){
+//     date_texte += "0";
+//     date_texte += timestamp_UTC.getDate();
+//   }else{
+//     date_texte += timestamp_UTC.getDate();
+//   }
+//   date_texte += "/";
+//   if((timestamp_UTC.getMonth()+1)< 10){
+//     date_texte += "0";
+//     date_texte += (timestamp_UTC.getMonth()+1);
+//   }else{
+//     date_texte += (timestamp_UTC.getMonth()+1);
+//   }
+//   date_texte += "/";
+//   date_texte += timestamp_UTC.getFullYear();
 } 
 
 //horaire
@@ -1406,6 +1541,145 @@ horaire_texte += timestamp_UTC.getMinutes();
 
 return date_texte + " à " + horaire_texte;
 }
+
+
+
+function timeDateCounter2(timestamp,timestamp2){
+
+var timestamp_UTC;
+const UTCoffset = -new Date().getTimezoneOffset() / 60;
+console.log(UTCoffset);
+
+//console.log(timestamp.replace(' ','T') + '.000Z');
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+console.log(isSafari);
+
+if(isSafari){
+    if(timestamp != null){
+        if(typeof timestamp == 'string'){
+            if (!timestamp.includes('T')){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+            }else{
+                timestamp_UTC = new Date(timestamp);
+            }
+        }else{
+            timestamp_UTC = new Date(timestamp);
+        }
+    }else{
+        if(timestamp2 != null){
+        if(typeof timestamp2 == 'string'){
+            if (!timestamp2.includes('T')){
+        timestamp_UTC = new Date(timestamp2.replace(" ","T")+"+00:00");
+            }else{
+                timestamp_UTC = new Date(timestamp2);
+            }
+        }else{
+            timestamp_UTC = new Date(timestamp2);
+        }
+    }else{
+        return " pas de donnée disponible";
+        }
+    }
+}else{
+if(timestamp != null){
+    if(typeof timestamp == 'string'){
+    if (!timestamp.includes('T')){
+        timestamp_UTC = new Date(timestamp.replace(" ","T")+"+00:00");
+    }else{
+        timestamp_UTC = new Date(timestamp);
+        }
+    }else{
+        timestamp_UTC = new Date(timestamp);
+    }
+    }else{
+
+        if(timestamp2 != null){
+    if(typeof timestamp2 == 'string'){
+    if (!timestamp2.includes('T')){
+        timestamp_UTC = new Date(timestamp2.replace(" ","T")+"+00:00");
+    }else{
+        timestamp_UTC = new Date(timestamp2);
+        }
+    }else{
+        timestamp_UTC = new Date(timestamp2);
+    }
+    }else{
+        return " pas de donnée disponible";
+        }  
+    }
+}
+
+
+console.log(timestamp_UTC);
+const now = new Date(Date.now());
+
+// let difference = now.getTime() - timestamp_UTC.getTime();
+
+
+let difference = Math.floor((now - timestamp_UTC)/86400000);
+console.log(difference);
+console.log(now - timestamp_UTC);
+
+var date_texte ="";
+let horaire_texte="";
+
+switch(difference) {
+  case 0:
+    if(now.getDay() == timestamp_UTC.getDay()){
+    date_texte = " aujourd'hui";
+    }else{
+        date_texte = " hier";
+    }
+    break;
+  case 1:
+    date_texte = " hier";
+    break;
+  case 2:
+    date_texte = " avant-hier";
+    break;
+  default:
+    date_texte += "il y a " + String(difference) + " jours";
+//     if(timestamp_UTC.getDate()< 10){
+//     date_texte += "0";
+//     date_texte += timestamp_UTC.getDate();
+//   }else{
+//     date_texte += timestamp_UTC.getDate();
+//   }
+//   date_texte += "/";
+//   if((timestamp_UTC.getMonth()+1)< 10){
+//     date_texte += "0";
+//     date_texte += (timestamp_UTC.getMonth()+1);
+//   }else{
+//     date_texte += (timestamp_UTC.getMonth()+1);
+//   }
+//   date_texte += "/";
+//   date_texte += timestamp_UTC.getFullYear();
+} 
+
+//horaire
+if(timestamp_UTC.getHours()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getHours();
+}else{
+horaire_texte += timestamp_UTC.getHours();
+}
+horaire_texte += "h";
+if(timestamp_UTC.getMinutes()< 10){
+horaire_texte += "0";
+horaire_texte += timestamp_UTC.getMinutes();
+}else{
+horaire_texte += timestamp_UTC.getMinutes();
+} 
+
+return date_texte + " à " + horaire_texte;
+}
+
+
+
+
+
+
+
 
 setInterval(function() {
     console.log("Setinterval:");
@@ -1458,6 +1732,57 @@ if (document.querySelector("#checkbox_purpleAir").checked) {
 }
 
 }, timespanLower * 60 * 1000)
+
+
+
+setInterval(function() {
+
+if (document.querySelector("#checkbox_wind").checked) {
+
+    velocityLayer.remove();
+    const current_time = new Date();
+                let day = String(current_time.getFullYear());
+                if((current_time.getMonth()+1)< 10){
+                    day += "0";
+                    day += (current_time.getMonth()+1);
+                }else{
+                    day += (current_time.getMonth()+1);
+                }
+                if(current_time.getDate()< 10){
+                    day += "0";
+                    day += current_time.getDate();
+                }else{
+                    day += current_time.getDate();
+                }
+                let hour ="";
+                if(current_time.getHours()< 10){
+                    hour += "0";
+                    hour += current_time.getHours();
+                }else{
+                    hour += current_time.getHours();
+                }
+
+                let wind_link = "https://meteo.atmosud.org/"+ day +"/wind_field_" + hour +".json";  
+                console.log(wind_link);
+
+                $.getJSON(wind_link, function(data) {
+                 velocityLayer =  L.velocityLayer({
+                                        displayValues: false,
+                                        displayOptions: false,
+                                        data: data,
+                                        velocityScale: 0.015,
+                                        colorScale: ["#71C3F2", "#447591"],
+                                        minVelocity: 1,
+                                        maxVelocity: 10,
+                                        overlayName: 'wind_layer',
+                                    }).addTo(map);
+                });
+
+            openToast("Données Vent rechargées");
+}
+
+}, 60 * 60 * 1000)
+
 
 
     </script>
