@@ -521,8 +521,9 @@
         document.querySelector("#checkbox_wind").addEventListener("change", switchWind)
 
         function switchWind() {
+            console.log(timespanLower);
 
-            if (document.querySelector("#checkbox_wind").checked) {
+            if (document.querySelector("#checkbox_wind").checked && timespanLower != 1440) {
 
                 const current_time = new Date();
                 let day = String(current_time.getFullYear());
@@ -563,7 +564,14 @@
                 });
 
             } else {
+                if (velocityLayer != undefined){
                 velocityLayer.remove();
+                }
+                if(timespanLower == 1440)
+                {
+                    openToast("La modélisation des vents présente des observations horaires.");
+                }
+                document.querySelector("#checkbox_wind").checked = false;
             }
         }
 
@@ -608,7 +616,7 @@
                     map.removeLayer(sensorCommunity);
                 }
             } else {
-                openToast("Pas de moyenne quart-horaire pour les capteurs Sensor.Community");
+                openToast("Pas de moyennes quart-horaire, horaire et journalière pour les capteurs Sensor.Community.");
                 document.querySelector("#checkbox_sensor_community").checked = false;
             }
 
@@ -663,20 +671,34 @@
         }
 
 function switchModelisationPMAtmo() {
-    if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked) {
+    if (document.querySelector("#checkbox_modelisationPMAtmoSud").checked && timespanLower != 1440) {
         loadModelisationPMAtmo();
           map.addLayer(modelisationPMAtmoSud);
                 } else {
+                    if(modelisationPMAtmoSud != undefined){
             map.removeLayer(modelisationPMAtmoSud);
+                    }
+                if (timespanLower == 1440)
+                   {
+                    openToast("La modélisation des particules fines présente des observations horaires.");
+                   }
+                   document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
                 }
 }
 
 function switchModelisationICAIRAtmo() {
-    if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked) {
+    if (document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked && timespanLower != 1440) {
         loadModelisationICAIRAtmo();
           map.addLayer(modelisationICAIRAtmoSud);
                 } else {
+                    if(modelisationICAIRAtmoSud != undefined){
             map.removeLayer(modelisationICAIRAtmoSud);
+                    }
+                   if (timespanLower == 1440)
+                   {
+                    openToast("La modélisation ICAIRh présente des observations horaires.");
+                   }
+                   document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
                 }
 }
 
@@ -1092,6 +1114,24 @@ function switchPurpleAir() {
             }
             }
 
+            if(document.querySelector("#checkbox_wind").checked){
+                document.querySelector("#checkbox_wind").checked = false;
+            map.removeLayer(velocityLayer);
+            openToast("La modélisation des vents présente des observations horaires.");
+            }
+
+            if(document.querySelector("#checkbox_modelisationPMAtmoSud").checked){
+                document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
+            map.removeLayer(modelisationPMAtmoSud);
+            openToast("La modélisation des particules fines présente des observations horaires.");
+            }
+
+            if(document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked){
+                document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
+            map.removeLayer(modelisationICAIRAtmoSud);
+            openToast("La modélisation ICAIRh présente des observations horaires.");
+            }
+
         }
 
         // //ouverture du toast
@@ -1346,6 +1386,14 @@ function switchPurpleAir() {
               document.getElementById("button2m").children[0].removeAttribute("disabled");
               document.getElementById("button15m").children[0].removeAttribute("disabled");
             }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("button2m").children[0].setAttribute("disabled","");
+              document.getElementById("button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button2m").children[0].removeAttribute("disabled");
+              document.getElementById("button15m").children[0].removeAttribute("disabled");
+            }
         }
                 //changer la couleur du bouton en fonction du choix (not working?)
         function chooseTimeAtmoMicro(sensor, hours) {
@@ -1354,6 +1402,48 @@ function switchPurpleAir() {
             load1MicroAtmo(sensor,hours)
             buttonsSwitcher(hours);
         }
+                //changer la couleur du bouton en fonction du choix (not working?)
+        function chooseTimeAtmoMicro(sensor, hours) {
+            console.log(sensor);
+            console.log(hours);
+            load1MicroAtmo(sensor,hours)
+            buttonsSwitcher(hours);
+        }
+
+
+        function chooseTimeAtmoRef(sensor, hours, timespan) {
+            timeLengthGraph = hours;
+            timespanGraph = timespan;
+            console.log(sensor);
+            console.log(hours);
+            console.log(timespan);
+            load1RefAtmo(sensor,timeLengthGraph,timespanGraph);
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+            document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            buttonsSwitcher(timeLengthGraph,timespanGraph);
+            if(timespanGraph == 2 || timespanGraph == 15){
+              document.getElementById("button1a").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button1a").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("button2m").children[0].setAttribute("disabled","");
+              document.getElementById("button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button2m").children[0].removeAttribute("disabled");
+              document.getElementById("button15m").children[0].removeAttribute("disabled");
+            }
+            }
 
 
         function chooseTimeAtmoRef(sensor, hours, timespan) {
@@ -1750,12 +1840,6 @@ horaire_texte += timestamp_UTC.getMinutes();
 
 return date_texte + " à " + horaire_texte;
 }
-
-
-
-
-
-
 
 
 setInterval(function() {
