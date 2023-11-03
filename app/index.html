@@ -89,7 +89,7 @@
 
        <!-- Toast de chargement des données -->
        <div class="toast-container position-fixed end-0 p-3" style="bottom:10px;">
-        <div class="toast align-items-center" id="messageToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast align-items-center text-bg-danger border-0" id="messageToast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
                     Attention: <span id="message"></span>
@@ -221,8 +221,125 @@
                       <div class="col-lg-4"><img src="img/LogoAtmoSud.png" class="img-fluid" alt="..."></div>
                     </div>
                     <div class="row">
+                        <p>
                         L'application OpenAirMap est un projet open source porté par AirCarto et AtmoSud pour afficher en temps réel les mesures de qualité de l'air effectué par
-            les stations de mesures et les micro-capteurs.
+            les stations de mesures et les micro-capteurs. Les informations affichées sur la carte sont récupérées via différentes plateforme de mise à disposition de données de mesure (API). 
+            A noter que cette application est en constante évolution et amélioration. Pour toutes questions et suggestions n'hésitez pas à déposer un message sur le <a href="https://github.com/aircarto/OpenAirMap" >GitHub du projet</a>.
+            <br><br>
+            <h5>Liste des données proposées par OpenAirMap</h5>
+            A noter que pour certains appareils, la donnée n'est pas disponible pour tous les pas de temps (2 minutes, quart-horaire, horaire et journalier).
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Type de mesure</th>
+                        <th scope="col">Pas de temps</th>
+                        <th scope="col">Description</th>
+                        <th scope="col" class="text-end">Lien vers API</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Capteurs NebuleAir</th>
+                        <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-success btn-sm">2m</button>
+                            <button type="button" class="btn btn-success btn-sm">QH</button>
+                            <button type="button" class="btn btn-success btn-sm">H</button>
+                            <button type="button" class="btn btn-success btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Micro-capteurs open source co-développés par AirCarto et AtmoSud</td>
+                        <td class="text-end align-middle"><a class="btn btn-primary" href="https://aircarto.fr/API_V2/" role="button">AirCarto</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Capteurs Sensor.Community</th>
+                        <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-success btn-sm">2m</button>
+                            <button type="button" class="btn btn-danger btn-sm">QH</button>
+                            <button type="button" class="btn btn-danger btn-sm">H</button>
+                            <button type="button" class="btn btn-danger btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Micro-capteurs open source fabriqués par des citoyens bénévoles </td>
+                        <td class="text-end align-middle"><a class="btn btn-primary" href="https://sensor.community/fr/" role="button">Sensor.Community</a></td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row">Capteurs PurpleAir</th>
+                        <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-success btn-sm">2m</button>
+                            <button type="button" class="btn btn-danger btn-sm">QH</button>
+                            <button type="button" class="btn btn-danger btn-sm">H</button>
+                            <button type="button" class="btn btn-danger btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Micro-capteurs commercialisés par l'entreprise américaine PurpleAir Inc.</td>
+                        <td class="text-end align-middle"><a class="btn btn-primary" href="https://api.purpleair.com/" role="button">PurpleAir</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Micro-stations AtmoSud</th>
+                        <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-danger btn-sm">2m</button>
+                            <button type="button" class="btn btn-success btn-sm">QH</button>
+                            <button type="button" class="btn btn-danger btn-sm">H</button>
+                            <button type="button" class="btn btn-danger btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Micro-capteurs déployés par AtmoSud</td>
+                        <td rowspan="4" class="text-end align-middle"><a class="btn btn-primary" href="https://api.atmosud.org/" role="button">AtmoSud</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Stations de référence AtmoSud</th>
+                        <td><span class="badge rounded-pill text-bg-dark">station</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-danger btn-sm">2m</button>
+                            <button type="button" class="btn btn-success btn-sm">QH</button>
+                            <button type="button" class="btn btn-success btn-sm">H</button>
+                            <button type="button" class="btn btn-success btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Stations de référence installées dans le cadre de la mission de surveillance de la qualité de l'air d'AtmoSud</td>
+                    
+                    </tr>
+                    <tr>
+                        <th scope="row">Modélisation Horaire PM AtmoSud</th>
+                        <td><span class="badge rounded-pill text-bg-secondary">modélisation</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-danger btn-sm">2m</button>
+                            <button type="button" class="btn btn-danger btn-sm">QH</button>
+                            <button type="button" class="btn btn-success btn-sm">H</button>
+                            <button type="button" class="btn btn-danger btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Modélisation des particules fines à l'échelle horaire sur toute la région PACA</td>
+                        
+                    </tr>
+                    <tr>
+                        <th scope="row">Modélisation Horaire ICAIRH AtmoSud</th>
+                        <td><span class="badge rounded-pill text-bg-secondary">modélisation</span></td>
+                        <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-danger btn-sm">2m</button>
+                            <button type="button" class="btn btn-danger btn-sm">QH</button>
+                            <button type="button" class="btn btn-success btn-sm">H</button>
+                            <button type="button" class="btn btn-danger btn-sm">J</button>
+                          </div>
+                        </td>
+                        <td>Modélisation de l'indice cumulé de la qualité de l'air (NO2, O3, PM2.5 et PM10) à l'échelle horaire sur toute la région PACA.</td>
+                        
+                    </tr>
+                    
+                    
+                    </tbody>
+                </table>
+            </div>
+        </p>
+
                     </div>
                 </div>
             </div>
@@ -1269,6 +1386,14 @@ function switchPurpleAir() {
               document.getElementById("button2m").children[0].removeAttribute("disabled");
               document.getElementById("button15m").children[0].removeAttribute("disabled");
             }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("button2m").children[0].setAttribute("disabled","");
+              document.getElementById("button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button2m").children[0].removeAttribute("disabled");
+              document.getElementById("button15m").children[0].removeAttribute("disabled");
+            }
         }
                 //changer la couleur du bouton en fonction du choix (not working?)
         function chooseTimeAtmoMicro(sensor, hours) {
@@ -1277,6 +1402,48 @@ function switchPurpleAir() {
             load1MicroAtmo(sensor,hours)
             buttonsSwitcher(hours);
         }
+                //changer la couleur du bouton en fonction du choix (not working?)
+        function chooseTimeAtmoMicro(sensor, hours) {
+            console.log(sensor);
+            console.log(hours);
+            load1MicroAtmo(sensor,hours)
+            buttonsSwitcher(hours);
+        }
+
+
+        function chooseTimeAtmoRef(sensor, hours, timespan) {
+            timeLengthGraph = hours;
+            timespanGraph = timespan;
+            console.log(sensor);
+            console.log(hours);
+            console.log(timespan);
+            load1RefAtmo(sensor,timeLengthGraph,timespanGraph);
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+            document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            buttonsSwitcher(timeLengthGraph,timespanGraph);
+            if(timespanGraph == 2 || timespanGraph == 15){
+              document.getElementById("button1a").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button1a").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("button2m").children[0].setAttribute("disabled","");
+              document.getElementById("button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("button2m").children[0].removeAttribute("disabled");
+              document.getElementById("button15m").children[0].removeAttribute("disabled");
+            }
+            }
 
 
         function chooseTimeAtmoRef(sensor, hours, timespan) {
@@ -1675,12 +1842,6 @@ return date_texte + " à " + horaire_texte;
 }
 
 
-
-
-
-
-
-
 setInterval(function() {
     console.log("Setinterval:");
     console.log(timespanLower * 60 * 1000);
@@ -1801,6 +1962,10 @@ if (document.querySelector("#checkbox_wind").checked) {
         const screenTooSmall_modal = new bootstrap.Modal('#screen_tooSmall_Modal');
         if (screen.width < 1080) {
             screenTooSmall_modal.show();
+            var btns = document.getElementsByClassName('btn');
+            for (const btn of btns) {
+                btn.classList.add('btn-sm');
+                }
         }
         //welcome mdodal
         const welcomeModal = new bootstrap.Modal('#welcome_Modal');

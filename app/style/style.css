@@ -1,194 +1,227 @@
 body {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #map {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-    border-radius: 0px;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  border-radius: 0px;
 }
 
 #logoAirCarto img {
-    position: fixed;
-    height: 60px;
-    left: 0px;
-    margin: 0px;
-    border-radius: 0px;
+  position: fixed;
+  height: 60px;
+  left: 0px;
+  margin: 0px;
+  border-radius: 0px;
 }
 
 
 #div_buttonPM {
-    position: fixed;
-    right: 390px;
-    top: 15px;
+  position: fixed;
+  right: 390px;
+  top: 15px;
 }
 
 
 #div_checkbox_choixCapteur {
-    position: fixed;
-    right: 190px;
-    top: 15px;
+  position: fixed;
+  right: 190px;
+  top: 15px;
 }
 
 #div_button_monNebuleAir {
-    position: fixed;
-    right: 40px;
-    top: 15px;
+  position: fixed;
+  right: 40px;
+  top: 15px;
 }
 
 #div_button_pas_de_temps {
-    position: fixed;
-    left: 20px;
-    bottom: 15px;
-}
-
-#button_horloge {
-    position: fixed;
-    left: 500px;
-    bottom: 15px;
-}
-
-#button_screenshot{
   position: fixed;
-  left: 700px;
+  left: 20px;
   bottom: 15px;
 }
 
+#button_horloge {
+  position: fixed;
+  left: 420px;
+  bottom: 15px;
+}
+
+#button_screenshot {
+  position: fixed;
+  left: 700px;
+  bottom: 15px;
+  display: none;
+}
+
 #btn_bon {
-    background-color: #4FF0E6;
-    color: black;
+  background-color: #4FF0E6;
+  color: black;
 }
+
 #btn_moyen {
-    background-color: #51CCAA;
-    color: black;
+  background-color: #51CCAA;
+  color: black;
 }
+
 #btn_degrade {
-    background-color: #EDE663;
-    color: black;
+  background-color: #EDE663;
+  color: black;
 }
+
 #btn_mauvais {
-    background-color: #ED5E58;
-    color: white;
+  background-color: #ED5E58;
+  color: white;
 }
+
 #btn_tres_mauvais {
-    background-color: #881B33;
-    color: white;
+  background-color: #881B33;
+  color: white;
 }
+
 #btn_extr_mauvais {
-    background-color: #74287D;
-    color: white;
+  background-color: #74287D;
+  color: white;
 }
+
 .leaflet-popup-content {
-    width: 600px;
+  width: 600px;
 }
 
 
 /* CSS des Gauges */
 .gauge-container {
-    width: 150px;
-    height: 150px;
-    display: block;
-    margin: 10px;
-    position: relative;
-    float: left;
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin: 10px;
+  position: relative;
+  float: left;
+}
+
+.gauge-container>.gauge .dial {
+  stroke: #eee;
+  stroke-width: 2;
+  fill: rgba(0, 0, 0, 0);
+}
+
+.gauge-container>.gauge .value {
+  stroke: rgb(252, 255, 47);
+  stroke-width: 2;
+  fill: rgba(0, 0, 0, 0);
+}
+
+.gauge-container>.gauge .value-text {
+  fill: rgb(47, 227, 255);
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.gauge-container.myStyle>.gauge .dial {
+  stroke: #334455;
+  stroke-width: 2;
+}
+
+.gauge-container.myStyle>.gauge .value {
+  stroke: #C9DE3C;
+  stroke-width: 7;
+}
+
+.gauge-container.myStyle>.gauge .value-text {
+  fill: #C9DE3C;
+}
+
+.dropdown-menu {
+  --bs-dropdown-min-width: 20rem !important;
+  --bs-dropdown-padding-x: 1rem !important;
+}
+
+
+#gauges {
+  width: 600px;
+  height: 200px;
+  display: flex;
+  /* establish flex container */
+  flex-direction: row;
+  /* default value; can be omitted */
+  flex-wrap: nowrap;
+  /* default value; can be omitted */
+  justify-content: space-between;
+}
+
+#chartdiv1 {
+  width: 200px;
+  height: 220px;
+}
+
+#chartdiv2 {
+  width: 200px;
+  height: 220px;
+}
+
+#chartdiv3 {
+  width: 200px;
+  height: 220px;
+}
+
+#div_button_seuils_PM10 {
+  visibility: hidden;
+  position: absolute;
+  right: 600px;
+  top: 15px;
+}
+
+#div_button_seuils_PM125 {
+  visibility: visible;
+  position: absolute;
+  right: 600px;
+  top: 15px;
+}
+
+#chartSensor {
+  display: none;
+}
+
+#chartSensor2 {
+  display: none;
+  width: 100%;
+  height: 300px;
+  max-width: 100%;
+}
+
+.dropdown-menu {
+  width: 350px;
+}
+
+#compoundList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media only screen and (max-width: 450px) {
+  #div_button_monNebuleAir {
+    display: none;
   }
-  .gauge-container > .gauge .dial {
-    stroke: #eee;
-    stroke-width: 2;
-    fill: rgba(0,0,0,0);
+  #div_checkbox_choixCapteur {
+    position: fixed;
+    right: 10px;
+    top: 15px;
   }
-  .gauge-container > .gauge .value {
-    stroke: rgb(252, 255, 47);
-    stroke-width: 2;
-    fill: rgba(0,0,0,0);
+  #div_buttonPM {
+    position: fixed;
+    right: 180px;
+    top: 15px;
   }
-  .gauge-container > .gauge .value-text {
-    fill: rgb(47, 227, 255);
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 1em;
+  #div_button_seuils_PM125 {
+    visibility: visible;
+    position: fixed;
+    right: 15px;
+    top: 50px;
   }
-
-  .gauge-container.myStyle > .gauge .dial {
-    stroke: #334455; 
-    stroke-width: 2;
-  }
-  .gauge-container.myStyle > .gauge .value {
-    stroke: #C9DE3C;
-    stroke-width: 7;
-  }
-  .gauge-container.myStyle > .gauge .value-text {
-    fill: #C9DE3C;
-  } 
-
-  .dropdown-menu{
-    --bs-dropdown-min-width: 20rem !important;
-    --bs-dropdown-padding-x: 1rem !important;
-    }
-
-
-    #gauges {
-      width: 600px;
-      height: 200px;
-      display: flex;                  /* establish flex container */
-      flex-direction: row;            /* default value; can be omitted */
-      flex-wrap: nowrap;              /* default value; can be omitted */
-      justify-content: space-between; 
-    }
-
-    #chartdiv1 {
-        width: 200px;
-        height: 220px;
-      }
-
-      #chartdiv2 {
-        width: 200px;
-        height: 220px;
-      }
-
-      #chartdiv3 {
-        width: 200px;
-        height: 220px;
-      }
-
-      #div_button_seuils_PM10{
-        visibility: hidden;
-        position:absolute;
-        right: 600px;
-        top: 15px;
-      }
-
-      #div_button_seuils_PM125{
-        visibility: visible;
-        position:absolute;
-        right: 600px;
-        top: 15px;
-      }
-
-      #chartSensor{
-        display: none;
-      }
-
-      #chartSensor2{
-        display: none;
-        width: 100%;
-        height: 300px;
-        max-width: 100%;
-      }
-
-      #messageToast{
-        background-color: red;
-      }
-
-      .dropdown-menu{
-        width:350px;
-      }
-
-      #compoundList{
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
+}
