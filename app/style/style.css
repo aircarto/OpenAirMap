@@ -190,7 +190,7 @@ body {
 #chartSensor2 {
   display: none;
   width: 100%;
-  height: 300px;
+  height: 75vh;
   max-width: 100%;
 }
 
@@ -205,9 +205,16 @@ body {
 }
 
 @media only screen and (max-width: 450px) {
-  #div_button_monNebuleAir {
+  #div_button_monNebuleAir, #div_button_seuils_PM125 {
     display: none;
   }
+
+  #div_button_pas_de_temps {
+    position: fixed;
+    left: 20px;
+    bottom: 18px;
+  }
+  
   #div_checkbox_choixCapteur {
     position: fixed;
     right: 10px;
