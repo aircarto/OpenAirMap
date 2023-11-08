@@ -444,7 +444,7 @@
 });
 
 if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(goToPosition);
+    navigator.geolocation.getCurrentPosition(goToPosition,notAllowed);
   } else {
     map.setView(coordsCenter, zoomLevel);
   }
@@ -454,6 +454,10 @@ if (navigator.geolocation) {
   map.setView([position.coords.latitude,position.coords.longitude], zoomLevel);
 }
 
+function notAllowed(err) {
+    openToast("Vous n'avez pas autorisé la détection de la position.");
+    map.setView(coordsCenter, zoomLevel);
+}
     const query = {
 	conentration: options.selection,
     minutes:options.timespanLower
