@@ -33,6 +33,7 @@
     <script src="js_scripts/AtmoSudModelisation.js"></script>
     <script src="js_scripts/api_purpleair.js"></script>
     <script src="js_scripts/leaflet-velocity.min.js"></script>
+    <script src="js_scripts/config.js"></script>
 
     <script src="geojson/paca.geojson"></script>
 
@@ -104,7 +105,7 @@
     <!-- Boutons PM1 PM2.5 PM10 -->
     <div class="btn-group" id="div_buttonPM" role="group">
         <button id="button_PM1" class="btn btn-outline-primary">PM1</button>
-        <button id="button_PM25" class="btn btn-primary">PM2.5</button>
+        <button id="button_PM25" class="btn btn-outline-primary">PM2.5</button>
         <button id="button_PM10" class="btn btn-outline-primary">PM10</button>
     </div>
 
@@ -150,7 +151,7 @@
 
     <!-- Boutons pas de temps -->
     <div class="btn-group" id="div_button_pas_de_temps" role="group">
-        <button class="btn btn btn-primary" id="btn_actuel">2 minutes</button>
+        <button class="btn btn-outline-primary" id="btn_actuel">2 minutes</button>
         <button class="btn btn-outline-primary" id="btn_quartHoraire">Quart-horaire</button>
         <button class="btn btn-outline-primary" id="btn_horaire">Horaire</button>
         <button class="btn btn-outline-primary" id="btn_journalier">Journalier</button>
@@ -384,20 +385,11 @@
         document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
         //document.querySelector("#button_horloge").innerHTML = hour0 + ":" + "00" + " à " + hour + ":" + "00"; 
 
-        var compoundUpper = "PM25";
-        var timespanLower = 2;
-        var timeLength = 3;
+        var root1;
+        var root2;
+        var root3;
+        var root4; //chart in sidebar
 
-        let coordsCenter = [43.29490421, 5.37188392];
-        let zoomLevel = 15;
-
-        //on crée la carte, centrée sur Marseille
-        var map = L.map('map', {
-            zoomControl: false,
-            renderer: L.canvas()
-        });
-
-                // ON ne fetch pas tout
         var apiFetchNebuleAir = {
         "data": [],
         "timespan": null,
@@ -419,35 +411,130 @@
             "timespan": null,
             "timestamp": null
         };
-
         var apiFetchPurpleAir = {
             "data": [],
             "timespan": null,
             "timestamp": null
         };
 
+        let coordsCenter = options.coordsCenter;
+        let zoomLevel = options.zoomLevel;
 
-        var root1;
-        var root2;
-        var root3;
-        var root4; //chart in sidebar
+        //on crée la carte, centrée sur Marseille
+        var map = L.map('map', {
+            zoomControl: true,
+            minZoom:options.minZoom,
+            maxZoom: options.maxZoom,
+            renderer: L.canvas(),
+            maxBounds: L.latLngBounds(options.boundNE,options.boundSW)
+        });
 
 
         //on y ajoute la couche OSM
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            maxZoom: 21
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         }).addTo(map); 
 
-        new L.Hash(map);
+        map.setView(coordsCenter, zoomLevel);
+
+    const query = {
+	conentration: options.selection,
+    minutes:options.timespanLower
+    };
+
+
+// jQuery.extend({
+
+// getQueryParameters : function() {
+//     return (document.location.search).replace(/(^\?)/,'').split("&").map(function(n){return n = n.split("="),this[n[0]] = n[1],this}.bind({}))[0];
+// }
+
+// });
+
+// var queryParams = $.getQueryParameters();
+// console.log(queryParams);
+
+
+
+(function () {
+	let telem;
+    try {
+	const search_values = location.search.split('?')[1].split('&');
+    console.log(location.search);
+    console.log(search_values);
+	for (let i = 0; i < search_values.length; i++) {
+		telem = search_values[i].split('=');
+		query[telem[0]] = '';
+		if (typeof telem[1] != 'undefined') query[telem[0]] = telem[1];
+	}
+
+switch (query.minutes) {
+  case "2":
+  options.timespanLower = 2;
+    break;
+  case "15":
+  options.timespanLower = 15;
+    break;
+  case "60":
+  options.timespanLower = 60;
+    break;
+ case "1440":
+ options.timespanLower = 1440;
+    break;
+}
+
+switch (query.concentration) {
+  case 'PM1':
+  options.compoundUpper = "PM1";
+    break;
+  case 'PM25':
+  options.compoundUpper = "PM25";
+    break;
+  case 'PM10':
+  options.compoundUpper = "PM10";
+    break;
+}
+}catch(error){return}
+})();
+
+var compoundUpper = options.compoundUpper;
+var timespanLower = options.timespanLower;
+var timeLength = options.timeLength;
+
+switch (timespanLower) {
+  case 2:
+  document.querySelector("#btn_actuel").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+  case 15:
+  document.querySelector("#btn_quartHoraire").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+  case 60:
+  document.querySelector("#btn_horaire").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+ case 1440:
+ document.querySelector("#btn_journalier").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+}
+
+switch (compoundUpper) {
+  case 'PM1':
+  document.querySelector("#button_PM1").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+  case 'PM25':
+  document.querySelector("#button_PM25").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+  case 'PM10':
+  document.querySelector("#button_PM10").classList.replace("btn-outline-primary", "btn-primary");
+    break;
+}
+
+new L.Hash(map);
 
         if (location.hash) {
             const hash_params = location.hash.split("/");
             coordsCenter = [hash_params[1], hash_params[2]];
             zoomLevel = hash_params[0].substring(1);
         }
-
-        map.setView(coordsCenter, zoomLevel);
 
         // var polygonPACA = L.geoJSON(paca,{fillOpacity:0.2, color:'black', weight:0, invert:true}).addTo(map);
 
@@ -765,6 +852,7 @@ function switchPurpleAir() {
                 document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
             }
 
+            setQueryString();
         }
 
         function choosePM25() {
@@ -804,6 +892,7 @@ function switchPurpleAir() {
                 modelisationPMAtmoSud.clearLayers();
                 loadModelisationPMAtmo();
             }
+            setQueryString();
         }
 
         function choosePM10() {
@@ -843,7 +932,7 @@ function switchPurpleAir() {
                 modelisationPMAtmoSud.clearLayers();
                 loadModelisationPMAtmo();
             }
-
+            setQueryString();
         }
 
         document.querySelector("#btn_actuel").addEventListener("click", chooseActuel)
@@ -897,7 +986,7 @@ function switchPurpleAir() {
                 changePurpleAir();
             }
             }
-
+            setQueryString();
         }
 
         function choose15() {
@@ -987,6 +1076,8 @@ function switchPurpleAir() {
                 changePurpleAir();
             }
             }
+
+            setQueryString();
         }
 
         function choose60() {
@@ -1051,6 +1142,7 @@ function switchPurpleAir() {
                 changePurpleAir();
             }
             }
+            setQueryString();
         }
 
         function choose1440() {
@@ -1131,7 +1223,7 @@ function switchPurpleAir() {
             map.removeLayer(modelisationICAIRAtmoSud);
             openToast("La modélisation ICAIRh présente des observations horaires.");
             }
-
+            setQueryString();
         }
 
         // //ouverture du toast
@@ -1570,6 +1662,41 @@ function buttonsSwitcher(hours,timespan){
             }
 }
 
+function setQueryString() {
+	let stateObj = {};
+	let new_path = window.location.pathname + "?";
+
+switch (timespanLower) {
+  case 2:
+  new_path += "minutes=2&"
+    break;
+  case 15:
+  new_path += "minutes=15&"
+    break;
+  case 60:
+  new_path += "minutes=60&"
+    break;
+ case 1440:
+ new_path += "minutes=1440&"
+    break;
+}
+
+switch (compoundUpper) {
+  case 'PM1':
+  new_path += "concentration=PM1"
+    break;
+  case 'PM25':
+  new_path += "concentration=PM25"
+    break;
+  case 'PM10':
+  new_path += "concentration=PM10"
+    break;
+}
+	new_path = new_path + location.hash;
+	console.log(new_path);
+	history.pushState(stateObj,document.title,new_path);
+}
+
 function screenShot() {
             console.log("Screenshot!");
 
@@ -1602,7 +1729,6 @@ function screenShot() {
 	// });
 
 }
-
 
 function timeDateCounter(timestamp){
 
@@ -1708,8 +1834,6 @@ horaire_texte += timestamp_UTC.getMinutes();
 
 return date_texte + " à " + horaire_texte;
 }
-
-
 
 function timeDateCounter2(timestamp,timestamp2){
 
@@ -1841,7 +1965,6 @@ horaire_texte += timestamp_UTC.getMinutes();
 return date_texte + " à " + horaire_texte;
 }
 
-
 setInterval(function() {
     console.log("Setinterval:");
     console.log(timespanLower * 60 * 1000);
@@ -1894,8 +2017,6 @@ if (document.querySelector("#checkbox_purpleAir").checked) {
 
 }, timespanLower * 60 * 1000)
 
-
-
 setInterval(function() {
 
 if (document.querySelector("#checkbox_wind").checked) {
@@ -1943,8 +2064,6 @@ if (document.querySelector("#checkbox_wind").checked) {
 }
 
 }, 60 * 60 * 1000)
-
-
 
     </script>
 
