@@ -438,7 +438,21 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         }).addTo(map); 
 
-        map.setView(coordsCenter, zoomLevel);
+
+        map.once('locationfound', function(ev){
+   console.log(ev.latlng);
+});
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(goToPosition);
+  } else {
+    map.setView(coordsCenter, zoomLevel);
+  }
+
+
+  function goToPosition(position) {
+  map.setView([position.coords.latitude,position.coords.longitude], zoomLevel);
+}
 
     const query = {
 	conentration: options.selection,

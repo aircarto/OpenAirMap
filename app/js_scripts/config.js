@@ -6,9 +6,13 @@ var options = {
 	"compoundUpper": "PM25",
 	"timespanLower":2,
 	"timeLength":3,
-	"boundSW" : [42.91,4.16],
-	"boundNE" : [45.22,7.83]
+	// "boundSW" : [42.91,4.16],
+	// "boundNE" : [45.22,7.83]
 
+	"boundSW" : [-90,-180],
+	"boundNE" : [90,180]
+
+	// [[-90,-180],   [90,180]]
 	// Tiles
 	// "tiles": "https://{s}.maps.sensor.community/tiles/{z}/{x}/{y}.png",
 	// "tiles_path": "/{z}/{x}/{y}.png",

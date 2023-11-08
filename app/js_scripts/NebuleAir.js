@@ -18,7 +18,6 @@ function loadNebuleAir() {
         var displayed = data.filter((e) => e.displayMap == true);
 
         console.log(displayed);
-        console.log(displayed.filter((e) => e.sensorId == "nebuleair-075"));
 
         apiFetchNebuleAir.data = displayed;
         apiFetchNebuleAir.timestamp = end;
