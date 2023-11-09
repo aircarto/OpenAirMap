@@ -159,6 +159,11 @@ body {
   height: 220px;
 }
 
+#modal_chartdivmodalgauge {
+  width: 200px;
+  height: 220px;
+}
+
 #chartdiv2 {
   width: 200px;
   height: 220px;
@@ -188,6 +193,17 @@ body {
 }
 
 #chartSensor2 {
+  display: none;
+  width: 100%;
+  height: 50vh;
+  max-width: 100%;
+}
+
+#modal_chartSensor {
+  display: none;
+}
+
+#modal_chartSensor2 {
   display: none;
   width: 100%;
   height: 50vh;

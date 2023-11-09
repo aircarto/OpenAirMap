@@ -1,7 +1,7 @@
 var options = {
 	"coordsCenter" : [43.29490421, 5.37188392],
 	"zoomLevel" : 15,
-	"minZoom": 8,
+	"minZoom": 1,
 	"maxZoom": 21,
 	"compoundUpper": "PM25",
 	"timespanLower":2,
