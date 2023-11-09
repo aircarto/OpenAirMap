@@ -166,7 +166,7 @@
     <!-- Les Logos -->
     <!-- <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div> -->
 
-    <!-- LE SIDE PANEL avec les graphiques (id "sidePanel") -->
+    <!-- LE SIDE PANEL avec les graphiques (id "sidePanel") POUR DESKTOP -->
     <div class="row text-center">
         <div class="col-5" id="sidePanelCol">
             <div class="card m-3" id="sidePanel" style="display: none;">
@@ -372,12 +372,252 @@
         </div>
     </div>
 
+    <div class="modal fade" id="sensorPanel_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" id="modalcontent">
+        <div class="modal-content">
+            <div class="modal-header">
+            <div class="container-fluid">
+            <div class="row justify-content-md-center mb-2">
+            <div class="col-lg-4"><img src="img/LogoNebuleAir.png" class="img-fluid" alt="..."></div>
+            <button class="btn btn-outline-primary disabled" style="margin-right:5px;" id="modal_sensorid"></button>
+            </div>
+            </div>
+            </div>
+            <div class="modal-body">
+            <div class="container-fluid">
+            <div id="modal_chartdivmodalgauge"></div>
+            <iframe id="modal_chartSensor" src="about:blank" width="100%" height="200" frameborder="0"></iframe>
+            <div id="modal_chartSensor2"></div>
+            <div id="modal_historique">Historique</div>
+            <span id="modal_button1h"></span>
+            <span id="modal_button3h"></span>
+            <span id="modal_button24h"></span>
+            <span id="modal_button48h"></span>
+            <span id="modal_button1s"></span>
+            <span id="modal_button1m"></span>
+            <span id="modal_button1a"></span>
+            <div id="modal_pdt">Pas de temps</div>
+            <span id="modal_button2m"></span>
+            <span id="modal_button15m"></span>
+            <span id="modal_button60m"></span>
+            <span id="modal_button1440m"></span>
+            </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>'
+    </div>
+    </div>
+
+
+        <!-- LE SIDE PANEL avec les graphiques (id "sidePanel")  POUR SMARTPHONE
+
+
+        <div class="modal fade" id="sensorPanel_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Welcome to OpenAirMap</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row justify-content-md-center mb-2">
+                          <div class="col-lg-4"><img src="img/logoAirCarto.png" class="img-fluid" alt="..."></div>
+                          <div class="col-lg-4"><img src="img/LogoAtmoSud.png" class="img-fluid" alt="..."></div>
+                        </div>
+                        <div class="row">
+                            <p>
+                            L'application OpenAirMap est un projet open source porté par AirCarto et AtmoSud pour afficher en temps réel les mesures de qualité de l'air effectué par
+                les stations de mesures et les micro-capteurs. Les informations affichées sur la carte sont récupérées via différentes plateforme de mise à disposition de données de mesure (API). 
+                A noter que cette application est en constante évolution et amélioration. Pour toutes questions et suggestions n'hésitez pas à déposer un message sur le <a href="https://github.com/aircarto/OpenAirMap" >GitHub du projet</a>.
+                <br><br>
+                <h5>Liste des données proposées par OpenAirMap</h5>
+                A noter que pour certains appareils, la donnée n'est pas disponible pour tous les pas de temps (2 minutes, quart-horaire, horaire et journalier).
+                <div class="table-responsive">
+    
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Type de mesure</th>
+                            <th scope="col">Pas de temps</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" class="text-end">Lien vers API</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Capteurs NebuleAir</th>
+                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-success btn-sm">2m</button>
+                                <button type="button" class="btn btn-success btn-sm">QH</button>
+                                <button type="button" class="btn btn-success btn-sm">H</button>
+                                <button type="button" class="btn btn-success btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Micro-capteurs open source co-développés par AirCarto et AtmoSud</td>
+                            <td class="text-end align-middle"><a class="btn btn-primary" href="https://aircarto.fr/API_V2/" role="button">AirCarto</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Capteurs Sensor.Community</th>
+                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-success btn-sm">2m</button>
+                                <button type="button" class="btn btn-danger btn-sm">QH</button>
+                                <button type="button" class="btn btn-danger btn-sm">H</button>
+                                <button type="button" class="btn btn-danger btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Micro-capteurs open source fabriqués par des citoyens bénévoles </td>
+                            <td class="text-end align-middle"><a class="btn btn-primary" href="https://sensor.community/fr/" role="button">Sensor.Community</a></td>
+    
+                        </tr>
+                        <tr>
+                            <th scope="row">Capteurs PurpleAir</th>
+                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-success btn-sm">2m</button>
+                                <button type="button" class="btn btn-danger btn-sm">QH</button>
+                                <button type="button" class="btn btn-danger btn-sm">H</button>
+                                <button type="button" class="btn btn-danger btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Micro-capteurs commercialisés par l'entreprise américaine PurpleAir Inc.</td>
+                            <td class="text-end align-middle"><a class="btn btn-primary" href="https://api.purpleair.com/" role="button">PurpleAir</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Micro-stations AtmoSud</th>
+                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-danger btn-sm">2m</button>
+                                <button type="button" class="btn btn-success btn-sm">QH</button>
+                                <button type="button" class="btn btn-danger btn-sm">H</button>
+                                <button type="button" class="btn btn-danger btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Micro-capteurs déployés par AtmoSud</td>
+                            <td rowspan="4" class="text-end align-middle"><a class="btn btn-primary" href="https://api.atmosud.org/" role="button">AtmoSud</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Stations de référence AtmoSud</th>
+                            <td><span class="badge rounded-pill text-bg-dark">station</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-danger btn-sm">2m</button>
+                                <button type="button" class="btn btn-success btn-sm">QH</button>
+                                <button type="button" class="btn btn-success btn-sm">H</button>
+                                <button type="button" class="btn btn-success btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Stations de référence installées dans le cadre de la mission de surveillance de la qualité de l'air d'AtmoSud</td>
+                        
+                        </tr>
+                        <tr>
+                            <th scope="row">Modélisation Horaire PM AtmoSud</th>
+                            <td><span class="badge rounded-pill text-bg-secondary">modélisation</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-danger btn-sm">2m</button>
+                                <button type="button" class="btn btn-danger btn-sm">QH</button>
+                                <button type="button" class="btn btn-success btn-sm">H</button>
+                                <button type="button" class="btn btn-danger btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Modélisation des particules fines à l'échelle horaire sur toute la région PACA</td>
+                            
+                        </tr>
+                        <tr>
+                            <th scope="row">Modélisation Horaire ICAIRH AtmoSud</th>
+                            <td><span class="badge rounded-pill text-bg-secondary">modélisation</span></td>
+                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-danger btn-sm">2m</button>
+                                <button type="button" class="btn btn-danger btn-sm">QH</button>
+                                <button type="button" class="btn btn-success btn-sm">H</button>
+                                <button type="button" class="btn btn-danger btn-sm">J</button>
+                              </div>
+                            </td>
+                            <td>Modélisation de l'indice cumulé de la qualité de l'air (NO2, O3, PM2.5 et PM10) à l'échelle horaire sur toute la région PACA.</td>
+                            
+                        </tr>
+                        
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </p>
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuer</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+        <!-- <div class="row text-center">
+            <div class="col-5" id="sidePanelCol">
+                <div class="card m-3" id="sidePanel" style="display: none;">
+                    <button type="button" class="btn-close position-absolute top-0 end-0" aria-label="Close" style="margin: 5px ;" onclick="CloseSidePanel()"></button>
+                    <span onclick="fullScreen()">
+                        <i class="bi bi-aspect-ratio position-absolute bottom-0 end-0 me-1"></i>
+                    </span>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-outline-primary btn-lg disabled" id="title_deviceName"></button>
+                        <h5 class="card-title" id="card-title"></h5>
+                        
+                        <iframe id="chartSensor" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
+                        <div id="chartSensor2"></div>
+
+                        <div id="historique">Historique</div>
+                        <span id="button1h"></span>
+                        <span id="button3h"></span>
+                        <span id="button24h"></span>
+                        <span id="button48h"></span>
+                        <span id="button1s"></span>
+                        <span id="button1m"></span>
+                        <span id="button1a"></span>
+                        <div id="pdt">Pas de temps</div>
+                        <span id="button2m"></span>
+                        <span id="button15m"></span>
+                        <span id="button60m"></span>
+                        <span id="button1440m"></span>
+                    </div>
+                </div>
+            </div> 
+        </div> -->
+
   
 
 
     <!-- <div id="capture"></div> -->
 
     <script>
+
+        // const isMobile = navigator.userAgentData.mobile;
+
+        const isMobile = true;
+
+
+        console.log(isMobile);
 
         var date = new Date();
         const hour = date.getHours();
@@ -1320,7 +1560,7 @@ function switchPurpleAir() {
                 document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
                 document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
                 document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-               buttonsSwitcher(timeLengthGraph,timespanGraph);
+               buttonsSwitcher(timeLengthGraph,timespanGraph,false);
 
                if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
@@ -1389,7 +1629,7 @@ function switchPurpleAir() {
                 document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
                 document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
                 document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-                buttonsSwitcher(timeLengthGraph,timespanGraph);
+                buttonsSwitcher(timeLengthGraph,timespanGraph,false);
                 
             if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
@@ -1422,7 +1662,7 @@ function switchPurpleAir() {
                 document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
                 document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
                 document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-               buttonsSwitcher(timeLengthGraph,timespanGraph);
+               buttonsSwitcher(timeLengthGraph,timespanGraph,false);
 
                if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
@@ -1484,7 +1724,7 @@ function switchPurpleAir() {
             document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
             document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
             document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-            buttonsSwitcher(timeLengthGraph,timespanGraph);
+            buttonsSwitcher(timeLengthGraph,timespanGraph,false);
             if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
             }else{
@@ -1541,7 +1781,7 @@ function switchPurpleAir() {
             document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
             document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
             document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-            buttonsSwitcher(timeLengthGraph,timespanGraph);
+            buttonsSwitcher(timeLengthGraph,timespanGraph,false);
             if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
             }else{
@@ -1576,7 +1816,7 @@ function switchPurpleAir() {
             document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
             document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
             document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-            buttonsSwitcher(timeLengthGraph,timespanGraph);
+            buttonsSwitcher(timeLengthGraph,timespanGraph,false);
             if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
             }else{
@@ -1600,9 +1840,12 @@ function switchPurpleAir() {
         }
 
 
-function buttonsSwitcher(hours,timespan){
+function buttonsSwitcher(hours,timespan,modal){
     console.log(hours);
     console.log(timespan);
+
+    if (!modal){
+
     switch (hours) {
             case 1:
                 document.getElementById("button1h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
@@ -1680,6 +1923,90 @@ function buttonsSwitcher(hours,timespan){
                 document.getElementById("button1440m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
                 break;
             }
+        }else{
+
+            switch (hours) {
+            case 1:
+                document.getElementById("modal_button1h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button3h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button24h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button48h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1s").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 3:
+                document.getElementById("modal_button1h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button3h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button24h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button48h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1s").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 24:
+                document.getElementById("modal_button1h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button3h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button24h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button48h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1s").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 48:
+                document.getElementById("modal_button1h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button3h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button24h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button48h").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button1s").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 168:
+                document.getElementById("modal_button1h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button3h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button24h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button48h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1s").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button1m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 720:
+                document.getElementById("modal_button1h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button3h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button24h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button48h").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1s").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                break;
+            }
+
+            switch (timespan) {
+            case 2:
+                document.getElementById("modal_button2m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button15m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button60m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1440m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 15:
+                document.getElementById("modal_button2m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button15m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button60m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1440m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 60:
+                document.getElementById("modal_button2m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button15m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button60m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                document.getElementById("modal_button1440m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                break;
+            case 1440:
+                document.getElementById("modal_button2m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button15m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button60m").children[0].classList.replace("btn-secondary", "btn-outline-secondary");
+                document.getElementById("modal_button1440m").children[0].classList.replace("btn-outline-secondary", "btn-secondary");
+                break;
+            }
+
+
+
+
+        }
 }
 
 function setQueryString() {
@@ -2113,12 +2440,31 @@ if (document.querySelector("#checkbox_wind").checked) {
             welcomeModal.show();
             Cookies.set('welcome', 'oui', { expires: 7 });
         }
-       
-        function fullScreen() {
-            console.log("full screen mode");
-            document.getElementById("sidePanelCol").classList.replace("col-5", "col-12");
 
-        }
+
+        const sensorPanelModal = new bootstrap.Modal('#sensorPanel_Modal');
+
+
+
+
+       
+ var fullScreenMode = false;
+
+function fullScreen() {
+    console.log("full screen mode");
+    if (fullScreenMode == false) {
+        document.getElementById("sidePanelCol").classList.replace("col-5", "col-12");
+        fullScreenMode = true;
+    }else{
+        document.getElementById("sidePanelCol").classList.replace("col-12", "col-5");
+        fullScreenMode = false;
+    }
+    
+}
+
+
+
+
 
         
     </script>
