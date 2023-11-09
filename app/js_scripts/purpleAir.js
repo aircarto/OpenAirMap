@@ -3,7 +3,7 @@ function loadPurpleAir() {
     const start = Date.now();
     purpleAir.clearLayers();
 
-    if(timespanLower != 2){
+    if(timespanLower != 2 && compoundUpper != "PM25"){
       openToast("PurpleAir ne propose pas de moyennes quart-horaires, horaires et journalières pour les PM1 et les PM10");
     }
 
@@ -1390,7 +1390,7 @@ function loadPurpleAir() {
 
 function changePurpleAir() {
 
-  if(timespanLower != 2){
+  if(timespanLower != 2 && compoundUpper != "PM25"){
     openToast("PurpleAir ne propose pas de moyennes quart-horaires, horaires et journalières pour les PM1 et les PM10");
   }
 
