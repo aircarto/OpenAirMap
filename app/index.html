@@ -373,7 +373,7 @@
     </div>
 
     <div class="modal fade" id="sensorPanel_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" id="modalcontent">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
             <div class="container-fluid">
@@ -385,9 +385,11 @@
             </div>
             <div class="modal-body">
             <div class="container-fluid">
+            <div class="row justify-content-md-center mb-2">
             <div id="modal_chartdivmodalgauge"></div>
             <iframe id="modal_chartSensor" src="about:blank" width="100%" height="200" frameborder="0"></iframe>
             <div id="modal_chartSensor2"></div>
+            </div>
             <div id="modal_historique">Historique</div>
             <span id="modal_button1h"></span>
             <span id="modal_button3h"></span>
@@ -404,208 +406,16 @@
             </div>
             </div>
             <div class="modal-footer">
+                <div class="container-fluid">
+                    <div class="row justify-content-md-center mb-2">
+                <span id="modal_lastseen"></span>
+                <span id="modal_wifilevel"></span>
+            </div>
+            </div>
             </div>
             </div>'
     </div>
     </div>
-
-
-        <!-- LE SIDE PANEL avec les graphiques (id "sidePanel")  POUR SMARTPHONE
-
-
-        <div class="modal fade" id="sensorPanel_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Welcome to OpenAirMap</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row justify-content-md-center mb-2">
-                          <div class="col-lg-4"><img src="img/logoAirCarto.png" class="img-fluid" alt="..."></div>
-                          <div class="col-lg-4"><img src="img/LogoAtmoSud.png" class="img-fluid" alt="..."></div>
-                        </div>
-                        <div class="row">
-                            <p>
-                            L'application OpenAirMap est un projet open source porté par AirCarto et AtmoSud pour afficher en temps réel les mesures de qualité de l'air effectué par
-                les stations de mesures et les micro-capteurs. Les informations affichées sur la carte sont récupérées via différentes plateforme de mise à disposition de données de mesure (API). 
-                A noter que cette application est en constante évolution et amélioration. Pour toutes questions et suggestions n'hésitez pas à déposer un message sur le <a href="https://github.com/aircarto/OpenAirMap" >GitHub du projet</a>.
-                <br><br>
-                <h5>Liste des données proposées par OpenAirMap</h5>
-                A noter que pour certains appareils, la donnée n'est pas disponible pour tous les pas de temps (2 minutes, quart-horaire, horaire et journalier).
-                <div class="table-responsive">
-    
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Type de mesure</th>
-                            <th scope="col">Pas de temps</th>
-                            <th scope="col">Description</th>
-                            <th scope="col" class="text-end">Lien vers API</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">Capteurs NebuleAir</th>
-                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-success btn-sm">2m</button>
-                                <button type="button" class="btn btn-success btn-sm">QH</button>
-                                <button type="button" class="btn btn-success btn-sm">H</button>
-                                <button type="button" class="btn btn-success btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Micro-capteurs open source co-développés par AirCarto et AtmoSud</td>
-                            <td class="text-end align-middle"><a class="btn btn-primary" href="https://aircarto.fr/API_V2/" role="button">AirCarto</a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Capteurs Sensor.Community</th>
-                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-success btn-sm">2m</button>
-                                <button type="button" class="btn btn-danger btn-sm">QH</button>
-                                <button type="button" class="btn btn-danger btn-sm">H</button>
-                                <button type="button" class="btn btn-danger btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Micro-capteurs open source fabriqués par des citoyens bénévoles </td>
-                            <td class="text-end align-middle"><a class="btn btn-primary" href="https://sensor.community/fr/" role="button">Sensor.Community</a></td>
-    
-                        </tr>
-                        <tr>
-                            <th scope="row">Capteurs PurpleAir</th>
-                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-success btn-sm">2m</button>
-                                <button type="button" class="btn btn-danger btn-sm">QH</button>
-                                <button type="button" class="btn btn-danger btn-sm">H</button>
-                                <button type="button" class="btn btn-danger btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Micro-capteurs commercialisés par l'entreprise américaine PurpleAir Inc.</td>
-                            <td class="text-end align-middle"><a class="btn btn-primary" href="https://api.purpleair.com/" role="button">PurpleAir</a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Micro-stations AtmoSud</th>
-                            <td><span class="badge rounded-pill text-bg-info">micro-capteur</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-danger btn-sm">2m</button>
-                                <button type="button" class="btn btn-success btn-sm">QH</button>
-                                <button type="button" class="btn btn-danger btn-sm">H</button>
-                                <button type="button" class="btn btn-danger btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Micro-capteurs déployés par AtmoSud</td>
-                            <td rowspan="4" class="text-end align-middle"><a class="btn btn-primary" href="https://api.atmosud.org/" role="button">AtmoSud</a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Stations de référence AtmoSud</th>
-                            <td><span class="badge rounded-pill text-bg-dark">station</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-danger btn-sm">2m</button>
-                                <button type="button" class="btn btn-success btn-sm">QH</button>
-                                <button type="button" class="btn btn-success btn-sm">H</button>
-                                <button type="button" class="btn btn-success btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Stations de référence installées dans le cadre de la mission de surveillance de la qualité de l'air d'AtmoSud</td>
-                        
-                        </tr>
-                        <tr>
-                            <th scope="row">Modélisation Horaire PM AtmoSud</th>
-                            <td><span class="badge rounded-pill text-bg-secondary">modélisation</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-danger btn-sm">2m</button>
-                                <button type="button" class="btn btn-danger btn-sm">QH</button>
-                                <button type="button" class="btn btn-success btn-sm">H</button>
-                                <button type="button" class="btn btn-danger btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Modélisation des particules fines à l'échelle horaire sur toute la région PACA</td>
-                            
-                        </tr>
-                        <tr>
-                            <th scope="row">Modélisation Horaire ICAIRH AtmoSud</th>
-                            <td><span class="badge rounded-pill text-bg-secondary">modélisation</span></td>
-                            <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <button type="button" class="btn btn-danger btn-sm">2m</button>
-                                <button type="button" class="btn btn-danger btn-sm">QH</button>
-                                <button type="button" class="btn btn-success btn-sm">H</button>
-                                <button type="button" class="btn btn-danger btn-sm">J</button>
-                              </div>
-                            </td>
-                            <td>Modélisation de l'indice cumulé de la qualité de l'air (NO2, O3, PM2.5 et PM10) à l'échelle horaire sur toute la région PACA.</td>
-                            
-                        </tr>
-                        
-                        
-                        </tbody>
-                    </table>
-                </div>
-            </p>
-    
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuer</button>
-                </div>
-            </div>
-            </div>
-        </div>
-
-
-
-
-
-
- -->
-
-
-
-
-
-
-
-
-
-
-
-        <!-- <div class="row text-center">
-            <div class="col-5" id="sidePanelCol">
-                <div class="card m-3" id="sidePanel" style="display: none;">
-                    <button type="button" class="btn-close position-absolute top-0 end-0" aria-label="Close" style="margin: 5px ;" onclick="CloseSidePanel()"></button>
-                    <span onclick="fullScreen()">
-                        <i class="bi bi-aspect-ratio position-absolute bottom-0 end-0 me-1"></i>
-                    </span>
-                    <div class="card-body">
-                        <button type="button" class="btn btn-outline-primary btn-lg disabled" id="title_deviceName"></button>
-                        <h5 class="card-title" id="card-title"></h5>
-                        
-                        <iframe id="chartSensor" src="about:blank" width="100%" height="400" frameborder="0"></iframe>
-                        <div id="chartSensor2"></div>
-
-                        <div id="historique">Historique</div>
-                        <span id="button1h"></span>
-                        <span id="button3h"></span>
-                        <span id="button24h"></span>
-                        <span id="button48h"></span>
-                        <span id="button1s"></span>
-                        <span id="button1m"></span>
-                        <span id="button1a"></span>
-                        <div id="pdt">Pas de temps</div>
-                        <span id="button2m"></span>
-                        <span id="button15m"></span>
-                        <span id="button60m"></span>
-                        <span id="button1440m"></span>
-                    </div>
-                </div>
-            </div> 
-        </div> -->
-
-  
 
 
     <!-- <div id="capture"></div> -->
@@ -615,9 +425,7 @@
         // const isMobile = navigator.userAgentData.mobile;
 
         const isMobile = true;
-
-
-        console.log(isMobile);
+        console.log("Mobile: " + isMobile);
 
         var date = new Date();
         const hour = date.getHours();
@@ -694,12 +502,13 @@ if (navigator.geolocation) {
 }
 
 function notAllowed(err) {
-    openToast("Vous n'avez pas autorisé la détection de la position.");
+    openToast("Vous n'avez pas autorisé la détection de la position.");  //Produit erreur ?
     map.setView(coordsCenter, zoomLevel);
 }
     const query = {
 	conentration: options.selection,
-    minutes:options.timespanLower
+    minutes:options.timespanLower,
+    affichage:options.display
     };
 
 
@@ -754,6 +563,39 @@ switch (query.concentration) {
   options.compoundUpper = "PM10";
     break;
 }
+
+if (query.affichage.includes("nebuleair")){
+$(document).ready(loadNebuleAir);
+document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
+}
+
+if (query.affichage.includes("sensorcommunity")){
+$(document).ready(loadSensorCommunity);
+document.querySelector("#checkbox_sensor_community").checked = true;
+}
+
+        // // document.querySelector("#checkbox_micro_stationsParticuliers").checked = false;
+        // document.querySelector("#checkbox_sensor_community").checked = false;
+        // document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
+        // document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
+        // document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
+        // document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
+        // document.querySelector("#checkbox_purpleAir").checked = false;
+        // document.querySelector("#checkbox_wind").checked = false;
+
+
+        // ************************
+        //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
+        //$(document).ready(loadNebuleAir);
+        // $(document).ready(loadSensorCommunity);
+        //$(document).ready(loadStationRefAtmo);
+        // $(document).ready(loadStationMicroAtmo);
+        //$(document).ready(loadPurpleAir);
+        //$(document).ready(openToast_loading);
+
+        // ************************
+
+
 }catch(error){return}
 })();
 
@@ -807,30 +649,7 @@ new L.Hash(map);
         var purpleAir = new L.layerGroup();
         var velocityLayer;
 
-        // Switch case
-        // reload
-
-        // ************************
-        //Très important: on start la fonction "loadNebuleAir" une première fois avec document.ready
-        $(document).ready(loadNebuleAir);
-        // $(document).ready(loadSensorCommunity);
-        //$(document).ready(loadStationRefAtmo);
-        // $(document).ready(loadStationMicroAtmo);
-        //$(document).ready(loadPurpleAir);
-        //$(document).ready(openToast_loading);
-
-        // ************************
-
         document.querySelector("#button_screenshot").addEventListener("click", screenShot);
-
-        document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
-        document.querySelector("#checkbox_sensor_community").checked = false;
-        document.querySelector("#checkbox_stationsRefAtmoSud").checked = false;
-        document.querySelector("#checkbox_micro_stationsAtmoSud").checked = false;
-        document.querySelector("#checkbox_modelisationPMAtmoSud").checked = false;
-        document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked = false;
-        document.querySelector("#checkbox_purpleAir").checked = false;
-        document.querySelector("#checkbox_wind").checked = false;
 
 
         if (document.querySelector("#checkbox_micro_stationsParticuliers").checked) {
@@ -941,6 +760,7 @@ new L.Hash(map);
             } else {
                 map.removeLayer(nebuleairParticuliers);
             }
+            setQueryString();
         }
 
         function switchSensorCommunity() {
@@ -966,7 +786,7 @@ new L.Hash(map);
                 openToast("Pas de moyennes quart-horaire, horaire et journalière pour les capteurs Sensor.Community.");
                 document.querySelector("#checkbox_sensor_community").checked = false;
             }
-
+            setQueryString();
         }
 
         function switchRefAtmo() {
@@ -1549,17 +1369,17 @@ function switchPurpleAir() {
                 load1NebuleAir(id,timeLengthGraph,timespanGraph);
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
-                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-                document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-                document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+                document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',2,false)" class="btn btn-outline-secondary btn-sm">2m</button>';
+                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLengthGraph + ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
                buttonsSwitcher(timeLengthGraph,timespanGraph,false);
 
                if(timespanGraph == 2 || timespanGraph == 15){
@@ -1689,7 +1509,7 @@ function switchPurpleAir() {
             //A COMPLETER
         }
 
-        function chooseTimeNebuleAir(sensor, hours, timespan) {
+        function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
             timeLengthGraph = hours;
             timespanGraph = timespan;
             console.log(sensor);
@@ -1724,7 +1544,7 @@ function switchPurpleAir() {
             document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
             document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
             document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-            buttonsSwitcher(timeLengthGraph,timespanGraph,false);
+            buttonsSwitcher(timeLengthGraph,timespanGraph,modal);
             if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
             }else{
@@ -1747,19 +1567,14 @@ function switchPurpleAir() {
               document.getElementById("button15m").children[0].removeAttribute("disabled");
             }
         }
+
+
                 //changer la couleur du bouton en fonction du choix (not working?)
         function chooseTimeAtmoMicro(sensor, hours) {
             console.log(sensor);
             console.log(hours);
             load1MicroAtmo(sensor,hours)
-            buttonsSwitcher(hours);
-        }
-                //changer la couleur du bouton en fonction du choix (not working?)
-        function chooseTimeAtmoMicro(sensor, hours) {
-            console.log(sensor);
-            console.log(hours);
-            load1MicroAtmo(sensor,hours)
-            buttonsSwitcher(hours);
+            buttonsSwitcher(hours,15,false);  //REVOIR
         }
 
 
@@ -2003,9 +1818,6 @@ function buttonsSwitcher(hours,timespan,modal){
                 break;
             }
 
-
-
-
         }
 }
 
@@ -2039,6 +1851,14 @@ switch (compoundUpper) {
   new_path += "concentration=PM10"
     break;
 }
+
+let displayString = "";
+
+if(document.querySelector("#checkbox_micro_stationsParticuliers").checked){displayString += "nebuleair,"}
+if(document.querySelector("#checkbox_sensor_community").checked){displayString += "sensor.community,"}
+
+new_path += "&affichage=" + displayString;
+
 	new_path = new_path + location.hash;
 	console.log(new_path);
 	history.pushState(stateObj,document.title,new_path);
@@ -2312,6 +2132,58 @@ horaire_texte += timestamp_UTC.getMinutes();
 return date_texte + " à " + horaire_texte;
 }
 
+
+function modalCreator(type,data1,data2,data3){
+
+    if(type == "nebuleair"){
+
+        let id = data1.split("-")[1];
+              document.getElementById("modal_sensorid").innerHTML = "nebuleair-" + id;
+              load1NebuleAir(id,timeLength,timespanLower);
+              document.getElementById("modal_chartSensor").style.display = 'none';
+              document.getElementById("modal_chartSensor2").style.display = 'block';
+              document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+              document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">3h</button>';
+              document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+              document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+              document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+              document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+              document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+              document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',2,true)" class="btn btn-outline-secondary btn-sm">2m</button>';
+              document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+              document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+              document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+             buttonsSwitcher(timeLength,timespanLower,true);
+
+             if(timespanLower == 2 || timespanLower == 15){
+            document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
+          }else{
+            document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
+          }
+
+          if(timeLength == 8760){
+            document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
+            document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
+          }else{
+            document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
+            document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
+          }
+
+          document.getElementById("modal_lastseen").innerText = "Dernière mesure effectuée : " + data2;
+
+          if(data3 != -1){
+          document.getElementById("modal_wifilevel").innerText = "Qualité connexion WIFI : " + data3 + "%";
+          }else{
+            document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+          }
+
+        //   Qualité connexion WIFI ' + wifiLevel +' %
+
+    }
+}
+
+
+
 setInterval(function() {
     console.log("Setinterval:");
     console.log(timespanLower * 60 * 1000);
@@ -2461,12 +2333,6 @@ function fullScreen() {
     }
     
 }
-
-
-
-
-
-        
     </script>
 </body>
 

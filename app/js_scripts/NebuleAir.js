@@ -90,8 +90,7 @@ function loadNebuleAir() {
               '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
               '</div>';
 
-
-
+              var wifiLevel = -1;
             }
 
             var nebuleAirTootip = value['sensorId'];
@@ -810,39 +809,7 @@ function loadNebuleAir() {
             L.marker([value['latitude'], value['longitude']], { icon: myIcon })
             .on('click', function(){
 
-              let id = value['sensorId'].split("-")[1];
-              document.getElementById("modal_sensorid").innerHTML = "nebuleair-" + id;
-              load1NebuleAir(id,timeLength,timespanLower);
-              document.getElementById("modal_chartSensor").style.display = 'none';
-              document.getElementById("modal_chartSensor2").style.display = 'block';
-              document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-              document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-              document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-              document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-              document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-              document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-              document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-              document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-              document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-              document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-              document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-             buttonsSwitcher(timeLength,timespanLower,true);
-
-             if(timespanLower == 2 || timespanLower == 15){
-            document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
-          }else{
-            document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
-          }
-
-          if(timeLength == 8760){
-            document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
-            document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
-          }else{
-            document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
-            document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
-          }
-
-
+              modalCreator("nebuleair",value['sensorId'],timeDateCounter2(value.timeUTC,value.time),wifiLevel);
 
               if (root1 != undefined){
                 console.log("DISPOSE")
@@ -853,9 +820,6 @@ function loadNebuleAir() {
 
 
               setTimeout( function() {am5.ready(function() {
-
-
-                console.log("GAUGE");
 
                 // Create root element
                 // https://www.amcharts.com/docs/v5/getting-started/#Root_element
@@ -1064,8 +1028,20 @@ function loadNebuleAir() {
                   paddingTop: 15,
                 }));
 
+                switch (compoundUpper) {
+                  case "PM1":
+                    var gaugeText = "PM1";
+                    break;
+                  case "PM25":
+                    var gaugeText = "PM2.5";
+                    break;
+                  case "PM10":
+                    var gaugeText = "PM10";
+                    break;
+                }
+                
                 chart1.children.unshift(am5.Label.new(root1, {
-                  text: "PM1",
+                  text: gaugeText,
                   fontSize: 15,
                   fontWeight: "500",
                   textAlign: "center",
@@ -1712,38 +1688,7 @@ function loadNebuleAir() {
         L.marker([value['latitude'], value['longitude']], { icon: myIcon })
         .on('click', function(){
 
-              let id = value['sensorId'].split("-")[1];
-              document.getElementById("modal_sensorid").innerHTML = "nebuleair-" + id;
-              load1NebuleAir(id,timeLength,timespanLower);
-              document.getElementById("modal_chartSensor").style.display = 'none';
-              document.getElementById("modal_chartSensor2").style.display = 'block';
-              document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-              document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-              document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-              document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-              document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-              document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-              document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-              document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-              document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-              document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-              document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-             buttonsSwitcher(timeLength,timespanLower,true);
-
-             if(timespanLower == 2 || timespanLower == 15){
-            document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
-          }else{
-            document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
-          }
-
-          if(timeLength == 8760){
-            document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
-            document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
-          }else{
-            document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
-            document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
-          }
-
+          modalCreator("nebuleair",value['sensorId'],timeDateCounter2(value.timeUTC,value.time),wifiLevel);
 
           if (root1 != undefined){
             console.log("DISPOSE")
@@ -1961,8 +1906,20 @@ function loadNebuleAir() {
               paddingTop: 15,
             }));
 
+            switch (compoundUpper) {
+              case "PM1":
+                var gaugeText = "PM1";
+                break;
+              case "PM25":
+                var gaugeText = "PM2.5";
+                break;
+              case "PM10":
+                var gaugeText = "PM10";
+                break;
+            }
+
             chart1.children.unshift(am5.Label.new(root1, {
-              text: "PM1",
+              text: gaugeText,
               fontSize: 15,
               fontWeight: "500",
               textAlign: "center",
@@ -2776,37 +2733,7 @@ function changeNebuleAir() {
             L.marker([value['latitude'], value['longitude']], { icon: myIcon })
             .on('click', function(){
 
-                let id = value['sensorId'].split("-")[1];
-                document.getElementById("modal_sensorid").innerHTML = "nebuleair-" + id;
-                load1NebuleAir(id,timeLength,timespanLower);
-                document.getElementById("modal_chartSensor").style.display = 'none';
-                document.getElementById("modal_chartSensor2").style.display = 'block';
-                document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-                document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-                document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-                document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-                document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-                document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-                document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-                document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-                document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-               buttonsSwitcher(timeLength,timespanLower,true);
-  
-               if(timespanLower == 2 || timespanLower == 15){
-              document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
-            }else{
-              document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
-            }
-  
-            if(timeLength == 8760){
-              document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
-              document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
-            }else{
-              document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
-              document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
-            }
+              modalCreator("nebuleair",value['sensorId'],timeDateCounter2(value.timeUTC,value.time),wifiLevel);
 
               if (root1 != undefined){
                 console.log("DISPOSE")
@@ -3024,8 +2951,20 @@ function changeNebuleAir() {
                   paddingTop: 15,
                 }));
 
+                switch (compoundUpper) {
+                  case "PM1":
+                    var gaugeText = "PM1";
+                    break;
+                  case "PM25":
+                    var gaugeText = "PM2.5";
+                    break;
+                  case "PM10":
+                    var gaugeText = "PM10";
+                    break;
+                }
+
                 chart1.children.unshift(am5.Label.new(root1, {
-                  text: "PM1",
+                  text: gaugeText,
                   fontSize: 15,
                   fontWeight: "500",
                   textAlign: "center",
@@ -3676,42 +3615,7 @@ function changeNebuleAir() {
       L.marker([value['latitude'], value['longitude']], { icon: myIcon })
       .on('click', function(){
 
-              let id = value['sensorId'].split("-")[1];
-              document.getElementById("modal_sensorid").innerHTML = "nebuleair-" + id;
-              load1NebuleAir(id,timeLength,timespanLower);
-              document.getElementById("modal_chartSensor").style.display = 'none';
-              document.getElementById("modal_chartSensor2").style.display = 'block';
-              document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-              document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',3,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-              document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-              document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-              document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-              document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',720,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-              document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-              document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-              document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-              document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-              document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-             buttonsSwitcher(timeLength,timespanLower,true);
-
-             if(timespanLower == 2 || timespanLower == 15){
-            document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
-          }else{
-            document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
-          }
-
-          if(timeLength == 8760){
-            document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
-            document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
-          }else{
-            document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
-            document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
-          }
-
-
-
-
-
+        modalCreator("nebuleair",value['sensorId'],timeDateCounter2(value.timeUTC,value.time),wifiLevel);
 
         if (root1 != undefined){
           console.log("DISPOSE")
@@ -3816,6 +3720,8 @@ function changeNebuleAir() {
           if(value.connected){
           
           setTimeout(function () {
+
+            console.log(compoundUpper);
 
             if(compoundUpper == "PM1"){
 
@@ -3930,8 +3836,20 @@ function changeNebuleAir() {
             paddingTop: 15,
           }));
 
+          switch (compoundUpper) {
+            case "PM1":
+              var gaugeText = "PM1";
+              break;
+            case "PM25":
+              var gaugeText = "PM2.5";
+              break;
+            case "PM10":
+              var gaugeText = "PM10";
+              break;
+          }
+
           chart1.children.unshift(am5.Label.new(root1, {
-            text: "PM1",
+            text: gaugeText,
             fontSize: 15,
             fontWeight: "500",
             textAlign: "center",
