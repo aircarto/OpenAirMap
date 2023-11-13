@@ -26,6 +26,7 @@ function loadNebuleAir() {
         $.each(displayed, function (key, value) {
 
           var value_compound;
+          var selector;
 
             switch(timespanLower) {
               case 2:
@@ -34,6 +35,7 @@ function loadNebuleAir() {
                 }else{
                   value_compound = null;
                 }
+                selector = "";
                 break;
               case 15:
                 if (value[compoundUpper + "_qh"] != null){
@@ -41,6 +43,7 @@ function loadNebuleAir() {
                 }else{
                   value_compound = null;
                 }
+                selector = "_qh";
                 break;
               case 60:
                 if (value[compoundUpper + "_h"] != null){
@@ -48,6 +51,7 @@ function loadNebuleAir() {
                 }else{
                   value_compound = null;
                 }
+                selector = "_h";
                 break;
               case 1440:
                 if (value[compoundUpper + "_d"] != null){
@@ -55,6 +59,7 @@ function loadNebuleAir() {
                 }else{
                   value_compound = null;
                 }
+                selector = "_d";
                 break;
             } 
 
@@ -100,7 +105,6 @@ function loadNebuleAir() {
                 iconUrl: 'img/nebuleAir/nebuleAir_default.png',
                 iconSize: [80, 80], // size of the icon
                 iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
-                //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
             }
 
             //change icon color for PM1 and PM25
@@ -311,7 +315,7 @@ function loadNebuleAir() {
                 setTimeout(function () {
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM1"]),
+                    to: Math.round(value["PM1"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -503,7 +507,7 @@ function loadNebuleAir() {
                 setTimeout(function () {
                   axisDataItem2.animate({
                     key: "value",
-                    to: Math.round(value["PM25"]),
+                    to: Math.round(value["PM25"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -697,7 +701,7 @@ function loadNebuleAir() {
                 setTimeout(function () {
                   axisDataItem3.animate({
                     key: "value",
-                    to: Math.round(value["PM10"]),
+                    to: Math.round(value["PM10"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -919,7 +923,7 @@ function loadNebuleAir() {
 
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM1"]),
+                    to: Math.round(value["PM1"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -929,7 +933,7 @@ function loadNebuleAir() {
 
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM25"]),
+                    to: Math.round(value["PM25"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -939,7 +943,7 @@ function loadNebuleAir() {
 
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM10"]),
+                    to: Math.round(value["PM10"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -1190,7 +1194,7 @@ function loadNebuleAir() {
             setTimeout(function () {
               axisDataItem1.animate({
                 key: "value",
-                to: Math.round(value["PM1"]),
+                to: Math.round(value["PM1"+selector]),
                 duration: 500,
                 easing: am5.ease.out(am5.ease.cubic)
               });
@@ -1382,7 +1386,7 @@ function loadNebuleAir() {
             setTimeout(function () {
               axisDataItem2.animate({
                 key: "value",
-                to: Math.round(value["PM25"]),
+                to: Math.round(value["PM25"+selector]),
                 duration: 500,
                 easing: am5.ease.out(am5.ease.cubic)
               });
@@ -1576,7 +1580,7 @@ function loadNebuleAir() {
             setTimeout(function () {
               axisDataItem3.animate({
                 key: "value",
-                to: Math.round(value["PM10"]),
+                to: Math.round(value["PM10"+selector]),
                 duration: 500,
                 easing: am5.ease.out(am5.ease.cubic)
               });
@@ -1797,7 +1801,7 @@ function loadNebuleAir() {
 
               axisDataItem1.animate({
                 key: "value",
-                to: Math.round(value["PM1"]),
+                to: Math.round(value["PM1"+selector]),
                 duration: 500,
                 easing: am5.ease.out(am5.ease.cubic)
               });
@@ -1807,7 +1811,7 @@ function loadNebuleAir() {
 
               axisDataItem1.animate({
                 key: "value",
-                to: Math.round(value["PM25"]),
+                to: Math.round(value["PM25"+selector]),
                 duration: 500,
                 easing: am5.ease.out(am5.ease.cubic)
               });
@@ -1817,7 +1821,7 @@ function loadNebuleAir() {
 
               axisDataItem1.animate({
                 key: "value",
-                to: Math.round(value["PM10"]),
+                to: Math.round(value["PM10"+selector]),
                 duration: 500,
                 easing: am5.ease.out(am5.ease.cubic)
               });
@@ -1938,7 +1942,7 @@ function loadNebuleAir() {
             })}, 1000) // end am5.ready()
           
         })
-        .addTo(nebuleairParticuliers);
+        .addTo(nebuleairParticuliers).setZIndexOffset(-1000);
       }
         } 
         });
@@ -1953,6 +1957,7 @@ function changeNebuleAir() {
       $.each(apiFetchNebuleAir.data, function (key, value) {
 
           var value_compound;
+          var selector;
 
           switch(timespanLower) {
             case 2:
@@ -1961,6 +1966,7 @@ function changeNebuleAir() {
               }else{
                 value_compound = null;
               }
+              selector = "";
               break;
             case 15:
               if (value[compoundUpper + "_qh"] != null){
@@ -1968,6 +1974,7 @@ function changeNebuleAir() {
               }else{
                 value_compound = null;
               }
+              selector = "_qh";
               break;
             case 60:
               if (value[compoundUpper + "_h"] != null){
@@ -1975,6 +1982,7 @@ function changeNebuleAir() {
               }else{
                 value_compound = null;
               }
+              selector = "_h";
               break;
             case 1440:
               if (value[compoundUpper + "_d"] != null){
@@ -1982,6 +1990,7 @@ function changeNebuleAir() {
               }else{
                 value_compound = null;
               }
+              selector = "_d";
               break;
           } 
 
@@ -2025,7 +2034,6 @@ function changeNebuleAir() {
               iconUrl: 'img/nebuleAir/nebuleAir_default.png',
               iconSize: [80, 80], // size of the icon
               iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
-              //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
           }
 
           //change icon color for PM1 and PM25
@@ -2235,7 +2243,7 @@ function changeNebuleAir() {
                   setTimeout(function () {
                     axisDataItem1.animate({
                       key: "value",
-                      to: Math.round(value["PM1"]),
+                      to: Math.round(value["PM1"+selector]),
                       duration: 500,
                       easing: am5.ease.out(am5.ease.cubic)
                     });
@@ -2428,7 +2436,7 @@ function changeNebuleAir() {
                   setTimeout(function () {
                     axisDataItem2.animate({
                       key: "value",
-                      to: Math.round(value["PM25"]),
+                      to: Math.round(value["PM25"+selector]),
                       duration: 500,
                       easing: am5.ease.out(am5.ease.cubic)
                     });
@@ -2621,7 +2629,7 @@ function changeNebuleAir() {
                   setTimeout(function () {
                     axisDataItem3.animate({
                       key: "value",
-                      to: Math.round(value["PM10"]),
+                      to: Math.round(value["PM10"+selector]),
                       duration: 500,
                       easing: am5.ease.out(am5.ease.cubic)
                     });
@@ -2842,7 +2850,7 @@ function changeNebuleAir() {
 
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM1"]),
+                    to: Math.round(value["PM1"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -2852,7 +2860,7 @@ function changeNebuleAir() {
 
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM25"]),
+                    to: Math.round(value["PM25"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -2862,7 +2870,7 @@ function changeNebuleAir() {
 
                   axisDataItem1.animate({
                     key: "value",
-                    to: Math.round(value["PM10"]),
+                    to: Math.round(value["PM10"+selector]),
                     duration: 500,
                     easing: am5.ease.out(am5.ease.cubic)
                   });
@@ -3117,7 +3125,7 @@ function changeNebuleAir() {
           setTimeout(function () {
             axisDataItem1.animate({
               key: "value",
-              to: Math.round(value["PM1"]),
+              to: Math.round(value["PM1"+selector]),
               duration: 500,
               easing: am5.ease.out(am5.ease.cubic)
             });
@@ -3310,7 +3318,7 @@ function changeNebuleAir() {
           setTimeout(function () {
             axisDataItem2.animate({
               key: "value",
-              to: Math.round(value["PM25"]),
+              to: Math.round(value["PM25"+selector]),
               duration: 500,
               easing: am5.ease.out(am5.ease.cubic)
             });
@@ -3503,7 +3511,7 @@ function changeNebuleAir() {
           setTimeout(function () {
             axisDataItem3.animate({
               key: "value",
-              to: Math.round(value["PM10"]),
+              to: Math.round(value["PM10"+selector]),
               duration: 500,
               easing: am5.ease.out(am5.ease.cubic)
             });
@@ -3727,7 +3735,7 @@ function changeNebuleAir() {
 
             axisDataItem1.animate({
               key: "value",
-              to: Math.round(value["PM1"]),
+              to: Math.round(value["PM1"+selector]),
               duration: 500,
               easing: am5.ease.out(am5.ease.cubic)
             });
@@ -3737,7 +3745,7 @@ function changeNebuleAir() {
 
             axisDataItem1.animate({
               key: "value",
-              to: Math.round(value["PM25"]),
+              to: Math.round(value["PM25"+selector]),
               duration: 500,
               easing: am5.ease.out(am5.ease.cubic)
             });
@@ -3747,7 +3755,7 @@ function changeNebuleAir() {
 
             axisDataItem1.animate({
               key: "value",
-              to: Math.round(value["PM10"]),
+              to: Math.round(value["PM10"+selector]),
               duration: 500,
               easing: am5.ease.out(am5.ease.cubic)
             });
@@ -3870,7 +3878,7 @@ function changeNebuleAir() {
 
         
       })
-      .addTo(nebuleairParticuliers);
+      .addTo(nebuleairParticuliers).setZIndexOffset(-1000);
     } 
       }     
       });
@@ -3922,13 +3930,7 @@ function load1NebuleAir(id,hours,timespan){
           console.log(data);
 
           if (data == null){
-            // openToast("Ce NebuleAir n'a pas produit de donnée sur l'intervalle "+ timeLength + " heures.")
-            // openToast("Ce NebuleAir n'a pas produit de donnée sur les dernières heures.")
-            // console.log("DISPOSE")
-            // root4.dispose();
             console.log("data null");
-
-
             if (root4 != undefined) {
               console.log("DISPOSE")
               root4.dispose();

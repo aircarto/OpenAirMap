@@ -77,7 +77,6 @@ function loadSensorCommunity() {
                 iconUrl: 'img/SensorCommunity/SensorCommunity_default.png',
                 iconSize: [80, 80], // size of the icon
                 iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
-                //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
             }
 
             //change icon color for PM1 and PM25
@@ -169,6 +168,9 @@ function loadSensorCommunity() {
             .addTo(sensorCommunity)
 
         //on ajoute le texte sur les points
+
+        if(!isMobile){
+
         L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
             .bindTooltip(sensorCommunityTootip,{direction: 'center'})
             .bindPopup(sensorCommunityPopup, {
@@ -752,7 +754,280 @@ function loadSensorCommunity() {
                 
             })
             .addTo(sensorCommunity);
-            
+          }else{
+
+            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+            .on('click', function(){
+
+              modalCreator("sensorcommunity",item['sensor']['id'],timeDateCounter(item.timestamp),-1);
+
+              if (root1 != undefined){
+                console.log("DISPOSE")
+              root1.dispose();
+              }
+
+              sensorPanelModal.show();
+
+
+              setTimeout( function() {am5.ready(function() {
+
+                // Create root element
+                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                root1 = am5.Root.new("modal_chartdivmodalgauge");
+                
+                
+                // Set themes
+                // https://www.amcharts.com/docs/v5/concepts/themes/
+                root1.setThemes([
+                  am5themes_Animated.new(root1)
+                ]);
+                
+                
+                // Create chart
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/
+                var chart1 = root1.container.children.push(am5radar.RadarChart.new(root1, {
+                  panX: false,
+                  panY: false,
+                  startAngle: 160,
+                  endAngle: 380
+                }));
+                
+                
+                // Create axis and its renderer
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Axes
+                var axisRenderer1 = am5radar.AxisRendererCircular.new(root1, {
+                  innerRadius: -20,
+                  minGridDistance: 20
+                });
+                
+                axisRenderer1.grid.template.setAll({
+                  stroke: root1.interfaceColors.get("background"),
+                  visible: false,
+                  strokeOpacity: 0.8
+                });
+
+                
+                var xAxis1 = chart1.xAxes.push(am5xy.ValueAxis.new(root1, {
+                  maxDeviation: 0,
+                  min: 0,
+                  max: 100,
+                  strictMinMax: true,
+                  renderer: axisRenderer1
+                }));
+                
+                
+                // Add clock hand
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Clock_hands
+                var axisDataItem1 = xAxis1.makeDataItem({});
+                
+                var clockHand1 = am5radar.ClockHand.new(root1, {
+                  pinRadius: am5.percent(20),
+                  radius: am5.percent(35),
+                  bottomWidth: 20
+                })
+                
+                var bullet1 = axisDataItem1.set("bullet", am5xy.AxisBullet.new(root1, {
+                  sprite: clockHand1
+                }));
+                
+                xAxis1.createAxisRange(axisDataItem1);
+                
+                var label1 = chart1.radarContainer.children.push(am5.Label.new(root1, {
+                  fill: am5.color(0xffffff),
+                  centerX: am5.percent(50),
+                  textAlign: "center",
+                  centerY: am5.percent(50),
+                  fontSize: "1em"
+                }));
+                
+                axisDataItem1.set("value", 0);
+                bullet1.get("sprite").on("rotation", function () {
+                  var value1 = axisDataItem1.get("value");
+                  var text1 = Math.round(axisDataItem1.get("value")).toString();
+                  var fill1 = am5.color(0x000000);
+                  xAxis1.axisRanges.each(function (axisRange) {
+                    if (value1 >= axisRange.get("value") && value1 <= axisRange.get("endValue")) {
+                      fill1 = axisRange.get("axisFill").get("fill");
+                    }
+                  })
+
+                  console.log(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]);
+                  console.log(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]);
+                  console.log(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]);
+
+                  if(compoundUpper == "PM1" && item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined){
+                    label1.set("text", Math.round(value1).toString());
+                  }else{label1.set("text", "N/A");}
+  
+                  if(compoundUpper == "PM25" && item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined){
+                    label1.set("text", Math.round(value1).toString());
+                  }else{label1.set("text", "N/A");}
+  
+                  if(compoundUpper == "PM10" && item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined){
+                    label1.set("text", Math.round(value1).toString());
+                  }else{label1.set("text", "N/A");}
+                  
+                    clockHand1.pin.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                    clockHand1.hand.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                  });
+  
+  
+                  if(compoundUpper == "PM1" && item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined){
+                    setTimeout(function () {
+                      axisDataItem1.animate({
+                        key: "value",
+                        to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]),
+                        duration: 500,
+                        easing: am5.ease.out(am5.ease.cubic)
+                      });
+  
+                    }, 1000)
+                  }else{
+                    document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                    document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+                  }
+  
+                  if(compoundUpper == "PM25" && item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined){
+                    setTimeout(function () {
+                      axisDataItem1.animate({
+                        key: "value",
+                        to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]),
+                        duration: 500,
+                        easing: am5.ease.out(am5.ease.cubic)
+                      });
+                    }, 1000)
+                  }else{
+                  document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                  document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+                  }
+  
+                  if(compoundUpper == "PM10" && item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined){
+                    setTimeout(function () {
+                      axisDataItem1.animate({
+                        key: "value",
+                        to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]),
+                        duration: 500,
+                        easing: am5.ease.out(am5.ease.cubic)
+                      });
+                    }, 1000)
+                  }else{  
+                  document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                  document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+                }
+                
+                chart1.bulletsContainer.set("mask", undefined);
+                
+                
+                // Create axis ranges bands
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+                var bandsData1 = [{
+                  // title: "Bon",
+                  color: "#4FF0E6",
+                  lowScore: 0,
+                  highScore: 10
+                }, {
+                  // title: "Moyen",
+                  color: "#51CCAA",
+                  lowScore: 11,
+                  highScore: 20
+                }, {
+                  // title: "Dégradé",
+                  color: "#EDE663",
+                  lowScore: 21,
+                  highScore: 25
+                }, {
+                  // title: "Mauvais",
+                  color: "#ED5E58",
+                  lowScore: 26,
+                  highScore: 50
+                }, {
+                  // title: "Très mauvais",
+                  color: "#881B33",
+                  lowScore: 51,
+                  highScore: 75
+                }, {
+                  // title: "Extr. mauvais",
+                  color: "#74287D",
+                  lowScore: 76,
+                  highScore: 100
+                }
+              ];
+
+
+                am5.array.each(bandsData1, function (data) {
+                  var axisRange1 = xAxis1.createAxisRange(xAxis1.makeDataItem({}));
+
+                  axisRange1.setAll({
+                    value: data.lowScore,
+                    endValue: data.highScore
+                  });
+                
+                  axisRange1.get("axisFill").setAll({
+                    visible: true,
+                    fill: am5.color(data.color),
+                    fillOpacity: 1
+                  });
+                
+                  // axisRange1.get("grid").setAll({
+                  //   stroke: am5.color(data.color),
+                  //   strokeOpacity: 1
+                  // });
+
+
+
+                  // axisRange1.get("label").setAll({
+                  //   text: data.title,
+                  //   inside: true,
+                  //   radius: 15,
+                  //   fontSize: "0.9em",
+                  //   fill: root1.interfaceColors.get("background")
+                  // });
+                });
+
+                chart1.children.unshift(am5.Label.new(root1, {
+                  text: "µg/m³",
+                  fontSize: 10,
+                  textAlign: "center",
+                  x: am5.percent(50),
+                  centerX: am5.percent(50),
+                  paddingTop: 15,
+                }));
+
+                switch (compoundUpper) {
+                  case "PM1":
+                    var gaugeText = "PM1";
+                    break;
+                  case "PM25":
+                    var gaugeText = "PM2.5";
+                    break;
+                  case "PM10":
+                    var gaugeText = "PM10";
+                    break;
+                }
+                
+                chart1.children.unshift(am5.Label.new(root1, {
+                  text: gaugeText,
+                  fontSize: 15,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  x: am5.percent(50),
+                  centerX: am5.percent(50),
+                  paddingTop: 0,
+                  paddingBottom: 0
+                }));
+                
+                
+                // Make stuff animate on load
+                chart1.appear(1000, 100);
+
+                xAxis1.get("renderer").grid.template.set("forceHidden", true);
+
+
+                })}, 1000) // end am5.ready()
+              
+            })
+            .addTo(sensorCommunity);
+          }   
         }else{
             // cutom text on the marker
             var myIcon = L.divIcon({
@@ -763,6 +1038,7 @@ function loadSensorCommunity() {
 
             });
 
+            if(!isMobile){
             L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
             .bindTooltip(sensorCommunityTootip,{direction: 'center'})
             .bindPopup(sensorCommunityPopup, {
@@ -1346,7 +1622,285 @@ function loadSensorCommunity() {
               
           })
             .addTo(sensorCommunity).setZIndexOffset(-1000);
+          }else{
 
+
+
+            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+            .on('click', function(){
+
+              modalCreator("sensorcommunity",item['sensor']['id'],timeDateCounter(item.timestamp),-1);
+
+              if (root1 != undefined){
+                console.log("DISPOSE")
+              root1.dispose();
+              }
+
+              sensorPanelModal.show();
+
+
+              setTimeout( function() {am5.ready(function() {
+
+                // Create root element
+                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                root1 = am5.Root.new("modal_chartdivmodalgauge");
+                
+                
+                // Set themes
+                // https://www.amcharts.com/docs/v5/concepts/themes/
+                root1.setThemes([
+                  am5themes_Animated.new(root1)
+                ]);
+                
+                
+                // Create chart
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/
+                var chart1 = root1.container.children.push(am5radar.RadarChart.new(root1, {
+                  panX: false,
+                  panY: false,
+                  startAngle: 160,
+                  endAngle: 380
+                }));
+                
+                
+                // Create axis and its renderer
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Axes
+                var axisRenderer1 = am5radar.AxisRendererCircular.new(root1, {
+                  innerRadius: -20,
+                  minGridDistance: 20
+                });
+                
+                axisRenderer1.grid.template.setAll({
+                  stroke: root1.interfaceColors.get("background"),
+                  visible: false,
+                  strokeOpacity: 0.8
+                });
+
+                
+                var xAxis1 = chart1.xAxes.push(am5xy.ValueAxis.new(root1, {
+                  maxDeviation: 0,
+                  min: 0,
+                  max: 100,
+                  strictMinMax: true,
+                  renderer: axisRenderer1
+                }));
+                
+                
+                // Add clock hand
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Clock_hands
+                var axisDataItem1 = xAxis1.makeDataItem({});
+                
+                var clockHand1 = am5radar.ClockHand.new(root1, {
+                  pinRadius: am5.percent(20),
+                  radius: am5.percent(35),
+                  bottomWidth: 20
+                })
+                
+                var bullet1 = axisDataItem1.set("bullet", am5xy.AxisBullet.new(root1, {
+                  sprite: clockHand1
+                }));
+                
+                xAxis1.createAxisRange(axisDataItem1);
+                
+                var label1 = chart1.radarContainer.children.push(am5.Label.new(root1, {
+                  fill: am5.color(0xffffff),
+                  centerX: am5.percent(50),
+                  textAlign: "center",
+                  centerY: am5.percent(50),
+                  fontSize: "1em"
+                }));
+                
+                axisDataItem1.set("value", 0);
+                bullet1.get("sprite").on("rotation", function () {
+                  var value1 = axisDataItem1.get("value");
+                  var text1 = Math.round(axisDataItem1.get("value")).toString();
+                  var fill1 = am5.color(0x000000);
+                  xAxis1.axisRanges.each(function (axisRange) {
+                    if (value1 >= axisRange.get("value") && value1 <= axisRange.get("endValue")) {
+                      fill1 = axisRange.get("axisFill").get("fill");
+                    }
+                  })
+                
+                  console.log(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]);
+                  console.log(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]);
+                  console.log(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]);
+
+                if(compoundUpper == "PM1" && item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined){
+                  label1.set("text", Math.round(value1).toString());
+                }else{label1.set("text", "N/A");}
+
+                if(compoundUpper == "PM25" && item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined){
+                  label1.set("text", Math.round(value1).toString());
+                }else{label1.set("text", "N/A");}
+
+                if(compoundUpper == "PM10" && item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined){
+                  label1.set("text", Math.round(value1).toString());
+                }else{label1.set("text", "N/A");}
+                
+                  clockHand1.pin.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                  clockHand1.hand.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                });
+
+
+                if(compoundUpper == "PM1" && item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined){
+                  setTimeout(function () {
+                    axisDataItem1.animate({
+                      key: "value",
+                      to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]),
+                      duration: 500,
+                      easing: am5.ease.out(am5.ease.cubic)
+                    });
+
+                  }, 1000)
+                }else{
+                  console.log("FAFALLKLKLKLLKLKLKLK");
+                  document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                  document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+                }
+
+                if(compoundUpper == "PM25" && item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined){
+                  setTimeout(function () {
+                    axisDataItem1.animate({
+                      key: "value",
+                      to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]),
+                      duration: 500,
+                      easing: am5.ease.out(am5.ease.cubic)
+                    });
+                  }, 1000)
+                }else{
+                  console.log("FAFALLKLKLKLLKLKLKLK");
+                document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+                }
+
+                if(compoundUpper == "PM10" && item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined){
+                  setTimeout(function () {
+                    axisDataItem1.animate({
+                      key: "value",
+                      to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]),
+                      duration: 500,
+                      easing: am5.ease.out(am5.ease.cubic)
+                    });
+                  }, 1000)
+                }else{   
+                  console.log("FAFALLKLKLKLLKLKLKLK");          
+                document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+              }
+
+                chart1.bulletsContainer.set("mask", undefined);
+                
+                
+                // Create axis ranges bands
+                // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+                var bandsData1 = [{
+                  // title: "Bon",
+                  color: "#4FF0E6",
+                  lowScore: 0,
+                  highScore: 10
+                }, {
+                  // title: "Moyen",
+                  color: "#51CCAA",
+                  lowScore: 11,
+                  highScore: 20
+                }, {
+                  // title: "Dégradé",
+                  color: "#EDE663",
+                  lowScore: 21,
+                  highScore: 25
+                }, {
+                  // title: "Mauvais",
+                  color: "#ED5E58",
+                  lowScore: 26,
+                  highScore: 50
+                }, {
+                  // title: "Très mauvais",
+                  color: "#881B33",
+                  lowScore: 51,
+                  highScore: 75
+                }, {
+                  // title: "Extr. mauvais",
+                  color: "#74287D",
+                  lowScore: 76,
+                  highScore: 100
+                }
+              ];
+
+
+                am5.array.each(bandsData1, function (data) {
+                  var axisRange1 = xAxis1.createAxisRange(xAxis1.makeDataItem({}));
+
+                  axisRange1.setAll({
+                    value: data.lowScore,
+                    endValue: data.highScore
+                  });
+                
+                  axisRange1.get("axisFill").setAll({
+                    visible: true,
+                    fill: am5.color(data.color),
+                    fillOpacity: 1
+                  });
+                
+                  // axisRange1.get("grid").setAll({
+                  //   stroke: am5.color(data.color),
+                  //   strokeOpacity: 1
+                  // });
+
+
+
+                  // axisRange1.get("label").setAll({
+                  //   text: data.title,
+                  //   inside: true,
+                  //   radius: 15,
+                  //   fontSize: "0.9em",
+                  //   fill: root1.interfaceColors.get("background")
+                  // });
+                });
+
+                chart1.children.unshift(am5.Label.new(root1, {
+                  text: "µg/m³",
+                  fontSize: 10,
+                  textAlign: "center",
+                  x: am5.percent(50),
+                  centerX: am5.percent(50),
+                  paddingTop: 15,
+                }));
+
+                switch (compoundUpper) {
+                  case "PM1":
+                    var gaugeText = "PM1";
+                    break;
+                  case "PM25":
+                    var gaugeText = "PM2.5";
+                    break;
+                  case "PM10":
+                    var gaugeText = "PM10";
+                    break;
+                }
+                
+                chart1.children.unshift(am5.Label.new(root1, {
+                  text: gaugeText,
+                  fontSize: 15,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  x: am5.percent(50),
+                  centerX: am5.percent(50),
+                  paddingTop: 0,
+                  paddingBottom: 0
+                }));
+                
+                
+                // Make stuff animate on load
+                chart1.appear(1000, 100);
+
+                xAxis1.get("renderer").grid.template.set("forceHidden", true);
+
+
+                })}, 1000) // end am5.ready()
+              
+            })
+            .addTo(sensorCommunity).setZIndexOffset(-1000);
+          }
         }
             }
         
@@ -1412,7 +1966,6 @@ function changeSensorCommunity() {
               iconUrl: 'img/SensorCommunity/SensorCommunity_default.png',
               iconSize: [80, 80], // size of the icon
               iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
-              //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
           }
 
           //change icon color for PM1 and PM25
@@ -1504,6 +2057,8 @@ function changeSensorCommunity() {
           .addTo(sensorCommunity);
 
       //on ajoute le texte sur les points
+      if(!isMobile){
+
       L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
           .bindTooltip(sensorCommunityTootip,{direction: 'center'})
           .bindPopup(sensorCommunityPopup, {
@@ -2084,6 +2639,288 @@ function changeSensorCommunity() {
               
           })
           .addTo(sensorCommunity);
+      }else{
+
+
+
+        L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+        .on('click', function(){
+
+          modalCreator("sensorcommunity",item['sensor']['id'],timeDateCounter(item.timestamp),-1);
+
+          if (root1 != undefined){
+            console.log("DISPOSE")
+          root1.dispose();
+          }
+
+          sensorPanelModal.show();
+
+
+          setTimeout( function() {am5.ready(function() {
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            root1 = am5.Root.new("modal_chartdivmodalgauge");
+            
+            
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root1.setThemes([
+              am5themes_Animated.new(root1)
+            ]);
+            
+            
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/
+            var chart1 = root1.container.children.push(am5radar.RadarChart.new(root1, {
+              panX: false,
+              panY: false,
+              startAngle: 160,
+              endAngle: 380
+            }));
+            
+            
+            // Create axis and its renderer
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Axes
+            var axisRenderer1 = am5radar.AxisRendererCircular.new(root1, {
+              innerRadius: -20,
+              minGridDistance: 20
+            });
+            
+            axisRenderer1.grid.template.setAll({
+              stroke: root1.interfaceColors.get("background"),
+              visible: false,
+              strokeOpacity: 0.8
+            });
+
+            
+            var xAxis1 = chart1.xAxes.push(am5xy.ValueAxis.new(root1, {
+              maxDeviation: 0,
+              min: 0,
+              max: 100,
+              strictMinMax: true,
+              renderer: axisRenderer1
+            }));
+            
+            
+            // Add clock hand
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Clock_hands
+            var axisDataItem1 = xAxis1.makeDataItem({});
+            
+            var clockHand1 = am5radar.ClockHand.new(root1, {
+              pinRadius: am5.percent(20),
+              radius: am5.percent(35),
+              bottomWidth: 20
+            })
+            
+            var bullet1 = axisDataItem1.set("bullet", am5xy.AxisBullet.new(root1, {
+              sprite: clockHand1
+            }));
+            
+            xAxis1.createAxisRange(axisDataItem1);
+            
+            var label1 = chart1.radarContainer.children.push(am5.Label.new(root1, {
+              fill: am5.color(0xffffff),
+              centerX: am5.percent(50),
+              textAlign: "center",
+              centerY: am5.percent(50),
+              fontSize: "1em"
+            }));
+            
+            axisDataItem1.set("value", 0);
+            bullet1.get("sprite").on("rotation", function () {
+              var value1 = axisDataItem1.get("value");
+              var text1 = Math.round(axisDataItem1.get("value")).toString();
+              var fill1 = am5.color(0x000000);
+              xAxis1.axisRanges.each(function (axisRange) {
+                if (value1 >= axisRange.get("value") && value1 <= axisRange.get("endValue")) {
+                  fill1 = axisRange.get("axisFill").get("fill");
+                }
+              })
+
+              console.log(Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]));
+              console.log(Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]));
+              console.log(Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]));
+            
+              if(compoundUpper == "PM1" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined)){
+                label1.set("text", Math.round(value1).toString());
+              }else{label1.set("text", "N/A");}
+
+              if(compoundUpper == "PM25" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined)){
+                label1.set("text", Math.round(value1).toString());
+              }else{label1.set("text", "N/A");}
+
+              if(compoundUpper == "PM10" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined)){
+                label1.set("text", Math.round(value1).toString());
+              }else{label1.set("text", "N/A");}
+              
+                clockHand1.pin.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                clockHand1.hand.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+              });
+
+
+              if(compoundUpper == "PM1" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined)){
+                setTimeout(function () {
+                  axisDataItem1.animate({
+                    key: "value",
+                    to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]),
+                    duration: 500,
+                    easing: am5.ease.out(am5.ease.cubic)
+                  });
+
+                }, 1000)
+              }else{
+                console.log("FAFALLKLKLKLLKLKLKLK");
+                document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+              }
+
+              if(compoundUpper == "PM25" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined)){
+                setTimeout(function () {
+                  axisDataItem1.animate({
+                    key: "value",
+                    to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]),
+                    duration: 500,
+                    easing: am5.ease.out(am5.ease.cubic)
+                  });
+                }, 1000)
+              }else{
+                console.log("FAFALLKLKLKLLKLKLKLK");
+              document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+              document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+              }
+
+              if(compoundUpper == "PM10" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined)){
+                setTimeout(function () {
+                  axisDataItem1.animate({
+                    key: "value",
+                    to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]),
+                    duration: 500,
+                    easing: am5.ease.out(am5.ease.cubic)
+                  });
+                }, 1000)
+              }else{      
+                console.log("FAFALLKLKLKLLKLKLKLK");       
+              document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+              document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+            }
+            
+            chart1.bulletsContainer.set("mask", undefined);
+            
+            
+            // Create axis ranges bands
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+            var bandsData1 = [{
+              // title: "Bon",
+              color: "#4FF0E6",
+              lowScore: 0,
+              highScore: 10
+            }, {
+              // title: "Moyen",
+              color: "#51CCAA",
+              lowScore: 11,
+              highScore: 20
+            }, {
+              // title: "Dégradé",
+              color: "#EDE663",
+              lowScore: 21,
+              highScore: 25
+            }, {
+              // title: "Mauvais",
+              color: "#ED5E58",
+              lowScore: 26,
+              highScore: 50
+            }, {
+              // title: "Très mauvais",
+              color: "#881B33",
+              lowScore: 51,
+              highScore: 75
+            }, {
+              // title: "Extr. mauvais",
+              color: "#74287D",
+              lowScore: 76,
+              highScore: 100
+            }
+          ];
+
+
+            am5.array.each(bandsData1, function (data) {
+              var axisRange1 = xAxis1.createAxisRange(xAxis1.makeDataItem({}));
+
+              axisRange1.setAll({
+                value: data.lowScore,
+                endValue: data.highScore
+              });
+            
+              axisRange1.get("axisFill").setAll({
+                visible: true,
+                fill: am5.color(data.color),
+                fillOpacity: 1
+              });
+            
+              // axisRange1.get("grid").setAll({
+              //   stroke: am5.color(data.color),
+              //   strokeOpacity: 1
+              // });
+
+
+
+              // axisRange1.get("label").setAll({
+              //   text: data.title,
+              //   inside: true,
+              //   radius: 15,
+              //   fontSize: "0.9em",
+              //   fill: root1.interfaceColors.get("background")
+              // });
+            });
+
+            chart1.children.unshift(am5.Label.new(root1, {
+              text: "µg/m³",
+              fontSize: 10,
+              textAlign: "center",
+              x: am5.percent(50),
+              centerX: am5.percent(50),
+              paddingTop: 15,
+            }));
+
+            switch (compoundUpper) {
+              case "PM1":
+                var gaugeText = "PM1";
+                break;
+              case "PM25":
+                var gaugeText = "PM2.5";
+                break;
+              case "PM10":
+                var gaugeText = "PM10";
+                break;
+            }
+            
+            chart1.children.unshift(am5.Label.new(root1, {
+              text: gaugeText,
+              fontSize: 15,
+              fontWeight: "500",
+              textAlign: "center",
+              x: am5.percent(50),
+              centerX: am5.percent(50),
+              paddingTop: 0,
+              paddingBottom: 0
+            }));
+            
+            
+            // Make stuff animate on load
+            chart1.appear(1000, 100);
+
+            xAxis1.get("renderer").grid.template.set("forceHidden", true);
+
+
+            })}, 1000) // end am5.ready()
+          
+        })
+        .addTo(nebuleairParticuliers);
+
+
+
+      }
 
       }else{
           // cutom text on the marker
@@ -2094,7 +2931,7 @@ function changeSensorCommunity() {
               popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
 
           });
-
+          if(!isMobile){
           L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
           .bindTooltip(sensorCommunityTootip,{direction: 'center'})
           .bindPopup(sensorCommunityPopup, {
@@ -2675,7 +3512,286 @@ function changeSensorCommunity() {
             
         })
           .addTo(sensorCommunity).setZIndexOffset(-1000);;
+      }else{
 
+
+
+        L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+        .on('click', function(){
+
+          modalCreator("sensorcommunity",item['sensor']['id'],timeDateCounter(item.timestamp),-1);
+
+          if (root1 != undefined){
+            console.log("DISPOSE")
+          root1.dispose();
+          }
+
+          sensorPanelModal.show();
+
+
+          setTimeout( function() {am5.ready(function() {
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            root1 = am5.Root.new("modal_chartdivmodalgauge");
+            
+            
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root1.setThemes([
+              am5themes_Animated.new(root1)
+            ]);
+            
+            
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/
+            var chart1 = root1.container.children.push(am5radar.RadarChart.new(root1, {
+              panX: false,
+              panY: false,
+              startAngle: 160,
+              endAngle: 380
+            }));
+            
+            
+            // Create axis and its renderer
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Axes
+            var axisRenderer1 = am5radar.AxisRendererCircular.new(root1, {
+              innerRadius: -20,
+              minGridDistance: 20
+            });
+            
+            axisRenderer1.grid.template.setAll({
+              stroke: root1.interfaceColors.get("background"),
+              visible: false,
+              strokeOpacity: 0.8
+            });
+
+            
+            var xAxis1 = chart1.xAxes.push(am5xy.ValueAxis.new(root1, {
+              maxDeviation: 0,
+              min: 0,
+              max: 100,
+              strictMinMax: true,
+              renderer: axisRenderer1
+            }));
+            
+            
+            // Add clock hand
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Clock_hands
+            var axisDataItem1 = xAxis1.makeDataItem({});
+            
+            var clockHand1 = am5radar.ClockHand.new(root1, {
+              pinRadius: am5.percent(20),
+              radius: am5.percent(35),
+              bottomWidth: 20
+            })
+            
+            var bullet1 = axisDataItem1.set("bullet", am5xy.AxisBullet.new(root1, {
+              sprite: clockHand1
+            }));
+            
+            xAxis1.createAxisRange(axisDataItem1);
+            
+            var label1 = chart1.radarContainer.children.push(am5.Label.new(root1, {
+              fill: am5.color(0xffffff),
+              centerX: am5.percent(50),
+              textAlign: "center",
+              centerY: am5.percent(50),
+              fontSize: "1em"
+            }));
+            
+            axisDataItem1.set("value", 0);
+            bullet1.get("sprite").on("rotation", function () {
+              var value1 = axisDataItem1.get("value");
+              var text1 = Math.round(axisDataItem1.get("value")).toString();
+              var fill1 = am5.color(0x000000);
+              xAxis1.axisRanges.each(function (axisRange) {
+                if (value1 >= axisRange.get("value") && value1 <= axisRange.get("endValue")) {
+                  fill1 = axisRange.get("axisFill").get("fill");
+                }
+              })
+
+              console.log(Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]));
+              console.log(Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]));
+              console.log(Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]));
+
+              if(compoundUpper == "PM1" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined)){
+                label1.set("text", Math.round(value1).toString());
+              }else{label1.set("text", "N/A");}
+
+              if(compoundUpper == "PM25" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined)){
+                label1.set("text", Math.round(value1).toString());
+              }else{label1.set("text", "N/A");}
+
+              if(compoundUpper == "PM10" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined)){
+                label1.set("text", Math.round(value1).toString());
+              }else{label1.set("text", "N/A");}
+              
+                clockHand1.pin.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                clockHand1.hand.animate({ key: "fill", to: fill1, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+              });
+
+
+              if(compoundUpper == "PM1" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]!=undefined)){
+                setTimeout(function () {
+                  axisDataItem1.animate({
+                    key: "value",
+                    to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P0")[0]["value"]),
+                    duration: 500,
+                    easing: am5.ease.out(am5.ease.cubic)
+                  });
+
+                }, 1000)
+              }else{
+                console.log("FAFALLKLKLKLLKLKLKLK");
+                document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+                document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+              }
+
+              if(compoundUpper == "PM25" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]!=undefined)){
+                setTimeout(function () {
+                  axisDataItem1.animate({
+                    key: "value",
+                    to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P2")[0]["value"]),
+                    duration: 500,
+                    easing: am5.ease.out(am5.ease.cubic)
+                  });
+                }, 1000)
+              }else{
+                console.log("FAFALLKLKLKLLKLKLKLK");
+              document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+              document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+              }
+
+              if(compoundUpper == "PM10" && Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]!=undefined)){
+                setTimeout(function () {
+                  axisDataItem1.animate({
+                    key: "value",
+                    to: Math.round(item["sensordatavalues"].filter((e) => e.value_type == "P1")[0]["value"]),
+                    duration: 500,
+                    easing: am5.ease.out(am5.ease.cubic)
+                  });
+                }, 1000)
+              }else{             
+                console.log("FAFALLKLKLKLLKLKLKLK");
+              document.querySelector("#modal_chartdivmodalgauge").style.opacity = 0.2;
+              document.querySelector("#modal_chartdivmodalgauge").style.filter = "alpha(opacity = 20)";
+            }
+            
+            chart1.bulletsContainer.set("mask", undefined);
+            
+            
+            // Create axis ranges bands
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+            var bandsData1 = [{
+              // title: "Bon",
+              color: "#4FF0E6",
+              lowScore: 0,
+              highScore: 10
+            }, {
+              // title: "Moyen",
+              color: "#51CCAA",
+              lowScore: 11,
+              highScore: 20
+            }, {
+              // title: "Dégradé",
+              color: "#EDE663",
+              lowScore: 21,
+              highScore: 25
+            }, {
+              // title: "Mauvais",
+              color: "#ED5E58",
+              lowScore: 26,
+              highScore: 50
+            }, {
+              // title: "Très mauvais",
+              color: "#881B33",
+              lowScore: 51,
+              highScore: 75
+            }, {
+              // title: "Extr. mauvais",
+              color: "#74287D",
+              lowScore: 76,
+              highScore: 100
+            }
+          ];
+
+
+            am5.array.each(bandsData1, function (data) {
+              var axisRange1 = xAxis1.createAxisRange(xAxis1.makeDataItem({}));
+
+              axisRange1.setAll({
+                value: data.lowScore,
+                endValue: data.highScore
+              });
+            
+              axisRange1.get("axisFill").setAll({
+                visible: true,
+                fill: am5.color(data.color),
+                fillOpacity: 1
+              });
+            
+              // axisRange1.get("grid").setAll({
+              //   stroke: am5.color(data.color),
+              //   strokeOpacity: 1
+              // });
+
+
+
+              // axisRange1.get("label").setAll({
+              //   text: data.title,
+              //   inside: true,
+              //   radius: 15,
+              //   fontSize: "0.9em",
+              //   fill: root1.interfaceColors.get("background")
+              // });
+            });
+
+            chart1.children.unshift(am5.Label.new(root1, {
+              text: "µg/m³",
+              fontSize: 10,
+              textAlign: "center",
+              x: am5.percent(50),
+              centerX: am5.percent(50),
+              paddingTop: 15,
+            }));
+
+            switch (compoundUpper) {
+              case "PM1":
+                var gaugeText = "PM1";
+                break;
+              case "PM25":
+                var gaugeText = "PM2.5";
+                break;
+              case "PM10":
+                var gaugeText = "PM10";
+                break;
+            }
+            
+            chart1.children.unshift(am5.Label.new(root1, {
+              text: gaugeText,
+              fontSize: 15,
+              fontWeight: "500",
+              textAlign: "center",
+              x: am5.percent(50),
+              centerX: am5.percent(50),
+              paddingTop: 0,
+              paddingBottom: 0
+            }));
+            
+            
+            // Make stuff animate on load
+            chart1.appear(1000, 100);
+
+            xAxis1.get("renderer").grid.template.set("forceHidden", true);
+
+
+            })}, 1000) // end am5.ready()
+          
+        })
+        .addTo(sensorCommunity).setZIndexOffset(-1000);
+
+      }
       }
               
           }

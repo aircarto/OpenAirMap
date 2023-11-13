@@ -248,3 +248,15 @@ body {
     top: 50px;
   }
 }
+
+#div_logos{
+  position: fixed;
+  left: 40px;
+  top: 10px;
+}
+
+#button_close{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
