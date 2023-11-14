@@ -2077,6 +2077,9 @@ function changeSensorCommunity() {
           // console.log(item['sensor']['id']);
           sensorsList.push(item['sensor']['id']);
 
+          // console.log("sensor");
+          // console.log(sensorsList.length);
+
           //image des points sur la carte
           var icon_param = {
               iconUrl: 'img/SensorCommunity/SensorCommunity_default.png',
@@ -2157,6 +2160,9 @@ function changeSensorCommunity() {
               x_position = -9;
               y_position = 56;
           }
+
+
+
 
           if (value_compound != undefined && value_compound != null )
           {
