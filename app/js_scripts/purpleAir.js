@@ -155,6 +155,8 @@ function loadPurpleAir() {
             L.marker([lat, long], { icon: purpleAir_icon })
             .addTo(purpleAir);
 
+            if(!isMobile){
+
             L.marker([lat, long], { icon: myIcon })
             .bindTooltip(purpleAirTootip,{direction: 'center'})
             .bindPopup(purpleAirPopup, {
@@ -764,6 +766,24 @@ function loadPurpleAir() {
               })
               .addTo(purpleAir);
             }else{
+              L.marker([lat, long], { icon: myIcon })
+              .on('click', function(){
+
+                console.log("ON CLICK");
+                modalCreator("purpleair",sensorid.toString(),timeDateCounter(last_seen * 1000),-1);
+
+                if (root1 != undefined){
+                  console.log("DISPOSE")
+                root1.dispose();
+                }
+
+                sensorPanelModal.show();
+
+
+              })
+              .addTo(purpleAir);
+            }
+            }else{
 
             var myIcon = L.divIcon({
             className: 'my-div-icon',
@@ -772,6 +792,7 @@ function loadPurpleAir() {
             popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
           });
         
+          if(!isMobile){
           L.marker([lat, long], { icon: purpleAir_icon })
           .bindTooltip(purpleAirTootip,{direction: 'center'})
           .bindPopup(purpleAirPopup, {
@@ -1380,7 +1401,24 @@ function loadPurpleAir() {
               
             })
             .addTo(purpleAir).setZIndexOffset(-1000);
-            }
+            }else{
+
+              L.marker([lat, long], { icon: purpleAir_icon })
+              .on('click', function(){
+              modalCreator("purpleair",sensorid.toString(),timeDateCounter(last_seen * 1000),-1);
+
+              if (root1 != undefined){
+                console.log("DISPOSE")
+              root1.dispose();
+              }
+
+              sensorPanelModal.show();
+
+
+            })
+            .addTo(purpleAir).setZIndexOffset(-1000);
+          }
+        }
         })
     })
     .fail(function(){
@@ -1526,6 +1564,8 @@ function changePurpleAir() {
         });
         L.marker([lat, long], { icon: purpleAir_icon })
         .addTo(purpleAir);
+
+        if(!isMobile){
 
         L.marker([lat, long], { icon: myIcon })
         .bindTooltip(purpleAirTootip,{direction: 'center'})
@@ -2137,6 +2177,24 @@ function changePurpleAir() {
           })
           .addTo(purpleAir);
         }else{
+          L.marker([lat, long], { icon: myIcon })
+          .on('click', function(){
+            console.log("ON CLICK");
+            modalCreator("purpleair",sensorid.toString(),timeDateCounter(last_seen * 1000),-1);
+
+            if (root1 != undefined){
+              console.log("DISPOSE")
+            root1.dispose();
+            }
+
+            sensorPanelModal.show();
+
+
+          })
+          .addTo(purpleAir);
+  
+        }
+        }else{
 
           var myIcon = L.divIcon({
           className: 'my-div-icon',
@@ -2145,6 +2203,7 @@ function changePurpleAir() {
           popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
         });
       
+        if(!isMobile){
         L.marker([lat, long], { icon: purpleAir_icon })
         .bindTooltip(purpleAirTootip,{direction: 'center'})
         .bindPopup(purpleAirPopup, {
@@ -2754,7 +2813,24 @@ function changePurpleAir() {
             
           })
           .addTo(purpleAir).setZIndexOffset(-1000);
-      
+        }else{
+
+          L.marker([lat, long], { icon: purpleAir_icon })
+          .on('click', function(){
+            console.log("ON CLICK");
+          modalCreator("purpleair",sensorid.toString(),timeDateCounter(last_seen * 1000),-1);
+
+          if (root1 != undefined){
+            console.log("DISPOSE")
+          root1.dispose();
+          }
+          sensorPanelModal.show();
+
+
+        })
+        .addTo(purpleAir).setZIndexOffset(-1000);
+
+        }
         }
     })
    

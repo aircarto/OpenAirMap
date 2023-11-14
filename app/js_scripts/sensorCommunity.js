@@ -40,8 +40,8 @@ function loadSensorCommunity() {
         '</div>'+
         '<div class="text-center" style="padding-top:15px">'+
         '<br>Dernière mesure effectuée :' + timeDateCounter(item.timestamp) + '<br>' +
-        '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
-        '<button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
+        '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">Sensor.Community-' + item.sensor.id + '</button>'+
+        '<button class="btn btn-primary" onclick="OpenSidePanel(\'Sensor.Community-' + item.sensor.id + '\')">Voir les données</button>'+
         '</div>';
 
         var sensorCommunityTootip = item.sensor.id.toString();
@@ -131,7 +131,7 @@ function loadSensorCommunity() {
             }
 
             //add icon to map
-            var nebulo_icon = L.icon(icon_param);
+            var sc_icon = L.icon(icon_param);
 
             //textSize (if number under 10)
             var textSize = 45;
@@ -163,7 +163,7 @@ function loadSensorCommunity() {
                 popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
             });
 
-            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
+            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: sc_icon })
             .addTo(sensorCommunity)
 
         //on ajoute le texte sur les points
@@ -1098,7 +1098,7 @@ function loadSensorCommunity() {
             });
 
             if(!isMobile){
-            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
+            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: sc_icon })
             .bindTooltip(sensorCommunityTootip,{direction: 'center'})
             .bindPopup(sensorCommunityPopup, {
               maxWidth: 4000
@@ -1685,7 +1685,8 @@ function loadSensorCommunity() {
 
 
 
-            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+            // L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+            L.marker([item['location']['latitude'], item['location']['longitude']], { icon: sc_icon })
             .on('click', function(){
 
               modalCreator("sensorcommunity",item['sensor']['id'],timeDateCounter(item.timestamp),-1);
@@ -2032,6 +2033,8 @@ function changeSensorCommunity() {
 
       let sensorsList=[];
 
+console.log(apiFetchSensorCommunity.data.length);
+
       $.each(apiFetchSensorCommunity.data, function (key, item) {
 
       var value_compound;
@@ -2045,8 +2048,8 @@ function changeSensorCommunity() {
       '</div>'+
       '<div class="text-center" style="padding-top:15px">'+
       '<br>Dernière mesure effectuée :' + timeDateCounter(item.timestamp) + '<br>' +
-      '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">sensor.community-' + item.sensor.id + '</button>'+
-      '<button class="btn btn-primary" onclick="OpenSidePanel(\'sensor.community-' + item.sensor.id + '\')">Voir les données</button>'+
+      '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">Sensor.Community-' + item.sensor.id + '</button>'+
+      '<button class="btn btn-primary" onclick="OpenSidePanel(\'Sensor.Community-' + item.sensor.id + '\')">Voir les données</button>'+
       '</div>';
 
       var sensorCommunityTootip = item.sensor.id.toString();
@@ -2139,7 +2142,7 @@ function changeSensorCommunity() {
           }
 
           //add icon to map
-          var nebulo_icon = L.icon(icon_param);
+          var sc_icon = L.icon(icon_param);
 
           //textSize (if number under 10)
           var textSize = 45;
@@ -2174,7 +2177,7 @@ function changeSensorCommunity() {
               popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
           });
          
-          L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
+          L.marker([item['location']['latitude'], item['location']['longitude']], { icon: sc_icon })
           .addTo(sensorCommunity);
 
       //on ajoute le texte sur les points
@@ -3107,7 +3110,7 @@ xAxis1.get("renderer").grid.template.set("forceHidden", true);
 
           });
           if(!isMobile){
-          L.marker([item['location']['latitude'], item['location']['longitude']], { icon: nebulo_icon })
+          L.marker([item['location']['latitude'], item['location']['longitude']], { icon: sc_icon })
           .bindTooltip(sensorCommunityTootip,{direction: 'center'})
           .bindPopup(sensorCommunityPopup, {
             maxWidth: 4000
@@ -3688,10 +3691,9 @@ xAxis1.get("renderer").grid.template.set("forceHidden", true);
         })
           .addTo(sensorCommunity).setZIndexOffset(-1000);;
       }else{
-
-
-
-        L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+ 
+        // L.marker([item['location']['latitude'], item['location']['longitude']], { icon: myIcon })
+        L.marker([item['location']['latitude'], item['location']['longitude']], { icon: sc_icon })
         .on('click', function(){
 
           modalCreator("sensorcommunity",item['sensor']['id'],timeDateCounter(item.timestamp),-1);

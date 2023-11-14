@@ -122,7 +122,7 @@
             <li><input type="checkbox" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" /><label for="checkbox_micro_stationsParticuliers">&ensp;Capteurs NebuleAir</label></li>
             <li><input type="checkbox" id="checkbox_sensor_community" name="checkbox_sensor_community" /><label for="checkbox_sensor_community"></label>&ensp;Capteurs Sensor.Community</label></li>
             <li><input type="checkbox" id="checkbox_purpleAir" name="checkbox_purpleAir" /><label for="checkbox_purpleAir">&ensp;Capteurs PurpleAir</label></li>
-            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" /><label for="checkbox_micro_stationsAtmoSud">&ensp;Micro-stations AtmoSud</label></li>
+            <li><input type="checkbox" id="checkbox_micro_stationsAtmoSud" name="checkbox_micro_stationsAtmoSud" disabled/><label for="checkbox_micro_stationsAtmoSud">&ensp;Micro-stations AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_stationsRefAtmoSud" name="checkbox_stationsRefAtmoSud" /><label for="checkbox_stationsRefAtmoSud">&ensp;Stations de Référence AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_modelisationPMAtmoSud" name="checkbox_modelisationPMAtmoSud" /><label for="checkbox_modelisationPMAtmoSud">&ensp;Modélisation horaire PM AtmoSud</label></li>
             <li><input type="checkbox" id="checkbox_modelisationICAIRAtmoSud" name="checkbox_modelisationICAIRAtmoSud" /><label for="checkbox_modelisationICAIRAtmoSud">&ensp;Modélisation horaire ICAIRh AtmoSud</label></li>
@@ -401,7 +401,7 @@
             </div>
             </div>
             </div>
-            <div class="modal-body">
+            <div id="modal_body" class="modal-body">
             <div class="container-fluid">
             <div class="row justify-content-md-center mb-2">
             <div id="modal_chartdivmodalgauge"></div>
@@ -1452,8 +1452,7 @@ function switchPurpleAir() {
             }
 
             if (sensor.includes("sensor.community")) {
-                // let id = sensor.split("-")[1];
-                let id = sensor;
+                let id = sensor.split("-")[1];
                 document.getElementById("chartSensor").style.display = 'block';
                 document.getElementById("chartSensor2").style.display = 'none';
                 document.getElementById("chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + id + "&panelId=2";
@@ -2222,7 +2221,7 @@ function modalCreator(type,data1,data2,data3){
     break;
 }
 
-              load1NebuleAir(id,timeLength,timespanLower);
+              load1NebuleAirModal(id,timeLength,timespanLower);
               document.getElementById("modal_chartSensor").style.display = 'none';
               document.getElementById("modal_chartSensor2").style.display = 'block';
               document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + id + '\',1,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
@@ -2271,7 +2270,6 @@ function modalCreator(type,data1,data2,data3){
         document.getElementById("modal_logo").src="img/LogoSensorCommunity.png";
         let id = data1;
               document.getElementById("modal_sensorid").innerHTML = "Sensor.Community-" + id;
-
               document.getElementById("modal_chartSensor").style.display = 'block';
                 document.getElementById("modal_chartSensor2").style.display = 'none';
                 document.getElementById("modal_chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + id + "&panelId=2";
@@ -2296,6 +2294,197 @@ function modalCreator(type,data1,data2,data3){
     if(type == "atmosudref"){
 
     }
+
+
+    if(type == "purpleair"){
+        document.getElementById("modal_logo").src="img/LogoPurpleAir.png";
+        let id = data1;
+        document.getElementById("modal_sensorid").innerHTML = "PurpleAir-" + id;
+        document.getElementById("modal_chartSensor").style.display = 'none';
+        document.getElementById("modal_chartSensor2").style.display = 'block';
+
+
+        console.log("Create Empty Amcharts");
+            if (root4 != undefined) {
+              console.log("DISPOSE")
+              root4.dispose();
+          }
+          setTimeout(function() {
+              am5.ready(function() {
+                  root4 = am5.Root.new("modal_chartSensor2");
+                  root4.setThemes([
+                      am5themes_Animated.new(root4)
+                  ]);
+
+                  var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
+                      panX: true,
+                      panY: true,
+                      wheelX: "panX",
+                      wheelY: "zoomX",
+                      maxTooltipDistance: 0,
+                      pinchZoomX: true
+                  }));
+
+                  // Create axes
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                  var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
+                      maxDeviation: 0.2,
+                      baseInterval: {
+                          timeUnit: "minute",
+                          count: 1
+                      },
+                      renderer: am5xy.AxisRendererX.new(root4, {}),
+                      tooltip: am5.Tooltip.new(root4, {})
+                  }));
+
+                  var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
+                      renderer: am5xy.AxisRendererY.new(root4, {})
+                  }));
+
+
+                  var modal = am5.Modal.new(root4, {
+                      content: "L'API PurpleAir n'est pas ouverte."
+                  });
+
+                  modal.open();
+
+                  var legend = chart4.bottomAxesContainer.children.push(am5.Legend.new(root4, {
+                    width: 400,
+                    height: am5.percent(20),
+                    layout: root4.horizontalLayout,
+                }));
+
+
+                  // When legend item container is hovered, dim all the series except the hovered one
+                  legend.itemContainers.template.events.on("pointerover", function(e) {
+                      var itemContainer = e.target;
+
+                      // As series list is data of a legend, dataContext is series
+                      var series = itemContainer.dataItem.dataContext;
+
+                      chart4.series.each(function(chartSeries) {
+                          if (chartSeries != series) {
+                              chartSeries.strokes.template.setAll({
+                                  strokeOpacity: 0.15,
+                                  stroke: am5.color(0x000000)
+                              });
+                          } else {
+                              chartSeries.strokes.template.setAll({
+                                  strokeWidth: 3
+                              });
+                          }
+                      })
+                  })
+
+                  // When legend item container is unhovered, make all series as they are
+                  legend.itemContainers.template.events.on("pointerout", function(e) {
+                      var itemContainer = e.target;
+                      var series = itemContainer.dataItem.dataContext;
+
+                      chart4.series.each(function(chartSeries) {
+                          chartSeries.strokes.template.setAll({
+                              strokeOpacity: 1,
+                              strokeWidth: 1,
+                              stroke: chartSeries.get("fill")
+                          });
+                      });
+                  })
+
+                  legend.itemContainers.template.set("width", am5.p100);
+                  legend.valueLabels.template.setAll({
+                      width: am5.p100,
+                      textAlign: "right"
+                  });
+
+                  // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+                  legend.data.setAll(chart4.series.values);
+
+                  chart4.children.unshift(am5.Label.new(root4, {
+                    fontSize: 14,
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50)
+                  }));
+
+
+                  var exporting = am5plugins_exporting.Exporting.new(root4, {
+menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
+dataSource: null
+});
+
+                  // Make stuff animate on load
+                  // https://www.amcharts.com/docs/v5/concepts/animations/
+                  chart4.appear(1000, 100);
+
+              })
+          }, 1000); // end am5.ready()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+        document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',3,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>3h</button>';
+        document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+        document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>48h</button>';
+        document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>1 semaine</button>';
+        document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',720,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>1 mois</button>';
+        document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
+        document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',2)" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+        document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
+        document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+        document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+
+
+
+
+
+
+        //         load1PurpleAir(id,timeLengthGraph,timespanGraph);
+        //         document.getElementById("modal_chartSensor").style.display = 'none';
+        //         document.getElementById("modal_chartSensor2").style.display = 'block';
+        //         document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+        //         document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',3,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
+        //         document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+        //         document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+        //         document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+        //         document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',720,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+        //         document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+        //         document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
+        //         document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+        //         document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        //         document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimePurpleAir(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+        //         buttonsSwitcher(timeLength,timespanLower,true);
+
+        //        if(timespanLower == 2 || timespanLower == 15){
+        //       document.getElementById("button1a").children[0].setAttribute("disabled","");
+        //     }else{
+        //       document.getElementById("button1a").children[0].removeAttribute("disabled");
+        //     }
+
+        //     if(timeLength == 8760){
+        //       document.getElementById("button2m").children[0].setAttribute("disabled","");
+        //       document.getElementById("button15m").children[0].setAttribute("disabled","");
+        //     }else{
+        //       document.getElementById("button2m").children[0].removeAttribute("disabled");
+        //       document.getElementById("button15m").children[0].removeAttribute("disabled");
+        //     }
+        }
+
+    
 }
 
 
