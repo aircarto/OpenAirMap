@@ -956,7 +956,7 @@ function loadNebuleAir() {
                 
                 chart1.bulletsContainer.set("mask", undefined);
                 
-                
+                if (compoundUpper == "PM1" || compoundUpper == "PM25"){
                 // Create axis ranges bands
                 // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
                 var bandsData1 = [{
@@ -991,6 +991,44 @@ function loadNebuleAir() {
                   highScore: 100
                 }
               ];
+            }
+
+            if (compoundUpper == "PM10"){
+              // Create axis ranges bands
+              // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+              var bandsData1 = [{
+                // title: "Bon",
+                color: "#4FF0E6",
+                lowScore: 0,
+                highScore: 20
+              }, {
+                // title: "Moyen",
+                color: "#51CCAA",
+                lowScore: 21,
+                highScore: 40
+              }, {
+                // title: "Dégradé",
+                color: "#EDE663",
+                lowScore: 41,
+                highScore: 50
+              }, {
+                // title: "Mauvais",
+                color: "#ED5E58",
+                lowScore: 51,
+                highScore: 100
+              }, {
+                // title: "Très mauvais",
+                color: "#881B33",
+                lowScore: 101,
+                highScore: 150
+              }, {
+                // title: "Extr. mauvais",
+                color: "#74287D",
+                lowScore: 151,
+                highScore: 200
+              }
+            ];
+          }
 
 
                 am5.array.each(bandsData1, function (data) {
@@ -1835,40 +1873,79 @@ function loadNebuleAir() {
             chart1.bulletsContainer.set("mask", undefined);
             
             
+            if (compoundUpper == "PM1" || compoundUpper == "PM25"){
+              // Create axis ranges bands
+              // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+              var bandsData1 = [{
+                // title: "Bon",
+                color: "#4FF0E6",
+                lowScore: 0,
+                highScore: 10
+              }, {
+                // title: "Moyen",
+                color: "#51CCAA",
+                lowScore: 11,
+                highScore: 20
+              }, {
+                // title: "Dégradé",
+                color: "#EDE663",
+                lowScore: 21,
+                highScore: 25
+              }, {
+                // title: "Mauvais",
+                color: "#ED5E58",
+                lowScore: 26,
+                highScore: 50
+              }, {
+                // title: "Très mauvais",
+                color: "#881B33",
+                lowScore: 51,
+                highScore: 75
+              }, {
+                // title: "Extr. mauvais",
+                color: "#74287D",
+                lowScore: 76,
+                highScore: 100
+              }
+            ];
+          }
+
+          if (compoundUpper == "PM10"){
             // Create axis ranges bands
             // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
             var bandsData1 = [{
               // title: "Bon",
               color: "#4FF0E6",
               lowScore: 0,
-              highScore: 10
+              highScore: 20
             }, {
               // title: "Moyen",
               color: "#51CCAA",
-              lowScore: 11,
-              highScore: 20
+              lowScore: 21,
+              highScore: 40
             }, {
               // title: "Dégradé",
               color: "#EDE663",
-              lowScore: 21,
-              highScore: 25
+              lowScore: 41,
+              highScore: 50
             }, {
               // title: "Mauvais",
               color: "#ED5E58",
-              lowScore: 26,
-              highScore: 50
+              lowScore: 51,
+              highScore: 100
             }, {
               // title: "Très mauvais",
               color: "#881B33",
-              lowScore: 51,
-              highScore: 75
+              lowScore: 101,
+              highScore: 150
             }, {
               // title: "Extr. mauvais",
               color: "#74287D",
-              lowScore: 76,
-              highScore: 100
+              lowScore: 151,
+              highScore: 200
             }
           ];
+        }
 
 
             am5.array.each(bandsData1, function (data) {
@@ -2884,40 +2961,79 @@ function changeNebuleAir() {
                 chart1.bulletsContainer.set("mask", undefined);
                 
                 
+                if (compoundUpper == "PM1" || compoundUpper == "PM25"){
+                  // Create axis ranges bands
+                  // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+                  var bandsData1 = [{
+                    // title: "Bon",
+                    color: "#4FF0E6",
+                    lowScore: 0,
+                    highScore: 10
+                  }, {
+                    // title: "Moyen",
+                    color: "#51CCAA",
+                    lowScore: 11,
+                    highScore: 20
+                  }, {
+                    // title: "Dégradé",
+                    color: "#EDE663",
+                    lowScore: 21,
+                    highScore: 25
+                  }, {
+                    // title: "Mauvais",
+                    color: "#ED5E58",
+                    lowScore: 26,
+                    highScore: 50
+                  }, {
+                    // title: "Très mauvais",
+                    color: "#881B33",
+                    lowScore: 51,
+                    highScore: 75
+                  }, {
+                    // title: "Extr. mauvais",
+                    color: "#74287D",
+                    lowScore: 76,
+                    highScore: 100
+                  }
+                ];
+              }
+  
+              if (compoundUpper == "PM10"){
                 // Create axis ranges bands
                 // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
                 var bandsData1 = [{
                   // title: "Bon",
                   color: "#4FF0E6",
                   lowScore: 0,
-                  highScore: 10
+                  highScore: 20
                 }, {
                   // title: "Moyen",
                   color: "#51CCAA",
-                  lowScore: 11,
-                  highScore: 20
+                  lowScore: 21,
+                  highScore: 40
                 }, {
                   // title: "Dégradé",
                   color: "#EDE663",
-                  lowScore: 21,
-                  highScore: 25
+                  lowScore: 41,
+                  highScore: 50
                 }, {
                   // title: "Mauvais",
                   color: "#ED5E58",
-                  lowScore: 26,
-                  highScore: 50
+                  lowScore: 51,
+                  highScore: 100
                 }, {
                   // title: "Très mauvais",
                   color: "#881B33",
-                  lowScore: 51,
-                  highScore: 75
+                  lowScore: 101,
+                  highScore: 150
                 }, {
                   // title: "Extr. mauvais",
                   color: "#74287D",
-                  lowScore: 76,
-                  highScore: 100
+                  lowScore: 151,
+                  highScore: 200
                 }
               ];
+            }
 
 
                 am5.array.each(bandsData1, function (data) {
@@ -3769,40 +3885,79 @@ function changeNebuleAir() {
           chart1.bulletsContainer.set("mask", undefined);
           
           
+          if (compoundUpper == "PM1" || compoundUpper == "PM25"){
+            // Create axis ranges bands
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+            var bandsData1 = [{
+              // title: "Bon",
+              color: "#4FF0E6",
+              lowScore: 0,
+              highScore: 10
+            }, {
+              // title: "Moyen",
+              color: "#51CCAA",
+              lowScore: 11,
+              highScore: 20
+            }, {
+              // title: "Dégradé",
+              color: "#EDE663",
+              lowScore: 21,
+              highScore: 25
+            }, {
+              // title: "Mauvais",
+              color: "#ED5E58",
+              lowScore: 26,
+              highScore: 50
+            }, {
+              // title: "Très mauvais",
+              color: "#881B33",
+              lowScore: 51,
+              highScore: 75
+            }, {
+              // title: "Extr. mauvais",
+              color: "#74287D",
+              lowScore: 76,
+              highScore: 100
+            }
+          ];
+        }
+
+        if (compoundUpper == "PM10"){
           // Create axis ranges bands
           // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
           var bandsData1 = [{
             // title: "Bon",
             color: "#4FF0E6",
             lowScore: 0,
-            highScore: 10
+            highScore: 20
           }, {
             // title: "Moyen",
             color: "#51CCAA",
-            lowScore: 11,
-            highScore: 20
+            lowScore: 21,
+            highScore: 40
           }, {
             // title: "Dégradé",
             color: "#EDE663",
-            lowScore: 21,
-            highScore: 25
+            lowScore: 41,
+            highScore: 50
           }, {
             // title: "Mauvais",
             color: "#ED5E58",
-            lowScore: 26,
-            highScore: 50
+            lowScore: 51,
+            highScore: 100
           }, {
             // title: "Très mauvais",
             color: "#881B33",
-            lowScore: 51,
-            highScore: 75
+            lowScore: 101,
+            highScore: 150
           }, {
             // title: "Extr. mauvais",
             color: "#74287D",
-            lowScore: 76,
-            highScore: 100
+            lowScore: 151,
+            highScore: 200
           }
         ];
+      }
 
 
           am5.array.each(bandsData1, function (data) {

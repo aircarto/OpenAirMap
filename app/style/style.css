@@ -58,6 +58,11 @@ body {
   display: none;
 }
 
+#btn_default {
+  background-color: #999999;
+  color: black;
+}
+
 #btn_bon {
   background-color: #4FF0E6;
   color: black;

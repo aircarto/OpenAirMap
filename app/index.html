@@ -116,7 +116,7 @@
     <!-- Bouton dropdown Choix des capteurs -->
     <div class="dropdown" id="div_checkbox_choixCapteur">
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            Sélection mesures
+            Source des données
         </button>
         <ul class="dropdown-menu">
             <li><input type="checkbox" id="checkbox_micro_stationsParticuliers" name="checkbox_micro_stationsParticuliers" /><label for="checkbox_micro_stationsParticuliers">&ensp;Capteurs NebuleAir</label></li>
@@ -148,6 +148,7 @@
 
     <!-- Seuils PM -->
     <div class="btn-group" id="div_button_seuils_PM125" role="group">
+        <button class="btn" id="btn_default" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="pas de donnée pour ce type de particule / ce pas de temps">Pas de donnée</button>
         <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="0 à 10 &#181;g/m&#179;">Bon</button>
         <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="11 à 20 &#181;g/m&#179;">Moyen</button>
         <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="21 à 25 &#181;g/m&#179;">Dégradé</button>
@@ -157,6 +158,7 @@
     </div>
 
     <div class="btn-group" id="div_button_seuils_PM10" role="group">
+        <button class="btn" id="btn_default" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="pas de donnée pour ce type de particule / ce pas de temps">Pas de donnée</button>
         <button class="btn" id="btn_bon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="0 à 20 &#181;g/m&#179;">Bon</button>
         <button class="btn" id="btn_moyen" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="21 à 40 &#181;g/m&#179;">Moyen</button>
         <button class="btn" id="btn_degrade" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="41 à 50 &#181;g/m&#179;">Dégradé</button>
@@ -394,7 +396,7 @@
             <button id="button_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="container-fluid">
             <div class="row justify-content-md-center mb-2">
-            <div class="col-lg-4"><img src="img/LogoNebuleAir.png" class="img-fluid" alt="..."></div>
+            <div class="col-lg-4"><img id="modal_logo" src="" class="img-fluid" alt="..."></div>
             <button class="btn btn-outline-primary disabled" style="margin-right:5px;" id="modal_sensorid"></button>
             </div>
             </div>
@@ -440,7 +442,9 @@
 
         // const isMobile = navigator.userAgentData.mobile;
 
-        const isMobile = true;
+         const isMobile = true;
+
+        //const isMobile = false;
         console.log("Mobile: " + isMobile);
 
         var date = new Date();
@@ -718,7 +722,7 @@ new L.Hash(map);
         document.querySelector("#checkbox_wind").addEventListener("change", switchWind)
 
         function switchWind() {
-            console.log(timespanLower);
+            // console.log(timespanLower);
 
             if (document.querySelector("#checkbox_wind").checked && timespanLower != 1440) {
 
@@ -1448,7 +1452,8 @@ function switchPurpleAir() {
             }
 
             if (sensor.includes("sensor.community")) {
-                let id = sensor.split("-")[1];
+                // let id = sensor.split("-")[1];
+                let id = sensor;
                 document.getElementById("chartSensor").style.display = 'block';
                 document.getElementById("chartSensor2").style.display = 'none';
                 document.getElementById("chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + id + "&panelId=2";
@@ -1961,11 +1966,11 @@ function timeDateCounter(timestamp){
 
 var timestamp_UTC;
 const UTCoffset = -new Date().getTimezoneOffset() / 60;
-console.log(UTCoffset);
+// console.log(UTCoffset);
 
 //console.log(timestamp.replace(' ','T') + '.000Z');
 var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
-console.log(isSafari);
+// console.log(isSafari);
 
 if(isSafari){
     if(timestamp != null){
@@ -1998,15 +2003,15 @@ if(timestamp != null){
 }
 
 
-console.log(timestamp_UTC);
+// console.log(timestamp_UTC);
 const now = new Date(Date.now());
 
 // let difference = now.getTime() - timestamp_UTC.getTime();
 
 
 let difference = Math.floor((now - timestamp_UTC)/86400000);
-console.log(difference);
-console.log(now - timestamp_UTC);
+// console.log(difference);
+// console.log(now - timestamp_UTC);
 
 var date_texte ="";
 let horaire_texte="";
@@ -2066,11 +2071,11 @@ function timeDateCounter2(timestamp,timestamp2){
 
 var timestamp_UTC;
 const UTCoffset = -new Date().getTimezoneOffset() / 60;
-console.log(UTCoffset);
+// console.log(UTCoffset);
 
 //console.log(timestamp.replace(' ','T') + '.000Z');
 var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
-console.log(isSafari);
+// console.log(isSafari);
 
 if(isSafari){
     if(timestamp != null){
@@ -2128,15 +2133,15 @@ if(timestamp != null){
 }
 
 
-console.log(timestamp_UTC);
+// console.log(timestamp_UTC);
 const now = new Date(Date.now());
 
 // let difference = now.getTime() - timestamp_UTC.getTime();
 
 
 let difference = Math.floor((now - timestamp_UTC)/86400000);
-console.log(difference);
-console.log(now - timestamp_UTC);
+// console.log(difference);
+// console.log(now - timestamp_UTC);
 
 var date_texte ="";
 let horaire_texte="";
@@ -2196,6 +2201,8 @@ return date_texte + " à " + horaire_texte;
 function modalCreator(type,data1,data2,data3){
 
     if(type == "nebuleair"){
+
+        document.getElementById("modal_logo").src="img/LogoNebuleAir.png";
 
         let id = data1.split("-")[1];
               document.getElementById("modal_sensorid").innerHTML = "nebuleair-" + id;
@@ -2260,6 +2267,25 @@ function modalCreator(type,data1,data2,data3){
     }
 
     if(type == "sensorcommunity"){
+
+        document.getElementById("modal_logo").src="img/LogoSensorCommunity.png";
+        let id = data1;
+              document.getElementById("modal_sensorid").innerHTML = "Sensor.Community-" + id;
+
+              document.getElementById("modal_chartSensor").style.display = 'block';
+                document.getElementById("modal_chartSensor2").style.display = 'none';
+                document.getElementById("modal_chartSensor").src = "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" + id + "&panelId=2";
+                document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\',1)" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+                document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\', 3)" class="btn btn-outline-secondary btn-sm" disabled>3h</button>';
+                document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+                document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\', 48)" class="btn btn-outline-secondary btn-sm" disabled>48h</button>';
+                document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\', 168)" class="btn btn-outline-secondary btn-sm" disabled>1 semaine</button>';
+                document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\', 720)" class="btn btn-outline-secondary btn-sm" disabled>1 mois</button>';
+                document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeSensorCommunity(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
+                document.getElementById("modal_button2m").innerHTML = '<button type="button" class="btn btn-secondary btn-sm">2m</button>';
+                document.getElementById("modal_button15m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
+                document.getElementById("modal_button60m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+                document.getElementById("modal_button1440m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
 
     }
 
