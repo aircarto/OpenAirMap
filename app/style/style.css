@@ -22,20 +22,19 @@ body {
 
 #div_buttonPM {
   position: fixed;
-  right: 390px;
+  right: 290px;
   top: 15px;
 }
-
 
 #div_checkbox_choixCapteur {
   position: fixed;
-  right: 190px;
+  right: 90px;
   top: 15px;
 }
 
-#div_button_monNebuleAir {
+#button_openWelcomeModal {
   position: fixed;
-  right: 40px;
+  right: 30px;
   top: 15px;
 }
 
@@ -189,7 +188,7 @@ body {
 #div_button_seuils_PM125 {
   visibility: visible;
   position: absolute;
-  right: 600px;
+  right: 500px;
   top: 15px;
 }
 
@@ -226,7 +225,7 @@ body {
 }
 
 @media only screen and (max-width: 450px) {
-  #div_button_monNebuleAir, #div_button_seuils_PM125 {
+  #button_openWelcomeModal, #div_button_seuils_PM125 {
     display: none;
   }
 
