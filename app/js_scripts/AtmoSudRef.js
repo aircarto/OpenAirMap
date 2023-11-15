@@ -36,13 +36,29 @@ function loadStationRefAtmo() {
 
     var refStationsAtmoSud_icon = L.icon(icon_param);
 
+    if(!isMobile){
   L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon })
   .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
   .bindPopup(AtmoSudRefPopupList, {
     maxWidth: 4000
 })
 .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+    }else{
+      L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon })
+      .on('click', function(){
+      document.getElementById("modal2_sensorid").innerHTML = "stationRefAtmoSud-" + item.id_station;
+      document.getElementById("modal2_list").innerHTML = "Mesures : <br>" + compoundList(item.variables);
+      sensorPanelModal2.show();
+    })
+    .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+    }
 })
+
+
+
+
+
+
 
 $.ajax({
   method: "GET",
@@ -205,9 +221,12 @@ $.ajax({
       popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
 
   });
+
   L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
   .addTo(stationsRefAtmoSud);
 
+
+  if(!isMobile){
   L.marker([item['lat'], item['lon']], { icon: myIcon })
   .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
   .bindPopup(AtmoSudRefPopup, {
@@ -818,6 +837,21 @@ $.ajax({
           })}, 1000) // end am5.ready()
   })
   .addTo(stationsRefAtmoSud);
+}else{
+  L.marker([item['lat'], item['lon']], { icon: myIcon })
+  .on('click', function(){
+    modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
+    if (root1 != undefined){
+      console.log("DISPOSE")
+    root1.dispose();
+    }
+
+    sensorPanelModal.show();
+
+  })
+  .addTo(stationsRefAtmoSud);
+
+}
 
 }else{
 
@@ -838,6 +872,7 @@ $.ajax({
 
   });
   
+  if(!isMobile){
   L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
   .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
   .bindPopup(AtmoSudRefPopup, {
@@ -1449,6 +1484,23 @@ $.ajax({
         })}, 1000) // end am5.ready()
 })
   .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+}else{
+  L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
+  .on('click', function(){
+    modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
+    if (root1 != undefined){
+      console.log("DISPOSE")
+    root1.dispose();
+    }
+
+    sensorPanelModal.show();
+
+  })
+  .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+
+
+
+}
 
 }
   }
@@ -1494,16 +1546,25 @@ function changeStationRefAtmo() {
 
   var refStationsAtmoSud_icon = L.icon(icon_param);
 
+
+
+if(!isMobile){
 L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon })
 .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
 .bindPopup(AtmoSudRefPopupList, {
   maxWidth: 4000
 })
 .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+}else{
+  L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon })
+  .on('click', function(){
+  document.getElementById("modal2_sensorid").innerHTML = "stationRefAtmoSud-" + item.id_station;
+  document.getElementById("modal2_list").innerHTML = "Mesures : <br>" + compoundList(item.variables);
+  sensorPanelModal2.show();
 })
-
-
-
+.addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+}
+})
       $.each(apiFetchAtmoSudRef.data, function (key, item) {
 
         // stationsRefAtmoSud.eachLayer(function (layer) {
@@ -1663,6 +1724,8 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
       L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
       .addTo(stationsRefAtmoSud);
 
+
+if(!isMobile){
       L.marker([item['lat'], item['lon']], { icon: myIcon })
       .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
       .bindPopup(AtmoSudRefPopup, {
@@ -2274,7 +2337,22 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
               })}, 1000) // end am5.ready()
       })
       .addTo(stationsRefAtmoSud);
+    }else{
+      L.marker([item['lat'], item['lon']], { icon: myIcon })
+      .on('click', function(){
+        modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
 
+        if (root1 != undefined){
+          console.log("DISPOSE")
+        root1.dispose();
+        }
+
+        sensorPanelModal.show();
+    
+    
+      })
+      .addTo(stationsRefAtmoSud);
+    }
 
   }else{
       // cutom text on the marker
@@ -2294,6 +2372,9 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 
       });
 
+
+
+      if(!isMobile){
       L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
       .bindTooltip(AtmoSudRefTootip,{direction: 'center'})
       .bindPopup(AtmoSudRefPopup, {
@@ -2905,7 +2986,24 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
             })}, 1000) // end am5.ready()
     })
       .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+  }else{
+    L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
+    .on('click', function(){
+  
+      modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
 
+      if (root1 != undefined){
+        console.log("DISPOSE")
+      root1.dispose();
+      }
+
+      sensorPanelModal.show();
+  
+    })
+    .addTo(stationsRefAtmoSud).setZIndexOffset(-1000);
+
+
+  }
 
   }
       }
@@ -3195,6 +3293,290 @@ dataSource: data.mesures
           console.log("Error while geting data from AtmoSud API");
       });
 }
+
+
+function load1RefAtmoModal(id,hours,timespan){
+
+  console.log("%cAtmoSud Ref 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
+  const end = new Date();
+  const end_string = end.toISOString();
+  const get_start = end.setHours(end.getHours() - hours);
+  const start = new Date(get_start);
+  const start_string = start.toISOString()
+  console.log(id);
+  console.log(hours);
+  console.log(start_string);
+  console.log(end_string);
+  console.log(timespanLower);
+
+  //ATTENTION, ON EST EN UTC + pour journalière enlever un autre jour ?
+
+  let chartTitleText = "";
+  chartTitleText += "AtmoSudRef-" + id + ", moyennes ";
+
+  switch(timespan) {
+    case 2:
+      chartTitleText += " à 2 minutes, ";
+        break;
+    case 15:
+      chartTitleText += " quart-horaires, ";
+        break;
+    case 60:
+      chartTitleText += " horaires, ";
+        break;
+    case 1440:
+      chartTitleText += " journalières, ";
+        break;
+    } 
+
+    chartTitleText += "µg/m3";
+
+  $.ajax({
+          method: "GET",
+          url: "../php_scripts/AtmoSudRef_1sensor.php",
+          data: ({
+              id_site: id,
+              debut: start_string,
+              fin: end_string,
+              timespan: timespan
+          }),
+      }).done(function(data) {
+          console.log(data);
+
+          var filter_PM1 = data.mesures.filter((e) => e.polluant_id == "68");
+          var filter_PM25 = data.mesures.filter((e) => e.polluant_id == "39");
+          var filter_PM10 = data.mesures.filter((e) => e.polluant_id == "24");
+
+
+          var data_PM1 = filter_PM1.map(function(e){
+              return {value:e.valeur, date:new Date(e.date_debut).getTime()}  //+ 60*60*1000 to get date_fin ? + UTC automatique?
+          } );
+          var data_PM25 = filter_PM25.map(function(e){
+              return {value:e.valeur, date:new Date(e.date_debut).getTime()}
+          } );
+          var data_PM10 = filter_PM10.map(function(e){
+              return {value:e.valeur, date:new Date(e.date_debut).getTime()}
+          } );
+
+          console.log(data_PM1);
+          console.log(data_PM25);
+          console.log(data_PM10);
+
+
+          if (root4 != undefined) {
+              console.log("DISPOSE")
+              root4.dispose();
+          }
+
+
+          setTimeout(function() {
+              am5.ready(function() {
+
+                  // Create root element
+                  // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
+                  root4 = am5.Root.new("modal_chartSensor2");
+
+
+                  // Set themes
+                  // https://www.amcharts.com/docs/v5/concepts/themes/ 
+                  root4.setThemes([
+                      am5themes_Animated.new(root4)
+                  ]);
+
+
+                  // Create chart
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                  var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
+                      panX: true,
+                      panY: true,
+                      wheelX: "panX",
+                      wheelY: "zoomX",
+                      maxTooltipDistance: 0,
+                      pinchZoomX: true
+                  }));
+
+                  // Create axes
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                  var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
+                      maxDeviation: 0.2,
+                      baseInterval: {
+                          timeUnit: "minute",
+                          count: 1
+                      },
+                      renderer: am5xy.AxisRendererX.new(root4, {}),
+                      tooltip: am5.Tooltip.new(root4, {})
+                  }));
+
+                  var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
+                      renderer: am5xy.AxisRendererY.new(root4, {})
+                  }));
+
+                  var series_PM1 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                          name: "PM1",
+                          xAxis: xAxis,
+                          yAxis: yAxis,
+                          valueYField: "value",
+                          valueXField: "date",
+                          legendValueText: "{valueY}",
+                          tooltip: am5.Tooltip.new(root4, {
+                              pointerOrientation: "horizontal",
+                              labelText: "{valueY}"
+                          })
+                      }));
+
+                  // series_PM1.set("stroke", am5.color(0x00ff00));
+
+
+                  series_PM1.data.setAll(data_PM1);
+                  series_PM1.appear();
+
+                  var series_PM25 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                          name: "PM2.5",
+                          xAxis: xAxis,
+                          yAxis: yAxis,
+                          valueYField: "value",
+                          valueXField: "date",
+                          legendValueText: "{valueY}",
+                          tooltip: am5.Tooltip.new(root4, {
+                              pointerOrientation: "horizontal",
+                              labelText: "{valueY}"
+                          })
+                      }));
+
+                  
+                  // series_PM25.set("stroke", am5.color(0x0000ff));
+                  series_PM25.data.setAll(data_PM25);
+                  series_PM25.appear();
+
+
+                  var series_PM10 = chart4.series.push(am5xy.LineSeries.new(root4, {
+                          name: "PM10",
+                          xAxis: xAxis,
+                          yAxis: yAxis,
+                          valueYField: "value",
+                          valueXField: "date",
+                          legendValueText: "{valueY}",
+                          tooltip: am5.Tooltip.new(root4, {
+                              pointerOrientation: "horizontal",
+                              labelText: "{valueY}"
+                          })
+                      }));
+
+                  // series_PM10.set("stroke", am5.color(0xff0000))
+
+                  series_PM10.data.setAll(data_PM10);
+                  series_PM10.appear();
+
+                  // Add cursor
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                  var cursor = chart4.set("cursor", am5xy.XYCursor.new(root4, {
+                      behavior: "none"
+                  }));
+                  cursor.lineY.set("visible", false);
+
+
+                  // Add scrollbar
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+                  // chart4.set("scrollbarX", am5.Scrollbar.new(root4, {
+                  //     orientation: "horizontal"
+                  // }));
+
+                  // chart4.set("scrollbarY", am5.Scrollbar.new(root4, {
+                  //     orientation: "vertical"
+                  // }));
+
+
+                  // Add legend
+                  // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                  var legend = chart4.bottomAxesContainer.children.push(am5.Legend.new(root4, {
+                    width: 400,
+                    height: am5.percent(20),
+                    layout: root4.horizontalLayout,
+                  }));
+
+
+                  // var legend = chart.children.push(am5.Legend.new(root4, {
+                  //   centerX: am5.percent(50),
+                  //   x: am5.percent(50),
+                  //   layout: am5.GridLayout.new(root, {
+                  //     maxColumns: 3,
+                  //     fixedWidthGrid: true
+                  //   })
+                  // }));
+
+
+
+                  // When legend item container is hovered, dim all the series except the hovered one
+                  legend.itemContainers.template.events.on("pointerover", function(e) {
+                      var itemContainer = e.target;
+
+                      // As series list is data of a legend, dataContext is series
+                      var series = itemContainer.dataItem.dataContext;
+
+                      chart4.series.each(function(chartSeries) {
+                          if (chartSeries != series) {
+                              chartSeries.strokes.template.setAll({
+                                  strokeOpacity: 0.15,
+                                  stroke: am5.color(0x000000)
+                              });
+                          } else {
+                              chartSeries.strokes.template.setAll({
+                                  strokeWidth: 3
+                              });
+                          }
+                      })
+                  })
+
+                  // When legend item container is unhovered, make all series as they are
+                  legend.itemContainers.template.events.on("pointerout", function(e) {
+                      var itemContainer = e.target;
+                      var series = itemContainer.dataItem.dataContext;
+
+                      chart4.series.each(function(chartSeries) {
+                          chartSeries.strokes.template.setAll({
+                              strokeOpacity: 1,
+                              strokeWidth: 1,
+                              stroke: chartSeries.get("fill")
+                          });
+                      });
+                  })
+
+                  legend.itemContainers.template.set("width", am5.p100);
+                  legend.valueLabels.template.setAll({
+                      width: am5.p100,
+                      textAlign: "right"
+                  });
+
+                  // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+                  legend.data.setAll(chart4.series.values);
+
+                  chart4.children.unshift(am5.Label.new(root4, {
+                    text: chartTitleText,
+                    fontSize: 14,
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50)
+                  }));
+
+                  var exporting = am5plugins_exporting.Exporting.new(root4, {
+menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
+dataSource: data.mesures
+});
+
+                  // Make stuff animate on load
+                  // https://www.amcharts.com/docs/v5/concepts/animations/
+                  chart4.appear(1000, 100);
+
+              })
+          }, 1000); // end am5.ready()
+
+      })
+      .fail(function() {
+          console.log("Error while geting data from AtmoSud API");
+      });
+}
+
+
 
 function compoundList(json){
 let list = '<ul id="compoundList">';

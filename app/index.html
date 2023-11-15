@@ -434,7 +434,28 @@
             </div>'
     </div>
     </div>
-
+    
+    <div class="modal fade" id="sensorPanel_Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button id="button_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="container-fluid">
+                <div class="row justify-content-md-center mb-2">
+                <div class="col-lg-4"><img id="modal2_logo" src="img/LogoAtmoSud.png" class="img-fluid" alt="..."></div>
+                <button class="btn btn-outline-primary disabled" style="margin-right:5px;" id="modal2_sensorid"></button>
+                </div>
+                </div>
+                </div>
+                <div id="modal2_body" class="modal-body">
+                <div class="container-fluid">
+                <div id="modal2_list" class="row justify-content-md-center mb-2">
+                </div>
+                </div>
+                </div>
+                </div>'
+        </div>
+        </div>
 
     <!-- <div id="capture"></div> -->
 
@@ -1961,11 +1982,23 @@ function screenShot() {
 
 }
 
+// Date.prototype.stdTimezoneOffset = function () {
+//     var jan = new Date(this.getFullYear(), 0, 1);
+//     var jul = new Date(this.getFullYear(), 6, 1);
+//     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+// }
+
+// Date.prototype.isDstObserved = function () {
+//     return this.getTimezoneOffset() < this.stdTimezoneOffset();
+// }
+
 function timeDateCounter(timestamp){
 
 var timestamp_UTC;
-const UTCoffset = -new Date().getTimezoneOffset() / 60;
+// const UTCoffset = -new Date().getTimezoneOffset() / 60;
+// const DST = new Date().isDstObserved();
 // console.log(UTCoffset);
+// console.log(DST);
 
 //console.log(timestamp.replace(' ','T') + '.000Z');
 var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
@@ -2069,8 +2102,10 @@ return date_texte + " à " + horaire_texte;
 function timeDateCounter2(timestamp,timestamp2){
 
 var timestamp_UTC;
-const UTCoffset = -new Date().getTimezoneOffset() / 60;
+// const UTCoffset = -new Date().getTimezoneOffset() / 60;
+// const DST = new Date().isDstObserved();
 // console.log(UTCoffset);
+// console.log(DST);
 
 //console.log(timestamp.replace(' ','T') + '.000Z');
 var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
@@ -2256,7 +2291,8 @@ function modalCreator(type,data1,data2,data3){
           if(data3 != -1){
           document.getElementById("modal_wifilevel").innerText = "Qualité connexion WIFI : " + data3 + "%";
           }else if(data3 == -1 && type != "sensorcommunity"){
-            document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+            //document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+            document.getElementById("modal_wifilevel").innerText = "";
           }else{
             document.getElementById("modal_wifilevel").innerText = "Capteur connecté";
           }
@@ -2292,7 +2328,67 @@ function modalCreator(type,data1,data2,data3){
     }
 
     if(type == "atmosudref"){
+        document.getElementById("modal_logo").src="img/LogoAtmoSud.png";
+        let id = data1;
+        document.getElementById("modal_sensorid").innerHTML = "stationRefAtmoSud-" + id;
 
+        switch (timespanLower) {
+  case 2:
+  timeLength = 3;
+    break;
+  case 15:
+  timeLength = 24;
+    break;
+  case 60:
+  timeLength = 48;
+    break;
+  case 1440:
+  timeLength = 168;
+    break;
+}
+
+
+        load1RefAtmoModal(id,timeLength,timespanLower); 
+                document.getElementById("modal_chartSensor").style.display = 'none';
+                document.getElementById("modal_chartSensor2").style.display = 'block';
+                document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3,' + timespanLower + ')" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+                document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+                document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720),' + timespanLower + '" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+                document.getElementById("modal_button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+                document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+                document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';                
+                buttonsSwitcher(timeLength,timespanLower,true);
+                
+            if(timespanLower == 2 || timespanLower == 15){
+              document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLength == 8760){
+              document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
+              document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
+              document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
+            }
+
+
+            document.getElementById("modal_lastseen").innerText = "Dernière mesure effectuée : " + data2;
+
+if(data3 != -1){
+document.getElementById("modal_wifilevel").innerText = "Qualité connexion WIFI : " + data3 + "%";
+}else if(data3 == -1 && type != "sensorcommunity"){
+  //document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+  document.getElementById("modal_wifilevel").innerText = "";
+}else{
+  document.getElementById("modal_wifilevel").innerText = "Capteur connecté";
+}
     }
 
 
@@ -2482,6 +2578,20 @@ dataSource: null
         //       document.getElementById("button2m").children[0].removeAttribute("disabled");
         //       document.getElementById("button15m").children[0].removeAttribute("disabled");
         //     }
+
+
+        document.getElementById("modal_lastseen").innerText = "Dernière mesure effectuée : " + data2;
+
+if(data3 != -1){
+document.getElementById("modal_wifilevel").innerText = "Qualité connexion WIFI : " + data3 + "%";
+}else if(data3 == -1 && type != "sensorcommunity"){
+//   document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+  document.getElementById("modal_wifilevel").innerText = "";
+}else{
+  document.getElementById("modal_wifilevel").innerText = "Capteur connecté";
+}
+
+
         }
 
     
@@ -2620,6 +2730,8 @@ if (document.querySelector("#checkbox_wind").checked) {
 
 
         const sensorPanelModal = new bootstrap.Modal('#sensorPanel_Modal');
+        const sensorPanelModal2 = new bootstrap.Modal('#sensorPanel_Modal2');
+
 
 
 
