@@ -1521,17 +1521,17 @@ function switchPurpleAir() {
                 load1RefAtmo(id,timeLengthGraph,timespanGraph); 
                 document.getElementById("chartSensor").style.display = 'none';
                 document.getElementById("chartSensor2").style.display = 'block';
-                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
-                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720),' + timespanGraph + '" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-                document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+                document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 1,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3,' + timespanGraph + ',false)" class="btn btn-secondary btn-sm">3h</button>';
+                document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+                document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+                document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+                document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720),' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+                document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',8760,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
                 document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';                
+                document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+                document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+                document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLengthGraph + ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';                
                 buttonsSwitcher(timeLengthGraph,timespanGraph,false);
                 
             if(timespanGraph == 2 || timespanGraph == 15){
@@ -1599,6 +1599,8 @@ function switchPurpleAir() {
             console.log(hours);
             console.log(timespan);
 
+            if(!modal){
+
             switch(timespan) {
             case 2:
                 var tempo = " à 2 minutes ";
@@ -1616,17 +1618,17 @@ function switchPurpleAir() {
 
             document.getElementById("card-title").innerText = 'Evolution des concentrations' + tempo + 'en particules fines (µg/m3)';      
             load1NebuleAir(sensor,timeLengthGraph,timespanGraph);
-            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',3,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-            document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',1,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',3,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',24,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',48,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',168,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',720,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',8760,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+            document.getElementById("button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',2,false)" class="btn btn-outline-secondary btn-sm">2m</button>';
+            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
             buttonsSwitcher(timeLengthGraph,timespanGraph,modal);
             if(timespanGraph == 2 || timespanGraph == 15){
               document.getElementById("button1a").children[0].setAttribute("disabled","");
@@ -1649,6 +1651,42 @@ function switchPurpleAir() {
               document.getElementById("button2m").children[0].removeAttribute("disabled");
               document.getElementById("button15m").children[0].removeAttribute("disabled");
             }
+        }else{
+            load1NebuleAirModal(sensor,timeLengthGraph,timespanGraph);
+            document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',1,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',3,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">3h</button>';
+            document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',24,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',48,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',168,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',720,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',8760,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+            document.getElementById("modal_button2m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',2,true)" class="btn btn-outline-secondary btn-sm">2m</button>';
+            document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeNebuleAir(\'' + sensor + '\',' + timeLengthGraph + ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            buttonsSwitcher(timeLengthGraph,timespanGraph,modal);
+            if(timespanGraph == 2 || timespanGraph == 15){
+              document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
+              document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
+              document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
+              document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
+              document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
+            }
+        }
         }
 
 
@@ -1661,24 +1699,28 @@ function switchPurpleAir() {
         }
 
 
-        function chooseTimeAtmoRef(sensor, hours, timespan) {
+        function chooseTimeAtmoRef(sensor, hours, timespan, modal) {
             timeLengthGraph = hours;
             timespanGraph = timespan;
             console.log(sensor);
             console.log(hours);
             console.log(timespan);
+
+
+            if(!modal){
+
             load1RefAtmo(sensor,timeLengthGraph,timespanGraph);
-            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
-            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ',false)" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
             document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
             
             buttonsSwitcher(timeLengthGraph,timespanGraph,false);
             if(timespanGraph == 2 || timespanGraph == 15){
@@ -1694,44 +1736,74 @@ function switchPurpleAir() {
               document.getElementById("button2m").children[0].removeAttribute("disabled");
               document.getElementById("button15m").children[0].removeAttribute("disabled");
             }
+            }else{
+            load1RefAtmoModal(sensor,timeLengthGraph,timespanGraph);
+            document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ',true)" class="btn btn-secondary btn-sm">3h</button>';
+            document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+            document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+            document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+            document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+            document.getElementById("modal_button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+            document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+            document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+            document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+            
+            buttonsSwitcher(timeLengthGraph,timespanGraph,true);
+            if(timespanGraph == 2 || timespanGraph == 15){
+              document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button1a").children[0].removeAttribute("disabled");
+            }
+
+            if(timeLengthGraph == 8760){
+              document.getElementById("modal_button2m").children[0].setAttribute("disabled","");
+              document.getElementById("modal_button15m").children[0].setAttribute("disabled","");
+            }else{
+              document.getElementById("modal_button2m").children[0].removeAttribute("disabled");
+              document.getElementById("modal_button15m").children[0].removeAttribute("disabled");
+            }
+            }
+
             }
 
 
-        function chooseTimeAtmoRef(sensor, hours, timespan) {
-            timeLengthGraph = hours;
-            timespanGraph = timespan;
-            console.log(sensor);
-            console.log(hours);
-            console.log(timespan);       
-            load1RefAtmo(sensor,timeLengthGraph,timespanGraph);
-            document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-            document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
-            document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-            document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-            document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-            document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-            document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-            document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-            document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-            document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-            document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+        // function chooseTimeAtmoRef(sensor, hours, timespan) {
+        //     timeLengthGraph = hours;
+        //     timespanGraph = timespan;
+        //     console.log(sensor);
+        //     console.log(hours);
+        //     console.log(timespan);       
+        //     load1RefAtmo(sensor,timeLengthGraph,timespanGraph);
+        //     document.getElementById("button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',1,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+        //     document.getElementById("button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 3,' + timespanGraph + ')" class="btn btn-secondary btn-sm">3h</button>';
+        //     document.getElementById("button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 24,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+        //     document.getElementById("button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 48,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+        //     document.getElementById("button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 168,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+        //     document.getElementById("button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\', 720,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+        //     document.getElementById("button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',8760,' + timespanGraph + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+        //     document.getElementById("button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+        //     document.getElementById("button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+        //     document.getElementById("button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        //     document.getElementById("button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + sensor + '\',' + timeLengthGraph + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
             
      
-            buttonsSwitcher(timeLengthGraph,timespanGraph,false);
-            if(timespanGraph == 2 || timespanGraph == 15){
-              document.getElementById("button1a").children[0].setAttribute("disabled","");
-            }else{
-              document.getElementById("button1a").children[0].removeAttribute("disabled");
-            }
+        //     buttonsSwitcher(timeLengthGraph,timespanGraph,false);
+        //     if(timespanGraph == 2 || timespanGraph == 15){
+        //       document.getElementById("button1a").children[0].setAttribute("disabled","");
+        //     }else{
+        //       document.getElementById("button1a").children[0].removeAttribute("disabled");
+        //     }
 
-            if(timeLengthGraph == 8760){
-              document.getElementById("button2m").children[0].setAttribute("disabled","");
-              document.getElementById("button15m").children[0].setAttribute("disabled","");
-            }else{
-              document.getElementById("button2m").children[0].removeAttribute("disabled");
-              document.getElementById("button15m").children[0].removeAttribute("disabled");
-            }
-            }
+        //     if(timeLengthGraph == 8760){
+        //       document.getElementById("button2m").children[0].setAttribute("disabled","");
+        //       document.getElementById("button15m").children[0].setAttribute("disabled","");
+        //     }else{
+        //       document.getElementById("button2m").children[0].removeAttribute("disabled");
+        //       document.getElementById("button15m").children[0].removeAttribute("disabled");
+        //     }
+        //     }
 
 
         //fonction qui ferme le side panel
@@ -2355,22 +2427,21 @@ function modalCreator(type,data1,data2,data3){
     break;
 }
 
-
         load1RefAtmoModal(id,timeLength,timespanLower); 
-                document.getElementById("modal_chartSensor").style.display = 'none';
-                document.getElementById("modal_chartSensor2").style.display = 'block';
-                document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 1,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3,' + timespanLower + ')" class="btn btn-secondary btn-sm">3h</button>';
-                document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-                document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-                document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-                document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720),' + timespanLower + '" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-                document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',8760,' + timespanLower + ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-                document.getElementById("modal_button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-                document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-                document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-                document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';                
-                buttonsSwitcher(timeLength,timespanLower,true);
+        document.getElementById("modal_chartSensor").style.display = 'none';
+        document.getElementById("modal_chartSensor2").style.display = 'block';
+        document.getElementById("modal_button1h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 1,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        document.getElementById("modal_button3h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 3,' + timespanLower + ',true)" class="btn btn-secondary btn-sm">3h</button>';
+        document.getElementById("modal_button24h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 24,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+        document.getElementById("modal_button48h").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 48,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+        document.getElementById("modal_button1s").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 168,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+        document.getElementById("modal_button1m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\', 720),' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+        document.getElementById("modal_button1a").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',8760,' + timespanLower + ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+        document.getElementById("modal_button2m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+        document.getElementById("modal_button15m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+        document.getElementById("modal_button60m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        document.getElementById("modal_button1440m").innerHTML = '<button type="button" onclick="chooseTimeAtmoRef(\'' + id + '\',' + timeLength + ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';                
+        buttonsSwitcher(timeLength,timespanLower,true);
                 
             if(timespanLower == 2 || timespanLower == 15){
               document.getElementById("modal_button1a").children[0].setAttribute("disabled","");
