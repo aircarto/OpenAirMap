@@ -2290,7 +2290,6 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 
         stationsRefAtmoSud.eachLayer(function (layer) {
           if (layer._icon.className.includes(item.id_station) && item.valeur != null){
-            console.log("REMOVED LAYER");
             stationsRefAtmoSud.removeLayer(layer)
           }  
         })

@@ -469,20 +469,11 @@
 
     <script>
 
-        // const isMobile = navigator.userAgentData.mobile;
-
-         const isMobile = false;
-
+        const isMobile = navigator.userAgentData.mobile;
+        //const isMobile = true;
         //const isMobile = false;
         console.log("Mobile: " + isMobile);
 
-        var date = new Date();
-        const hour = date.getHours();
-        const get_hour_minus1 = date.setHours(date.getHours() - 1);
-        const hour_minus1 = new Date(get_hour_minus1);
-        const hour0 = hour_minus1.getHours();
-        const min = date.getMinutes();
-        document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
         //document.querySelector("#button_horloge").innerHTML = hour0 + ":" + "00" + " à " + hour + ":" + "00"; 
 
         var root1;
@@ -586,6 +577,7 @@ function notAllowed(err) {
 		if (typeof telem[1] != 'undefined') query[telem[0]] = telem[1];
 	}
 
+
 switch (query.minutes) {
   case "2":
   options.timespanLower = 2;
@@ -600,6 +592,58 @@ switch (query.minutes) {
  options.timespanLower = 1440;
     break;
 }
+
+switch(options.timespanLower) {
+        case 2:
+            var date = new Date();
+            var hour = date.getHours();
+            var get_hour_minus1 = date.setHours(date.getHours() - 1);
+            var hour_minus1 = new Date(get_hour_minus1);
+            var hour0 = hour_minus1.getHours();
+            var min = date.getMinutes();
+            document.querySelector("#button_horloge").innerHTML = hour + ":" + (min < 10 ? '0' : '') + min;  //2min par défaut
+            break;
+        case 15:
+        var get_start = end.setMinutes(end.getMinutes() - 15);
+        var start = new Date(get_start);
+        var hour1 = start.getHours();
+        var min_ori1 = start.getMinutes();
+        if (min_ori1 <= 15)
+        {
+            var  min1 = 0;
+        }else if(min_ori1 > 15 && min_ori1 <=30)
+        {
+            var  min1 = 15;
+        }else if(min_ori1 > 30 && min_ori1 <=45)
+        {
+            var  min1 = 30;
+        }else
+        {
+            var min1 =45;
+        }
+    
+        document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ;
+            break;
+        case 60:
+        var end = new Date();
+        var hour2 = end.getHours();
+        var min2 = end.getMinutes();
+        var get_start = end.setHours(end.getHours() - 1);
+        var start = new Date(get_start);
+        var hour1 = start.getHours();
+        var min1 = start.getMinutes();
+            // document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ; 
+            document.querySelector("#button_horloge").innerHTML = hour1 + ":" + "00" + " à " + hour2 + ":" + "00"; 
+            break;
+        case 1440:
+        var date = new Date();
+        var get_datemoins1 = date.setHours(date.getHours() - 24);
+        var datemoins1 = new Date(get_datemoins1);
+        var jour = datemoins1.getDate();
+        var mois = datemoins1.getMonth() + 1;
+            document.querySelector("#button_horloge").innerHTML = (jour < 10 ? '0' : '') + jour + "/" + (mois < 10 ? '0' : '') + mois;
+            break;
+        } 
 
 switch (query.concentration) {
   case 'PM1':

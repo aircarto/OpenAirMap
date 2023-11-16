@@ -79,7 +79,7 @@ function loadNebuleAir() {
               '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
               '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
               '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-              '<a class="btn btn-primary" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
+              '<a class="btn btn-outline-primary"  style="margin-left:5px;" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
               '</div>';
 
             }else{
@@ -94,7 +94,7 @@ function loadNebuleAir() {
               '<br>Capteur déconnecté<br>' +
               '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
               '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-              '<a class="btn btn-primary" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
+              '<a class="btn btn-outline-primary" style="margin-left:5px;" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
               '</div>';
 
               var wifiLevel = -1;
@@ -2089,7 +2089,7 @@ function changeNebuleAir() {
             '<br>Qualité connexion WIFI ' + wifiLevel +' %<br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
             '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-            '<a class="btn btn-primary" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
+            '<a class="btn btn-outline-primary" style="margin-left:5px;" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
             '</div>';
 
           }else{
@@ -2104,7 +2104,7 @@ function changeNebuleAir() {
             '<br>Capteur déconnecté<br>' +
             '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">' + value['sensorId'] + '</button>'+
             '<button class="btn btn-primary" onclick="OpenSidePanel(\'' + value['sensorId'] + '\')">Voir les données</button>'+
-            '<a class="btn btn-primary" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
+            '<a class="btn btn-outline-primary" style="margin-left:5px;" href="https://nebuleair.fr/monNebuleAir/index.html" role="button">Mon NebuleAir</a>'+
             '</div>';
   
           }
