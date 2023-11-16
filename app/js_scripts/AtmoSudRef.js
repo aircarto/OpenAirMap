@@ -20,12 +20,16 @@ function loadStationRefAtmo() {
       '<h1>'+ item.nom_station +'</h1>' +
       '<br>Mesures pour : <br>' +
       '<br>' + compoundList(item.variables) + '<br>' +
-      '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
+      '<br><button class="btn btn-outline-primary" style="margin-right:5px;"  onclick="window.open(\'https://www.atmosud.org/dataviz/mesures-aux-stations?station_id=' + item.id_station +'\',\'_blank\')">stationRefAtmoSud-' + item.id_station + '</button>'+
       '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
       '</div>';
 
-      var AtmoSudRefTootip = item.nom_station;
 
+      // document.getElementById("btn_popup_list_"+item.id_station).onclick = function() {window.open("https://www.atmosud.org/dataviz/mesures-aux-stations?station_id="+ item.id_station, "_blank");};
+
+
+      var AtmoSudRefTootip = item.nom_station;
+      
       var icon_param = {
         iconUrl: 'img/refStationsAtmoSud/refStationAtmoSud_default.png',
         iconSize: [80, 80], // size of the icon
@@ -46,7 +50,8 @@ function loadStationRefAtmo() {
     }else{
       L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon })
       .on('click', function(){
-      document.getElementById("modal2_sensorid").innerHTML = "stationRefAtmoSud-" + item.id_station;
+      document.getElementById("modal2_sensorid").innerHTML = "Station AtmoSud-" + item.nom_station;
+      document.getElementById("modal_sensorid").onclick = function() {window.open("https://www.atmosud.org/dataviz/mesures-aux-stations?station_id="+ item.id_station, "_blank");};
       document.getElementById("modal2_list").innerHTML = "Mesures : <br>" + compoundList(item.variables);
       sensorPanelModal2.show();
     })
@@ -106,7 +111,7 @@ $.ajax({
     '<div class="text-center" style="padding-top:15px">'+
     '<h1>'+ item.nom_station +'</h1>' +
     '<br>Dernière mesure effectuée :' + timeDateCounter(item.date_debut) + '<br>' +
-    '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
+    '<br><button class="btn btn-outline-primary" style="margin-right:5px;"  onclick="window.open(\'https://www.atmosud.org/dataviz/mesures-aux-stations?station_id=' + item.id_station +'\',\'_blank\')">stationRefAtmoSud-' + item.id_station + '</button>'+
     '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
     '</div>';
 
@@ -837,7 +842,7 @@ $.ajax({
   .on('click', function(){
     var filtered = data.mesures.filter((e) => e.id_station == item.id_station);
 
-    modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
+    modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1,item.nom_station);
     if (root1 != undefined){
       console.log("DISPOSE")
     root1.dispose();
@@ -1772,7 +1777,7 @@ $.ajax({
   L.marker([item['lat'], item['lon']], { icon: refStationsAtmoSud_icon })
   .on('click', function(){
     var filtered = data.mesures.filter((e) => e.id_station == item.id_station);
-    modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
+    modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1,item.nom_station);
     if (root1 != undefined){
       console.log("DISPOSE")
     root1.dispose();
@@ -2103,7 +2108,7 @@ function changeStationRefAtmo() {
     '<h1>'+ item.nom_station +'</h1>' +
     '<br>Mesures pour : <br>' +
     '<br>' + compoundList(item.variables) + '<br>' +
-    '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
+    '<br><button class="btn btn-outline-primary" style="margin-right:5px;"  onclick="window.open(\'https://www.atmosud.org/dataviz/mesures-aux-stations?station_id=' + item.id_station +'\',\'_blank\')">stationRefAtmoSud-' + item.id_station + '</button>'+
     '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
     '</div>';
 
@@ -2131,7 +2136,8 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 }else{
   L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon })
   .on('click', function(){
-  document.getElementById("modal2_sensorid").innerHTML = "stationRefAtmoSud-" + item.id_station;
+  document.getElementById("modal2_sensorid").innerHTML = "Station AtmoSud-" + item.nom_station;
+  document.getElementById("modal_sensorid").onclick = function() {window.open("https://www.atmosud.org/dataviz/mesures-aux-stations?station_id="+ item.id_station, "_blank");};
   document.getElementById("modal2_list").innerHTML = "Mesures : <br>" + compoundList(item.variables);
   sensorPanelModal2.show();
 })
@@ -2183,11 +2189,14 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
         '<div class="text-center" style="padding-top:15px">'+
         '<h1>'+ item.nom_station +'</h1>' +
         '<br>Dernière mesure effectuée :' + timeDateCounter(item.date_debut) + '<br>' +
-        '<br><button class="btn btn-outline-primary disabled" style="margin-right:5px;">stationRefAtmoSud-' + item.id_station + '</button>'+
+        '<br><button class="btn btn-outline-primary" style="margin-right:5px;"  onclick="window.open(\'https://www.atmosud.org/dataviz/mesures-aux-stations?station_id=' + item.id_station +'\',\'_blank\')">stationRefAtmoSud-' + item.id_station + '</button>'+
         '<button class="btn btn-primary" onclick="OpenSidePanel(\'stationRefAtmoSud-' + item.id_station + '\')">Voir les données</button>'+
         '</div>';
 
         var AtmoSudRefTootip = item.nom_station;
+
+        document.getElementById("btn_popup_station_"+item.id_station).onclick = function() {window.open("https://www.atmosud.org/dataviz/mesures-aux-stations?station_id="+ item.id_station, "_blank");};
+
 
         if((item.polluant_id == "68" || item.polluant_id == "39"|| item.polluant_id == "24") && value_compound != undefined ){
 
@@ -2914,7 +2923,7 @@ if(!isMobile){
       L.marker([item['lat'], item['lon']], { icon: myIcon })
       .on('click', function(){
         var filtered = data.mesures.filter((e) => e.id_station == item.id_station);
-        modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
+        modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1,item.nom_station);
 
         if (root1 != undefined){
           console.log("DISPOSE")
@@ -3853,7 +3862,7 @@ if(!isMobile){
     .on('click', function(){
       var filtered = data.mesures.filter((e) => e.id_station == item.id_station);
 
-      modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1);
+      modalCreator("atmosudref",item.id_station,timeDateCounter(item.date_debut),-1,item.nom_station);
 
       if (root1 != undefined){
         console.log("DISPOSE")

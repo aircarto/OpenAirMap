@@ -405,7 +405,7 @@
             <div class="container-fluid">
             <div class="row justify-content-md-center mb-2">
             <div class="col-lg-4"><img id="modal_logo" src="" class="img-fluid" alt="..."></div>
-            <button class="btn btn-outline-primary disabled" style="margin-right:5px;" id="modal_sensorid"></button>
+            <button class="btn btn-outline-primary" style="margin-right:5px;" id="modal_sensorid"></button>
             </div>
             </div>
             </div>
@@ -451,7 +451,7 @@
                 <div class="container-fluid">
                 <div class="row justify-content-md-center mb-2">
                 <div class="col-lg-4"><img id="modal2_logo" src="img/LogoAtmoSud.png" class="img-fluid" alt="..."></div>
-                <button class="btn btn-outline-primary disabled" style="margin-right:5px;" id="modal2_sensorid"></button>
+                <button class="btn btn-outline-primary" style="margin-right:5px;" id="modal2_sensorid"></button>
                 </div>
                 </div>
                 </div>
@@ -471,7 +471,7 @@
 
         // const isMobile = navigator.userAgentData.mobile;
 
-         const isMobile = true;
+         const isMobile = false;
 
         //const isMobile = false;
         console.log("Mobile: " + isMobile);
@@ -2312,7 +2312,7 @@ return date_texte + " à " + horaire_texte;
 }
 
 
-function modalCreator(type,data1,data2,data3){
+function modalCreator(type,data1,data2,data3,data4){
 
     if(type == "nebuleair"){
 
@@ -2376,9 +2376,6 @@ function modalCreator(type,data1,data2,data3){
           }else{
             document.getElementById("modal_wifilevel").innerText = "Capteur connecté";
           }
-
-        //   Qualité connexion WIFI ' + wifiLevel +' %
-
     }
 
     if(type == "sensorcommunity"){
@@ -2400,6 +2397,15 @@ function modalCreator(type,data1,data2,data3){
                 document.getElementById("modal_button15m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
                 document.getElementById("modal_button60m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
                 document.getElementById("modal_button1440m").innerHTML = '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+                document.getElementById("modal_lastseen").innerText = "Dernière mesure effectuée : " + data2;
+                if(data3 != -1){
+          document.getElementById("modal_wifilevel").innerText = "Qualité connexion WIFI : " + data3 + "%";
+          }else if(data3 == -1 && type != "sensorcommunity"){
+            //document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+            document.getElementById("modal_wifilevel").innerText = "";
+          }else{
+            document.getElementById("modal_wifilevel").innerText = "Capteur connecté";
+          }
 
     }
 
@@ -2410,7 +2416,9 @@ function modalCreator(type,data1,data2,data3){
     if(type == "atmosudref"){
         document.getElementById("modal_logo").src="img/LogoAtmoSud.png";
         let id = data1;
-        document.getElementById("modal_sensorid").innerHTML = "stationRefAtmoSud-" + id;
+        let nom = data4;
+        document.getElementById("modal_sensorid").innerHTML = "Station AtmoSud-" + nom;
+        document.getElementById("modal_sensorid").onclick = function() {window.open("https://www.atmosud.org/dataviz/mesures-aux-stations?station_id="+ data1, "_blank");};
 
         switch (timespanLower) {
   case 2:
