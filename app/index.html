@@ -770,6 +770,7 @@ document.querySelector("#checkbox_stationsRefAtmoSud").checked = true;
 var compoundUpper = options.compoundUpper;
 var timespanLower = options.timespanLower;
 var timeLength = options.timeLength;
+var display = options.display;
 
 switch (timespanLower) {
   case 2:
@@ -797,6 +798,32 @@ switch (compoundUpper) {
   document.querySelector("#button_PM10").classList.replace("btn-outline-primary", "btn-primary");
     break;
 }
+
+if(display.includes("nebuleair")){
+    document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
+    $(document).ready(loadNebuleAir);
+}
+
+if(display.includes("sensorcommunity")){
+    document.querySelector("#checkbox_sensor_community").checked = true;
+    $(document).ready(loadSensorCommunity);
+}
+
+if(display.includes("atmosudref")){
+    document.querySelector("#checkbox_stationsRefAtmoSud").checked = true;
+    $(document).ready(loadStationRefAtmo);
+}
+
+if(display.includes("atmosudmicro")){
+    document.querySelector("#checkbox_micro_stationsAtmoSud").checked = true;
+    $(document).ready(loadStationMicroAtmo);
+}
+
+if(display.includes("purpleair")){
+    document.querySelector("#checkbox_purpleAir").checked = true;
+    $(document).ready(loadPurpleAir);
+}
+
 
 new L.Hash(map);
 
