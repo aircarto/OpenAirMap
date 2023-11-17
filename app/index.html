@@ -132,18 +132,22 @@
 
         <!-- Logos -->
     <div id="div_logos">
+        <a href="https//aircarto.fr">
+             <img
+            src="./img/LogoAirCarto.png"
+            class="float-right"
+            height="40"
+            alt=""
+          /></a>
+       <a href="https://atmosud.org">
         <img
-        src="./img/LogoAirCarto.png"
-        class="float-right"
-        height="25"
-        alt=""
-      />
-      <img
       src="./img/LogoAtmoSud.png"
       class="float-left"
-      height="25"
+      height="40"
       alt=""
     />
+       </a>
+      
     </div>
 
     <!-- Seuils PM -->
@@ -573,7 +577,7 @@ function mobileTest() {
 
         //on crée la carte, centrée sur Marseille
         var map = L.map('map', {
-            zoomControl: true,
+            zoomControl: isMobile == true ? false : true,
             minZoom:options.minZoom,
             maxZoom: options.maxZoom,
             renderer: L.canvas(),

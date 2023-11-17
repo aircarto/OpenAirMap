@@ -224,7 +224,19 @@ body {
   padding: 0;
 }
 
+#div_logos{
+  position: fixed;
+  left: 40px;
+  top: 10px;
+}
+
+/* small screens */
 @media only screen and (max-width: 450px) {
+
+  #div_logos{
+    display: none;
+  }
+
   #button_openWelcomeModal, #div_button_seuils_PM125 {
     display: none;
   }
@@ -253,11 +265,6 @@ body {
   }
 }
 
-#div_logos{
-  position: fixed;
-  left: 40px;
-  top: 10px;
-}
 
 #button_close{
   position: absolute;
