@@ -6,7 +6,7 @@ var options = {
 	"compoundUpper": "PM25",
 	"timespanLower":2,
 	"timeLength":3,
-	"display":"nebuleair",
+	"display":"nebuleair,sensorcommunity",
 	//"display":"nebuleair,sensorcommunity",
 	// "boundSW" : [42.91,4.16],
 	// "boundNE" : [45.22,7.83]
