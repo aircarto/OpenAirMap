@@ -1,8 +1,13 @@
 <?php
 
+require '../../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable('../');
+$dotenv->load();
+
 $timespan = $_GET['timespan'];
 
-$api_key_purple = $_GET['key'];
+//$api_key_purple = $_GET['key'];
+$api_key_purple = $_ENV['PURPLEAIR_API_KEY'];
 
 
 // switch ($timespan) {

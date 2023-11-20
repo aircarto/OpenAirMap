@@ -10,7 +10,8 @@ function loadPurpleAir() {
     $.ajax({
         method: "GET",
         url: "../php_scripts/PurpleAir.php",
-        data: ({timespan: timespanLower, key: PURPLEAIR_API_KEY}),
+        data: ({timespan: timespanLower}),
+        //data: ({timespan: timespanLower, key: PURPLEAIR_API_KEY}),
     }).done(function (data) {
         console.log(data.data);
         const end = Date.now();
