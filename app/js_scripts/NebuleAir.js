@@ -2031,7 +2031,7 @@ function loadNebuleAir() {
     .fail(function(){
         console.log("Error while geting data from AirCarto API");
     });
-};
+}
 
 function changeNebuleAir() {
       $.each(apiFetchNebuleAir.data, function (key, value) {
@@ -4043,7 +4043,7 @@ function changeNebuleAir() {
     } 
       }     
       });
-};
+}
 
 function load1NebuleAir(id,hours,timespan){
 
@@ -4819,4 +4819,33 @@ dataSource: data
       .fail(function() {
           console.log("Error while geting data from Aircarto API");
       });
+}
+
+function switchNebuleAir() {
+  if (
+    document.querySelector("#checkbox_micro_stationsParticuliers").checked
+  ) {
+    if (
+      apiFetchNebuleAir.data.length == 0 ||
+      (apiFetchNebuleAir.data.length != 0 &&
+        apiFetchNebuleAir.timespan != timespanLower)
+    ) {
+      console.log("Reload NebuleAir!");
+      loadNebuleAir();
+    } else {
+      if (
+        apiFetchNebuleAir.data.length == 0 ||
+        (apiFetchNebuleAir.data.length != 0 &&
+          Date.now() - apiFetchNebuleAir.timestamp >
+            timespanLower * 60 * 1000)
+      ) {
+        console.log("Reload NebuleAir!");
+        loadNebuleAir();
+      }
+    }
+    map.addLayer(nebuleairParticuliers);
+  } else {
+    map.removeLayer(nebuleairParticuliers);
+  }
+  setQueryString();
 }

@@ -2095,7 +2095,7 @@ $.ajax({
         console.log("Error while geting data from AtmoSud API");
     })
 
-};
+}
 
 function changeStationRefAtmo() {
 
@@ -4169,8 +4169,7 @@ if(!isMobile){
 
       })
 
-};
-
+}
 
 function load1RefAtmo(id,hours,timespan){
 
@@ -4453,7 +4452,6 @@ dataSource: data.mesures
       });
 }
 
-
 function load1RefAtmoModal(id,hours,timespan){
 
   console.log("%cAtmoSud Ref 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px", );
@@ -4735,8 +4733,6 @@ dataSource: data.mesures
       });
 }
 
-
-
 function compoundList(json){
 let list = '<ul id="compoundList">';
 
@@ -4780,4 +4776,42 @@ if(json["VU"] != undefined){list += "<li>C8H10_mp</li>"}
 if(json["VV"] != undefined){list += "<li>C8H10_ox</li>"}
 
 return list + '</ul>';
+}
+
+function switchRefAtmo() {
+  if (timespanLower != 2) {
+    if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+      //ATTENTION CAS 2mins
+      if (
+        apiFetchAtmoSudRef.data.length == 0 ||
+        (apiFetchAtmoSudRef.data.length != 0 &&
+          apiFetchAtmoSudRef.timespan != timespanLower)
+      ) {
+        console.log("Reload AtmoSud Ref!");
+        loadStationRefAtmo();
+      } else {
+        if (
+          apiFetchAtmoSudRef.data.length == 0 ||
+          (apiFetchAtmoSudRef.data.length != 0 &&
+            apiFetchAtmoSudRef.timespan == timespanLower &&
+            Date.now() - apiFetchAtmoSudRef.timestamp >
+              timespanLower * 60 * 1000)
+        ) {
+          console.log("Reload AtmoSud Ref!");
+          loadStationRefAtmo();
+        }
+      }
+      map.addLayer(stationsRefAtmoSud);
+    } else {
+      map.removeLayer(stationsRefAtmoSud);
+    }
+  } else {
+    openToast(
+      "Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud"
+    );
+    document.querySelector(
+      "#checkbox_stationsRefAtmoSud"
+    ).checked = false;
+  }
+  setQueryString();
 }

@@ -4322,3 +4322,29 @@ function load1PurpleAir(id,hours,timespan){
       });
 }
 
+function switchPurpleAir() {
+  if (document.querySelector("#checkbox_purpleAir").checked) {
+    if (
+      apiFetchPurpleAir.data.length == 0 ||
+      (apiFetchPurpleAir.data.length != 0 &&
+        apiFetchPurpleAir.timespan != timespanLower)
+    ) {
+      console.log("Reload PurpleAir!");
+      loadPurpleAir();
+    } else {
+      if (
+        apiFetchPurpleAir.data.length == 0 ||
+        (apiFetchPurpleAir.data.length != 0 &&
+          Date.now() - apiFetchPurpleAir.timestamp >
+            timespanLower * 60 * 1000)
+      ) {
+        console.log("Reload PurpleAir!");
+        loadPurpleAir();
+      }
+    }
+    map.addLayer(purpleAir);
+  } else {
+    map.removeLayer(purpleAir);
+  }
+  setQueryString();
+}
