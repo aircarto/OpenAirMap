@@ -2195,9 +2195,6 @@ L.marker([item['latitude'], item['longitude']], { icon: refStationsAtmoSud_icon 
 
         var AtmoSudRefTootip = item.nom_station;
 
-        document.getElementById("btn_popup_station_"+item.id_station).onclick = function() {window.open("https://www.atmosud.org/dataviz/mesures-aux-stations?station_id="+ item.id_station, "_blank");};
-
-
         if((item.polluant_id == "68" || item.polluant_id == "39"|| item.polluant_id == "24") && value_compound != undefined ){
 
         var icon_param = {

@@ -721,29 +721,38 @@ switch (query.concentration) {
     break;
 }
 
+options.display = "";
+
 if (query.affichage.includes("nebuleair")){
-$(document).ready(loadNebuleAir);
+//$(document).ready(loadNebuleAir);
 document.querySelector("#checkbox_micro_stationsParticuliers").checked = true;
+options.display += "nebuleair,"
 }
 
 if (query.affichage.includes("sensorcommunity")){
-$(document).ready(loadSensorCommunity);
+//$(document).ready(loadSensorCommunity);
 document.querySelector("#checkbox_sensor_community").checked = true;
+options.display += "sensorcommunity,"
 }
 
 if (query.affichage.includes("purpleair")){
-$(document).ready(loadPurpleAir);
+//$(document).ready(loadPurpleAir);
 document.querySelector("#checkbox_purpleAir").checked = true;
+options.display += "purpleair,"
 }
 
 if (query.affichage.includes("atmosudmicro")){
-$(document).ready(loadStationMicroAtmo);
+//$(document).ready(loadStationMicroAtmo);
 document.querySelector("#checkbox_micro_stationsAtmoSud").checked = true;
+options.display += "atmosudmicro,"
+
 }
 
 if (query.affichage.includes("atmosudref")){
-$(document).ready(loadStationRefAtmo);
+//$(document).ready(loadStationRefAtmo);
 document.querySelector("#checkbox_stationsRefAtmoSud").checked = true;
+options.display += "atmosudref,"
+
 }
 
         // // document.querySelector("#checkbox_micro_stationsParticuliers").checked = false;
