@@ -40,6 +40,19 @@ The .htaccess should prevent access for Apache server but you need to set AllowO
 </Directory>
 ```
 
+## Configuration
+
+The JavaScript file config.js (located in the app/js_scripts folder) offers you the possibility to change some parameters (default options at startup):
+
+* coordsCenter : center of the map (lat, long)
+* compoundUpper : compounds to show (choose between PM1, PM2.5 and PM10)
+* display : choose which type of sensor you want to show (can be a list)
+	* nebuleair
+	* sensorcommunity
+	* purpleair
+	* atmosudref
+
+
 ## Sensors
 
 The app will get air quality data from multiples sensors and their API.
