@@ -6,14 +6,18 @@ Map of outdoors air quality sensors in southern France.
 
 Project developped with [AirCarto](https://www.aircarto.fr) and [AtmoSud](https://www.atmosud.org/).
 
+This webapp is available here: [openairamp.fr](https://openairmap.fr).
+
 
 ## Deploy
 
-To deploy the app you need a Apache web server (Nginx is still tested) with the last version of PHP and composer.
+To deploy the app you need a Apache web server (Nginx not tested) with the last version of PHP and composer.
 
-Redirect you server towards app/index.html and run `composer install`.
+Redirect you server towards app/index.html.
 
-You also need to add an `.env` file inside app/php_scripts with the API keys.
+To protect API token we use [PHP dotenv](https://github.com/vlucas/phpdotenv), the extension can be installed with composer, simply run `composer install` inside the project console.
+
+You also need to add an `.env` file inside the app folder with the API keys.
 
 ```
 PURPLEAIR_API_KEY="XXXXX" 
@@ -42,10 +46,10 @@ The app will get air quality data from multiples sensors and their API.
 
 |     | Type de mesure | Icône | Pas de temps | Description | Lien vers API |
 | --- | --- | --- | --- | --- | --- |
-| Capteurs NebuleAir | micro-capteur | ![](img/nebuleAir/nebuleAir_moyen.png) | 2m QH H J | Micro-capteurs open source co-développés par AirCarto et AtmoSud | [AirCarto](https://aircarto.fr/API_V2/) |
-| Capteurs Sensor.Community | micro-capteur | ![](img/purpleAir/purpleAir_moyen.png) | 2m QH H J | Micro-capteurs open source fabriqués par des citoyens bénévoles | [Sensor.Community](https://sensor.community/fr/) |
-| Capteurs PurpleAir | micro-capteur | ![](img/SensorCommunity/SensorCommunity_moyen.png) | 2m QH H J | Micro-capteurs commercialisés par l'entreprise américaine PurpleAir Inc. | [PurpleAir](https://api.purpleair.com/) |
-| Micro-stations AtmoSud | micro-capteur | ![](img/microStationsAtmoSud/microStationAtmoSud_moyen.png) | 2m QH H J | Micro-capteurs déployés par AtmoSud | [AtmoSud](https://api.atmosud.org/) |
-| Stations de référence AtmoSud | station | ![](img/refStationsAtmoSud/refStationAtmoSud_moyen.png) | 2m QH H J | Stations de référence installées dans le cadre de la mission de surveillance de la qualité de l'air d'AtmoSud |
+| Capteurs NebuleAir | micro-capteur | ![](app/img/nebuleAir/nebuleAir_moyen.png) | 2m QH H J | Micro-capteurs open source co-développés par AirCarto et AtmoSud | [AirCarto](https://aircarto.fr/API_V2/) |
+| Capteurs Sensor.Community | micro-capteur | ![](app/img/purpleAir/purpleAir_moyen.png) | 2m QH H J | Micro-capteurs open source fabriqués par des citoyens bénévoles | [Sensor.Community](https://sensor.community/fr/) |
+| Capteurs PurpleAir | micro-capteur | ![](app/img/SensorCommunity/SensorCommunity_moyen.png) | 2m QH H J | Micro-capteurs commercialisés par l'entreprise américaine PurpleAir Inc. | [PurpleAir](https://api.purpleair.com/) |
+| Micro-stations AtmoSud | micro-capteur | ![](app/img/microStationsAtmoSud/microStationAtmoSud_moyen.png) | 2m QH H J | Micro-capteurs déployés par AtmoSud | [AtmoSud](https://api.atmosud.org/) |
+| Stations de référence AtmoSud | station | ![](app/img/refStationsAtmoSud/refStationAtmoSud_moyen.png) | 2m QH H J | Stations de référence installées dans le cadre de la mission de surveillance de la qualité de l'air d'AtmoSud |
 | Modélisation Horaire PM AtmoSud | modélisation |     | 2m QH H J | Modélisation des particules fines à l'échelle horaire sur toute la région PACA |
 | Modélisation Horaire ICAIRH AtmoSud | modélisation |     | 2m QH H J | Modélisation de l'indice cumulé de la qualité de l'air (NO2, O3, PM2.5 et PM10) à l'échelle horaire sur toute la région PACA. |
