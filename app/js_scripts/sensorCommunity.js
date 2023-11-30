@@ -2038,7 +2038,7 @@ function loadSensorCommunity() {
     .fail(function () {
       console.log("Error while geting data from AirCarto API");
     });
-};
+}
 
 function changeSensorCommunity() {
 
@@ -4053,4 +4053,56 @@ function changeSensorCommunity() {
     }
 
   });
-};
+}
+
+function switchSensorCommunity() {
+  if (
+    timespanLower != 15 &&
+    timespanLower != 60 &&
+    timespanLower != 1440
+  ) {
+    if (document.querySelector("#checkbox_sensor_community").checked) {
+      if (
+        apiFetchSensorCommunity.data.length == 0 ||
+        (apiFetchSensorCommunity.data.length != 0 &&
+          apiFetchSensorCommunity.timespan != timespanLower)
+      ) {
+        console.log("Reload Sensor.Community!");
+        loadSensorCommunity();
+      } else {
+        if (
+          apiFetchSensorCommunity.data.length == 0 ||
+          (apiFetchSensorCommunity.data.length != 0 &&
+            Date.now() - apiFetchSensorCommunity.timestamp >
+              timespanLower * 60 * 1000)
+        ) {
+          console.log("Reload Sensor.Community!");
+          loadSensorCommunity();
+        }
+      }
+      map.addLayer(sensorCommunity);
+    } else {
+      map.removeLayer(sensorCommunity);
+    }
+  } else {
+    openToast(
+      "Pas de moyennes quart-horaire, horaire et journalière pour les capteurs Sensor.Community."
+    );
+    document.querySelector("#checkbox_sensor_community").checked = false;
+  }
+  setQueryString();
+}
+
+function chooseTimeSensorCommunity(sensor, hours) {
+  document.getElementById("chartSensor").src =
+    "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" +
+    sensor +
+    "&panelId=2";
+  if (hours == 24) {
+    document
+      .getElementById("button24h")
+      .classList.replace("btn-outline-secondary", "btn-secondary");
+  }
+
+  //A COMPLETER
+}

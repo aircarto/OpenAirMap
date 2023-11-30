@@ -33,7 +33,7 @@ function loadModelisationPMAtmo() {  //Normalement h24 pour heure actuelle.
       break;
   }
 
-};
+}
 
 function loadModelisationICAIRAtmo() {
 
@@ -50,4 +50,49 @@ function loadModelisationICAIRAtmo() {
     opacity: 0.6
   }).addTo(modelisationICAIRAtmoSud);;
 
-};
+}
+
+function switchModelisationPMAtmo() {
+  if (
+    document.querySelector("#checkbox_modelisationPMAtmoSud").checked &&
+    timespanLower != 1440
+  ) {
+    loadModelisationPMAtmo();
+    map.addLayer(modelisationPMAtmoSud);
+  } else {
+    if (modelisationPMAtmoSud != undefined) {
+      map.removeLayer(modelisationPMAtmoSud);
+    }
+    if (timespanLower == 1440) {
+      openToast(
+        "La modélisation des particules fines présente des observations horaires."
+      );
+    }
+    document.querySelector(
+      "#checkbox_modelisationPMAtmoSud"
+    ).checked = false;
+  }
+}
+
+function switchModelisationICAIRAtmo() {
+  if (
+    document.querySelector("#checkbox_modelisationICAIRAtmoSud")
+      .checked &&
+    timespanLower != 1440
+  ) {
+    loadModelisationICAIRAtmo();
+    map.addLayer(modelisationICAIRAtmoSud);
+  } else {
+    if (modelisationICAIRAtmoSud != undefined) {
+      map.removeLayer(modelisationICAIRAtmoSud);
+    }
+    if (timespanLower == 1440) {
+      openToast(
+        "La modélisation ICAIRh présente des observations horaires."
+      );
+    }
+    document.querySelector(
+      "#checkbox_modelisationICAIRAtmoSud"
+    ).checked = false;
+  }
+}

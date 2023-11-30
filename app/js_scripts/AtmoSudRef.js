@@ -4785,3 +4785,233 @@ function compoundList(json) {
 
   return list + '</ul>';
 }
+
+function switchRefAtmo() {
+  if (timespanLower != 2) {
+    if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+      //ATTENTION CAS 2mins
+      if (
+        apiFetchAtmoSudRef.data.length == 0 ||
+        (apiFetchAtmoSudRef.data.length != 0 &&
+          apiFetchAtmoSudRef.timespan != timespanLower)
+      ) {
+        console.log("Reload AtmoSud Ref!");
+        loadStationRefAtmo();
+      } else {
+        if (
+          apiFetchAtmoSudRef.data.length == 0 ||
+          (apiFetchAtmoSudRef.data.length != 0 &&
+            apiFetchAtmoSudRef.timespan == timespanLower &&
+            Date.now() - apiFetchAtmoSudRef.timestamp >
+              timespanLower * 60 * 1000)
+        ) {
+          console.log("Reload AtmoSud Ref!");
+          loadStationRefAtmo();
+        }
+      }
+      map.addLayer(stationsRefAtmoSud);
+    } else {
+      map.removeLayer(stationsRefAtmoSud);
+    }
+  } else {
+    openToast(
+      "Pas de données à intervalle 2 minutes pour les stations de référence AtmoSud"
+    );
+    document.querySelector(
+      "#checkbox_stationsRefAtmoSud"
+    ).checked = false;
+  }
+  setQueryString();
+}
+
+function chooseTimeAtmoRef(sensor, hours, timespan, modal) {
+  timeLengthGraph = hours;
+  timespanGraph = timespan;
+  console.log(sensor);
+  console.log(hours);
+  console.log(timespan);
+
+  if (!modal) {
+    load1RefAtmo(sensor, timeLengthGraph, timespanGraph);
+    document.getElementById("button1h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "',1," +
+      timespanGraph +
+      ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+    document.getElementById("button3h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 3," +
+      timespanGraph +
+      ',false)" class="btn btn-secondary btn-sm">3h</button>';
+    document.getElementById("button24h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 24," +
+      timespanGraph +
+      ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+    document.getElementById("button48h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 48," +
+      timespanGraph +
+      ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+    document.getElementById("button1s").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 168," +
+      timespanGraph +
+      ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+    document.getElementById("button1m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 720," +
+      timespanGraph +
+      ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+    document.getElementById("button1a").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "',8760," +
+      timespanGraph +
+      ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+    document.getElementById("button2m").innerHTML =
+      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+    document.getElementById("button15m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+    document.getElementById("button60m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+    document.getElementById("button1440m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+
+    buttonsSwitcher(timeLengthGraph, timespanGraph, false);
+    if (timespanGraph == 2 || timespanGraph == 15) {
+      document
+        .getElementById("button1a")
+        .children[0].setAttribute("disabled", "");
+    } else {
+      document
+        .getElementById("button1a")
+        .children[0].removeAttribute("disabled");
+    }
+
+    if (timeLengthGraph == 8760) {
+      document
+        .getElementById("button2m")
+        .children[0].setAttribute("disabled", "");
+      document
+        .getElementById("button15m")
+        .children[0].setAttribute("disabled", "");
+    } else {
+      document
+        .getElementById("button2m")
+        .children[0].removeAttribute("disabled");
+      document
+        .getElementById("button15m")
+        .children[0].removeAttribute("disabled");
+    }
+  } else {
+    load1RefAtmoModal(sensor, timeLengthGraph, timespanGraph);
+    document.getElementById("modal_button1h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "',1," +
+      timespanGraph +
+      ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+    document.getElementById("modal_button3h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 3," +
+      timespanGraph +
+      ',true)" class="btn btn-secondary btn-sm">3h</button>';
+    document.getElementById("modal_button24h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 24," +
+      timespanGraph +
+      ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+    document.getElementById("modal_button48h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 48," +
+      timespanGraph +
+      ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+    document.getElementById("modal_button1s").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 168," +
+      timespanGraph +
+      ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+    document.getElementById("modal_button1m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "', 720," +
+      timespanGraph +
+      ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+    document.getElementById("modal_button1a").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "',8760," +
+      timespanGraph +
+      ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+    document.getElementById("modal_button2m").innerHTML =
+      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+    document.getElementById("modal_button15m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+    document.getElementById("modal_button60m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+    document.getElementById("modal_button1440m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+
+    buttonsSwitcher(timeLengthGraph, timespanGraph, true);
+    if (timespanGraph == 2 || timespanGraph == 15) {
+      document
+        .getElementById("modal_button1a")
+        .children[0].setAttribute("disabled", "");
+    } else {
+      document
+        .getElementById("modal_button1a")
+        .children[0].removeAttribute("disabled");
+    }
+
+    if (timeLengthGraph == 8760) {
+      document
+        .getElementById("modal_button2m")
+        .children[0].setAttribute("disabled", "");
+      document
+        .getElementById("modal_button15m")
+        .children[0].setAttribute("disabled", "");
+    } else {
+      document
+        .getElementById("modal_button2m")
+        .children[0].removeAttribute("disabled");
+      document
+        .getElementById("modal_button15m")
+        .children[0].removeAttribute("disabled");
+    }
+  }
+}

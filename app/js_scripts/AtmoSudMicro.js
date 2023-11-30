@@ -2882,3 +2882,54 @@ function load1MicroAtmo(id, hours) {
       console.log("Error while geting data from AtmoSud API");
     });
 }
+
+function switchMicroAtmo() {
+  if (
+    (timespanLower != 2) &
+    (timespanLower != 60) &
+    (timespanLower != 1440)
+  ) {
+    if (
+      document.querySelector("#checkbox_micro_stationsAtmoSud").checked
+    ) {
+      if (
+        apiFetchAtmoSudMicro.data.length == 0 ||
+        (apiFetchAtmoSudMicro.data.length != 0 &&
+          apiFetchAtmoSudMicro.timespan != timespanLower)
+      ) {
+        console.log("Reload AtmoSud Micro!");
+        loadStationMicroAtmo();
+      } else {
+        if (
+          apiFetchAtmoSudMicro.data.length == 0 ||
+          (apiFetchAtmoSudMicro.data.length != 0 &&
+            Date.now() - apiFetchAtmoSudMicro.timestamp >
+              timespanLower * 60 * 1000)
+        ) {
+          console.log("Reload AtmoSud Micro");
+          loadStationMicroAtmo();
+        }
+      }
+      map.addLayer(stationsMicroAtmoSud);
+    } else {
+      map.removeLayer(stationsMicroAtmoSud);
+    }
+  } else {
+    openToast(
+      "Pas de données à intervalles 2 minutes, 1 heure ou 1 jour pour les microstations AtmoSud"
+    );
+    document.querySelector(
+      "#checkbox_micro_stationsAtmoSud"
+    ).checked = false;
+  }
+  setQueryString();
+}
+
+function chooseTimeAtmoMicro(sensor, hours) {
+  console.log(sensor);
+  console.log(hours);
+  load1MicroAtmo(sensor, hours);
+  buttonsSwitcher(hours, 15, false); //REVOIR
+}
+
+
