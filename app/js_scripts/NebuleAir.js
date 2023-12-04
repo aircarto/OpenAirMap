@@ -227,9 +227,9 @@ function loadNebuleAir() {
                   root2 = am5.Root.new("chartdiv2");
                   root3 = am5.Root.new("chartdiv3");
 
-                  gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
-                  gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25");
-                  gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10");
+                  gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
+                  gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25",value.connected);
+                  gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10",value.connected);
 
                 })
               }, 1000) // end am5.ready()
@@ -261,13 +261,13 @@ function loadNebuleAir() {
 
                   switch (compoundUpper) {
                     case "PM1":
-                      gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
+                      gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
                       break;
                     case "PM25":
-                      gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25");
+                      gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25",value.connected);
                       break;
                     case "PM10":
-                      gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10");
+                      gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10",value.connected);
                       break;
                   }
 
@@ -315,9 +315,9 @@ function loadNebuleAir() {
                   root2 = am5.Root.new("chartdiv2");
                   root3 = am5.Root.new("chartdiv3");
 
-                  gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
-                  gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25");
-                  gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10");
+                  gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
+                  gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25",value.connected);
+                  gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10",value.connected);
 
                 })
               }, 1000) // end am5.ready()
@@ -348,13 +348,13 @@ function loadNebuleAir() {
 
                   switch (compoundUpper) {
                     case "PM1":
-                      gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
+                      gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
                       break;
                     case "PM25":
-                      gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25");
+                      gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25",value.connected);
                       break;
                     case "PM10":
-                      gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10");
+                      gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10",value.connected);
                       break;
                   }
 
@@ -576,9 +576,9 @@ function changeNebuleAir() {
                 root2 = am5.Root.new("chartdiv2");
                 root3 = am5.Root.new("chartdiv3");
 
-                gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
-                gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25");
-                gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10");
+                gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
+                gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25",value.connected);
+                gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10",value.connected);
 
               })
             }, 1000) // end am5.ready()
@@ -607,13 +607,13 @@ function changeNebuleAir() {
 
                 switch (compoundUpper) {
                   case "PM1":
-                    gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
+                    gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
                     break;
                   case "PM25":
-                    gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25");
+                    gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25",value.connected);
                     break;
                   case "PM10":
-                    gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10");
+                    gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10",value.connected);
                     break;
                 }
 
@@ -665,9 +665,9 @@ function changeNebuleAir() {
                 root2 = am5.Root.new("chartdiv2");
                 root3 = am5.Root.new("chartdiv3");
 
-                gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
-                gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25");
-                gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10");
+                gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
+                gaugeCreatorNebuleAir(root2, value["PM25" + selector], "PM25",value.connected);
+                gaugeCreatorNebuleAir(root3, value["PM10" + selector], "PM10",value.connected);
 
 
               })
@@ -699,13 +699,13 @@ function changeNebuleAir() {
 
                 switch (compoundUpper) {
                   case "PM1":
-                    gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1");
+                    gaugeCreatorNebuleAir(root1, value["PM1" + selector], "PM1",value.connected);
                     break;
                   case "PM25":
-                    gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25");
+                    gaugeCreatorNebuleAir(root1, value["PM25" + selector], "PM25",value.connected);
                     break;
                   case "PM10":
-                    gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10");
+                    gaugeCreatorNebuleAir(root1, value["PM10" + selector], "PM10",value.connected);
                     break;
                 }
 
@@ -1762,10 +1762,10 @@ function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
   }
 }
 
-function gaugeCreatorNebuleAir(root, measure, type) {
-  console.log(root);
-  console.log(measure);
-  console.log(type);
+function gaugeCreatorNebuleAir(root, measure, type, connected) {
+  console.log(root.dom);
+  // console.log(parseFloat(measure));
+  // console.log(connected);
 
   root.setThemes([am5themes_Animated.new(root)]);
 
@@ -1854,11 +1854,12 @@ function gaugeCreatorNebuleAir(root, measure, type) {
       }
     });
 
-    // if(value.connected){
+    if(connected){
     label.set("text", Math.round(value).toString());
-    // }else{
-    // label.set("text", "N/A");
-    // }
+    }else{
+    label.set("text", "N/A");
+    console.log("NOT CONNECTED");
+    }
 
     clockHand.pin.animate({
       key: "fill",
@@ -1874,20 +1875,20 @@ function gaugeCreatorNebuleAir(root, measure, type) {
     });
   });
 
-  // if(value.connected){
+  if(connected){
   setTimeout(function () {
     axisDataItem.animate({
       key: "value",
-      to: Math.round(measure[type]),
+      to: Math.round(parseFloat(measure)),
       duration: 500,
       easing: am5.ease.out(am5.ease.cubic),
     });
   }, 1000);
-
-  // }else{
-  //   document.querySelector("#chartdiv1").style.opacity = 0.2;
-  //   document.querySelector("#chartdiv1").style.filter = "alpha(opacity = 20)";
-  // }
+  }else{
+    console.log("NOT CONNECTED 222");
+    root.dom.style.opacity = 0.2;
+    root.dom.style.filter = "alpha(opacity = 20)";
+  }
 
   chart.bulletsContainer.set("mask", undefined);
 
