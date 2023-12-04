@@ -1459,7 +1459,7 @@ if (data == null){
   legend.data.setAll(chart.series.values);
 
   chart.children.unshift(am5.Label.new(root, {
-    text: chartTitleText,
+    text: text,
     fontSize: 14,
     textAlign: "center",
     x: am5.percent(50),
