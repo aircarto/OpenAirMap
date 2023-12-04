@@ -249,15 +249,12 @@ function loadNebuleAir() {
 
               sensorPanelModal.show();
 
-
               setTimeout(function () {
                 am5.ready(function () {
 
                   // Create root element
                   // https://www.amcharts.com/docs/v5/getting-started/#Root_element
                   root1 = am5.Root.new("modal_chartdivmodalgauge");
-
-                  
 
                   switch (compoundUpper) {
                     case "PM1":
@@ -1115,7 +1112,7 @@ function load1NebuleAirModal(id, hours, timespan) {
 
   console.log(id);
 
-  let chartTitleText = "";
+  var chartTitleText = "";
   chartTitleText += "NebuleAir-" + id + ", moyennes";
 
   switch (timespan) {
@@ -1145,15 +1142,11 @@ function load1NebuleAirModal(id, hours, timespan) {
       timespan: timespan
     }),
   }).done(function (data) {
-    console.log(data);
 
-    if (data == null) {
-      console.log("data null");
       if (root4 != undefined) {
         console.log("DISPOSE")
         root4.dispose();
       }
-
 
       setTimeout(function () {
         am5.ready(function () {
@@ -1162,322 +1155,10 @@ function load1NebuleAirModal(id, hours, timespan) {
           // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
           root4 = am5.Root.new("modal_chartSensor2");
 
-
-          // Set themes
-          // https://www.amcharts.com/docs/v5/concepts/themes/ 
-          root4.setThemes([
-            am5themes_Animated.new(root4)
-          ]);
-
-
-          // Create chart
-          // https://www.amcharts.com/docs/v5/charts/xy-chart/
-          var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
-            panX: true,
-            panY: true,
-            wheelX: "panX",
-            wheelY: "zoomX",
-            maxTooltipDistance: 0,
-            pinchZoomX: true
-          }));
-
-          // Create axes
-          // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-          var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
-            maxDeviation: 0.2,
-            baseInterval: {
-              timeUnit: "minute",
-              count: 1
-            },
-            renderer: am5xy.AxisRendererX.new(root4, {}),
-            tooltip: am5.Tooltip.new(root4, {})
-          }));
-
-          var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
-            renderer: am5xy.AxisRendererY.new(root4, {})
-          }));
-
-
-          var modal = am5.Modal.new(root4, {
-            content: "Pas de donnée sur cette période"
-          });
-
-          modal.open();
-
-          var legend = chart4.bottomAxesContainer.children.push(am5.Legend.new(root4, {
-            width: 400,
-            height: am5.percent(20),
-            layout: root4.horizontalLayout,
-          }));
-
-
-          // When legend item container is hovered, dim all the series except the hovered one
-          legend.itemContainers.template.events.on("pointerover", function (e) {
-            var itemContainer = e.target;
-
-            // As series list is data of a legend, dataContext is series
-            var series = itemContainer.dataItem.dataContext;
-
-            chart4.series.each(function (chartSeries) {
-              if (chartSeries != series) {
-                chartSeries.strokes.template.setAll({
-                  strokeOpacity: 0.15,
-                  stroke: am5.color(0x000000)
-                });
-              } else {
-                chartSeries.strokes.template.setAll({
-                  strokeWidth: 3
-                });
-              }
-            })
-          })
-
-          // When legend item container is unhovered, make all series as they are
-          legend.itemContainers.template.events.on("pointerout", function (e) {
-            var itemContainer = e.target;
-            var series = itemContainer.dataItem.dataContext;
-
-            chart4.series.each(function (chartSeries) {
-              chartSeries.strokes.template.setAll({
-                strokeOpacity: 1,
-                strokeWidth: 1,
-                stroke: chartSeries.get("fill")
-              });
-            });
-          })
-
-          legend.itemContainers.template.set("width", am5.p100);
-          legend.valueLabels.template.setAll({
-            width: am5.p100,
-            textAlign: "right"
-          });
-
-          // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-          legend.data.setAll(chart4.series.values);
-
-          chart4.children.unshift(am5.Label.new(root4, {
-            text: chartTitleText,
-            fontSize: 14,
-            textAlign: "center",
-            x: am5.percent(50),
-            centerX: am5.percent(50)
-          }));
-
-
-          var exporting = am5plugins_exporting.Exporting.new(root4, {
-            menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
-            dataSource: data
-          });
-
-          // Make stuff animate on load
-          // https://www.amcharts.com/docs/v5/concepts/animations/
-          chart4.appear(1000, 100);
+          graphCreatorNebuleAir(root4, data, chartTitleText);
 
         })
       }, 1000); // end am5.ready()
-
-    } else {
-
-      // var data_PM1 = data.map(function(e){
-      //     return {value:e.PM1, date:new Date(e.timeUTC).getTime()}
-      // } );
-      // var data_PM25 = data.map(function(e){
-      //     return {value:e.PM25, date:new Date(e.timeUTC).getTime()}
-      // } );
-      // var data_PM10 = data.map(function(e){
-      //     return {value:e.PM10, date:new Date(e.timeUTC).getTime()}
-      // } );
-
-
-
-      var data_PM1 = data.map(function (e) {
-        return { value: e.PM1, date: new Date(e.time).getTime() }
-      });
-      var data_PM25 = data.map(function (e) {
-        return { value: e.PM25, date: new Date(e.time).getTime() }
-      });
-      var data_PM10 = data.map(function (e) {
-        return { value: e.PM10, date: new Date(e.time).getTime() }
-      });
-
-      if (root4 != undefined) {
-        console.log("DISPOSE")
-        root4.dispose();
-      }
-
-
-      setTimeout(function () {
-        am5.ready(function () {
-
-          // Create root element
-          // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
-          root4 = am5.Root.new("modal_chartSensor2");
-
-
-          // Set themes
-          // https://www.amcharts.com/docs/v5/concepts/themes/ 
-          root4.setThemes([
-            am5themes_Animated.new(root4)
-          ]);
-
-
-          // Create chart
-          // https://www.amcharts.com/docs/v5/charts/xy-chart/
-          var chart4 = root4.container.children.push(am5xy.XYChart.new(root4, {
-            panX: true,
-            panY: true,
-            wheelX: "panX",
-            wheelY: "zoomX",
-            maxTooltipDistance: 0,
-            // maxTooltipDistanceBy: "x",
-            pinchZoomX: true
-          }));
-
-          // Create axes
-          // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-          var xAxis = chart4.xAxes.push(am5xy.DateAxis.new(root4, {
-            maxDeviation: 0.2,
-            baseInterval: {
-              timeUnit: "minute",
-              count: 1
-            },
-            renderer: am5xy.AxisRendererX.new(root4, {}),
-            tooltip: am5.Tooltip.new(root4, {})
-          }));
-
-          var yAxis = chart4.yAxes.push(am5xy.ValueAxis.new(root4, {
-            renderer: am5xy.AxisRendererY.new(root4, {})
-          }));
-
-          var series_PM1 = chart4.series.push(am5xy.LineSeries.new(root4, {
-            name: "PM1",
-            xAxis: xAxis,
-            yAxis: yAxis,
-            valueYField: "value",
-            valueXField: "date",
-            legendValueText: "{valueY}",
-            tooltip: am5.Tooltip.new(root4, {
-              pointerOrientation: "horizontal",
-              labelText: "{valueY}"
-            })
-          }));
-
-          series_PM1.data.setAll(data_PM1);
-          series_PM1.appear();
-
-          var series_PM25 = chart4.series.push(am5xy.LineSeries.new(root4, {
-            name: "PM2.5",
-            xAxis: xAxis,
-            yAxis: yAxis,
-            valueYField: "value",
-            valueXField: "date",
-            legendValueText: "{valueY}",
-            tooltip: am5.Tooltip.new(root4, {
-              pointerOrientation: "horizontal",
-              labelText: "{valueY}"
-            })
-          }));
-
-          series_PM25.data.setAll(data_PM25);
-          series_PM25.appear();
-
-
-          var series_PM10 = chart4.series.push(am5xy.LineSeries.new(root4, {
-            name: "PM10",
-            xAxis: xAxis,
-            yAxis: yAxis,
-            valueYField: "value",
-            valueXField: "date",
-            legendValueText: "{valueY}",
-            tooltip: am5.Tooltip.new(root4, {
-              pointerOrientation: "horizontal",
-              labelText: "{valueY}"
-            })
-          }));
-
-          series_PM10.data.setAll(data_PM10);
-          series_PM10.appear();
-
-          // Add cursor
-          // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-          var cursor = chart4.set("cursor", am5xy.XYCursor.new(root4, {
-            behavior: "zoomX",
-            xAxis: xAxis,
-            snapToSeries: [series_PM1, series_PM25, series_PM10],
-            // snapToSeriesBy: "x"
-          }));
-          cursor.lineX.set("visible", true);
-          cursor.lineY.set("visible", false);
-
-          var legend = chart4.bottomAxesContainer.children.push(am5.Legend.new(root4, {
-            width: 400,
-            height: am5.percent(20),
-            layout: root4.horizontalLayout,
-          }));
-
-
-          // When legend item container is hovered, dim all the series except the hovered one
-          legend.itemContainers.template.events.on("pointerover", function (e) {
-            var itemContainer = e.target;
-
-            // As series list is data of a legend, dataContext is series
-            var series = itemContainer.dataItem.dataContext;
-
-            chart4.series.each(function (chartSeries) {
-              if (chartSeries != series) {
-                chartSeries.strokes.template.setAll({
-                  strokeOpacity: 0.15,
-                  stroke: am5.color(0x000000)
-                });
-              } else {
-                chartSeries.strokes.template.setAll({
-                  strokeWidth: 3
-                });
-              }
-            })
-          })
-
-          // When legend item container is unhovered, make all series as they are
-          legend.itemContainers.template.events.on("pointerout", function (e) {
-            var itemContainer = e.target;
-            var series = itemContainer.dataItem.dataContext;
-
-            chart4.series.each(function (chartSeries) {
-              chartSeries.strokes.template.setAll({
-                strokeOpacity: 1,
-                strokeWidth: 1,
-                stroke: chartSeries.get("fill")
-              });
-            });
-          })
-
-          legend.itemContainers.template.set("width", am5.p100);
-          legend.valueLabels.template.set("forceHidden", true);
-
-          // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-          legend.data.setAll(chart4.series.values);
-
-          chart4.children.unshift(am5.Label.new(root4, {
-            text: chartTitleText,
-            fontSize: 14,
-            textAlign: "center",
-            x: am5.percent(50),
-            centerX: am5.percent(50)
-          }));
-
-          var exporting = am5plugins_exporting.Exporting.new(root4, {
-            menu: am5plugins_exporting.ExportingMenu.new(root4, {}),
-            dataSource: data
-          });
-
-          // Make stuff animate on load
-          // https://www.amcharts.com/docs/v5/concepts/animations/
-          chart4.appear(1000, 100);
-
-        })
-      }, 1000); // end am5.ready()
-
-    }
   })
     .fail(function () {
       console.log("Error while geting data from Aircarto API");
@@ -1633,22 +1314,6 @@ function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
         .getElementById("button15m")
         .children[0].removeAttribute("disabled");
     }
-
-    if (timeLengthGraph == 8760) {
-      document
-        .getElementById("button2m")
-        .children[0].setAttribute("disabled", "");
-      document
-        .getElementById("button15m")
-        .children[0].setAttribute("disabled", "");
-    } else {
-      document
-        .getElementById("button2m")
-        .children[0].removeAttribute("disabled");
-      document
-        .getElementById("button15m")
-        .children[0].removeAttribute("disabled");
-    }
   } else {
     load1NebuleAirModal(sensor, timeLengthGraph, timespanGraph);
     document.getElementById("modal_button1h").innerHTML =
@@ -1725,22 +1390,6 @@ function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
     } else {
       document
         .getElementById("modal_button1a")
-        .children[0].removeAttribute("disabled");
-    }
-
-    if (timeLengthGraph == 8760) {
-      document
-        .getElementById("modal_button2m")
-        .children[0].setAttribute("disabled", "");
-      document
-        .getElementById("modal_button15m")
-        .children[0].setAttribute("disabled", "");
-    } else {
-      document
-        .getElementById("modal_button2m")
-        .children[0].removeAttribute("disabled");
-      document
-        .getElementById("modal_button15m")
         .children[0].removeAttribute("disabled");
     }
 
@@ -1858,7 +1507,6 @@ function gaugeCreatorNebuleAir(root, measure, type, connected) {
     label.set("text", Math.round(value).toString());
     }else{
     label.set("text", "N/A");
-    console.log("NOT CONNECTED");
     }
 
     clockHand.pin.animate({
@@ -1885,7 +1533,6 @@ function gaugeCreatorNebuleAir(root, measure, type, connected) {
     });
   }, 1000);
   }else{
-    console.log("NOT CONNECTED 222");
     root.dom.style.opacity = 0.2;
     root.dom.style.filter = "alpha(opacity = 20)";
   }
@@ -2034,545 +1681,289 @@ function gaugeCreatorNebuleAir(root, measure, type, connected) {
   xAxis.get("renderer").grid.template.set("forceHidden", true);
 }
 
-function graphCreatorNebuleAir(root, data, type, timespan, id) {
+function graphCreatorNebuleAir(root, data, text) {
+
+if (data == null){
+
+  root.setThemes([
+    am5themes_Animated.new(root4)
+  ]);
+
+
+  // Create chart
+  // https://www.amcharts.com/docs/v5/charts/xy-chart/
+  let chart = root.container.children.push(am5xy.XYChart.new(root, {
+    panX: true,
+    panY: true,
+    wheelX: "panX",
+    wheelY: "zoomX",
+    maxTooltipDistance: 0,
+    pinchZoomX: true
+  }));
+
+  // Create axes
+  // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+  let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+    maxDeviation: 0.2,
+    baseInterval: {
+      timeUnit: "minute",
+      count: 1
+    },
+    renderer: am5xy.AxisRendererX.new(root, {}),
+    tooltip: am5.Tooltip.new(root, {})
+  }));
+
+  let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+    renderer: am5xy.AxisRendererY.new(root, {})
+  }));
+
+
+  let modal = am5.Modal.new(root, {
+    content: "Pas de donnée sur cette période"
+  });
+
+  modal.open();
+
+  let legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+    width: 400,
+    height: am5.percent(20),
+    layout: root.horizontalLayout,
+  }));
+
+
+  // When legend item container is hovered, dim all the series except the hovered one
+  legend.itemContainers.template.events.on("pointerover", function (e) {
+    let itemContainer = e.target;
+
+    // As series list is data of a legend, dataContext is series
+    var series = itemContainer.dataItem.dataContext;
+
+    chart.series.each(function (chartSeries) {
+      if (chartSeries != series) {
+        chartSeries.strokes.template.setAll({
+          strokeOpacity: 0.15,
+          stroke: am5.color(0x000000)
+        });
+      } else {
+        chartSeries.strokes.template.setAll({
+          strokeWidth: 3
+        });
+      }
+    })
+  })
+
+  // When legend item container is unhovered, make all series as they are
+  legend.itemContainers.template.events.on("pointerout", function (e) {
+    let itemContainer = e.target;
+    let series = itemContainer.dataItem.dataContext;
+
+    chart.series.each(function (chartSeries) {
+      chartSeries.strokes.template.setAll({
+        strokeOpacity: 1,
+        strokeWidth: 1,
+        stroke: chartSeries.get("fill")
+      });
+    });
+  })
+
+  legend.itemContainers.template.set("width", am5.p100);
+  legend.valueLabels.template.setAll({
+    width: am5.p100,
+    textAlign: "right"
+  });
+
+  // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+  legend.data.setAll(chart.series.values);
+
+  chart.children.unshift(am5.Label.new(root, {
+    text: chartTitleText,
+    fontSize: 14,
+    textAlign: "center",
+    x: am5.percent(50),
+    centerX: am5.percent(50)
+  }));
+
+
+  let exporting = am5plugins_exporting.Exporting.new(root, {
+    menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+    dataSource: data
+  });
+
+  // Make stuff animate on load
+  // https://www.amcharts.com/docs/v5/concepts/animations/
+  chart.appear(1000, 100);
+
+}else{
+
   let data_PM1 = data.map(function (e) {
-    return { value: e.PM1, date: new Date(e.time).getTime() };
+    return { value: e.PM1, date: new Date(e.time).getTime() }
   });
   let data_PM25 = data.map(function (e) {
-    return { value: e.PM25, date: new Date(e.time).getTime() };
+    return { value: e.PM25, date: new Date(e.time).getTime() }
   });
   let data_PM10 = data.map(function (e) {
-    return { value: e.PM10, date: new Date(e.time).getTime() };
+    return { value: e.PM10, date: new Date(e.time).getTime() }
   });
 
-  let idTitre = id.split("-")[1];
+  // Set themes
+          // https://www.amcharts.com/docs/v5/concepts/themes/ 
+          root.setThemes([
+            am5themes_Animated.new(root)
+          ]);
 
-  let chartTitleText = "";
-  chartTitleText += "NebuleAir-" + idTitre + ", ";
 
-  switch (timespan) {
-    case 2:
-      chartTitleText += "mesures à 2 minutes, ";
-      break;
-    case 15:
-      chartTitleText += "moyennes quart-horaires, ";
-      break;
-    case 60:
-      chartTitleText += "moyennes horaires, ";
-      break;
-    case 1440:
-      chartTitleText += "moyennes journalières, ";
-      break;
-  }
+          // Create chart
+          // https://www.amcharts.com/docs/v5/charts/xy-chart/
+          let chart = root.container.children.push(am5xy.XYChart.new(root4, {
+            panX: true,
+            panY: true,
+            wheelX: "panX",
+            wheelY: "zoomX",
+            maxTooltipDistance: 0,
+            // maxTooltipDistanceBy: "x",
+            pinchZoomX: true
+          }));
 
-  if (type == "PM") {
-    chartTitleText += "µg/m3";
+          // Create axes
+          // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+          let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+            maxDeviation: 0.2,
+            baseInterval: {
+              timeUnit: "minute",
+              count: 1
+            },
+            renderer: am5xy.AxisRendererX.new(root, {}),
+            tooltip: am5.Tooltip.new(root, {})
+          }));
 
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([am5themes_Animated.new(root)]);
+          let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+            renderer: am5xy.AxisRendererY.new(root, {})
+          }));
 
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    let chart = root.container.children.push(
-      am5xy.XYChart.new(root, {
-        panX: true,
-        panY: true,
-        wheelX: "panX",
-        wheelY: "zoomX",
-        maxTooltipDistance: 0,
-        pinchZoomX: true,
-      })
-    );
+          let series_PM1 = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM1",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
 
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    let xAxis = chart.xAxes.push(
-      am5xy.DateAxis.new(root, {
-        maxDeviation: 0.2,
-        baseInterval: {
-          timeUnit: "minute",
-          count: 1,
-        },
-        renderer: am5xy.AxisRendererX.new(root, {}),
-        tooltip: am5.Tooltip.new(root, {}),
-      })
-    );
+          series_PM1.data.setAll(data_PM1);
+          series_PM1.appear();
 
-    let yAxis = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {}),
-      })
-    );
+          let series_PM25 = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM2.5",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
 
-    let series_PM1 = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "PM1",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
+          series_PM25.data.setAll(data_PM25);
+          series_PM25.appear();
 
-    series_PM1.data.setAll(data_PM1);
-    series_PM1.appear();
 
-    let series_PM25 = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "PM2.5",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
+          let series_PM10 = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM10",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
 
-    series_PM25.data.setAll(data_PM25);
-    series_PM25.appear();
+          series_PM10.data.setAll(data_PM10);
+          series_PM10.appear();
 
-    let series_PM10 = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "PM10",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
+          // Add cursor
+          // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+          let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+            behavior: "zoomX",
+            xAxis: xAxis,
+            snapToSeries: [series_PM1, series_PM25, series_PM10],
+            // snapToSeriesBy: "x"
+          }));
+          cursor.lineX.set("visible", true);
+          cursor.lineY.set("visible", false);
 
-    series_PM10.data.setAll(data_PM10);
-    series_PM10.appear();
+          let legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+            width: 400,
+            height: am5.percent(20),
+            layout: root.horizontalLayout,
+          }));
 
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    var cursor = chart.set(
-      "cursor",
-      am5xy.XYCursor.new(root, {
-        behavior: "none",
-      })
-    );
-    cursor.lineY.set("visible", false);
 
-    var legend = chart.bottomAxesContainer.children.push(
-      am5.Legend.new(root, {
-        width: 400,
-        height: am5.percent(20),
-        layout: root.horizontalLayout,
-      })
-    );
+          // When legend item container is hovered, dim all the series except the hovered one
+          legend.itemContainers.template.events.on("pointerover", function (e) {
+            let itemContainer = e.target;
 
-    // When legend item container is hovered, dim all the series except the hovered one
-    legend.itemContainers.template.events.on("pointerover", function (e) {
-      var itemContainer = e.target;
+            // As series list is data of a legend, dataContext is series
+            let series = itemContainer.dataItem.dataContext;
 
-      // As series list is data of a legend, dataContext is series
-      var series = itemContainer.dataItem.dataContext;
+            chart.series.each(function (chartSeries) {
+              if (chartSeries != series) {
+                chartSeries.strokes.template.setAll({
+                  strokeOpacity: 0.15,
+                  stroke: am5.color(0x000000)
+                });
+              } else {
+                chartSeries.strokes.template.setAll({
+                  strokeWidth: 3
+                });
+              }
+            })
+          })
 
-      chart.series.each(function (chartSeries) {
-        if (chartSeries != series) {
-          chartSeries.strokes.template.setAll({
-            strokeOpacity: 0.15,
-            stroke: am5.color(0x000000),
+          // When legend item container is unhovered, make all series as they are
+          legend.itemContainers.template.events.on("pointerout", function (e) {
+            let itemContainer = e.target;
+            let series = itemContainer.dataItem.dataContext;
+
+            chart.series.each(function (chartSeries) {
+              chartSeries.strokes.template.setAll({
+                strokeOpacity: 1,
+                strokeWidth: 1,
+                stroke: chartSeries.get("fill")
+              });
+            });
+          })
+
+          legend.itemContainers.template.set("width", am5.p100);
+          legend.valueLabels.template.set("forceHidden", true);
+
+          // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+          legend.data.setAll(chart.series.values);
+
+          chart.children.unshift(am5.Label.new(root, {
+            text: text,
+            fontSize: 14,
+            textAlign: "center",
+            x: am5.percent(50),
+            centerX: am5.percent(50)
+          }));
+
+          let exporting = am5plugins_exporting.Exporting.new(root, {
+            menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+            dataSource: data
           });
-        } else {
-          chartSeries.strokes.template.setAll({
-            strokeWidth: 3,
-          });
-        }
-      });
-    });
 
-    // When legend item container is unhovered, make all series as they are
-    legend.itemContainers.template.events.on("pointerout", function (e) {
-      var itemContainer = e.target;
-      var series = itemContainer.dataItem.dataContext;
+          // Make stuff animate on load
+          // https://www.amcharts.com/docs/v5/concepts/animations/
+          chart.appear(1000, 100);
 
-      chart.series.each(function (chartSeries) {
-        chartSeries.strokes.template.setAll({
-          strokeOpacity: 1,
-          strokeWidth: 1,
-          stroke: chartSeries.get("fill"),
-        });
-      });
-    });
-
-    legend.itemContainers.template.set("width", am5.p100);
-    legend.valueLabels.template.setAll({
-      width: am5.p100,
-      textAlign: "right",
-    });
-
-    legend.valueLabels.template.set("forceHidden", true);
-
-    // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-    legend.data.setAll(chart.series.values);
-
-    chart.children.unshift(
-      am5.Label.new(root, {
-        text: chartTitleText,
-        fontSize: 14,
-        textAlign: "center",
-        x: am5.percent(50),
-        centerX: am5.percent(50),
-      })
-    );
-
-    var exporting = am5plugins_exporting.Exporting.new(root, {
-      menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-      dataSource: data,
-    });
-
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
-    chart.appear(1000, 100);
-  }
-
-  if (type == "THP") {
-    chartTitleText += "°C, %, hPa";
-
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([am5themes_Animated.new(root)]);
-
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    let chart = root.container.children.push(
-      am5xy.XYChart.new(root, {
-        panX: true,
-        panY: true,
-        wheelX: "panX",
-        wheelY: "zoomX",
-        maxTooltipDistance: 0,
-        pinchZoomX: true,
-      })
-    );
-
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    let xAxis = chart.xAxes.push(
-      am5xy.DateAxis.new(root, {
-        maxDeviation: 0.2,
-        baseInterval: {
-          timeUnit: "minute",
-          count: 1,
-        },
-        renderer: am5xy.AxisRendererX.new(root, {}),
-        tooltip: am5.Tooltip.new(root, {}),
-      })
-    );
-
-    let yAxisT = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {}),
-      })
-    );
-
-    let yAxisH = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {}),
-      })
-    );
-
-    let yAxisP = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {}),
-      })
-    );
-
-    let series_T = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "Temp.",
-        xAxis: xAxis,
-        yAxis: yAxisT,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
-
-    series_T.data.setAll(data_T);
-    series_T.appear();
-
-    let series_H = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "Hum. rel.",
-        xAxis: xAxis,
-        yAxis: yAxisH,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
-
-    series_H.data.setAll(data_H);
-    series_H.appear();
-
-    let series_P = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "Press.",
-        xAxis: xAxis,
-        yAxis: yAxisP,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
-
-    series_P.data.setAll(data_P);
-    series_P.appear();
-
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    var cursor = chart.set(
-      "cursor",
-      am5xy.XYCursor.new(root, {
-        behavior: "none",
-      })
-    );
-    cursor.lineY.set("visible", false);
-
-    var legend = chart.bottomAxesContainer.children.push(
-      am5.Legend.new(root, {
-        width: 400,
-        height: am5.percent(20),
-        layout: root.horizontalLayout,
-      })
-    );
-
-    // When legend item container is hovered, dim all the series except the hovered one
-    legend.itemContainers.template.events.on("pointerover", function (e) {
-      var itemContainer = e.target;
-
-      // As series list is data of a legend, dataContext is series
-      var series = itemContainer.dataItem.dataContext;
-
-      chart.series.each(function (chartSeries) {
-        if (chartSeries != series) {
-          chartSeries.strokes.template.setAll({
-            strokeOpacity: 0.15,
-            stroke: am5.color(0x000000),
-          });
-        } else {
-          chartSeries.strokes.template.setAll({
-            strokeWidth: 3,
-          });
-        }
-      });
-    });
-
-    // When legend item container is unhovered, make all series as they are
-    legend.itemContainers.template.events.on("pointerout", function (e) {
-      var itemContainer = e.target;
-      var series = itemContainer.dataItem.dataContext;
-
-      chart.series.each(function (chartSeries) {
-        chartSeries.strokes.template.setAll({
-          strokeOpacity: 1,
-          strokeWidth: 1,
-          stroke: chartSeries.get("fill"),
-        });
-      });
-    });
-
-    legend.itemContainers.template.set("width", am5.p100);
-    legend.valueLabels.template.setAll({
-      width: am5.p100,
-      textAlign: "right",
-    });
-
-    legend.valueLabels.template.set("forceHidden", true);
-
-    // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-    legend.data.setAll(chart.series.values);
-
-    chart.children.unshift(
-      am5.Label.new(root, {
-        text: chartTitleText,
-        fontSize: 14,
-        textAlign: "center",
-        x: am5.percent(50),
-        centerX: am5.percent(50),
-      })
-    );
-
-    var exporting = am5plugins_exporting.Exporting.new(root, {
-      menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-      dataSource: data,
-    });
-
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
-    chart.appear(1000, 100);
-  }
-
-  if (type == "COV") {
-    //FILTRER LE -1.0 ?
-    chartTitleText += "ppb";
-
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([am5themes_Animated.new(root)]);
-
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    let chart = root.container.children.push(
-      am5xy.XYChart.new(root, {
-        panX: true,
-        panY: true,
-        wheelX: "panX",
-        wheelY: "zoomX",
-        maxTooltipDistance: 0,
-        pinchZoomX: true,
-      })
-    );
-
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    let xAxis = chart.xAxes.push(
-      am5xy.DateAxis.new(root, {
-        maxDeviation: 0.2,
-        baseInterval: {
-          timeUnit: "minute",
-          count: 1,
-        },
-        renderer: am5xy.AxisRendererX.new(root, {}),
-        tooltip: am5.Tooltip.new(root, {}),
-      })
-    );
-
-    let yAxis = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {}),
-      })
-    );
-
-    let series_COV = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "COV",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
-        legendValueText: "{valueY}",
-        tooltip: am5.Tooltip.new(root, {
-          pointerOrientation: "horizontal",
-          labelText: "{valueY}",
-        }),
-      })
-    );
-
-    series_COV.data.setAll(data_COV);
-    series_COV.appear();
-
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    var cursor = chart.set(
-      "cursor",
-      am5xy.XYCursor.new(root, {
-        behavior: "none",
-      })
-    );
-    cursor.lineY.set("visible", false);
-
-    var legend = chart.bottomAxesContainer.children.push(
-      am5.Legend.new(root, {
-        width: 400,
-        height: am5.percent(20),
-        layout: root.horizontalLayout,
-      })
-    );
-
-    // When legend item container is hovered, dim all the series except the hovered one
-    legend.itemContainers.template.events.on("pointerover", function (e) {
-      var itemContainer = e.target;
-
-      // As series list is data of a legend, dataContext is series
-      var series = itemContainer.dataItem.dataContext;
-
-      chart.series.each(function (chartSeries) {
-        if (chartSeries != series) {
-          chartSeries.strokes.template.setAll({
-            strokeOpacity: 0.15,
-            stroke: am5.color(0x000000),
-          });
-        } else {
-          chartSeries.strokes.template.setAll({
-            strokeWidth: 3,
-          });
-        }
-      });
-    });
-
-    // When legend item container is unhovered, make all series as they are
-    legend.itemContainers.template.events.on("pointerout", function (e) {
-      var itemContainer = e.target;
-      var series = itemContainer.dataItem.dataContext;
-
-      chart.series.each(function (chartSeries) {
-        chartSeries.strokes.template.setAll({
-          strokeOpacity: 1,
-          strokeWidth: 1,
-          stroke: chartSeries.get("fill"),
-        });
-      });
-    });
-
-    legend.itemContainers.template.set("width", am5.p100);
-    legend.valueLabels.template.setAll({
-      width: am5.p100,
-      textAlign: "right",
-    });
-
-    legend.valueLabels.template.set("forceHidden", true);
-
-    // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-    legend.data.setAll(chart.series.values);
-
-    chart.children.unshift(
-      am5.Label.new(root, {
-        text: chartTitleText,
-        fontSize: 14,
-        textAlign: "center",
-        x: am5.percent(50),
-        centerX: am5.percent(50),
-      })
-    );
-
-    var exporting = am5plugins_exporting.Exporting.new(root, {
-      menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-      dataSource: data,
-    });
-
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
-    chart.appear(1000, 100);
-  }
+}
 }
