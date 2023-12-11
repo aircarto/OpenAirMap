@@ -1,18 +1,18 @@
 var options = {
-	"coordsCenter" : [43.29490421, 5.37188392],
-	"zoomLevel" : 15,
+	"coordsCenter": [43.29490421, 5.37188392],
+	"zoomLevel": 15,
 	"minZoom": 1,
 	"maxZoom": 21,
 	"compoundUpper": "PM25",
-	"timespanLower":2,
-	"timeLength":3,
-	"display":"nebuleair,sensorcommunity",
+	"timespanLower": 2,
+	"timeLength": 3,
+	"display": "nebuleair,sensorcommunity",
 	//"display":"nebuleair,sensorcommunity",
 	// "boundSW" : [42.91,4.16],
 	// "boundNE" : [45.22,7.83]
 
-	"boundSW" : [-90,-180],
-	"boundNE" : [90,180]
+	"boundSW": [-90, -180],
+	"boundNE": [90, 180]
 
 	// [[-90,-180],   [90,180]]
 	// Tiles

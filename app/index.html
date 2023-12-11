@@ -24,6 +24,9 @@
       crossorigin=""
     ></script>
 
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script> -->
+
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- Bootstrap 5.3.0 -->
@@ -47,33 +50,31 @@
     <script src="js_scripts/AtmoSudMicro.js"></script>
     <script src="js_scripts/sensorCommunity.js"></script>
     <script src="js_scripts/AtmoSudModelisation.js"></script>
-    <script src="js_scripts/api_purpleair.js"></script>
+    <!-- <script src="js_scripts/api_purpleair.js"></script> -->
     <script src="js_scripts/leaflet-velocity.min.js"></script>
+    <script src="js_scripts/wind.js"></script>
     <script src="js_scripts/config.js"></script>
     <script src="js_scripts/functions.js"></script>
 
-    <!-- PACA region if necessary -->
     <script src="geojson/paca.geojson"></script>
 
     <!-- style CSS  -->
     <link rel="stylesheet" href="style/style.css" />
     <link rel="stylesheet" href="style/leaflet-velocity.min.css" />
 
-    <!-- AmCharts Lib  -->
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/plugins/exporting.js"></script>
 
-    <!-- URL GPS Hash  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-hash/0.2.1/leaflet-hash.min.js"></script>
 
-    <!-- Screenshot (disabled)  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
 
-    <!-- Polygon inverter for PACA region (disabled)  -->
+    <!-- <script src="https://cdn.rawgit.com/hayeswise/Leaflet.PointInPolygon/v1.0.0/wise-leaflet-pip.js"></script> -->
+
     <script src="https://cdn.jsdelivr.net/npm/leaflet.snogylop@0.4.0/src/leaflet.snogylop.min.js"></script>
 
     <title>Open Air Map</title>
@@ -93,7 +94,7 @@
     <!-- LA CARTE -->
     <div id="map"></div>
 
-    <!-- Toast pour les messages-->
+    <!-- Toast de chargement des données -->
     <div class="toast-container position-fixed end-0 p-3" style="bottom: 10px">
       <div
         class="toast align-items-center text-bg-danger border-0"
@@ -211,7 +212,7 @@
 
     <!-- Logos -->
     <div id="div_logos">
-      <a href="https//aircarto.fr">
+      <a href="https://aircarto.fr">
         <img
           src="./img/LogoAirCarto.png"
           class="float-right"
@@ -383,6 +384,9 @@
       Faire une photo
     </button>
 
+    <!-- Les Logos -->
+    <!-- <div id="logoAirCarto"><a href="https://aircarto.fr/"><img src="img/logoAirCarto.png" alt=""></a></div> -->
+
     <!-- LE SIDE PANEL avec les graphiques (id "sidePanel") POUR DESKTOP -->
     <div class="row text-center">
       <div class="col-5" id="sidePanelCol">
@@ -401,7 +405,7 @@
               class="bi bi-aspect-ratio position-absolute bottom-0 end-0 me-1"
             ></i>
           </span>
-          <div class="card-body">
+          <br class="card-body">
             <!-- Nom du capteur en haut -->
             <!-- <h3 id="title_deviceName"></h3> -->
             <button
@@ -420,12 +424,6 @@
               frameborder="0"
             ></iframe>
             <div id="chartSensor2"></div>
-
-            <!-- <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the
-                        card's
-                        content.
-                    </p> -->
             <div id="historique">Historique</div>
             <span id="button1h"></span>
             <span id="button3h"></span>
@@ -439,6 +437,9 @@
             <span id="button15m"></span>
             <span id="button60m"></span>
             <span id="button1440m"></span>
+            </br>
+            <span id="btn_comp"></span>
+            <!-- <button class="btn btn-outline-primary" id="btn_comp">Comparaison</button> -->
           </div>
         </div>
       </div>
@@ -476,7 +477,6 @@
                 </div>
               </div>
               <div class="row">
-                <!-- <p> -->
                 L'application OpenAirMap est un projet open source porté par
                 AirCarto et AtmoSud pour afficher en temps réel les mesures de
                 qualité de l'air effectué par les stations de mesures et les
@@ -836,7 +836,6 @@
                     </tbody>
                   </table>
                 </div>
-                <!-- </p> -->
               </div>
             </div>
           </div>
@@ -889,7 +888,6 @@
       </div>
     </div>
 
-    <!-- Modal remplaçant le popup pour les smartphones -->
     <div
       class="modal fade"
       id="sensorPanel_Modal"
@@ -961,7 +959,6 @@
       </div>
     </div>
 
-    <!-- Modal remplaçant le popup pour les smartphones pour les stations AtmoSud sans valeur -->
     <div
       class="modal fade"
       id="sensorPanel_Modal2"
@@ -1006,21 +1003,249 @@
             </div>
           </div>
         </div>
-        '
       </div>
     </div>
 
-    <!-- Div pour les screenshots (désactivée) -->
     <!-- <div id="capture"></div> -->
 
     <script>
-        
-      //Test if Mobile
+
+      //Mobile Test
       const isMobile = mobileTest();
+      // const isMobile = true;
+
       console.log("Mobile: " + isMobile);
 
-      //Set the timespan from the options
-      switch (options.timespanLower) {
+      //Amcharts gauges
+      var root1;
+      var root2;
+      var root3;
+
+      //Amcharts chart
+      var root4; 
+
+      //Data recorders
+      var apiFetchNebuleAir = {
+        data: [],
+        timespan: null,
+        timestamp: null,
+      };
+      var apiFetchAtmoSudRef = {
+        data: [],
+        timespan: null,
+        timestamp: null,
+      };
+      var apiFetchAtmoSudRefList = [];
+      var apiFetchAtmoSudMicro = {
+        data: [],
+        timespan: null,
+        timestamp: null,
+      };
+      var apiFetchSensorCommunity = {
+        data: [],
+        timespan: null,
+        timestamp: null,
+      };
+      var apiFetchPurpleAir = {
+        data: [],
+        timespan: null,
+        timestamp: null,
+      };
+
+      //Leaflet stuff
+      let coordsCenter = options.coordsCenter;
+      let zoomLevel = options.zoomLevel;
+      var map = L.map("map", {
+        zoomControl: isMobile == true ? false : true,
+        minZoom: options.minZoom,
+        maxZoom: options.maxZoom,
+        renderer: L.canvas(),
+        maxBounds: L.latLngBounds(options.boundNE, options.boundSW),
+      });
+
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        }
+      ).addTo(map);
+
+      map.once("locationfound", function (ev) {
+        console.log(ev.latlng);
+      });
+
+      //Location test
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(goToPosition, notAllowed);
+      } else {
+        map.setView(coordsCenter, zoomLevel);
+      }
+
+      //Options reader in URL
+      const query = {
+        conentration: options.selection,
+        minutes: options.timespanLower,
+        affichage: options.display,
+      };
+
+      //Constantly activated function which read the URL parameters
+      (function () {
+        let telem;
+        try {
+          const search_values = location.search.split("?")[1].split("&");
+          console.log(location.search);
+          console.log(search_values);
+          for (let i = 0; i < search_values.length; i++) {
+            telem = search_values[i].split("=");
+            query[telem[0]] = "";
+            if (typeof telem[1] != "undefined") query[telem[0]] = telem[1];
+          }
+
+          switch (query.minutes) {
+            case "2":
+              options.timespanLower = 2;
+              break;
+            case "15":
+              options.timespanLower = 15;
+              console.log("TEST1");
+              break;
+            case "60":
+              options.timespanLower = 60;
+              break;
+            case "1440":
+              options.timespanLower = 1440;
+              break;
+          }
+
+          switch (options.timespanLower) {
+            case 2:
+              var date = new Date();
+              var hour = date.getHours();
+              var get_hour_minus1 = date.setHours(date.getHours() - 1);
+              var hour_minus1 = new Date(get_hour_minus1);
+              var hour0 = hour_minus1.getHours();
+              var min = date.getMinutes();
+              document.querySelector("#button_horloge").innerHTML =
+                hour + ":" + (min < 10 ? "0" : "") + min; //2min par défaut
+              break;
+            case 15:
+              var get_start = end.setMinutes(end.getMinutes() - 15);
+              var start = new Date(get_start);
+              var hour1 = start.getHours();
+              var min_ori1 = start.getMinutes();
+              if (min_ori1 <= 15) {
+                var min1 = 0;
+              } else if (min_ori1 > 15 && min_ori1 <= 30) {
+                var min1 = 15;
+              } else if (min_ori1 > 30 && min_ori1 <= 45) {
+                var min1 = 30;
+              } else {
+                var min1 = 45;
+              }
+
+              document.querySelector("#button_horloge").innerHTML =
+                hour1 +
+                ":" +
+                (min1 < 10 ? "0" : "") +
+                min1 +
+                " à " +
+                hour2 +
+                ":" +
+                (min2 < 10 ? "0" : "") +
+                min2;
+
+                console.log("TEST2");
+              break;
+            case 60:
+              var end = new Date();
+              var hour2 = end.getHours();
+              var min2 = end.getMinutes();
+              var get_start = end.setHours(end.getHours() - 1);
+              var start = new Date(get_start);
+              var hour1 = start.getHours();
+              var min1 = start.getMinutes();
+              // document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ;
+              document.querySelector("#button_horloge").innerHTML =
+                hour1 + ":" + "00" + " à " + hour2 + ":" + "00";
+              break;
+            case 1440:
+              var date = new Date();
+              var get_datemoins1 = date.setHours(date.getHours() - 24);
+              var datemoins1 = new Date(get_datemoins1);
+              var jour = datemoins1.getDate();
+              var mois = datemoins1.getMonth() + 1;
+              document.querySelector("#button_horloge").innerHTML =
+                (jour < 10 ? "0" : "") +
+                jour +
+                "/" +
+                (mois < 10 ? "0" : "") +
+                mois;
+              break;
+          }
+
+          switch (query.concentration) {
+            case "PM1":
+              options.compoundUpper = "PM1";
+              break;
+            case "PM25":
+              options.compoundUpper = "PM25";
+              break;
+            case "PM10":
+              options.compoundUpper = "PM10";
+              break;
+          }
+
+          options.display = "";
+
+          if (query.affichage.includes("nebuleair")) {
+            //$(document).ready(loadNebuleAir);
+            document.querySelector(
+              "#checkbox_micro_stationsParticuliers"
+            ).checked = true;
+            options.display += "nebuleair,";
+          }
+
+          if (query.affichage.includes("sensorcommunity")) {
+            //$(document).ready(loadSensorCommunity);
+            document.querySelector("#checkbox_sensor_community").checked = true;
+            options.display += "sensorcommunity,";
+          }
+
+          if (query.affichage.includes("purpleair")) {
+            //$(document).ready(loadPurpleAir);
+            document.querySelector("#checkbox_purpleAir").checked = true;
+            options.display += "purpleair,";
+          }
+
+          if (query.affichage.includes("atmosudmicro")) {
+            //$(document).ready(loadStationMicroAtmo);
+            document.querySelector(
+              "#checkbox_micro_stationsAtmoSud"
+            ).checked = true;
+            options.display += "atmosudmicro,";
+          }
+
+          if (query.affichage.includes("atmosudref")) {
+            //$(document).ready(loadStationRefAtmo);
+            document.querySelector(
+              "#checkbox_stationsRefAtmoSud"
+            ).checked = true;
+            options.display += "atmosudref,";
+          }
+        } catch (error) {
+          return;
+        }
+      })();
+
+      //Final parameters to load page
+      var compoundUpper = options.compoundUpper;
+      var timespanLower = options.timespanLower;
+      var timeLength = options.timeLength;
+      var display = options.display;
+
+      //Time generator
+      switch (timespanLower) {
         case 2:
           var date = new Date();
           var hour = date.getHours();
@@ -1032,10 +1257,25 @@
             hour + ":" + (min < 10 ? "0" : "") + min; //2min par défaut
           break;
         case 15:
+          var end = new Date();
+          var hour2 = end.getHours();
+          var min_ori2 = end.getMinutes();
+
+          if (min_ori2 <= 15) {
+            var min2 = 0;
+          } else if (min_ori2 > 15 && min_ori2 <= 30) {
+            var min2 = 15;
+          } else if (min_ori2 > 30 && min_ori2 <= 45) {
+            var min2 = 30;
+          } else {
+            var min2 = 45;
+          }
+
           var get_start = end.setMinutes(end.getMinutes() - 15);
           var start = new Date(get_start);
           var hour1 = start.getHours();
           var min_ori1 = start.getMinutes();
+
           if (min_ori1 <= 15) {
             var min1 = 0;
           } else if (min_ori1 > 15 && min_ori1 <= 30) {
@@ -1045,7 +1285,6 @@
           } else {
             var min1 = 45;
           }
-
           document.querySelector("#button_horloge").innerHTML =
             hour1 +
             ":" +
@@ -1079,85 +1318,6 @@
           break;
       }
 
-      //Roots for Amcharts charts
-      var root1;
-      var root2;
-      var root3;
-      var root4; 
-
-      //Json to save fetched data
-      var apiFetchNebuleAir = {
-        data: [],
-        timespan: null,
-        timestamp: null,
-      };
-      var apiFetchAtmoSudRef = {
-        data: [],
-        timespan: null,
-        timestamp: null,
-      };
-      var apiFetchAtmoSudRefList = [];
-      var apiFetchAtmoSudMicro = {
-        data: [],
-        timespan: null,
-        timestamp: null,
-      };
-      var apiFetchSensorCommunity = {
-        data: [],
-        timespan: null,
-        timestamp: null,
-      };
-      var apiFetchPurpleAir = {
-        data: [],
-        timespan: null,
-        timestamp: null,
-      };
-
-      let coordsCenter = options.coordsCenter;
-      let zoomLevel = options.zoomLevel;
-
-      //Leaflet map
-      var map = L.map("map", {
-        zoomControl: isMobile == true ? false : true,
-        minZoom: options.minZoom,
-        maxZoom: options.maxZoom,
-        renderer: L.canvas(),
-        maxBounds: L.latLngBounds(options.boundNE, options.boundSW),
-      });
-
-      //Leaflet Tiles
-      L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-        {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        }
-      ).addTo(map);
-
-      map.once("locationfound", function (ev) {
-        console.log(ev.latlng);
-      });
-
-      //Browser location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(goToPosition, notAllowed);
-      } else {
-        map.setView(coordsCenter, zoomLevel);
-      }
-
-      //Get options from URL
-      const query = {
-        conentration: options.selection,
-        minutes: options.timespanLower,
-        affichage: options.display,
-      };
-
-      var compoundUpper = options.compoundUpper;
-      var timespanLower = options.timespanLower;
-      var timeLength = options.timeLength;
-      var display = options.display;
-
-      //Change timespan etc. if option in the URL
       switch (timespanLower) {
         case 2:
           document
@@ -1228,7 +1388,7 @@
         $(document).ready(loadPurpleAir);
       }
 
-      //Put the Leaflet Hash in the URL after the options
+      //Put Leaflet Hash after options
       new L.Hash(map);
 
       if (location.hash) {
@@ -1237,10 +1397,10 @@
         zoomLevel = hash_params[0].substring(1);
       }
 
-      //Polygon for region PACA
+      //For region PACA if needed
       // var polygonPACA = L.geoJSON(paca,{fillOpacity:0.2, color:'black', weight:0, invert:true}).addTo(map);
 
-      //Prepare all the layer groups which will allow to display/hide the data
+      //All Layersgroups for display or hide
       var nebuleairParticuliers = new L.layerGroup();
       var sensorCommunity = new L.layerGroup();
       var stationsRefAtmoSud = new L.layerGroup();
@@ -1254,18 +1414,20 @@
         .querySelector("#button_screenshot")
         .addEventListener("click", screenShot);
 
-    //Load data according to checked sources
       if (
         document.querySelector("#checkbox_micro_stationsParticuliers").checked
       ) {
         map.addLayer(nebuleairParticuliers);
       }
+
       if (document.querySelector("#checkbox_sensor_community").checked) {
         map.addLayer(sensorCommunity);
       }
+
       if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
         map.addLayer(stationsRefAtmoSud);
       }
+
       if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
         map.addLayer(stationsMicroAtmoSud);
       }
@@ -1284,7 +1446,6 @@
         map.addLayer(purpleAir);
       }
 
-      //Eventlisteners for checkboxes
       document
         .querySelector("#checkbox_micro_stationsParticuliers")
         .addEventListener("change", switchNebuleAir);
@@ -1310,7 +1471,6 @@
         .querySelector("#checkbox_wind")
         .addEventListener("change", switchWind);
 
-      //Eventlisterners for Compounds
       document
         .querySelector("#button_PM1")
         .addEventListener("click", choosePM1);
@@ -1321,7 +1481,6 @@
         .querySelector("#button_PM10")
         .addEventListener("click", choosePM10);
 
-      //Eventlisterners for timespan
       document
         .querySelector("#btn_actuel")
         .addEventListener("click", chooseActuel);
@@ -1335,7 +1494,7 @@
         .querySelector("#btn_journalier")
         .addEventListener("click", choose1440);
 
-    //Repeaters
+      //Automatic reloaders
       setInterval(function () {
         console.log("Setinterval:");
         console.log(timespanLower * 60 * 1000);

@@ -14,6 +14,7 @@ function mobileTest() {
     return check;
   }
   
+  //Automatic location 
   function goToPosition(position) {
     map.setView(
       [position.coords.latitude, position.coords.longitude],
@@ -26,206 +27,7 @@ function mobileTest() {
     map.setView(coordsCenter, zoomLevel);
   }
  
-  (function () {
-    let telem;
-    try {
-      const search_values = location.search.split("?")[1].split("&");
-      console.log(location.search);
-      console.log(search_values);
-      for (let i = 0; i < search_values.length; i++) {
-        telem = search_values[i].split("=");
-        query[telem[0]] = "";
-        if (typeof telem[1] != "undefined") query[telem[0]] = telem[1];
-      }
-
-      switch (query.minutes) {
-        case "2":
-          options.timespanLower = 2;
-          break;
-        case "15":
-          options.timespanLower = 15;
-          break;
-        case "60":
-          options.timespanLower = 60;
-          break;
-        case "1440":
-          options.timespanLower = 1440;
-          break;
-      }
-
-      switch (options.timespanLower) {
-        case 2:
-          var date = new Date();
-          var hour = date.getHours();
-          var get_hour_minus1 = date.setHours(date.getHours() - 1);
-          var hour_minus1 = new Date(get_hour_minus1);
-          var hour0 = hour_minus1.getHours();
-          var min = date.getMinutes();
-          document.querySelector("#button_horloge").innerHTML =
-            hour + ":" + (min < 10 ? "0" : "") + min; //2min par défaut
-          break;
-        case 15:
-          var get_start = end.setMinutes(end.getMinutes() - 15);
-          var start = new Date(get_start);
-          var hour1 = start.getHours();
-          var min_ori1 = start.getMinutes();
-          if (min_ori1 <= 15) {
-            var min1 = 0;
-          } else if (min_ori1 > 15 && min_ori1 <= 30) {
-            var min1 = 15;
-          } else if (min_ori1 > 30 && min_ori1 <= 45) {
-            var min1 = 30;
-          } else {
-            var min1 = 45;
-          }
-
-          document.querySelector("#button_horloge").innerHTML =
-            hour1 +
-            ":" +
-            (min1 < 10 ? "0" : "") +
-            min1 +
-            " à " +
-            hour2 +
-            ":" +
-            (min2 < 10 ? "0" : "") +
-            min2;
-          break;
-        case 60:
-          var end = new Date();
-          var hour2 = end.getHours();
-          var min2 = end.getMinutes();
-          var get_start = end.setHours(end.getHours() - 1);
-          var start = new Date(get_start);
-          var hour1 = start.getHours();
-          var min1 = start.getMinutes();
-          // document.querySelector("#button_horloge").innerHTML = hour1 + ":" + (min1 < 10 ? '0' : '') + min1 + " à " + hour2 + ":" + (min2 < 10 ? '0' : '') + min2 ;
-          document.querySelector("#button_horloge").innerHTML =
-            hour1 + ":" + "00" + " à " + hour2 + ":" + "00";
-          break;
-        case 1440:
-          var date = new Date();
-          var get_datemoins1 = date.setHours(date.getHours() - 24);
-          var datemoins1 = new Date(get_datemoins1);
-          var jour = datemoins1.getDate();
-          var mois = datemoins1.getMonth() + 1;
-          document.querySelector("#button_horloge").innerHTML =
-            (jour < 10 ? "0" : "") +
-            jour +
-            "/" +
-            (mois < 10 ? "0" : "") +
-            mois;
-          break;
-      }
-
-      switch (query.concentration) {
-        case "PM1":
-          options.compoundUpper = "PM1";
-          break;
-        case "PM25":
-          options.compoundUpper = "PM25";
-          break;
-        case "PM10":
-          options.compoundUpper = "PM10";
-          break;
-      }
-
-      if (query.affichage.includes("nebuleair")) {
-        $(document).ready(loadNebuleAir);
-        document.querySelector(
-          "#checkbox_micro_stationsParticuliers"
-        ).checked = true;
-      }
-
-      if (query.affichage.includes("sensorcommunity")) {
-        $(document).ready(loadSensorCommunity);
-        document.querySelector("#checkbox_sensor_community").checked = true;
-      }
-
-      if (query.affichage.includes("purpleair")) {
-        $(document).ready(loadPurpleAir);
-        document.querySelector("#checkbox_purpleAir").checked = true;
-      }
-
-      if (query.affichage.includes("atmosudmicro")) {
-        $(document).ready(loadStationMicroAtmo);
-        document.querySelector(
-          "#checkbox_micro_stationsAtmoSud"
-        ).checked = true;
-      }
-
-      if (query.affichage.includes("atmosudref")) {
-        $(document).ready(loadStationRefAtmo);
-        document.querySelector(
-          "#checkbox_stationsRefAtmoSud"
-        ).checked = true;
-      }
-    } catch (error) {
-      return;
-    }
-  })();
-
-  function switchWind() {
-    // console.log(timespanLower);
-
-    if (
-      document.querySelector("#checkbox_wind").checked &&
-      timespanLower != 1440
-    ) {
-      const current_time = new Date();
-      let day = String(current_time.getFullYear());
-      if (current_time.getMonth() + 1 < 10) {
-        day += "0";
-        day += current_time.getMonth() + 1;
-      } else {
-        day += current_time.getMonth() + 1;
-      }
-      if (current_time.getDate() < 10) {
-        day += "0";
-        day += current_time.getDate();
-      } else {
-        day += current_time.getDate();
-      }
-      let hour = "";
-      if (current_time.getHours() < 10) {
-        hour += "0";
-        hour += current_time.getHours();
-      } else {
-        hour += current_time.getHours();
-      }
-
-      let wind_link =
-        "https://meteo.atmosud.org/" +
-        day +
-        "/wind_field_" +
-        hour +
-        ".json";
-      console.log(wind_link);
-
-      $.getJSON(wind_link, function (data) {
-        velocityLayer = L.velocityLayer({
-          displayValues: false,
-          displayOptions: false,
-          data: data,
-          velocityScale: 0.002,
-          colorScale: ["#71C3F2", "#447591"],
-          minVelocity: 1,
-          maxVelocity: 5,
-          overlayName: "wind_layer",
-        }).addTo(map);
-      });
-    } else {
-      if (velocityLayer != undefined) {
-        velocityLayer.remove();
-      }
-      if (timespanLower == 1440) {
-        openToast(
-          "La modélisation des vents présente des observations horaires."
-        );
-      }
-      document.querySelector("#checkbox_wind").checked = false;
-    }
-  }
-
+  //Events for button clicks to choose compound and timespan
   function choosePM1() {
     document
       .querySelector("#button_PM10")
@@ -781,926 +583,7 @@ function mobileTest() {
     setQueryString();
   }
 
-  //ouverture du toast
-  function openToast(message) {
-    let toastDiv = document.getElementById("messageToast");
-    document.getElementById("message").innerText = message;
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastDiv);
-    console.log("Showing message toast");
-    toastBootstrap.show();
-  }
-  
-  //fermeture du toast
-  function closeToast() {
-    let toastDiv = document.getElementById("messageToast");
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastDiv);
-    console.log("Hiding messgae toast");
-    toastBootstrap.hide();
-  }
-
-  //fonction qui ouvre le side panel
-  function OpenSidePanel(sensor) {
-    const targetDiv = document.getElementById("sidePanel");
-    console.log(sensor);
-    targetDiv.style.display = "block";
-    document.getElementById("title_deviceName").innerHTML = sensor;
-
-    switch (timespanLower) {
-      case 2:
-        var tempo = " à 2 minutes ";
-        break;
-      case 15:
-        var tempo = " quart-horaires ";
-        break;
-      case 60:
-        var tempo = " horaires ";
-        break;
-      case 1440:
-        var tempo = " journalières ";
-        break;
-    }
-
-    document.getElementById("card-title").innerText =
-      "Evolution des concentrations" +
-      tempo +
-      "en particules fines (µg/m3)";
-
-    var timespanGraph = timespanLower;
-    var timeLengthGraph;
-
-    switch (timespanLower) {
-      case 2:
-        timeLengthGraph = 3;
-        break;
-      case 15:
-        timeLengthGraph = 24;
-        break;
-      case 60:
-        timeLengthGraph = 48;
-        break;
-      case 1440:
-        timeLengthGraph = 168;
-        break;
-    }
-
-    if (sensor.includes("nebuleair")) {
-      let id = sensor.split("-")[1];
-      load1NebuleAir(id, timeLengthGraph, timespanGraph);
-      document.getElementById("chartSensor").style.display = "none";
-      document.getElementById("chartSensor2").style.display = "block";
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',1," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',3," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',24," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',48," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',168," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',720," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "',8760," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',2,false)" class="btn btn-outline-secondary btn-sm">2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
-
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    }
-
-    if (sensor.includes("Sensor.Community")) {
-      let id = sensor.split("-")[1];
-      document.getElementById("chartSensor").style.display = "block";
-      document.getElementById("chartSensor2").style.display = "none";
-      document.getElementById("chartSensor").src =
-        "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" +
-        id +
-        "&panelId=2";
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        sensor +
-        '\',1)" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        sensor +
-        '\', 3)" class="btn btn-outline-secondary btn-sm" disabled>3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        sensor +
-        '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        sensor +
-        '\', 48)" class="btn btn-outline-secondary btn-sm" disabled>48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        sensor +
-        '\', 168)" class="btn btn-outline-secondary btn-sm" disabled>1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        sensor +
-        '\', 720)" class="btn btn-outline-secondary btn-sm" disabled>1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
-        id +
-        "',8760," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" class="btn btn-secondary btn-sm">2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
-    }
-
-    if (sensor.includes("microstationAtmoSud")) {
-      var id = sensor.split("-")[1];
-      load1MicroAtmo(id, timeLength);
-      document.getElementById("chartSensor").style.display = "none";
-      document.getElementById("chartSensor2").style.display = "block";
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        '\',1)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        '\', 24)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-        id +
-        "',8760," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" class="btn btn-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
-    }
-
-    if (sensor.includes("stationRefAtmoSud")) {
-      var id = sensor.split("-")[1];
-      load1RefAtmo(id, timeLengthGraph, timespanGraph);
-      document.getElementById("chartSensor").style.display = "none";
-      document.getElementById("chartSensor2").style.display = "block";
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "', 1," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "', 3," +
-        timespanGraph +
-        ',false)" class="btn btn-secondary btn-sm">3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "', 24," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "', 48," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "', 168," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "', 720)," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "',8760," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
-
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    }
-
-    if (sensor.includes("purpleair")) {
-      let id = sensor.split("-")[1];
-      load1PurpleAir(id, timeLengthGraph, timespanGraph);
-      document.getElementById("chartSensor").style.display = "none";
-      document.getElementById("chartSensor2").style.display = "block";
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',1," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',3," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',24," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',48," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',168," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',720," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "',8760," +
-        timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimePurpleAir(\'' +
-        id +
-        "'," +
-        timeLengthGraph +
-        ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
-
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    }
-  }
-
-  //Functions for timelength and timespan in the charts
-  function chooseTimeSensorCommunity(sensor, hours) {
-    document.getElementById("chartSensor").src =
-      "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" +
-      sensor +
-      "&panelId=2";
-    if (hours == 24) {
-      document
-        .getElementById("button24h")
-        .classList.replace("btn-outline-secondary", "btn-secondary");
-    }
-  }
-
-  function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
-    timeLengthGraph = hours;
-    timespanGraph = timespan;
-    console.log(sensor);
-    console.log(hours);
-    console.log(timespan);
-
-    if (!modal) {
-      switch (timespan) {
-        case 2:
-          var tempo = " à 2 minutes ";
-          break;
-        case 15:
-          var tempo = " quart-horaires ";
-          break;
-        case 60:
-          var tempo = " horaires ";
-          break;
-        case 1440:
-          var tempo = " journalières ";
-          break;
-      }
-
-      document.getElementById("card-title").innerText =
-        "Evolution des concentrations" +
-        tempo +
-        "en particules fines (µg/m3)";
-      load1NebuleAir(sensor, timeLengthGraph, timespanGraph);
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',1," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',3," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',24," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',48," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',168," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',720," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',8760," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',2,false)" class="btn btn-outline-secondary btn-sm">2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLengthGraph, timespanGraph, modal);
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("button15m")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    } else {
-      load1NebuleAirModal(sensor, timeLengthGraph, timespanGraph);
-      document.getElementById("modal_button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',1," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("modal_button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',3," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">3h</button>';
-      document.getElementById("modal_button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',24," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("modal_button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',48," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("modal_button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',168," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("modal_button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',720," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("modal_button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "',8760," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("modal_button2m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',2,true)" class="btn btn-outline-secondary btn-sm">2m</button>';
-      document.getElementById("modal_button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("modal_button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("modal_button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLengthGraph, timespanGraph, modal);
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("modal_button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("modal_button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("modal_button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("modal_button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("modal_button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("modal_button15m")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("modal_button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("modal_button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("modal_button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("modal_button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    }
-  }
-
-  function chooseTimeAtmoMicro(sensor, hours) {
-    console.log(sensor);
-    console.log(hours);
-    load1MicroAtmo(sensor, hours);
-    buttonsSwitcher(hours, 15, false); //REVOIR
-  }
-
-  function chooseTimeAtmoRef(sensor, hours, timespan, modal) {
-    timeLengthGraph = hours;
-    timespanGraph = timespan;
-    console.log(sensor);
-    console.log(hours);
-    console.log(timespan);
-
-    if (!modal) {
-      load1RefAtmo(sensor, timeLengthGraph, timespanGraph);
-      document.getElementById("button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "',1," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 3," +
-        timespanGraph +
-        ',false)" class="btn btn-secondary btn-sm">3h</button>';
-      document.getElementById("button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 24," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 48," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 168," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 720," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "',8760," +
-        timespanGraph +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    } else {
-      load1RefAtmoModal(sensor, timeLengthGraph, timespanGraph);
-      document.getElementById("modal_button1h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "',1," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("modal_button3h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 3," +
-        timespanGraph +
-        ',true)" class="btn btn-secondary btn-sm">3h</button>';
-      document.getElementById("modal_button24h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 24," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      document.getElementById("modal_button48h").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 48," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
-      document.getElementById("modal_button1s").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 168," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-      document.getElementById("modal_button1m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "', 720," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-      document.getElementById("modal_button1a").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "',8760," +
-        timespanGraph +
-        ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("modal_button2m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-      document.getElementById("modal_button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
-      document.getElementById("modal_button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',60,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("modal_button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
-        sensor +
-        "'," +
-        timeLengthGraph +
-        ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-
-      buttonsSwitcher(timeLengthGraph, timespanGraph, true);
-      if (timespanGraph == 2 || timespanGraph == 15) {
-        document
-          .getElementById("modal_button1a")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("modal_button1a")
-          .children[0].removeAttribute("disabled");
-      }
-
-      if (timeLengthGraph == 8760) {
-        document
-          .getElementById("modal_button2m")
-          .children[0].setAttribute("disabled", "");
-        document
-          .getElementById("modal_button15m")
-          .children[0].setAttribute("disabled", "");
-      } else {
-        document
-          .getElementById("modal_button2m")
-          .children[0].removeAttribute("disabled");
-        document
-          .getElementById("modal_button15m")
-          .children[0].removeAttribute("disabled");
-      }
-    }
-  }
-
-  //fonction qui ferme le side panel
-  function CloseSidePanel() {
-    const targetDiv = document.getElementById("sidePanel");
-    targetDiv.style.display = "none";
-  }
-
+  //Common function to set the css of the buttons after clicks 
   function buttonsSwitcher(hours, timespan, modal) {
     console.log(hours);
     console.log(timespan);
@@ -2384,351 +1267,24 @@ function mobileTest() {
     }
   }
 
-  function setQueryString() {
-    let stateObj = {};
-    let new_path = window.location.pathname + "?";
+//Bootstrap functions
 
-    switch (timespanLower) {
-      case 2:
-        new_path += "minutes=2&";
-        break;
-      case 15:
-        new_path += "minutes=15&";
-        break;
-      case 60:
-        new_path += "minutes=60&";
-        break;
-      case 1440:
-        new_path += "minutes=1440&";
-        break;
-    }
-
-    switch (compoundUpper) {
-      case "PM1":
-        new_path += "concentration=PM1";
-        break;
-      case "PM25":
-        new_path += "concentration=PM25";
-        break;
-      case "PM10":
-        new_path += "concentration=PM10";
-        break;
-    }
-
-    let displayString = "";
-
-    if (
-      document.querySelector("#checkbox_micro_stationsParticuliers").checked
-    ) {
-      displayString += "nebuleair,";
-    }
-    if (document.querySelector("#checkbox_sensor_community").checked) {
-      displayString += "sensorcommunity,";
-    }
-    if (document.querySelector("#checkbox_purpleAir").checked) {
-      displayString += "purpleair,";
-    }
-    if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
-      displayString += "atmosudmicro,";
-    }
-    if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
-      displayString += "atmosudref,";
-    }
-    // if(document.querySelector("#checkbox_modelisationPMAtmoSud").checked){displayString += "sensorcommunity,"}
-    // if(document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked){displayString += "sensorcommunity,"}
-    // if(document.querySelector("#checkbox_wind").checked){displayString += "sensorcommunity,"}
-
-    new_path += "&affichage=" + displayString;
-
-    new_path = new_path + location.hash;
-    console.log(new_path);
-    history.pushState(stateObj, document.title, new_path);
+  function openToast(message) {
+    let toastDiv = document.getElementById("messageToast");
+    document.getElementById("message").innerText = message;
+    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastDiv);
+    console.log("Showing message toast");
+    toastBootstrap.show();
+  }
+  
+  function closeToast() {
+    let toastDiv = document.getElementById("messageToast");
+    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastDiv);
+    console.log("Hiding messgae toast");
+    toastBootstrap.hide();
   }
 
-  function screenShot() {
-    console.log("Screenshot!");
-
-    html2canvas(document.body, {
-      logging: false,
-      useCORS: true, //REVOIR LES OPTIONS
-    }).then(function (canvas) {
-      canvas.toBlob(function (blob) {
-        window.saveAs(blob, "screenshot.png");
-      });
-    });
-
-    // html2canvas(document.body,{
-    //     onrendered: function(canvas){
-
-    //         canvas.toBlob(function(blob) {
-    //         window.saveAs(blob, "screenshot.png");
-    //     });
-
-    //     }
-    // });
-
-    // html2canvas(document.body).then(function(canvas) {
-    // var link =  document.createElement("a");
-    // link.setAttribute('download', 'MintyPaper.png');
-    // link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-    // link.click();
-    // });
-  }
-
-  function timeDateCounter(timestamp) {
-    var timestamp_UTC;
-    // const UTCoffset = -new Date().getTimezoneOffset() / 60;
-    // const DST = new Date().isDstObserved();
-    // console.log(UTCoffset);
-    // console.log(DST);
-
-    //console.log(timestamp.replace(' ','T') + '.000Z');
-    var isSafari =
-      /constructor/i.test(window.HTMLElement) ||
-      (function (p) {
-        return p.toString() === "[object SafariRemoteNotification]";
-      })(
-        !window["safari"] ||
-          (typeof safari !== "undefined" &&
-            window["safari"].pushNotification)
-      );
-    // console.log(isSafari);
-
-    if (isSafari) {
-      if (timestamp != null) {
-        if (typeof timestamp == "string") {
-          if (!timestamp.includes("T")) {
-            timestamp_UTC = new Date(
-              timestamp.replace(" ", "T") + "+00:00"
-            );
-          } else {
-            timestamp_UTC = new Date(timestamp);
-          }
-        } else {
-          timestamp_UTC = new Date(timestamp);
-        }
-      } else {
-        return " pas de donnée disponible";
-      }
-    } else {
-      if (timestamp != null) {
-        if (typeof timestamp == "string") {
-          if (!timestamp.includes("T")) {
-            timestamp_UTC = new Date(
-              timestamp.replace(" ", "T") + "+00:00"
-            );
-          } else {
-            timestamp_UTC = new Date(timestamp);
-          }
-        } else {
-          timestamp_UTC = new Date(timestamp);
-        }
-      } else {
-        return " pas de donnée disponible";
-      }
-    }
-
-    // console.log(timestamp_UTC);
-    const now = new Date(Date.now());
-
-    // let difference = now.getTime() - timestamp_UTC.getTime();
-
-    let difference = Math.floor((now - timestamp_UTC) / 86400000);
-    // console.log(difference);
-    // console.log(now - timestamp_UTC);
-
-    var date_texte = "";
-    let horaire_texte = "";
-
-    switch (difference) {
-      case 0:
-        if (now.getDay() == timestamp_UTC.getDay()) {
-          date_texte = " aujourd'hui";
-        } else {
-          date_texte = " hier";
-        }
-        break;
-      case 1:
-        date_texte = " hier";
-        break;
-      case 2:
-        date_texte = " avant-hier";
-        break;
-      default:
-        date_texte += "il y a " + String(difference) + " jours";
-      //     if(timestamp_UTC.getDate()< 10){
-      //     date_texte += "0";
-      //     date_texte += timestamp_UTC.getDate();
-      //   }else{
-      //     date_texte += timestamp_UTC.getDate();
-      //   }
-      //   date_texte += "/";
-      //   if((timestamp_UTC.getMonth()+1)< 10){
-      //     date_texte += "0";
-      //     date_texte += (timestamp_UTC.getMonth()+1);
-      //   }else{
-      //     date_texte += (timestamp_UTC.getMonth()+1);
-      //   }
-      //   date_texte += "/";
-      //   date_texte += timestamp_UTC.getFullYear();
-    }
-
-    //horaire
-    if (timestamp_UTC.getHours() < 10) {
-      horaire_texte += "0";
-      horaire_texte += timestamp_UTC.getHours();
-    } else {
-      horaire_texte += timestamp_UTC.getHours();
-    }
-    horaire_texte += "h";
-    if (timestamp_UTC.getMinutes() < 10) {
-      horaire_texte += "0";
-      horaire_texte += timestamp_UTC.getMinutes();
-    } else {
-      horaire_texte += timestamp_UTC.getMinutes();
-    }
-
-    return date_texte + " à " + horaire_texte;
-  }
-
-  function timeDateCounter2(timestamp, timestamp2) {
-    var timestamp_UTC;
-    var isSafari =
-      /constructor/i.test(window.HTMLElement) ||
-      (function (p) {
-        return p.toString() === "[object SafariRemoteNotification]";
-      })(
-        !window["safari"] ||
-          (typeof safari !== "undefined" &&
-            window["safari"].pushNotification)
-      );
-    // console.log(isSafari);
-
-    if (isSafari) {
-      if (timestamp != null) {
-        if (typeof timestamp == "string") {
-          if (!timestamp.includes("T")) {
-            timestamp_UTC = new Date(
-              timestamp.replace(" ", "T") + "+00:00"
-            );
-          } else {
-            timestamp_UTC = new Date(timestamp);
-          }
-        } else {
-          timestamp_UTC = new Date(timestamp);
-        }
-      } else {
-        if (timestamp2 != null) {
-          if (typeof timestamp2 == "string") {
-            if (!timestamp2.includes("T")) {
-              timestamp_UTC = new Date(
-                timestamp2.replace(" ", "T") + "+00:00"
-              );
-            } else {
-              timestamp_UTC = new Date(timestamp2);
-            }
-          } else {
-            timestamp_UTC = new Date(timestamp2);
-          }
-        } else {
-          return " pas de donnée disponible";
-        }
-      }
-    } else {
-      if (timestamp != null) {
-        if (typeof timestamp == "string") {
-          if (!timestamp.includes("T")) {
-            timestamp_UTC = new Date(
-              timestamp.replace(" ", "T") + "+00:00"
-            );
-          } else {
-            timestamp_UTC = new Date(timestamp);
-          }
-        } else {
-          timestamp_UTC = new Date(timestamp);
-        }
-      } else {
-        if (timestamp2 != null) {
-          if (typeof timestamp2 == "string") {
-            if (!timestamp2.includes("T")) {
-              timestamp_UTC = new Date(
-                timestamp2.replace(" ", "T") + "+00:00"
-              );
-            } else {
-              timestamp_UTC = new Date(timestamp2);
-            }
-          } else {
-            timestamp_UTC = new Date(timestamp2);
-          }
-        } else {
-          return " pas de donnée disponible";
-        }
-      }
-    }
-
-    // console.log(timestamp_UTC);
-    const now = new Date(Date.now());
-
-    // let difference = now.getTime() - timestamp_UTC.getTime();
-
-    let difference = Math.floor((now - timestamp_UTC) / 86400000);
-    // console.log(difference);
-    // console.log(now - timestamp_UTC);
-
-    var date_texte = "";
-    let horaire_texte = "";
-
-    switch (difference) {
-      case 0:
-        if (now.getDay() == timestamp_UTC.getDay()) {
-          date_texte = " aujourd'hui";
-        } else {
-          date_texte = " hier";
-        }
-        break;
-      case 1:
-        date_texte = " hier";
-        break;
-      case 2:
-        date_texte = " avant-hier";
-        break;
-      default:
-        date_texte += "il y a " + String(difference) + " jours";
-      //     if(timestamp_UTC.getDate()< 10){
-      //     date_texte += "0";
-      //     date_texte += timestamp_UTC.getDate();
-      //   }else{
-      //     date_texte += timestamp_UTC.getDate();
-      //   }
-      //   date_texte += "/";
-      //   if((timestamp_UTC.getMonth()+1)< 10){
-      //     date_texte += "0";
-      //     date_texte += (timestamp_UTC.getMonth()+1);
-      //   }else{
-      //     date_texte += (timestamp_UTC.getMonth()+1);
-      //   }
-      //   date_texte += "/";
-      //   date_texte += timestamp_UTC.getFullYear();
-    }
-
-    //horaire
-    if (timestamp_UTC.getHours() < 10) {
-      horaire_texte += "0";
-      horaire_texte += timestamp_UTC.getHours();
-    } else {
-      horaire_texte += timestamp_UTC.getHours();
-    }
-    horaire_texte += "h";
-    if (timestamp_UTC.getMinutes() < 10) {
-      horaire_texte += "0";
-      horaire_texte += timestamp_UTC.getMinutes();
-    } else {
-      horaire_texte += timestamp_UTC.getMinutes();
-    }
-
-    return date_texte + " à " + horaire_texte;
-  }
-
+  //Modal for Smartphones
   function modalCreator(type, data1, data2, data3, data4) {
     if (type == "nebuleair") {
       document.getElementById("modal_logo").src = "img/LogoNebuleAir.png";
@@ -3314,818 +1870,794 @@ function mobileTest() {
     }
   }
 
-  function graphCreator(root, data, type, timespan, id) {
-    let data_PM1 = data.map(function (e) {
-      return { value: e.PM1, date: new Date(e.time).getTime() };
-    });
-    let data_PM25 = data.map(function (e) {
-      return { value: e.PM25, date: new Date(e.time).getTime() };
-    });
-    let data_PM10 = data.map(function (e) {
-      return { value: e.PM10, date: new Date(e.time).getTime() };
-    });
 
-    let data_T = data.map(function (e) {
-      return { value: e.TEMP, date: new Date(e.time).getTime() };
-    });
+  //SidePanel for Desktop Computer
+  function OpenSidePanel(sensor) {
+    const targetDiv = document.getElementById("sidePanel");
+    console.log(sensor);
+    targetDiv.style.display = "block";
+    document.getElementById("title_deviceName").innerHTML = sensor;
 
-    let data_H = data.map(function (e) {
-      return { value: e.HUM, date: new Date(e.time).getTime() };
-    });
-
-    let data_P = data.map(function (e) {
-      return { value: e.PRESS, date: new Date(e.time).getTime() };
-    });
-
-    let data_COV = data.map(function (e) {
-      return { value: e.COV, date: new Date(e.time).getTime() };
-    });
-
-    let idTitre = id.split("-")[1];
-
-    let chartTitleText = "";
-    chartTitleText += "NebuleAir-" + idTitre + ", ";
-
-    switch (timespan) {
+    switch (timespanLower) {
       case 2:
-        chartTitleText += "mesures à 2 minutes, ";
+        var tempo = " à 2 minutes ";
         break;
       case 15:
-        chartTitleText += "moyennes quart-horaires, ";
+        var tempo = " quart-horaires ";
         break;
       case 60:
-        chartTitleText += "moyennes horaires, ";
+        var tempo = " horaires ";
         break;
       case 1440:
-        chartTitleText += "moyennes journalières, ";
+        var tempo = " journalières ";
         break;
     }
 
-    if (type == "PM") {
-      chartTitleText += "µg/m3";
+    document.getElementById("card-title").innerText =
+      "Evolution des concentrations" +
+      tempo +
+      "en particules fines (µg/m3)";
 
-      // Set themes
-      // https://www.amcharts.com/docs/v5/concepts/themes/
-      root.setThemes([am5themes_Animated.new(root)]);
+    var timespanGraph = timespanLower;
+    var timeLengthGraph;
 
-      // Create chart
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/
-      let chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-          panX: true,
-          panY: true,
-          wheelX: "panX",
-          wheelY: "zoomX",
-          maxTooltipDistance: 0,
-          pinchZoomX: true,
-        })
-      );
-
-      // Create axes
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-      let xAxis = chart.xAxes.push(
-        am5xy.DateAxis.new(root, {
-          maxDeviation: 0.2,
-          baseInterval: {
-            timeUnit: "minute",
-            count: 1,
-          },
-          renderer: am5xy.AxisRendererX.new(root, {}),
-          tooltip: am5.Tooltip.new(root, {}),
-        })
-      );
-
-      let yAxis = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-          renderer: am5xy.AxisRendererY.new(root, {}),
-        })
-      );
-
-      let series_PM1 = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "PM1",
-          xAxis: xAxis,
-          yAxis: yAxis,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
-
-      series_PM1.data.setAll(data_PM1);
-      series_PM1.appear();
-
-      let series_PM25 = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "PM2.5",
-          xAxis: xAxis,
-          yAxis: yAxis,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
-
-      series_PM25.data.setAll(data_PM25);
-      series_PM25.appear();
-
-      let series_PM10 = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "PM10",
-          xAxis: xAxis,
-          yAxis: yAxis,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
-
-      series_PM10.data.setAll(data_PM10);
-      series_PM10.appear();
-
-      // Add cursor
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-      var cursor = chart.set(
-        "cursor",
-        am5xy.XYCursor.new(root, {
-          behavior: "none",
-        })
-      );
-      cursor.lineY.set("visible", false);
-
-      var legend = chart.bottomAxesContainer.children.push(
-        am5.Legend.new(root, {
-          width: 400,
-          height: am5.percent(20),
-          layout: root.horizontalLayout,
-        })
-      );
-
-      // When legend item container is hovered, dim all the series except the hovered one
-      legend.itemContainers.template.events.on("pointerover", function (e) {
-        var itemContainer = e.target;
-
-        // As series list is data of a legend, dataContext is series
-        var series = itemContainer.dataItem.dataContext;
-
-        chart.series.each(function (chartSeries) {
-          if (chartSeries != series) {
-            chartSeries.strokes.template.setAll({
-              strokeOpacity: 0.15,
-              stroke: am5.color(0x000000),
-            });
-          } else {
-            chartSeries.strokes.template.setAll({
-              strokeWidth: 3,
-            });
-          }
-        });
-      });
-
-      // When legend item container is unhovered, make all series as they are
-      legend.itemContainers.template.events.on("pointerout", function (e) {
-        var itemContainer = e.target;
-        var series = itemContainer.dataItem.dataContext;
-
-        chart.series.each(function (chartSeries) {
-          chartSeries.strokes.template.setAll({
-            strokeOpacity: 1,
-            strokeWidth: 1,
-            stroke: chartSeries.get("fill"),
-          });
-        });
-      });
-
-      legend.itemContainers.template.set("width", am5.p100);
-      legend.valueLabels.template.setAll({
-        width: am5.p100,
-        textAlign: "right",
-      });
-
-      legend.valueLabels.template.set("forceHidden", true);
-
-      // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-      legend.data.setAll(chart.series.values);
-
-      chart.children.unshift(
-        am5.Label.new(root, {
-          text: chartTitleText,
-          fontSize: 14,
-          textAlign: "center",
-          x: am5.percent(50),
-          centerX: am5.percent(50),
-        })
-      );
-
-      var exporting = am5plugins_exporting.Exporting.new(root, {
-        menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-        dataSource: data,
-      });
-
-      // Make stuff animate on load
-      // https://www.amcharts.com/docs/v5/concepts/animations/
-      chart.appear(1000, 100);
+    switch (timespanLower) {
+      case 2:
+        timeLengthGraph = 3;
+        break;
+      case 15:
+        timeLengthGraph = 24;
+        break;
+      case 60:
+        timeLengthGraph = 48;
+        break;
+      case 1440:
+        timeLengthGraph = 168;
+        break;
     }
 
-    if (type == "THP") {
-      chartTitleText += "°C, %, hPa";
+    if (sensor.includes("nebuleair")) {
+      let id = sensor.split("-")[1];
+      load1NebuleAir(id, timeLengthGraph, timespanGraph);
+      document.getElementById("chartSensor").style.display = "none";
+      document.getElementById("chartSensor2").style.display = "block";
+      document.getElementById("button1h").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',1," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button3h").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',3," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
+      document.getElementById("button24h").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',24," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      document.getElementById("button48h").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',48," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+      document.getElementById("button1s").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',168," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+      document.getElementById("button1m").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',720," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+      document.getElementById("button1a").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "',8760," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+      document.getElementById("button2m").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',2,false)" class="btn btn-outline-secondary btn-sm">2m</button>';
+      document.getElementById("button15m").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+      document.getElementById("button60m").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button1440m").innerHTML =
+        '<button type="button" onclick="chooseTimeNebuleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
 
-      // Set themes
-      // https://www.amcharts.com/docs/v5/concepts/themes/
-      root.setThemes([am5themes_Animated.new(root)]);
+      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
 
-      // Create chart
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/
-      let chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-          panX: true,
-          panY: true,
-          wheelX: "panX",
-          wheelY: "zoomX",
-          maxTooltipDistance: 0,
-          pinchZoomX: true,
-        })
-      );
+      if (timespanGraph == 2 || timespanGraph == 15) {
+        document
+          .getElementById("button1a")
+          .children[0].setAttribute("disabled", "");
+      } else {
+        document
+          .getElementById("button1a")
+          .children[0].removeAttribute("disabled");
+      }
 
-      // Create axes
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-      let xAxis = chart.xAxes.push(
-        am5xy.DateAxis.new(root, {
-          maxDeviation: 0.2,
-          baseInterval: {
-            timeUnit: "minute",
-            count: 1,
-          },
-          renderer: am5xy.AxisRendererX.new(root, {}),
-          tooltip: am5.Tooltip.new(root, {}),
-        })
-      );
-
-      let yAxisT = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-          renderer: am5xy.AxisRendererY.new(root, {}),
-        })
-      );
-
-      let yAxisH = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-          renderer: am5xy.AxisRendererY.new(root, {}),
-        })
-      );
-
-      let yAxisP = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-          renderer: am5xy.AxisRendererY.new(root, {}),
-        })
-      );
-
-      let series_T = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "Temp.",
-          xAxis: xAxis,
-          yAxis: yAxisT,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
-
-      series_T.data.setAll(data_T);
-      series_T.appear();
-
-      let series_H = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "Hum. rel.",
-          xAxis: xAxis,
-          yAxis: yAxisH,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
-
-      series_H.data.setAll(data_H);
-      series_H.appear();
-
-      let series_P = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "Press.",
-          xAxis: xAxis,
-          yAxis: yAxisP,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
-
-      series_P.data.setAll(data_P);
-      series_P.appear();
-
-      // Add cursor
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-      var cursor = chart.set(
-        "cursor",
-        am5xy.XYCursor.new(root, {
-          behavior: "none",
-        })
-      );
-      cursor.lineY.set("visible", false);
-
-      var legend = chart.bottomAxesContainer.children.push(
-        am5.Legend.new(root, {
-          width: 400,
-          height: am5.percent(20),
-          layout: root.horizontalLayout,
-        })
-      );
-
-      // When legend item container is hovered, dim all the series except the hovered one
-      legend.itemContainers.template.events.on("pointerover", function (e) {
-        var itemContainer = e.target;
-
-        // As series list is data of a legend, dataContext is series
-        var series = itemContainer.dataItem.dataContext;
-
-        chart.series.each(function (chartSeries) {
-          if (chartSeries != series) {
-            chartSeries.strokes.template.setAll({
-              strokeOpacity: 0.15,
-              stroke: am5.color(0x000000),
-            });
-          } else {
-            chartSeries.strokes.template.setAll({
-              strokeWidth: 3,
-            });
-          }
-        });
-      });
-
-      // When legend item container is unhovered, make all series as they are
-      legend.itemContainers.template.events.on("pointerout", function (e) {
-        var itemContainer = e.target;
-        var series = itemContainer.dataItem.dataContext;
-
-        chart.series.each(function (chartSeries) {
-          chartSeries.strokes.template.setAll({
-            strokeOpacity: 1,
-            strokeWidth: 1,
-            stroke: chartSeries.get("fill"),
-          });
-        });
-      });
-
-      legend.itemContainers.template.set("width", am5.p100);
-      legend.valueLabels.template.setAll({
-        width: am5.p100,
-        textAlign: "right",
-      });
-
-      legend.valueLabels.template.set("forceHidden", true);
-
-      // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-      legend.data.setAll(chart.series.values);
-
-      chart.children.unshift(
-        am5.Label.new(root, {
-          text: chartTitleText,
-          fontSize: 14,
-          textAlign: "center",
-          x: am5.percent(50),
-          centerX: am5.percent(50),
-        })
-      );
-
-      var exporting = am5plugins_exporting.Exporting.new(root, {
-        menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-        dataSource: data,
-      });
-
-      // Make stuff animate on load
-      // https://www.amcharts.com/docs/v5/concepts/animations/
-      chart.appear(1000, 100);
+      if (timeLengthGraph == 8760) {
+        document
+          .getElementById("button2m")
+          .children[0].setAttribute("disabled", "");
+        document
+          .getElementById("button15m")
+          .children[0].setAttribute("disabled", "");
+      } else {
+        document
+          .getElementById("button2m")
+          .children[0].removeAttribute("disabled");
+        document
+          .getElementById("button15m")
+          .children[0].removeAttribute("disabled");
+      }
     }
 
-    if (type == "COV") {
-      //FILTRER LE -1.0 ?
-      chartTitleText += "ppb";
+    if (sensor.includes("Sensor.Community")) {
+      let id = sensor.split("-")[1];
+      document.getElementById("chartSensor").style.display = "block";
+      document.getElementById("chartSensor2").style.display = "none";
+      document.getElementById("chartSensor").src =
+        "https://api-rrd.madavi.de:3000/grafana/d-solo/000000004/single-sensor-view-for-map?orgId=1&var-node=" +
+        id +
+        "&panelId=2";
+      document.getElementById("button1h").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        sensor +
+        '\',1)" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+      document.getElementById("button3h").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        sensor +
+        '\', 3)" class="btn btn-outline-secondary btn-sm" disabled>3h</button>';
+      document.getElementById("button24h").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        sensor +
+        '\', 24)" class="btn btn-secondary btn-sm">24h</button>';
+      document.getElementById("button48h").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        sensor +
+        '\', 48)" class="btn btn-outline-secondary btn-sm" disabled>48h</button>';
+      document.getElementById("button1s").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        sensor +
+        '\', 168)" class="btn btn-outline-secondary btn-sm" disabled>1 semaine</button>';
+      document.getElementById("button1m").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        sensor +
+        '\', 720)" class="btn btn-outline-secondary btn-sm" disabled>1 mois</button>';
+      document.getElementById("button1a").innerHTML =
+        '<button type="button" onclick="chooseTimeSensorCommunity(\'' +
+        id +
+        "',8760," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
+      document.getElementById("button2m").innerHTML =
+        '<button type="button" class="btn btn-secondary btn-sm">2m</button>';
+      document.getElementById("button15m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
+      document.getElementById("button60m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+      document.getElementById("button1440m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+    }
 
-      // Set themes
-      // https://www.amcharts.com/docs/v5/concepts/themes/
-      root.setThemes([am5themes_Animated.new(root)]);
+    if (sensor.includes("microstationAtmoSud")) {
+      var id = sensor.split("-")[1];
+      load1MicroAtmo(id, timeLength);
+      document.getElementById("chartSensor").style.display = "none";
+      document.getElementById("chartSensor2").style.display = "block";
+      document.getElementById("button1h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\',1)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button3h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+      document.getElementById("button24h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\', 24)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      document.getElementById("button48h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
+      document.getElementById("button1s").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+      document.getElementById("button1m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+      document.getElementById("button1a").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "',8760," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
+      document.getElementById("button2m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+      document.getElementById("button15m").innerHTML =
+        '<button type="button" class="btn btn-secondary btn-sm">15m</button>';
+      document.getElementById("button60m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+      document.getElementById("button1440m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+    }
 
-      // Create chart
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/
-      let chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-          panX: true,
-          panY: true,
-          wheelX: "panX",
-          wheelY: "zoomX",
-          maxTooltipDistance: 0,
-          pinchZoomX: true,
-        })
-      );
+    if (sensor.includes("stationRefAtmoSud")) {
+      var id = sensor.split("-")[1];
+      load1RefAtmo(id, timeLengthGraph, timespanGraph);
+      document.getElementById("chartSensor").style.display = "none";
+      document.getElementById("chartSensor2").style.display = "block";
+      document.getElementById("button1h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "', 1," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button3h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "', 3," +
+        timespanGraph +
+        ',false)" class="btn btn-secondary btn-sm">3h</button>';
+      document.getElementById("button24h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "', 24," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      document.getElementById("button48h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "', 48," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+      document.getElementById("button1s").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "', 168," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+      document.getElementById("button1m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "', 720)," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+      document.getElementById("button1a").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "',8760," +
+        timespanGraph +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+      document.getElementById("button2m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+      document.getElementById("button15m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+      document.getElementById("button60m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button1440m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoRef(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
 
-      // Create axes
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-      let xAxis = chart.xAxes.push(
-        am5xy.DateAxis.new(root, {
-          maxDeviation: 0.2,
-          baseInterval: {
-            timeUnit: "minute",
-            count: 1,
-          },
-          renderer: am5xy.AxisRendererX.new(root, {}),
-          tooltip: am5.Tooltip.new(root, {}),
-        })
-      );
+      if (timespanGraph == 2 || timespanGraph == 15) {
+        document
+          .getElementById("button1a")
+          .children[0].setAttribute("disabled", "");
+      } else {
+        document
+          .getElementById("button1a")
+          .children[0].removeAttribute("disabled");
+      }
 
-      let yAxis = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-          renderer: am5xy.AxisRendererY.new(root, {}),
-        })
-      );
+      if (timeLengthGraph == 8760) {
+        document
+          .getElementById("button2m")
+          .children[0].setAttribute("disabled", "");
+        document
+          .getElementById("button15m")
+          .children[0].setAttribute("disabled", "");
+      } else {
+        document
+          .getElementById("button2m")
+          .children[0].removeAttribute("disabled");
+        document
+          .getElementById("button15m")
+          .children[0].removeAttribute("disabled");
+      }
+    }
 
-      let series_COV = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: "COV",
-          xAxis: xAxis,
-          yAxis: yAxis,
-          valueYField: "value",
-          valueXField: "date",
-          legendValueText: "{valueY}",
-          tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}",
-          }),
-        })
-      );
+    if (sensor.includes("purpleair")) {
+      let id = sensor.split("-")[1];
+      load1PurpleAir(id, timeLengthGraph, timespanGraph);
+      document.getElementById("chartSensor").style.display = "none";
+      document.getElementById("chartSensor2").style.display = "block";
+      document.getElementById("button1h").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',1," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button3h").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',3," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">3h</button>';
+      document.getElementById("button24h").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',24," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">24h</button>';
+      document.getElementById("button48h").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',48," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">48h</button>';
+      document.getElementById("button1s").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',168," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+      document.getElementById("button1m").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',720," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+      document.getElementById("button1a").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "',8760," +
+        timespanGraph +
+        ')" class="btn btn-outline-secondary btn-sm">1 an</button>';
+      document.getElementById("button2m").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',2)" class="btn btn-outline-secondary btn-sm">2m</button>';
+      document.getElementById("button15m").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',15)" class="btn btn-outline-secondary btn-sm">15m</button>';
+      document.getElementById("button60m").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',60)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("button1440m").innerHTML =
+        '<button type="button" onclick="chooseTimePurpleAir(\'' +
+        id +
+        "'," +
+        timeLengthGraph +
+        ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
 
-      series_COV.data.setAll(data_COV);
-      series_COV.appear();
+      if (timespanGraph == 2 || timespanGraph == 15) {
+        document
+          .getElementById("button1a")
+          .children[0].setAttribute("disabled", "");
+      } else {
+        document
+          .getElementById("button1a")
+          .children[0].removeAttribute("disabled");
+      }
 
-      // Add cursor
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-      var cursor = chart.set(
-        "cursor",
-        am5xy.XYCursor.new(root, {
-          behavior: "none",
-        })
-      );
-      cursor.lineY.set("visible", false);
-
-      var legend = chart.bottomAxesContainer.children.push(
-        am5.Legend.new(root, {
-          width: 400,
-          height: am5.percent(20),
-          layout: root.horizontalLayout,
-        })
-      );
-
-      // When legend item container is hovered, dim all the series except the hovered one
-      legend.itemContainers.template.events.on("pointerover", function (e) {
-        var itemContainer = e.target;
-
-        // As series list is data of a legend, dataContext is series
-        var series = itemContainer.dataItem.dataContext;
-
-        chart.series.each(function (chartSeries) {
-          if (chartSeries != series) {
-            chartSeries.strokes.template.setAll({
-              strokeOpacity: 0.15,
-              stroke: am5.color(0x000000),
-            });
-          } else {
-            chartSeries.strokes.template.setAll({
-              strokeWidth: 3,
-            });
-          }
-        });
-      });
-
-      // When legend item container is unhovered, make all series as they are
-      legend.itemContainers.template.events.on("pointerout", function (e) {
-        var itemContainer = e.target;
-        var series = itemContainer.dataItem.dataContext;
-
-        chart.series.each(function (chartSeries) {
-          chartSeries.strokes.template.setAll({
-            strokeOpacity: 1,
-            strokeWidth: 1,
-            stroke: chartSeries.get("fill"),
-          });
-        });
-      });
-
-      legend.itemContainers.template.set("width", am5.p100);
-      legend.valueLabels.template.setAll({
-        width: am5.p100,
-        textAlign: "right",
-      });
-
-      legend.valueLabels.template.set("forceHidden", true);
-
-      // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
-      legend.data.setAll(chart.series.values);
-
-      chart.children.unshift(
-        am5.Label.new(root, {
-          text: chartTitleText,
-          fontSize: 14,
-          textAlign: "center",
-          x: am5.percent(50),
-          centerX: am5.percent(50),
-        })
-      );
-
-      var exporting = am5plugins_exporting.Exporting.new(root, {
-        menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-        dataSource: data,
-      });
-
-      // Make stuff animate on load
-      // https://www.amcharts.com/docs/v5/concepts/animations/
-      chart.appear(1000, 100);
+      if (timeLengthGraph == 8760) {
+        document
+          .getElementById("button2m")
+          .children[0].setAttribute("disabled", "");
+        document
+          .getElementById("button15m")
+          .children[0].setAttribute("disabled", "");
+      } else {
+        document
+          .getElementById("button2m")
+          .children[0].removeAttribute("disabled");
+        document
+          .getElementById("button15m")
+          .children[0].removeAttribute("disabled");
+      }
     }
   }
 
-  function gaugeCreator(root, measure, type) {
+  function CloseSidePanel() {
+    const targetDiv = document.getElementById("sidePanel");
+    targetDiv.style.display = "none";
+  }
 
-    root.setThemes([am5themes_Animated.new(root)]);
+  //URL options
+  function setQueryString() {
+    let stateObj = {};
+    let new_path = window.location.pathname + "?";
 
-    let chart = root.container.children.push(
-      am5radar.RadarChart.new(root, {
-        panX: false,
-        panY: false,
-        startAngle: 160,
-        endAngle: 380,
-      })
-    );
-
-    let axisRenderer = am5radar.AxisRendererCircular.new(root, {
-      innerRadius: -20,
-      minGridDistance: 50,
-    });
-
-    axisRenderer.grid.template.setAll({
-      stroke: root.interfaceColors.get("background"),
-      visible: false,
-      strokeOpacity: 0.8,
-    });
-
-    let maximum;
-
-    switch (type) {
-      case "PM1":
-        maximum = 100;
+    switch (timespanLower) {
+      case 2:
+        new_path += "minutes=2&";
         break;
-      case "PM25":
-        maximum = 100;
+      case 15:
+        new_path += "minutes=15&";
         break;
-      case "PM10":
-        maximum = 200;
+      case 60:
+        new_path += "minutes=60&";
+        break;
+      case 1440:
+        new_path += "minutes=1440&";
         break;
     }
 
-    let xAxis = chart.xAxes.push(
-      am5xy.ValueAxis.new(root, {
-        maxDeviation: 0,
-        min: 0,
-        max: maximum,
-        strictMinMax: true,
-        renderer: axisRenderer,
-      })
-    );
+    switch (compoundUpper) {
+      case "PM1":
+        new_path += "concentration=PM1";
+        break;
+      case "PM25":
+        new_path += "concentration=PM25";
+        break;
+      case "PM10":
+        new_path += "concentration=PM10";
+        break;
+    }
 
-    let axisDataItem = xAxis.makeDataItem({});
+    let displayString = "";
 
-    let clockHand = am5radar.ClockHand.new(root, {
-      pinRadius: am5.percent(20),
-      radius: am5.percent(35),
-      bottomWidth: 20,
+    if (
+      document.querySelector("#checkbox_micro_stationsParticuliers").checked
+    ) {
+      displayString += "nebuleair,";
+    }
+    if (document.querySelector("#checkbox_sensor_community").checked) {
+      displayString += "sensorcommunity,";
+    }
+    if (document.querySelector("#checkbox_purpleAir").checked) {
+      displayString += "purpleair,";
+    }
+    if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+      displayString += "atmosudmicro,";
+    }
+    if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
+      displayString += "atmosudref,";
+    }
+    // if(document.querySelector("#checkbox_modelisationPMAtmoSud").checked){displayString += "sensorcommunity,"}
+    // if(document.querySelector("#checkbox_modelisationICAIRAtmoSud").checked){displayString += "sensorcommunity,"}
+    // if(document.querySelector("#checkbox_wind").checked){displayString += "sensorcommunity,"}
+
+    new_path += "&affichage=" + displayString;
+
+    new_path = new_path + location.hash;
+    console.log(new_path);
+    history.pushState(stateObj, document.title, new_path);
+  }
+  
+  //Screenshot event (deactivated) => Leaflet Tiles should be on the same server
+  function screenShot() {
+    console.log("Screenshot!");
+
+    html2canvas(document.body, {
+      logging: false,
+      useCORS: true, //REVOIR LES OPTIONS
+    }).then(function (canvas) {
+      canvas.toBlob(function (blob) {
+        window.saveAs(blob, "screenshot.png");
+      });
     });
 
-    let bullet = axisDataItem.set(
-      "bullet",
-      am5xy.AxisBullet.new(root, {
-        sprite: clockHand,
-      })
-    );
+    // html2canvas(document.body,{
+    //     onrendered: function(canvas){
 
-    xAxis.createAxisRange(axisDataItem);
+    //         canvas.toBlob(function(blob) {
+    //         window.saveAs(blob, "screenshot.png");
+    //     });
 
-    let label = chart.radarContainer.children.push(
-      am5.Label.new(root, {
-        fill: am5.color(0xffffff),
-        centerX: am5.percent(50),
-        textAlign: "center",
-        centerY: am5.percent(50),
-        fontSize: "1em",
-      })
-    );
+    //     }
+    // });
 
-    axisDataItem.set("value", 0);
-    bullet.get("sprite").on("rotation", function () {
-      let value = axisDataItem.get("value");
-      let text = Math.round(axisDataItem.get("value")).toString();
-      let fill = am5.color(0x000000);
-      xAxis.axisRanges.each(function (axisRange) {
-        if (
-          value >= axisRange.get("value") &&
-          value <= axisRange.get("endValue")
-        ) {
-          fill = axisRange.get("axisFill").get("fill");
+    // html2canvas(document.body).then(function(canvas) {
+    // var link =  document.createElement("a");
+    // link.setAttribute('download', 'MintyPaper.png');
+    // link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+    // link.click();
+    // });
+  }
+
+
+  //Time / Date counters
+  function timeDateCounter(timestamp) {
+    var timestamp_UTC;
+    // const UTCoffset = -new Date().getTimezoneOffset() / 60;
+    // const DST = new Date().isDstObserved();
+    // console.log(UTCoffset);
+    // console.log(DST);
+
+    //console.log(timestamp.replace(' ','T') + '.000Z');
+    var isSafari =
+      /constructor/i.test(window.HTMLElement) ||
+      (function (p) {
+        return p.toString() === "[object SafariRemoteNotification]";
+      })(
+        !window["safari"] ||
+          (typeof safari !== "undefined" &&
+            window["safari"].pushNotification)
+      );
+    // console.log(isSafari);
+
+    if (isSafari) {
+      if (timestamp != null) {
+        if (typeof timestamp == "string") {
+          if (!timestamp.includes("T")) {
+            timestamp_UTC = new Date(
+              timestamp.replace(" ", "T") + "+00:00"
+            );
+          } else {
+            timestamp_UTC = new Date(timestamp);
+          }
+        } else {
+          timestamp_UTC = new Date(timestamp);
         }
-      });
-
-      label.set("text", Math.round(value).toString());
-
-      clockHand.pin.animate({
-        key: "fill",
-        to: fill,
-        duration: 500,
-        easing: am5.ease.out(am5.ease.cubic),
-      });
-      clockHand.hand.animate({
-        key: "fill",
-        to: fill,
-        duration: 500,
-        easing: am5.ease.out(am5.ease.cubic),
-      });
-    });
-
-    setTimeout(function () {
-      axisDataItem.animate({
-        key: "value",
-        to: Math.round(measure[type]),
-        duration: 500,
-        easing: am5.ease.out(am5.ease.cubic),
-      });
-    }, 1000);
-
-    chart.bulletsContainer.set("mask", undefined);
-
-    let bandsData;
-    let title;
-
-    if (type == "PM25" || type == "PM1") {
-      bandsData = [
-        {
-          // title: "Bon",
-          color: "#4FF0E6",
-          lowScore: 0,
-          highScore: 10,
-        },
-        {
-          // title: "Moyen",
-          color: "#51CCAA",
-          lowScore: 10,
-          highScore: 20,
-        },
-        {
-          // title: "Dégradé",
-          color: "#EDE663",
-          lowScore: 20,
-          highScore: 25,
-        },
-        {
-          // title: "Mauvais",
-          color: "#ED5E58",
-          lowScore: 25,
-          highScore: 50,
-        },
-        {
-          // title: "Très mauvais",
-          color: "#881B33",
-          lowScore: 50,
-          highScore: 75,
-        },
-        {
-          // title: "Extr. mauvais",
-          color: "#74287D",
-          lowScore: 75,
-          highScore: 100,
-        },
-      ];
+      } else {
+        return " pas de donnée disponible";
+      }
+    } else {
+      if (timestamp != null) {
+        if (typeof timestamp == "string") {
+          if (!timestamp.includes("T")) {
+            timestamp_UTC = new Date(
+              timestamp.replace(" ", "T") + "+00:00"
+            );
+          } else {
+            timestamp_UTC = new Date(timestamp);
+          }
+        } else {
+          timestamp_UTC = new Date(timestamp);
+        }
+      } else {
+        return " pas de donnée disponible";
+      }
     }
 
-    if (type == "PM10") {
-      bandsData = [
-        {
-          // title: "Bon",
-          color: "#4FF0E6",
-          lowScore: 0,
-          highScore: 20,
-        },
-        {
-          // title: "Moyen",
-          color: "#51CCAA",
-          lowScore: 20,
-          highScore: 40,
-        },
-        {
-          // title: "Dégradé",
-          color: "#EDE663",
-          lowScore: 40,
-          highScore: 50,
-        },
-        {
-          // title: "Mauvais",
-          color: "#ED5E58",
-          lowScore: 50,
-          highScore: 100,
-        },
-        {
-          // title: "Très mauvais",
-          color: "#881B33",
-          lowScore: 100,
-          highScore: 150,
-        },
-        {
-          // title: "Extr. mauvais",
-          color: "#74287D",
-          lowScore: 150,
-          highScore: 200,
-        },
-      ];
-    }
-    switch (type) {
-      case "PM1":
-        title = "PM1";
+    // console.log(timestamp_UTC);
+    const now = new Date(Date.now());
+
+    // let difference = now.getTime() - timestamp_UTC.getTime();
+
+    let difference = Math.floor((now - timestamp_UTC) / 86400000);
+    // console.log(difference);
+    // console.log(now - timestamp_UTC);
+
+    var date_texte = "";
+    let horaire_texte = "";
+
+    switch (difference) {
+      case 0:
+        if (now.getDay() == timestamp_UTC.getDay()) {
+          date_texte = " aujourd'hui";
+        } else {
+          date_texte = " hier";
+        }
         break;
-      case "PM25":
-        title = "PM2.5";
+      case 1:
+        date_texte = " hier";
         break;
-      case "PM10":
-        title = "PM10";
+      case 2:
+        date_texte = " avant-hier";
         break;
+      default:
+        date_texte += "il y a " + String(difference) + " jours";
+      //     if(timestamp_UTC.getDate()< 10){
+      //     date_texte += "0";
+      //     date_texte += timestamp_UTC.getDate();
+      //   }else{
+      //     date_texte += timestamp_UTC.getDate();
+      //   }
+      //   date_texte += "/";
+      //   if((timestamp_UTC.getMonth()+1)< 10){
+      //     date_texte += "0";
+      //     date_texte += (timestamp_UTC.getMonth()+1);
+      //   }else{
+      //     date_texte += (timestamp_UTC.getMonth()+1);
+      //   }
+      //   date_texte += "/";
+      //   date_texte += timestamp_UTC.getFullYear();
     }
 
-    am5.array.each(bandsData, function (data) {
-      let axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
+    //horaire
+    if (timestamp_UTC.getHours() < 10) {
+      horaire_texte += "0";
+      horaire_texte += timestamp_UTC.getHours();
+    } else {
+      horaire_texte += timestamp_UTC.getHours();
+    }
+    horaire_texte += "h";
+    if (timestamp_UTC.getMinutes() < 10) {
+      horaire_texte += "0";
+      horaire_texte += timestamp_UTC.getMinutes();
+    } else {
+      horaire_texte += timestamp_UTC.getMinutes();
+    }
 
-      axisRange.setAll({
-        value: data.lowScore,
-        endValue: data.highScore,
-      });
-
-      axisRange.get("axisFill").setAll({
-        visible: true,
-        fill: am5.color(data.color),
-        fillOpacity: 1,
-      });
-    });
-
-    chart.children.unshift(
-      am5.Label.new(root, {
-        text: "µg/m³",
-        fontSize: 10,
-        textAlign: "center",
-        x: am5.percent(50),
-        centerX: am5.percent(50),
-        paddingTop: 15,
-      })
-    );
-
-    chart.children.unshift(
-      am5.Label.new(root, {
-        text: title,
-        fontSize: 15,
-        fontWeight: "500",
-        textAlign: "center",
-        x: am5.percent(50),
-        centerX: am5.percent(50),
-        paddingTop: 0,
-        paddingBottom: 0,
-      })
-    );
-
-    chart.appear(1000, 100);
-
-    xAxis.get("renderer").grid.template.set("forceHidden", true);
-
+    return date_texte + " à " + horaire_texte;
   }
+
+  function timeDateCounter2(timestamp, timestamp2) {
+    var timestamp_UTC;
+    var isSafari =
+      /constructor/i.test(window.HTMLElement) ||
+      (function (p) {
+        return p.toString() === "[object SafariRemoteNotification]";
+      })(
+        !window["safari"] ||
+          (typeof safari !== "undefined" &&
+            window["safari"].pushNotification)
+      );
+    // console.log(isSafari);
+
+    if (isSafari) {
+      if (timestamp != null) {
+        if (typeof timestamp == "string") {
+          if (!timestamp.includes("T")) {
+            timestamp_UTC = new Date(
+              timestamp.replace(" ", "T") + "+00:00"
+            );
+          } else {
+            timestamp_UTC = new Date(timestamp);
+          }
+        } else {
+          timestamp_UTC = new Date(timestamp);
+        }
+      } else {
+        if (timestamp2 != null) {
+          if (typeof timestamp2 == "string") {
+            if (!timestamp2.includes("T")) {
+              timestamp_UTC = new Date(
+                timestamp2.replace(" ", "T") + "+00:00"
+              );
+            } else {
+              timestamp_UTC = new Date(timestamp2);
+            }
+          } else {
+            timestamp_UTC = new Date(timestamp2);
+          }
+        } else {
+          return " pas de donnée disponible";
+        }
+      }
+    } else {
+      if (timestamp != null) {
+        if (typeof timestamp == "string") {
+          if (!timestamp.includes("T")) {
+            timestamp_UTC = new Date(
+              timestamp.replace(" ", "T") + "+00:00"
+            );
+          } else {
+            timestamp_UTC = new Date(timestamp);
+          }
+        } else {
+          timestamp_UTC = new Date(timestamp);
+        }
+      } else {
+        if (timestamp2 != null) {
+          if (typeof timestamp2 == "string") {
+            if (!timestamp2.includes("T")) {
+              timestamp_UTC = new Date(
+                timestamp2.replace(" ", "T") + "+00:00"
+              );
+            } else {
+              timestamp_UTC = new Date(timestamp2);
+            }
+          } else {
+            timestamp_UTC = new Date(timestamp2);
+          }
+        } else {
+          return " pas de donnée disponible";
+        }
+      }
+    }
+
+    // console.log(timestamp_UTC);
+    const now = new Date(Date.now());
+
+    // let difference = now.getTime() - timestamp_UTC.getTime();
+
+    let difference = Math.floor((now - timestamp_UTC) / 86400000);
+    // console.log(difference);
+    // console.log(now - timestamp_UTC);
+
+    var date_texte = "";
+    let horaire_texte = "";
+
+    switch (difference) {
+      case 0:
+        if (now.getDay() == timestamp_UTC.getDay()) {
+          date_texte = " aujourd'hui";
+        } else {
+          date_texte = " hier";
+        }
+        break;
+      case 1:
+        date_texte = " hier";
+        break;
+      case 2:
+        date_texte = " avant-hier";
+        break;
+      default:
+        date_texte += "il y a " + String(difference) + " jours";
+      //     if(timestamp_UTC.getDate()< 10){
+      //     date_texte += "0";
+      //     date_texte += timestamp_UTC.getDate();
+      //   }else{
+      //     date_texte += timestamp_UTC.getDate();
+      //   }
+      //   date_texte += "/";
+      //   if((timestamp_UTC.getMonth()+1)< 10){
+      //     date_texte += "0";
+      //     date_texte += (timestamp_UTC.getMonth()+1);
+      //   }else{
+      //     date_texte += (timestamp_UTC.getMonth()+1);
+      //   }
+      //   date_texte += "/";
+      //   date_texte += timestamp_UTC.getFullYear();
+    }
+
+    //horaire
+    if (timestamp_UTC.getHours() < 10) {
+      horaire_texte += "0";
+      horaire_texte += timestamp_UTC.getHours();
+    } else {
+      horaire_texte += timestamp_UTC.getHours();
+    }
+    horaire_texte += "h";
+    if (timestamp_UTC.getMinutes() < 10) {
+      horaire_texte += "0";
+      horaire_texte += timestamp_UTC.getMinutes();
+    } else {
+      horaire_texte += timestamp_UTC.getMinutes();
+    }
+
+    return date_texte + " à " + horaire_texte;
+  }
+
