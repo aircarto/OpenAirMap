@@ -768,6 +768,8 @@ function load1NebuleAir(id, hours, timespan) {
   }).done(function (data) {
     console.log(data);
 
+    dataSaveNebuleAir = data;
+
 
     // if (data == null) {
 
@@ -831,6 +833,8 @@ function load1NebuleAirModal(id, hours, timespan) {
       timespan: timespan
     }),
   }).done(function (data) {
+
+    dataSaveNebuleAir = data;
 
       if (root4 != undefined) {
         console.log("DISPOSE")
@@ -1372,6 +1376,8 @@ function gaugeCreatorNebuleAir(root, measure, type, connected) {
 
 function graphCreatorNebuleAir(root, data, text) {
 
+  console.log("GRAPH");
+
 if (data == null){
 
   root.setThemes([
@@ -1381,7 +1387,7 @@ if (data == null){
 
   // Create chart
   // https://www.amcharts.com/docs/v5/charts/xy-chart/
-  let chart = root.container.children.push(am5xy.XYChart.new(root, {
+  var chart = root.container.children.push(am5xy.XYChart.new(root, {
     panX: true,
     panY: true,
     wheelX: "panX",
@@ -1690,24 +1696,447 @@ let closestRef = addDistance.filter((e)=> e.variables.hasOwnProperty('24') || e.
 
 console.log(closestRef);
 
+if(timespanLower == 2){
+  openToast("Pas de données à 2 minutes pour les stations de référence.");
+}else{
+
+  switch (timespanLower) {
+    case 15:
+      timeLength = 24;
+      break;
+    case 60:
+      timeLength = 48;
+      break;
+    case 1440:
+      timeLength = 168;
+      break;
+  }
 
 console.log("%cAtmoSud Ref 1 sensor comparaison", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
 const end = new Date();
 const end_string = end.toISOString();
-const get_start = end.setHours(end.getHours() - hours);
+const get_start = end.setHours(end.getHours() - timeLength);
 const start = new Date(get_start);
 const start_string = start.toISOString()
 console.log(closestRef.id_station);
-console.log(hours);
+console.log(timeLength);
 console.log(start_string);
 console.log(end_string);
 console.log(timespanLower);
 
+$.ajax({
+  method: "GET",
+  url: "../php_scripts/AtmoSudRef_1sensor.php",
+  data: ({
+    id_site: closestRef.id_station,
+    debut: start_string,
+    fin: end_string,
+    timespan: timespanLower
+  }),
+}).done(function (data) {
+console.log(data);
+
+var filter_PM1 = data.mesures.filter((e) => e.polluant_id == "68");
+var filter_PM25 = data.mesures.filter((e) => e.polluant_id == "39");
+var filter_PM10 = data.mesures.filter((e) => e.polluant_id == "24");
 
 
+var data_PM1 = filter_PM1.map(function (e) {
+  return { value: e.valeur, date: new Date(e.date_debut).getTime() }  //+ 60*60*1000 to get date_fin ? + UTC automatique?
+});
+var data_PM25 = filter_PM25.map(function (e) {
+  return { value: e.valeur, date: new Date(e.date_debut).getTime() }
+});
+var data_PM10 = filter_PM10.map(function (e) {
+  return { value: e.valeur, date: new Date(e.date_debut).getTime() }
+});
 
+console.log(data_PM1);
+console.log(data_PM25);
+console.log(data_PM10);
+
+let chartTitleText = "";
+chartTitleText += "Comparaison des moyennes";
+
+switch (timespanLower) {
+  case 15:
+    chartTitleText += " quart-horaires, ";
+    break;
+  case 60:
+    chartTitleText += " horaires, ";
+    break;
+  case 1440:
+    chartTitleText += " journalières, ";
+    break;
+}
+
+chartTitleText += "µg/m3";
+
+if (root4 != undefined) {
+  console.log("DISPOSE")
+  root4.dispose();
+}
+
+setTimeout(function () {
+  am5.ready(function () {
+    root4 = am5.Root.new("chartSensor2");
+    graphCreatorComparaison(root4, dataSaveNebuleAir, data_PM1, data_PM25, data_PM10, chartTitleText,data);
+  })
+}, 1000); // end am5.ready()
+
+})
+}
 })
 .fail(function () {
   console.log("Error while geting data from AtmoSud API");
 })
+}
+
+
+function graphCreatorComparaison(root, data, dataRef1, dataRef2, dataRef3, text, dataRef) {
+
+  console.log(data);
+  console.log(dataRef.mesures);
+
+if (data == null){
+
+  root.setThemes([
+    am5themes_Animated.new(root4)
+  ]);
+
+
+  // Create chart
+  // https://www.amcharts.com/docs/v5/charts/xy-chart/
+  var chart = root.container.children.push(am5xy.XYChart.new(root, {
+    panX: true,
+    panY: true,
+    wheelX: "panX",
+    wheelY: "zoomX",
+    maxTooltipDistance: 0,
+    pinchZoomX: true
+  }));
+
+  // Create axes
+  // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+  let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+    maxDeviation: 0.2,
+    baseInterval: {
+      timeUnit: "minute",
+      count: 1
+    },
+    renderer: am5xy.AxisRendererX.new(root, {}),
+    tooltip: am5.Tooltip.new(root, {})
+  }));
+
+  let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+    renderer: am5xy.AxisRendererY.new(root, {})
+  }));
+
+
+  let modal = am5.Modal.new(root, {
+    content: "Pas de donnée sur cette période"
+  });
+
+  modal.open();
+
+  let legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+    width: 400,
+    height: am5.percent(20),
+    layout: root.horizontalLayout,
+  }));
+
+
+  // When legend item container is hovered, dim all the series except the hovered one
+  legend.itemContainers.template.events.on("pointerover", function (e) {
+    let itemContainer = e.target;
+
+    // As series list is data of a legend, dataContext is series
+    var series = itemContainer.dataItem.dataContext;
+
+    chart.series.each(function (chartSeries) {
+      if (chartSeries != series) {
+        chartSeries.strokes.template.setAll({
+          strokeOpacity: 0.15,
+          stroke: am5.color(0x000000)
+        });
+      } else {
+        chartSeries.strokes.template.setAll({
+          strokeWidth: 3
+        });
+      }
+    })
+  })
+
+  // When legend item container is unhovered, make all series as they are
+  legend.itemContainers.template.events.on("pointerout", function (e) {
+    let itemContainer = e.target;
+    let series = itemContainer.dataItem.dataContext;
+
+    chart.series.each(function (chartSeries) {
+      chartSeries.strokes.template.setAll({
+        strokeOpacity: 1,
+        strokeWidth: 1,
+        stroke: chartSeries.get("fill")
+      });
+    });
+  })
+
+  legend.itemContainers.template.set("width", am5.p100);
+  legend.valueLabels.template.setAll({
+    width: am5.p100,
+    textAlign: "right"
+  });
+
+  // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+  legend.data.setAll(chart.series.values);
+
+  chart.children.unshift(am5.Label.new(root, {
+    text: text,
+    fontSize: 14,
+    textAlign: "center",
+    x: am5.percent(50),
+    centerX: am5.percent(50)
+  }));
+
+
+  let exporting = am5plugins_exporting.Exporting.new(root, {
+    menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+    dataSource: data
+  });
+
+  // Make stuff animate on load
+  // https://www.amcharts.com/docs/v5/concepts/animations/
+  chart.appear(1000, 100);
+
+}else{
+
+  let data_PM1_nebuleair = data.map(function (e) {
+    return { value: e.PM1, date: new Date(e.time).getTime() }
+  });
+  let data_PM25_nebuleair = data.map(function (e) {
+    return { value: e.PM25, date: new Date(e.time).getTime() }
+  });
+  let data_PM10_nebuleair = data.map(function (e) {
+    return { value: e.PM10, date: new Date(e.time).getTime() }
+  });
+
+  // Set themes
+          // https://www.amcharts.com/docs/v5/concepts/themes/ 
+          root.setThemes([
+            am5themes_Animated.new(root)
+          ]);
+
+
+          // Create chart
+          // https://www.amcharts.com/docs/v5/charts/xy-chart/
+          let chart = root.container.children.push(am5xy.XYChart.new(root4, {
+            panX: true,
+            panY: true,
+            wheelX: "panX",
+            wheelY: "zoomX",
+            maxTooltipDistance: 0,
+            // maxTooltipDistanceBy: "x",
+            pinchZoomX: true
+          }));
+
+          // Create axes
+          // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+          let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+            maxDeviation: 0.2,
+            baseInterval: {
+              timeUnit: "minute",
+              count: 1
+            },
+            renderer: am5xy.AxisRendererX.new(root, {}),
+            tooltip: am5.Tooltip.new(root, {})
+          }));
+
+          let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+            renderer: am5xy.AxisRendererY.new(root, {})
+          }));
+
+          let series_PM1_nebuleair = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM1 NebuleAir",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
+
+          series_PM1_nebuleair.data.setAll(data_PM1_nebuleair);
+          series_PM1_nebuleair.appear();
+
+          let series_PM25_nebuleair = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM2.5 NebuleAir",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
+
+          series_PM25_nebuleair.data.setAll(data_PM25_nebuleair);
+          series_PM25_nebuleair.appear();
+
+
+          let series_PM10_nebuleair = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM10 NebuleAir",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
+
+          series_PM10_nebuleair.data.setAll(data_PM10_nebuleair);
+          series_PM10_nebuleair.appear();
+
+
+          let series_PM1_ref = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM1 Référence",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
+  
+          // series_PM1.set("stroke", am5.color(0x00ff00));
+  
+  
+          series_PM1_ref.data.setAll(dataRef1);
+          series_PM1_ref.appear();
+  
+          let series_PM25_ref = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM2.5 Référence",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
+  
+  
+          // series_PM25.set("stroke", am5.color(0x0000ff));
+          series_PM25_ref.data.setAll(dataRef2);
+          series_PM25_ref.appear();
+  
+  
+          let series_PM10_ref = chart.series.push(am5xy.LineSeries.new(root, {
+            name: "PM10 Référence",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            valueXField: "date",
+            legendValueText: "{valueY}",
+            tooltip: am5.Tooltip.new(root, {
+              pointerOrientation: "horizontal",
+              labelText: "{valueY}"
+            })
+          }));
+  
+          // series_PM10.set("stroke", am5.color(0xff0000))
+  
+          series_PM10_ref.data.setAll(dataRef3);
+          series_PM10_ref.appear();
+  
+
+          // Add cursor
+          // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+          let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+            behavior: "zoomX",
+            xAxis: xAxis,
+            snapToSeries: [series_PM1_nebuleair, series_PM25_nebuleair, series_PM10_nebuleair,series_PM1_ref,series_PM25_ref,series_PM10_ref],
+            // snapToSeriesBy: "x"
+          }));
+          cursor.lineX.set("visible", true);
+          cursor.lineY.set("visible", false);
+
+          let legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+            width: 400,
+            height: am5.percent(20),
+            layout: root.horizontalLayout,
+          }));
+
+
+          // When legend item container is hovered, dim all the series except the hovered one
+          legend.itemContainers.template.events.on("pointerover", function (e) {
+            let itemContainer = e.target;
+
+            // As series list is data of a legend, dataContext is series
+            let series = itemContainer.dataItem.dataContext;
+
+            chart.series.each(function (chartSeries) {
+              if (chartSeries != series) {
+                chartSeries.strokes.template.setAll({
+                  strokeOpacity: 0.15,
+                  stroke: am5.color(0x000000)
+                });
+              } else {
+                chartSeries.strokes.template.setAll({
+                  strokeWidth: 3
+                });
+              }
+            })
+          })
+
+          // When legend item container is unhovered, make all series as they are
+          legend.itemContainers.template.events.on("pointerout", function (e) {
+            let itemContainer = e.target;
+            let series = itemContainer.dataItem.dataContext;
+
+            chart.series.each(function (chartSeries) {
+              chartSeries.strokes.template.setAll({
+                strokeOpacity: 1,
+                strokeWidth: 1,
+                stroke: chartSeries.get("fill")
+              });
+            });
+          })
+
+          legend.itemContainers.template.set("width", am5.p100);
+          legend.valueLabels.template.set("forceHidden", true);
+
+          // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+          legend.data.setAll(chart.series.values);
+
+          chart.children.unshift(am5.Label.new(root, {
+            text: text,
+            fontSize: 14,
+            textAlign: "center",
+            x: am5.percent(50),
+            centerX: am5.percent(50)
+          }));
+
+          let exporting = am5plugins_exporting.Exporting.new(root, {
+            menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+            dataSource: data.concat(dataRef.mesures)
+          });
+
+          // Make stuff animate on load
+          // https://www.amcharts.com/docs/v5/concepts/animations/
+          chart.appear(1000, 100);
+
+}
 }
