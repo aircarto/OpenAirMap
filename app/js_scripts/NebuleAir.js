@@ -210,6 +210,7 @@ function loadNebuleAir() {
             })
             .on('click', function () {
 
+              latlongNebuleAir = [value['latitude'], value['longitude']];
 
               if (root1 != undefined && root2 != undefined && root3 != undefined) {
                 console.log("DISPOSE")
@@ -240,6 +241,7 @@ function loadNebuleAir() {
           L.marker([value['latitude'], value['longitude']], { icon: myIcon })
             .on('click', function () {
 
+              latlongNebuleAir = [value['latitude'], value['longitude']];
               modalCreator("nebuleair", value['sensorId'], timeDateCounter2(value.timeUTC, value.time), wifiLevel);
 
               if (root1 != undefined) {
@@ -295,6 +297,7 @@ function loadNebuleAir() {
             })
             .on('click', function () {
 
+              latlongNebuleAir = [value['latitude'], value['longitude']];
 
               if (root1 != undefined && root2 != undefined && root3 != undefined) {
                 console.log("DISPOSE")
@@ -326,6 +329,7 @@ function loadNebuleAir() {
           L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
             .on('click', function () {
 
+              latlongNebuleAir = [value['latitude'], value['longitude']];
               modalCreator("nebuleair", value['sensorId'], timeDateCounter2(value.timeUTC, value.time), wifiLevel);
 
               if (root1 != undefined) {
@@ -556,6 +560,7 @@ function changeNebuleAir() {
           })
           .on('click', function () {
 
+            latlongNebuleAir = [value['latitude'], value['longitude']];
 
             if (root1 != undefined && root2 != undefined && root3 != undefined) {
               console.log("DISPOSE")
@@ -585,6 +590,8 @@ function changeNebuleAir() {
       } else {
         L.marker([value['latitude'], value['longitude']], { icon: myIcon })
           .on('click', function () {
+
+            latlongNebuleAir = [value['latitude'], value['longitude']];
 
             modalCreator("nebuleair", value['sensorId'], timeDateCounter2(value.timeUTC, value.time), wifiLevel);
 
@@ -645,6 +652,7 @@ function changeNebuleAir() {
           })
           .on('click', function () {
 
+            latlongNebuleAir = [value['latitude'], value['longitude']];
 
             if (root1 != undefined && root2 != undefined && root3 != undefined) {
               console.log("DISPOSE")
@@ -676,6 +684,8 @@ function changeNebuleAir() {
         // L.marker([value['latitude'], value['longitude']], { icon: myIcon })
         L.marker([value['latitude'], value['longitude']], { icon: nebuleAir_icon })
           .on('click', function () {
+
+            latlongNebuleAir = [value['latitude'], value['longitude']];
 
             modalCreator("nebuleair", value['sensorId'], timeDateCounter2(value.timeUTC, value.time), wifiLevel);
 
@@ -753,7 +763,7 @@ function load1NebuleAir(id, hours, timespan) {
 
   document.getElementById("btn_comp").innerHTML =
   '<button class="btn btn-outline-primary" id="compref" onclick="getRefStations(\'' +
-  id + '\')">Comparaison</button>';
+  id +'\',\''+ hours +'\',\'' + timespan +'\')">Comparaison</button>';
 
 
   $.ajax({
@@ -769,7 +779,6 @@ function load1NebuleAir(id, hours, timespan) {
     console.log(data);
 
     dataSaveNebuleAir = data;
-
 
     // if (data == null) {
 
@@ -1663,9 +1672,13 @@ if (data == null){
 }
 }
 
-function getRefStations(id)
+function getRefStations(id, timeLength, timespan)
 {
+
+comparaisonRefNebulair.clearLayers();
 console.log("%cAtmoSud Ref", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+console.log(timeLength);
+console.log(timespan);
 
 let filterNebuleAir = apiFetchNebuleAir.data.filter((e) => e.sensorId == "nebuleair-" + id);
 console.log(filterNebuleAir[0]);
@@ -1690,17 +1703,49 @@ console.log(addDistance);
 
 let closestRef = addDistance.filter((e)=> e.variables.hasOwnProperty('24') || e.variables.hasOwnProperty('39') || e.variables.hasOwnProperty('68')).reduce(
   (prev, current) => {
-    return prev.distance > current.distance ? prev : current
+    return prev.distance < current.distance ? prev : current
   }
 );
 
 console.log(closestRef);
 
-if(timespanLower == 2){
+let icon_param = {
+  iconUrl: 'img/refStationsAtmoSud/refStationAtmoSud_comp.png',
+  iconSize: [80, 80], // size of the icon
+  iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
+  //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
+  className: closestRef.id_station,
+}
+
+let refStationsAtmoSud_icon = L.icon(icon_param);
+let AtmoSudRefTootip = closestRef.nom_station;
+console.log(closestRef.latitude);
+console.log(closestRef.longitude);
+
+L.marker([closestRef['latitude'], closestRef['longitude']], { icon: refStationsAtmoSud_icon })
+.bindTooltip(AtmoSudRefTootip, { direction: 'center' })
+.addTo(comparaisonRefNebulair);
+
+var pointA = new L.LatLng(latlongNebuleAir[0], latlongNebuleAir[1]);
+var pointB = new L.LatLng(closestRef['latitude'], closestRef['longitude']);
+var pointList = [pointA, pointB];
+
+var firstpolyline = new L.Polyline(pointList, {
+    color: 'red',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+});
+firstpolyline.addTo(comparaisonRefNebulair);
+
+map.addLayer(comparaisonRefNebulair);
+
+
+if(parseInt(timespan) == 2){
   openToast("Pas de données à 2 minutes pour les stations de référence.");
 }else{
 
-  switch (timespanLower) {
+  switch (parseInt(timespan)) {
     case 15:
       timeLength = 24;
       break;
@@ -1722,7 +1767,7 @@ console.log(closestRef.id_station);
 console.log(timeLength);
 console.log(start_string);
 console.log(end_string);
-console.log(timespanLower);
+console.log(timespan);
 
 $.ajax({
   method: "GET",
@@ -1731,7 +1776,7 @@ $.ajax({
     id_site: closestRef.id_station,
     debut: start_string,
     fin: end_string,
-    timespan: timespanLower
+    timespan: timespan
   }),
 }).done(function (data) {
 console.log(data);
@@ -1756,9 +1801,11 @@ console.log(data_PM25);
 console.log(data_PM10);
 
 let chartTitleText = "";
-chartTitleText += "Comparaison des moyennes";
+chartTitleText += "NebuleAir-" + id + " / "+ "Station " + closestRef.nom_station + ", comparaison des moyennes";
 
-switch (timespanLower) {
+console.log(timespan);
+
+switch (parseInt(timespan)) {
   case 15:
     chartTitleText += " quart-horaires, ";
     break;
@@ -2074,7 +2121,7 @@ if (data == null){
           cursor.lineY.set("visible", false);
 
           let legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
-            width: 400,
+            width: am5.percent(100),
             height: am5.percent(20),
             layout: root.horizontalLayout,
           }));
