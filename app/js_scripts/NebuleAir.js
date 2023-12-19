@@ -761,10 +761,13 @@ function load1NebuleAir(id, hours, timespan) {
 
   chartTitleText += "µg/m3";
 
-  document.getElementById("btn_comp").innerHTML =
-  '<button class="btn btn-outline-primary" id="compref" onclick="getRefStations(\'' +
-  id +'\',\''+ hours +'\',\'' + timespan +'\')">Comparaison</button>';
+  // document.getElementById("btn_comp").innerHTML =
+  // '<button class="btn btn-outline-primary" id="compref" onclick="getRefStations(\'' +
+  // id +'\',\''+ hours +'\',\'' + timespan +'\')">Comparaison</button>';
 
+  //   document.getElementById("btn_comp").innerHTML =
+  // '<button class="btn btn-outline-primary" id="compref" onclick="getCompare(\'' +
+  // id +'\',\''+ hours +'\',\'' + timespan +'\')">Comparaison</button>';
 
   $.ajax({
     method: "GET",
@@ -2186,4 +2189,114 @@ if (data == null){
           chart.appear(1000, 100);
 
 }
+}
+
+function getCompare(id, timeLength, timespan)
+{
+
+comparaisonRefNebulair.clearLayers();
+comparaisonNebulairNebulair.clearLayers();
+console.log(timeLength);
+console.log(timespan);
+
+
+document
+.querySelector("#compare")
+.style.display ='block';
+
+let filterNebuleAir = apiFetchNebuleAir.data.filter((e) => e.sensorId == "nebuleair-" + id);
+console.log(filterNebuleAir[0]);
+
+console.log("%cAtmoSud Ref", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+$.ajax({
+  method: "GET",
+  url: "../php_scripts/AtmoSudRefList.php",
+}).done(function (data) {
+  console.log(data);
+
+  let addDistance = data.stations.map(function(e){
+
+    let nebu = L.latLng(filterNebuleAir[0].latitude, filterNebuleAir[0].longitude);
+    let ref = L.latLng(e.latitude, e.longitude);
+    e.distance = nebu.distanceTo(ref);
+    return e;
+    });
+    
+    console.log(addDistance);
+
+    let options="";
+   
+    
+    addDistance.forEach(function(e){
+      options += "<option value='" + e.id_station +"'>"+ e.nom_station + " / "+  (e.distance/1000).toFixed(0)  +"</option>";   
+    })
+    
+document
+.querySelector("#refs")
+.innerHTML = options;
+
+document
+.querySelector("#refs")
+.addEventListener("change", chooseRefComp);
+
+
+//let checkboxes="";
+// for (const [key, value] of Object.entries(e.variables)) {
+//   checkboxes += "<input type='checkbox' id='"+ `${key}` +"' name='"+ `${key}` +"' value='"+ `${key}` +"'><label for='"+ `${key}` +"'>"+ `${value}` +"</label><br></br>";
+// }
+
+// document
+// .querySelector("#polref")
+// .innerHTML = checkboxes;
+
+
+
+
+
+
+})
+.fail(function () {
+  console.log("Error while geting data from AtmoSud API");
+})
+
+console.log("%cNebuleAir", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+$.ajax({
+  method: "GET",
+  url: "../php_scripts/NebuleAir.php",
+}).done(function (data) {
+  console.log(data);
+
+  let addDistance = data.map(function(e){
+
+    let nebu1 = L.latLng(filterNebuleAir[0].latitude, filterNebuleAir[0].longitude);
+    let nebu2 = L.latLng(e.latitude, e.longitude);
+    e.distance = nebu1.distanceTo(nebu2);
+    return e;
+    });
+    
+    console.log(addDistance);
+
+        
+    addDistance.forEach(function(e){
+      options += "<option value='" + e.sensorId +"'>"+ e.sensorId + " / "+  (e.distance/1000).toFixed(0)  +"</option>";
+    })
+    
+document
+.querySelector("#nebus")
+.innerHTML = options;
+
+
+  
+})
+.fail(function () {
+  console.log("Error while geting data from Aircarto API");
+})
+
+
+}
+
+
+function chooseRefComp(){
+  let text = this.options[this.selectedIndex].text;
+  console.log(text);
 }

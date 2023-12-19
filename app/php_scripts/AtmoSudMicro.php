@@ -1,6 +1,6 @@
 <?php
 
-$url = 'https://api.atmosud.org/observations/capteurs/mesures/dernieres?format=json&download=false&nb_dec=0&variable=PM10%2CPM2.5%2CPM1&delais=1440';
+$url = 'https://api.atmosud.org/observations/capteurs/mesures/dernieres?format=json&download=false&nb_dec=0&variable=PM10%2CPM2.5%2CPM1&delais=1440&valeur_brute=true';
 
 //15 minutes seulement
 

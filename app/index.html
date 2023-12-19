@@ -168,11 +168,13 @@
             type="checkbox"
             id="checkbox_micro_stationsAtmoSud"
             name="checkbox_micro_stationsAtmoSud"
-            disabled
+
           /><label for="checkbox_micro_stationsAtmoSud"
             >&ensp;Micro-stations AtmoSud</label
           >
         </li>
+            <!-- disabled -->
+
         <li>
           <input
             type="checkbox"
@@ -437,9 +439,22 @@
             <span id="button15m"></span>
             <span id="button60m"></span>
             <span id="button1440m"></span>
-            </br>
+            <!-- </br>
             <span id="btn_comp"></span>
-            <!-- <button class="btn btn-outline-primary" id="btn_comp">Comparaison</button> -->
+            <div id="compare">
+
+              <select name="refs" id="refs">
+              </select>
+              <div id="polref">
+                
+              </div>
+
+              <select name="nebus" id="nebus">
+              </select>
+              <div id="polnebu">
+
+              </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -1011,8 +1026,8 @@
     <script>
 
       //Mobile Test
-      const isMobile = mobileTest();
-      // const isMobile = true;
+      //const isMobile = mobileTest();
+       const isMobile = true;
 
       console.log("Mobile: " + isMobile);
 
@@ -1086,7 +1101,7 @@
 
       //Options reader in URL
       const query = {
-        conentration: options.selection,
+        concentration: options.selection,
         minutes: options.timespanLower,
         affichage: options.display,
       };
@@ -1110,7 +1125,6 @@
               break;
             case "15":
               options.timespanLower = 15;
-              console.log("TEST1");
               break;
             case "60":
               options.timespanLower = 60;
@@ -1156,8 +1170,6 @@
                 ":" +
                 (min2 < 10 ? "0" : "") +
                 min2;
-
-                console.log("TEST2");
               break;
             case 60:
               var end = new Date();
@@ -1221,6 +1233,7 @@
           }
 
           if (query.affichage.includes("atmosudmicro")) {
+            console.log("LOAD MICRO");
             //$(document).ready(loadStationMicroAtmo);
             document.querySelector(
               "#checkbox_micro_stationsAtmoSud"
@@ -1245,6 +1258,9 @@
       var timespanLower = options.timespanLower;
       var timeLength = options.timeLength;
       var display = options.display;
+
+      console.log(display);
+      console.log(timespanLower);
 
       //Time generator
       switch (timespanLower) {
@@ -1362,6 +1378,8 @@
       }
 
       if (display.includes("nebuleair")) {
+
+        console.log("LOAD NEBUL");
         document.querySelector(
           "#checkbox_micro_stationsParticuliers"
         ).checked = true;
@@ -1379,6 +1397,7 @@
       }
 
       if (display.includes("atmosudmicro")) {
+        console.log("LOAD MICRO");
         document.querySelector(
           "#checkbox_micro_stationsAtmoSud"
         ).checked = true;
@@ -1413,6 +1432,7 @@
       var velocityLayer;
 
       var comparaisonRefNebulair = new L.layerGroup();
+      var comparaisonNebulairNebulair = new L.layerGroup();
       var latlongNebuleAir;
 
       document

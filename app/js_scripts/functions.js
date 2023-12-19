@@ -1485,6 +1485,118 @@ function mobileTest() {
     }
 
     if (type == "atmosudmicro") {
+      document.getElementById("modal_logo").src = "img/LogoAtmoSud.png";
+      let id = data1;
+      let nom = data4;
+      document.getElementById("modal_sensorid").innerHTML =
+      "Microcapteur AtmoSud-" + nom;
+
+      // document.getElementById("modal_sensorid").onclick = function () {
+      //   window.open(
+      //     "https://www.atmosud.org/dataviz/mesures-aux-stations?station_id=" +
+      //       data1,
+      //     "_blank"
+      //   );
+      // };
+
+      switch (timespanLower) {
+        case 2:
+          timeLength = 3;
+          break;
+        case 15:
+          timeLength = 24;
+          break;
+        case 60:
+          timeLength = 48;
+          break;
+        case 1440:
+          timeLength = 168;
+          break;
+      }
+
+      load1MicroAtmoModal(id, timeLength);
+      document.getElementById("modal_chartSensor").style.display = "none";
+      document.getElementById("modal_chartSensor2").style.display = "block";
+      document.getElementById("modal_button1h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\', 1,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+    document.getElementById("modal_button3h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\', 3,true)" class="btn btn-secondary btn-sm">3h</button>';
+    document.getElementById("modal_button24h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\', 24,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+    document.getElementById("modal_button48h").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\', 48,true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+    document.getElementById("modal_button1s").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\', 168,true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+    document.getElementById("modal_button1m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\', 720),true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+    document.getElementById("modal_button1a").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\',8760,true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+    document.getElementById("modal_button2m").innerHTML =
+      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+    document.getElementById("modal_button15m").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      id +
+      '\''+timeLength +
+      ',true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+    document.getElementById("modal_button60m").innerHTML =
+      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+    document.getElementById("modal_button1440m").innerHTML =
+      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+    buttonsSwitcher(timeLength, timespanLower, true);
+
+    // if (timespanLower == 2 || timespanLower == 15) {
+    //   document
+    //     .getElementById("modal_button1a")
+    //     .children[0].setAttribute("disabled", "");
+    // } else {
+    //   document
+    //     .getElementById("modal_button1a")
+    //     .children[0].removeAttribute("disabled");
+    // }
+
+    // if (timeLength == 8760) {
+    //   document
+    //     .getElementById("modal_button2m")
+    //     .children[0].setAttribute("disabled", "");
+    //   document
+    //     .getElementById("modal_button15m")
+    //     .children[0].setAttribute("disabled", "");
+    // } else {
+    //   document
+    //     .getElementById("modal_button2m")
+    //     .children[0].removeAttribute("disabled");
+    //   document
+    //     .getElementById("modal_button15m")
+    //     .children[0].removeAttribute("disabled");
+    // }
+
+    document.getElementById("modal_lastseen").innerText =
+      "Dernière mesure effectuée : " + data2;
+
+    if (data3 != -1) {
+      document.getElementById("modal_wifilevel").innerText =
+        "Qualité connexion WIFI : " + data3 + "%";
+    } else if (data3 == -1 && type != "sensorcommunity") {
+      //document.getElementById("modal_wifilevel").innerText = "Capteur déconnecté";
+      document.getElementById("modal_wifilevel").innerText = "";
+    } else {
+      document.getElementById("modal_wifilevel").innerText =
+        "Capteur connecté";
+    }
     }
 
     if (type == "atmosudref") {
@@ -2073,33 +2185,33 @@ function mobileTest() {
       document.getElementById("button1h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\',1)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        '\',1, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
       document.getElementById("button3h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 3)" class="btn btn-secondary btn-sm">3h</button>';
+        '\', 3, false)" class="btn btn-secondary btn-sm">3h</button>';
       document.getElementById("button24h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 24)" class="btn btn-outline-secondary btn-sm">24h</button>';
+        '\', 24, false)" class="btn btn-outline-secondary btn-sm">24h</button>';
       document.getElementById("button48h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 48)" class="btn btn-outline-secondary btn-sm">48h</button>';
+        '\', 48, false)" class="btn btn-outline-secondary btn-sm">48h</button>';
       document.getElementById("button1s").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 168)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+        '\', 168, false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
       document.getElementById("button1m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 720)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+        '\', 720, false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
       document.getElementById("button1a").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "',8760," +
         timespanGraph +
-        ')" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
+        ', false)" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
       document.getElementById("button2m").innerHTML =
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
       document.getElementById("button15m").innerHTML =

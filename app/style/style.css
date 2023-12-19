@@ -275,3 +275,13 @@ body {
 #compref{
   margin:10px;
 }
+
+#compare{
+  display: none;
+  width: 200px;
+  height: 220px;
+}
+
+#sidePanel{
+  overflow:auto;
+}
