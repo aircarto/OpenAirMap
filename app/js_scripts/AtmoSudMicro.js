@@ -1,5 +1,5 @@
 function loadStationMicroAtmo() {
-  console.log("%cAtmoSud Micro", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+  console.log("%cAtmoSud Micro (dernière)", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
   const start = Date.now();
   stationsMicroAtmoSud.clearLayers();
 
@@ -35,7 +35,7 @@ function loadStationMicroAtmo() {
 
     $.each(filtered, function (key, item) {
 
-      var value_compound = Math.round(item["valeur_brute"]);
+      var value_compound = Math.round(item["valeur"]);
 
       var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
         '<div id="gauges">' +
@@ -78,11 +78,11 @@ function loadStationMicroAtmo() {
       }
       //TRES MAUVAIS
       if (value_compound >= 50 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-        icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_tresmauvais.png';
+        icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_tresMauvais.png';
       }
       //extr MAUVAIS
       if (value_compound >= 75 && (compoundUpper == "PM1" || compoundUpper == "PM25")) {
-        icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_extmauvais.png';
+        icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_ExtrMauvais.png';
       }
 
 
@@ -117,14 +117,14 @@ function loadStationMicroAtmo() {
 
       //textSize (if number under 10)
       var textSize = 45;
-      var x_position = -22;
-      var y_position = 62;
+      var x_position = -22+2;
+      var y_position = 62+3;
 
       //smaller text size if number is greater than 9
       if (value_compound >= 10) {
         textSize = 38;
-        x_position = -14;
-        y_position = 56;
+        x_position = -14+3;
+        y_position = 56+3;
       }
 
       //smaller text size if number is greater than 99
@@ -179,9 +179,9 @@ function loadStationMicroAtmo() {
                 root2 = am5.Root.new("chartdiv2");
                 root3 = am5.Root.new("chartdiv3");
 
-                gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
-                gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
-                gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+                gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
+                gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
+                gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
 
               })
             }, 1000) // end am5.ready()
@@ -213,13 +213,13 @@ function loadStationMicroAtmo() {
 
                 switch (compoundUpper) {
                   case "PM1":
-                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
+                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
                     break;
                   case "PM25":
-                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
+                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
                     break;
                   case "PM10":
-                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
                     break;
                 }
 
@@ -270,9 +270,9 @@ function loadStationMicroAtmo() {
                 root3 = am5.Root.new("chartdiv3");
 
 
-                gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
-                gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
-                gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+                gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
+                gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
+                gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
 
 
               })
@@ -302,13 +302,13 @@ function loadStationMicroAtmo() {
 
                 switch (compoundUpper) {
                   case "PM1":
-                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
+                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
                     break;
                   case "PM25":
-                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
+                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
                     break;
                   case "PM10":
-                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+                    gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
                     break;
                 }
 
@@ -347,7 +347,7 @@ function changeStationMicroAtmo() {
 
   $.each(filtered, function (key, item) {
 
-    var value_compound = Math.round(item["valeur_brute"]);
+    var value_compound = Math.round(item["valeur"]);
 
     var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
       '<div id="gauges">' +
@@ -490,9 +490,9 @@ function changeStationMicroAtmo() {
               root2 = am5.Root.new("chartdiv2");
               root3 = am5.Root.new("chartdiv3");
 
-              gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
-              gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
-              gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+              gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
+              gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
+              gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
 
             })
           }, 1000) // end am5.ready()
@@ -523,13 +523,13 @@ function changeStationMicroAtmo() {
               root1 = am5.Root.new("modal_chartdivmodalgauge");
               switch (compoundUpper) {
                 case "PM1":
-                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
+                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
                   break;
                 case "PM25":
-                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
+                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
                   break;
                 case "PM10":
-                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
                   break;
               }
 
@@ -578,9 +578,9 @@ function changeStationMicroAtmo() {
               root3 = am5.Root.new("chartdiv3");
 
 
-              gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
-              gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
-              gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+              gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
+              gaugeCreatorAtmoSudMicro(root2, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
+              gaugeCreatorAtmoSudMicro(root3, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
 
             })
           }, 1000) // end am5.ready()
@@ -612,13 +612,13 @@ function changeStationMicroAtmo() {
 
               switch (compoundUpper) {
                 case "PM1":
-                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur_brute, "PM1");
+                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM1")[0].valeur, "PM1");
                   break;
                 case "PM25":
-                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur_brute, "PM25");
+                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM2.5")[0].valeur, "PM25");
                   break;
                 case "PM10":
-                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur_brute, "PM10");
+                  gaugeCreatorAtmoSudMicro(root1, filtered2.filter((e) => e.variable == "PM10")[0].valeur, "PM10");
                   break;
               }
 
@@ -632,18 +632,17 @@ function changeStationMicroAtmo() {
   })
 }
 
-function load1MicroAtmo(id, hours) {
+function load1MicroAtmo(id, hours, timespan) {
 
-  console.log("%cAtmoSud Micro 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+  console.log("%cAtmoSud Micro 1 sensor !!", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
   const end = new Date();
   const end_string = end.toISOString();
   const get_start = end.setHours(end.getHours() - hours);
   const start = new Date(get_start);
   const start_string = start.toISOString()
-  console.log(start_string);
-  console.log(end_string);
-
-  console.log(id);
+  console.log("Station id:" + id);
+  console.log("From: " + start_string);
+  console.log("To: " + end_string);
 
   //ATTENTION, ON EST EN UTC
 
@@ -656,7 +655,8 @@ function load1MicroAtmo(id, hours) {
     data: ({
       id_site: id,
       debut: start_string,
-      fin: end_string
+      fin: end_string,
+      timespan: timespan
     }),
   }).done(function (data) {
     console.log(data);
@@ -685,7 +685,6 @@ function load1MicroAtmo(id, hours) {
 function switchMicroAtmo() {
   if (
     (timespanLower != 2) &
-    (timespanLower != 60) &
     (timespanLower != 1440)
   ) {
     if (
@@ -715,7 +714,7 @@ function switchMicroAtmo() {
     }
   } else {
     openToast(
-      "Pas de données à intervalles 2 minutes, 1 heure ou 1 jour pour les microstations AtmoSud"
+      "Pas de données à intervalles 2 minutes ou 1 jour pour les microstations AtmoSud"
     );
     document.querySelector(
       "#checkbox_micro_stationsAtmoSud"
@@ -724,14 +723,13 @@ function switchMicroAtmo() {
   setQueryString();
 }
 
-function chooseTimeAtmoMicro(sensor, hours, modal) {
-  console.log(sensor);
-  console.log(hours);
+function chooseTimeAtmoMicro(sensor, hours, timespan, modal) {
+  console.log("⭕️ Getting new data for sensor " + sensor + " for the lasts " + hours + " hours (aggregation: " + timespan + " min)");
   if(!modal){
-  load1MicroAtmo(sensor, hours);
+  load1MicroAtmo(sensor, hours, timespan);
   buttonsSwitcher(hours, 15, false); //REVOIR
   }else{
-    load1MicroAtmoModal(sensor, hours);
+    load1MicroAtmoModal(sensor, hours, timespan);
     buttonsSwitcher(hours, 15, true); //REVOIR
   }
 }
@@ -1007,13 +1005,13 @@ function graphCreatorAtmoSudMicro(root, data, text) {
 
 
   let data_PM1 = filter_PM1.map(function (e) {
-    return { value: e.valeur_brute, date: new Date(e.time).getTime() }
+    return { value: e.valeur, date: new Date(e.time).getTime() }
   });
   let data_PM25 = filter_PM25.map(function (e) {
-    return { value: e.valeur_brute, date: new Date(e.time).getTime() }
+    return { value: e.valeur, date: new Date(e.time).getTime() }
   });
   let data_PM10 = filter_PM10.map(function (e) {
-    return { value: e.valeur_brute, date: new Date(e.time).getTime() }
+    return { value: e.valeur, date: new Date(e.time).getTime() }
   });
 
 
@@ -1194,7 +1192,7 @@ function graphCreatorAtmoSudMicro(root, data, text) {
 }
 
 
-function load1MicroAtmoModal(id, hours) {
+function load1MicroAtmoModal(id, hours, timespan) {
 
   console.log("%cAtmoSud Micro 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
   const end = new Date();
@@ -1202,10 +1200,11 @@ function load1MicroAtmoModal(id, hours) {
   const get_start = end.setHours(end.getHours() - hours);
   const start = new Date(get_start);
   const start_string = start.toISOString()
+  console.log("Station id: " + id);
+
   console.log(start_string);
   console.log(end_string);
 
-  console.log(id);
 
   //ATTENTION, ON EST EN UTC
 
@@ -1218,7 +1217,8 @@ function load1MicroAtmoModal(id, hours) {
     data: ({
       id_site: id,
       debut: start_string,
-      fin: end_string
+      fin: end_string,
+      timespan: timespan
     }),
   }).done(function (data) {
     console.log(data);

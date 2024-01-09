@@ -28,6 +28,8 @@ function mobileTest() {
   }
  
   //Events for button clicks to choose compound and timespan
+
+  //Fonction qui s'active lorsque l'on sélectionne PM1
   function choosePM1() {
     document
       .querySelector("#button_PM10")
@@ -82,6 +84,7 @@ function mobileTest() {
     setQueryString();
   }
 
+  //Fonction qui s'active lorsque l'on sélectionne PM25
   function choosePM25() {
     document
       .querySelector("#button_PM10")
@@ -132,6 +135,7 @@ function mobileTest() {
     setQueryString();
   }
 
+  //Fonction qui s'active lorsque l'on sélectionne PM10
   function choosePM10() {
     document
       .querySelector("#button_PM10")
@@ -182,7 +186,10 @@ function mobileTest() {
     setQueryString();
   }
 
+  //fonction qui s'active lorsque l'on sélectionn 2 minutes (donnée en direct)
   function chooseActuel() {
+    console.log("✅ Switch to 2min");
+
     document
       .querySelector("#btn_journalier")
       .classList.replace("btn-primary", "btn-outline-primary");
@@ -203,6 +210,7 @@ function mobileTest() {
     document.querySelector("#button_horloge").innerHTML =
       hour + ":" + (min < 10 ? "0" : "") + min; //2min par
 
+    //NEBULEAIR
     if (
       document.querySelector("#checkbox_micro_stationsParticuliers").checked
     ) {
@@ -220,6 +228,7 @@ function mobileTest() {
       }
     }
 
+    //Micro-Stations AtmoSud (pas dispo en 2min)
     if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
       document.querySelector(
         "#checkbox_micro_stationsAtmoSud"
@@ -230,6 +239,7 @@ function mobileTest() {
       );
     }
 
+    //Station de Ref (pas dispo en 2min)
     if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
       document.querySelector(
         "#checkbox_stationsRefAtmoSud"
@@ -257,7 +267,9 @@ function mobileTest() {
     setQueryString();
   }
 
+  //fonction qui s'active lorsque l'on clique sur le bouton "Quart-Horaire"
   function choose15() {
+    console.log("✅ Switch to Quart-Horaire");
     document
       .querySelector("#btn_journalier")
       .classList.replace("btn-primary", "btn-outline-primary");
@@ -312,6 +324,7 @@ function mobileTest() {
       (min2 < 10 ? "0" : "") +
       min2;
 
+    // NEBULEAIR QH
     if (
       document.querySelector("#checkbox_micro_stationsParticuliers").checked
     ) {
@@ -329,6 +342,7 @@ function mobileTest() {
       }
     }
 
+    //SC (pas dispo en 15min)
     if (document.querySelector("#checkbox_sensor_community").checked) {
       document.querySelector("#checkbox_sensor_community").checked = false;
       map.removeLayer(sensorCommunity);
@@ -337,6 +351,23 @@ function mobileTest() {
       );
     }
 
+    //Micro Station AtmoSud (15min)
+    if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
+      if (
+        apiFetchAtmoSudMicro.timespan != 15 ||
+        apiFetchAtmoSudMicro.data.length == 0 ||
+        (apiFetchAtmoSudMicro.data.length != 0 &&
+          Date.now() - apiFetchAtmoSudMicro.timestamp > 15 * 60 * 1000)
+      ) {
+        stationsMicroAtmoSud.clearLayers();
+        loadStationMicroAtmo();
+      } else {
+        stationsMicroAtmoSud.clearLayers();
+        changeStationMicroAtmo();
+      }
+    }
+
+    //Station Ref
     if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
       if (
         apiFetchAtmoSudRef.timespan != 15 ||
@@ -352,6 +383,7 @@ function mobileTest() {
       }
     }
 
+    //Purple Air
     if (document.querySelector("#checkbox_purpleAir").checked) {
       if (
         apiFetchPurpleAir.timespan != 15 ||
@@ -370,7 +402,9 @@ function mobileTest() {
     setQueryString();
   }
 
+  //fonction qui s'active lorsque l'on clique sur le bouton "Horaire"
   function choose60() {
+    console.log("✅ Switch to Horaire");
     document
       .querySelector("#btn_journalier")
       .classList.replace("btn-primary", "btn-outline-primary");
@@ -396,6 +430,7 @@ function mobileTest() {
     document.querySelector("#button_horloge").innerHTML =
       hour1 + ":" + "00" + " à " + hour2 + ":" + "00";
 
+    //NebuleAir (60min)
     if (
       document.querySelector("#checkbox_micro_stationsParticuliers").checked
     ) {
@@ -413,6 +448,7 @@ function mobileTest() {
       }
     }
 
+    //si les SC sont activés on les enlève car pas de data dispo pour le pas de temps 1H
     if (document.querySelector("#checkbox_sensor_community").checked) {
       document.querySelector("#checkbox_sensor_community").checked = false;
       map.removeLayer(sensorCommunity);
@@ -421,14 +457,20 @@ function mobileTest() {
       );
     }
 
+    //Micro Station AtmoSud (15min)
     if (document.querySelector("#checkbox_micro_stationsAtmoSud").checked) {
-      document.querySelector(
-        "#checkbox_micro_stationsAtmoSud"
-      ).checked = false;
-      map.removeLayer(stationsMicroAtmoSud);
-      openToast(
-        "Pas de données à intervalles 1 heure pour les microstations AtmoSud"
-      );
+      if (
+        apiFetchAtmoSudMicro.timespan != 60 ||
+        apiFetchAtmoSudMicro.data.length == 0 ||
+        (apiFetchAtmoSudMicro.data.length != 0 &&
+          Date.now() - apiFetchAtmoSudMicro.timestamp > 60 * 60 * 1000)
+      ) {
+        stationsMicroAtmoSud.clearLayers();
+        loadStationMicroAtmo();
+      } else {
+        stationsMicroAtmoSud.clearLayers();
+        changeStationMicroAtmo();
+      }
     }
 
     if (document.querySelector("#checkbox_stationsRefAtmoSud").checked) {
@@ -463,7 +505,9 @@ function mobileTest() {
     setQueryString();
   }
 
+  //fonction qui s'active lorsque l'on clique sur le bouton "Journalier"
   function choose1440() {
+    console.log("✅ Switch to Journalier");
     document
       .querySelector("#btn_journalier")
       .classList.replace("btn-outline-primary", "btn-primary");
@@ -1514,7 +1558,7 @@ function mobileTest() {
           break;
       }
 
-      load1MicroAtmoModal(id, timeLength);
+      load1MicroAtmoModal(id, timeLength, timespanLower);
       document.getElementById("modal_chartSensor").style.display = "none";
       document.getElementById("modal_chartSensor2").style.display = "block";
       document.getElementById("modal_button1h").innerHTML =
@@ -1986,7 +2030,7 @@ function mobileTest() {
   //SidePanel for Desktop Computer
   function OpenSidePanel(sensor) {
     const targetDiv = document.getElementById("sidePanel");
-    console.log(sensor);
+    console.log("Panel open for sensor: " + sensor);
     targetDiv.style.display = "block";
     document.getElementById("title_deviceName").innerHTML = sensor;
 
@@ -2075,6 +2119,7 @@ function mobileTest() {
         "',8760," +
         timespanGraph +
         ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+        //boutons pas de temps
       document.getElementById("button2m").innerHTML =
         '<button type="button" onclick="chooseTimeNebuleAir(\'' +
         id +
@@ -2179,47 +2224,73 @@ function mobileTest() {
 
     if (sensor.includes("microstationAtmoSud")) {
       var id = sensor.split("-")[1];
-      load1MicroAtmo(id, timeLength);
+      load1MicroAtmo(id, timeLength, timespanLower);
       document.getElementById("chartSensor").style.display = "none";
       document.getElementById("chartSensor2").style.display = "block";
+      //on crée les boutons qui lancent la fonction "chooseTimeAtmoMicro(idStation, time, boolean)"
       document.getElementById("button1h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\',1, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        "',1," +
+        timespanLower +
+        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
       document.getElementById("button3h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 3, false)" class="btn btn-secondary btn-sm">3h</button>';
+        "', 3," +
+        timespanLower +
+        ',false)" class="btn btn-secondary btn-sm">3h</button>';
       document.getElementById("button24h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 24, false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+        "', 24," +
+        timespanLower +
+        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
       document.getElementById("button48h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 48, false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+        "', 48," +
+        timespanLower +
+        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
       document.getElementById("button1s").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 168, false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+        "', 168," +
+        timespanLower +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
       document.getElementById("button1m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
-        '\', 720, false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+        "', 720," +
+        timespanLower +
+        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
       document.getElementById("button1a").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "',8760," +
         timespanGraph +
         ', false)" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
-      document.getElementById("button2m").innerHTML =
+      //boutons pas de temps
+        document.getElementById("button2m").innerHTML =
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
       document.getElementById("button15m").innerHTML =
-        '<button type="button" class="btn btn-secondary btn-sm">15m</button>';
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',15, false)" class="btn btn-secondary btn-sm">15m</button>';
       document.getElementById("button60m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',60, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
       document.getElementById("button1440m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',1440, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
     }
 
     if (sensor.includes("stationRefAtmoSud")) {
@@ -2269,7 +2340,8 @@ function mobileTest() {
         "',8760," +
         timespanGraph +
         ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("button2m").innerHTML =
+        // pas de temps
+        document.getElementById("button2m").innerHTML =
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
       document.getElementById("button15m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoRef(\'' +

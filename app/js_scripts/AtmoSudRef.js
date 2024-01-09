@@ -1,4 +1,4 @@
-function loadStationRefAtmo() {
+function loadStationRefAtmo() {AtmoSudMicro_1
   console.log("%cAtmoSud Ref", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
   const start = Date.now();
   stationsRefAtmoSud.clearLayers();
@@ -806,7 +806,7 @@ function load1RefAtmo(id, hours, timespan) {
   const get_start = end.setHours(end.getHours() - hours);
   const start = new Date(get_start);
   const start_string = start.toISOString()
-  console.log(id);
+  console.log("Station id:".id);
   console.log(hours);
   console.log(start_string);
   console.log(end_string);
