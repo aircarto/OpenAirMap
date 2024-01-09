@@ -36,6 +36,11 @@ function loadStationMicroAtmo() {
     $.each(filtered, function (key, item) {
 
       var value_compound = Math.round(item["valeur"]);
+      
+      // en QH prendre la data brute
+      if (timespanLower === 15) {
+        value_compound = Math.round(item["valeur_brute"]);
+      }
 
       var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
         '<div id="gauges">' +
@@ -55,6 +60,13 @@ function loadStationMicroAtmo() {
         iconUrl: 'img/microStationsAtmoSud/microStationAtmoSud_default.png',
         iconSize: [80, 80], // size of the icon
         iconAnchor: [5, 70], // point of the icon which will correspond to marker's location
+        //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
+      }
+
+      var icon_STAR = {
+        iconUrl: 'img/star.png',
+        iconSize: [40, 40], // size of the icon
+        iconAnchor: [10, 70], // point of the icon which will correspond to marker's location
         //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
       }
 
@@ -86,7 +98,8 @@ function loadStationMicroAtmo() {
       }
 
 
-      //change icon color for PM1 and PM25
+      //change icon color for PM10
+
       //BON
       if (value_compound >= 0 && value_compound < 20 && compoundUpper == "PM10") {
         icon_param.iconUrl = 'img/microStationsAtmoSud/microStationAtmoSud_bon.png';
@@ -114,6 +127,7 @@ function loadStationMicroAtmo() {
 
       //add icon to map
       var microStationsAtmoSud_icon = L.icon(icon_param);
+      var microStationsAtmoSTAR = L.icon(icon_STAR);
 
       //textSize (if number under 10)
       var textSize = 45;
@@ -137,7 +151,7 @@ function loadStationMicroAtmo() {
 
 
       if (value_compound != undefined && value_compound != null) {
-        // cutom text on the marker
+        // custom text on the marker
         var myIcon = L.divIcon({
           className: 'my-div-icon',
           html: '<div id="textDiv" style="font-size: ' + textSize + 'px;">' + value_compound + '</div>',
@@ -148,7 +162,11 @@ function loadStationMicroAtmo() {
         L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSud_icon })
           .addTo(stationsMicroAtmoSud)
 
-
+          //si on est en H alors une étoile sur la data
+          if (timespanLower === 60) {
+            L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSTAR })
+          .addTo(stationsMicroAtmoSud)
+          }
 
         if (!isMobile) {
         //on ajoute le texte sur les points
@@ -348,6 +366,13 @@ function changeStationMicroAtmo() {
   $.each(filtered, function (key, item) {
 
     var value_compound = Math.round(item["valeur"]);
+
+    //en QH prendre la data brute
+    if (timespanLower == 15) {
+      value_compound = Math.round(item["valeur_brute"]);
+    }
+    
+
 
     var AtmoSudMicroPopup = '<img src="img/LogoAtmoSud.png" alt="" class="card-img-top">' +
       '<div id="gauges">' +
