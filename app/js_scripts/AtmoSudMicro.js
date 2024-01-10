@@ -65,8 +65,8 @@ function loadStationMicroAtmo() {
 
       var icon_STAR = {
         iconUrl: 'img/star.png',
-        iconSize: [40, 40], // size of the icon
-        iconAnchor: [10, 70], // point of the icon which will correspond to marker's location
+        iconSize: [20, 20], // size of the icon
+        iconAnchor: [-23, 85], // point of the icon which will correspond to marker's location
         //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
       }
 
@@ -657,6 +657,7 @@ function changeStationMicroAtmo() {
   })
 }
 
+//chargement des donnée lorsque l'on ouvre le side panel
 function load1MicroAtmo(id, hours, timespan) {
 
   console.log("%cAtmoSud Micro 1 sensor !!", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
@@ -666,6 +667,7 @@ function load1MicroAtmo(id, hours, timespan) {
   const start = new Date(get_start);
   const start_string = start.toISOString()
   console.log("Station id:" + id);
+  console.log("Pas de temps:" + timespan);
   console.log("From: " + start_string);
   console.log("To: " + end_string);
 
@@ -748,14 +750,15 @@ function switchMicroAtmo() {
   setQueryString();
 }
 
+//fonction lorsque l'on clique sur un bouton du side panel
 function chooseTimeAtmoMicro(sensor, hours, timespan, modal) {
   console.log("⭕️ Getting new data for sensor " + sensor + " for the lasts " + hours + " hours (aggregation: " + timespan + " min)");
   if(!modal){
   load1MicroAtmo(sensor, hours, timespan);
-  buttonsSwitcher(hours, 15, false); //REVOIR
+  buttonsSwitcher(hours, timespan, false); //REVOIR
   }else{
     load1MicroAtmoModal(sensor, hours, timespan);
-    buttonsSwitcher(hours, 15, true); //REVOIR
+    buttonsSwitcher(hours, timespan, true); //REVOIR
   }
 }
 
@@ -1216,7 +1219,7 @@ function graphCreatorAtmoSudMicro(root, data, text) {
         chart.appear(1000, 100);
 }
 
-
+//ouverture du Modal (SmartPhone)
 function load1MicroAtmoModal(id, hours, timespan) {
 
   console.log("%cAtmoSud Micro 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);

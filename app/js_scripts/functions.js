@@ -9,7 +9,7 @@ function mobileTest() {
           a.substr(0, 4)
         )
       )
-        check = true;
+        check = false;
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
   }
@@ -629,8 +629,7 @@ function mobileTest() {
 
   //Common function to set the css of the buttons after clicks 
   function buttonsSwitcher(hours, timespan, modal) {
-    console.log(hours);
-    console.log(timespan);
+    console.log("Switch to new hours (" + hours + ") and timespan (" + timespan + ")");
 
     if (!modal) {
       switch (hours) {
@@ -1397,7 +1396,8 @@ function mobileTest() {
         "',8760," +
         timespanLower +
         ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      document.getElementById("modal_button2m").innerHTML =
+        //pas de temps
+        document.getElementById("modal_button2m").innerHTML =
         '<button type="button" onclick="chooseTimeNebuleAir(\'' +
         id +
         "'," +
@@ -1561,46 +1561,63 @@ function mobileTest() {
       load1MicroAtmoModal(id, timeLength, timespanLower);
       document.getElementById("modal_chartSensor").style.display = "none";
       document.getElementById("modal_chartSensor2").style.display = "block";
+
       document.getElementById("modal_button1h").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\', 1,true)" class="btn btn-outline-secondary btn-sm">1h</button>';
-    document.getElementById("modal_button3h").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\', 3,true)" class="btn btn-secondary btn-sm">3h</button>';
-    document.getElementById("modal_button24h").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\', 24,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-    document.getElementById("modal_button48h").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\', 48,true)" class="btn btn-outline-secondary btn-sm">48h</button>';
-    document.getElementById("modal_button1s").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\', 168,true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
-    document.getElementById("modal_button1m").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\', 720),true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
-    document.getElementById("modal_button1a").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\',8760,true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-    document.getElementById("modal_button2m").innerHTML =
-      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-    document.getElementById("modal_button15m").innerHTML =
-      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
-      id +
-      '\''+timeLength +
-      ',true)" class="btn btn-outline-secondary btn-sm">15m</button>';
-    document.getElementById("modal_button60m").innerHTML =
-      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
-    document.getElementById("modal_button1440m").innerHTML =
-      '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
-    buttonsSwitcher(timeLength, timespanLower, true);
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "', 1," + 
+        timespanLower + 
+        ',true)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      document.getElementById("modal_button3h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "', 3," + 
+        timespanLower + 
+        ',true)" class="btn btn-secondary btn-sm">3h</button>';
+      document.getElementById("modal_button24h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "', 24," + 
+        timespanLower + 
+        ',true)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      document.getElementById("modal_button48h").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "', 48," + 
+        timespanLower + 
+        ',true)" class="btn btn-outline-secondary btn-sm">48h</button>';
+      document.getElementById("modal_button1s").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "', 168," + 
+        timespanLower + 
+        ',true)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+      document.getElementById("modal_button1m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "', 720," + 
+        timespanLower + 
+        ',true)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+      document.getElementById("modal_button1a").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        "',8760," + 
+        timespanLower + 
+        ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+      //pas de temps
+      document.getElementById("modal_button2m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+      document.getElementById("modal_button15m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+        id +
+        '\''+timeLength +
+        '15,true)" class="btn btn-outline-secondary btn-sm">15m</button>';
+      document.getElementById("modal_button60m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
+      document.getElementById("modal_button1440m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+      
+        buttonsSwitcher(timeLength, timespanLower, true);
 
     // if (timespanLower == 2 || timespanLower == 15) {
     //   document
@@ -2030,7 +2047,7 @@ function mobileTest() {
   //SidePanel for Desktop Computer
   function OpenSidePanel(sensor) {
     const targetDiv = document.getElementById("sidePanel");
-    console.log("Panel open for sensor: " + sensor);
+    console.log("Panel open for sensor: " + sensor + " ( pas de temps " + timespanLower + " min)");
     targetDiv.style.display = "block";
     document.getElementById("title_deviceName").innerHTML = sensor;
 
