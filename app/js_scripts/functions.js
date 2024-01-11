@@ -31,6 +31,8 @@ function mobileTest() {
 
   //Fonction qui s'active lorsque l'on sélectionne PM1
   function choosePM1() {
+    console.log("✅ Switch to PM1");
+
     document
       .querySelector("#button_PM10")
       .classList.replace("btn-primary", "btn-outline-primary");
@@ -86,6 +88,8 @@ function mobileTest() {
 
   //Fonction qui s'active lorsque l'on sélectionne PM25
   function choosePM25() {
+    console.log("✅ Switch to PM2.5");
+
     document
       .querySelector("#button_PM10")
       .classList.replace("btn-primary", "btn-outline-primary");
@@ -137,6 +141,8 @@ function mobileTest() {
 
   //Fonction qui s'active lorsque l'on sélectionne PM10
   function choosePM10() {
+    console.log("✅ Switch to PM10");
+
     document
       .querySelector("#button_PM10")
       .classList.replace("btn-outline-primary", "btn-primary");
