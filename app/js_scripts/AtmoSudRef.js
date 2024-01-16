@@ -1,4 +1,4 @@
-function loadStationRefAtmo() {AtmoSudMicro_1
+function loadStationRefAtmo() {
   console.log("%cAtmoSud Ref", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
   const start = Date.now();
   stationsRefAtmoSud.clearLayers();
