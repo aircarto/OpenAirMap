@@ -38,8 +38,8 @@ function loadStationMicroAtmo() {
 
       var value_compound = Math.round(item["valeur"]);
       
-      // en QH prendre la data brute
-      if (timespanLower === 15) {
+      // si la valeur est null alors on prends la brute
+      if (item["valeur"] === null && item["valeur_brute"] !== null) {
         value_compound = Math.round(item["valeur_brute"]);
       }
 
@@ -65,7 +65,7 @@ function loadStationMicroAtmo() {
       }
 
       var icon_STAR = {
-        iconUrl: 'img/star.png',
+        iconUrl: 'img/star_gold.png',
         iconSize: [20, 20], // size of the icon
         iconAnchor: [-23, 85], // point of the icon which will correspond to marker's location
         //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
@@ -379,7 +379,7 @@ function changeStationMicroAtmo() {
     var value_compound = Math.round(item["valeur"]);
 
     //en QH prendre la data brute
-    if (timespanLower == 15) {
+    if (item["valeur"] === null && item["valeur_brute"] !== null) {
       value_compound = Math.round(item["valeur_brute"]);
     }
     
@@ -405,7 +405,7 @@ function changeStationMicroAtmo() {
     }
 
     var icon_STAR = {
-      iconUrl: 'img/star.png',
+      iconUrl: 'img/star_gold.png',
       iconSize: [20, 20], // size of the icon
       iconAnchor: [-23, 85], // point of the icon which will correspond to marker's location
       //popupAnchor: [30, -60] // point from which the popup should open relative to the iconAnchor
@@ -849,7 +849,7 @@ function chooseTimeAtmoMicro(sensor, hours, timespan, modal) {
       sensor +
       "'," +
       timeLengthGraph +
-      ',60,false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      ',60,false)" class="btn btn-outline-secondary btn-sm">1h cor</button>';
     document.getElementById("button1440m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
