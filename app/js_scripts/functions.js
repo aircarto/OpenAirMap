@@ -634,9 +634,12 @@ function mobileTest() {
   }
 
   //Common function to set the css of the buttons after clicks 
-  function buttonsSwitcher(hours, timespan, modal) {
-    console.log("Switch to new hours (" + hours + ") and timespan (" + timespan + ")");
+  function buttonsSwitcher(hours, timespan, correction, modal) {
+    console.log("➡️ buttonsSwitcher ⬅️")
 
+    console.log("Switch to new historique (" + hours + ") and pas de temps (" + timespan + ") and correction (" + correction + ")");
+     
+    //sur desktop
     if (!modal) {
       switch (hours) {
         case 1:
@@ -969,6 +972,33 @@ function mobileTest() {
             );
           document
             .getElementById("button1440m")
+            .children[0].classList.replace(
+              "btn-outline-secondary",
+              "btn-secondary"
+            );
+          break;
+      }
+
+      switch (correction) {
+        case false:
+          //donnée brute
+          document
+            .getElementById("button60m_corrige")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+          break;
+        case true:
+          //donnée corrigée
+          document
+            .getElementById("button60m")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+            document
+            .getElementById("button60m_corrige")
             .children[0].classList.replace(
               "btn-outline-secondary",
               "btn-secondary"
@@ -1610,7 +1640,8 @@ function mobileTest() {
         "',8760," + 
         timespanLower + 
         ',true)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-      //pas de temps
+      //pas de temps (brute)
+      document.getElementById("dataBrute").innerHTML = '<div><p>Data brute</p></div>';
       document.getElementById("modal_button2m").innerHTML =
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
       document.getElementById("modal_button15m").innerHTML =
@@ -1622,6 +1653,8 @@ function mobileTest() {
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>1h</button>';
       document.getElementById("modal_button1440m").innerHTML =
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+        //pas de temps (corrige)
+
       
         buttonsSwitcher(timeLength, timespanLower, true);
 
@@ -2247,7 +2280,7 @@ function mobileTest() {
 
     if (sensor.includes("microstationAtmoSud")) {
       var id = sensor.split("-")[1];
-      load1MicroAtmo(id, timeLength, timespanLower);
+      load1MicroAtmo(id, timeLength, timespanLower, correction);
       document.getElementById("chartSensor").style.display = "none";
       document.getElementById("chartSensor2").style.display = "block";
       //on crée les boutons qui lancent la fonction "chooseTimeAtmoMicro(idStation, time, boolean)"
@@ -2256,64 +2289,87 @@ function mobileTest() {
         id +
         "',1," +
         timespanLower +
-        ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
       document.getElementById("button3h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "', 3," +
         timespanLower +
-        ',false)" class="btn btn-secondary btn-sm">3h</button>';
+        ',' + correction + ',false)" class="btn btn-secondary btn-sm">3h</button>';
       document.getElementById("button24h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "', 24," +
         timespanLower +
-        ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+        ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
       document.getElementById("button48h").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "', 48," +
         timespanLower +
-        ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+        ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
       document.getElementById("button1s").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "', 168," +
         timespanLower +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+        ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
       document.getElementById("button1m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "', 720," +
         timespanLower +
-        ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+        ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
       document.getElementById("button1a").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
         id +
         "',8760," +
         timespanGraph +
-        ', false)" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
-      //boutons pas de temps
-        document.getElementById("button2m").innerHTML =
+        ',' + correction + ', false)" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
+      //boutons pas de temps (donnée brute)
+      document.getElementById("dataBrute").innerHTML ='<div class="d-inline">Donnée brute</div>';
+      document.getElementById("button2m").innerHTML =
         '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
       document.getElementById("button15m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\''+
         id +
         "'," +
         timeLength + 
-        ',15, false)" class="btn btn-secondary btn-sm">15m</button>';
+        ',15, false, false)" class="btn btn-secondary btn-sm">15m</button>';
       document.getElementById("button60m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\''+
         id +
         "'," +
         timeLength + 
-        ',60, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+        ',60, false, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
       document.getElementById("button1440m").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\''+
         id +
         "'," +
         timeLength + 
-        ',1440, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+        ',1440, false, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+      //boutons pas de temps (donnée corrigée)
+      document.getElementById("dataCorrige").innerHTML ='<br><div class="d-inline mt-2">Donnée corrigée</div>';
+        document.getElementById("button2m_corrige").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm mt-2" disabled>2m</button>';
+      document.getElementById("button15m_corrige").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',15, true,false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>15m</button>';
+      document.getElementById("button60m_corrige").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',60,true, false)" class="btn btn-outline-secondary btn-sm mt-2">1h</button>';
+      document.getElementById("button1440m_corrige").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',1440,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
     }
 
     if (sensor.includes("stationRefAtmoSud")) {
@@ -2511,6 +2567,16 @@ function mobileTest() {
           .getElementById("button15m")
           .children[0].removeAttribute("disabled");
       }
+    }
+
+    //when it's not a micro-station we remove the option to select donnée corrigée
+    if (!sensor.includes("microstationAtmoSud")){
+      $('#dataBrute').remove();
+      $('#dataCorrige').remove();
+      $('#button2m_corrige').remove();
+      $('#button15m_corrige').remove();
+      $('#button60m_corrige').remove();
+      $('#button1440m_corrige').remove();
     }
   }
 

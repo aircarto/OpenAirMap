@@ -687,9 +687,9 @@ function changeStationMicroAtmo() {
 }
 
 //chargement des donnée lorsque l'on ouvre le side panel
-function load1MicroAtmo(id, hours, timespan) {
-
-  console.log("%cAtmoSud Micro 1 sensor !!", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
+function load1MicroAtmo(id, hours, timespan, correction) {
+  console.log("➡️ load1MicroAtmo ⬅️")
+  //console.log("%cAtmoSud Micro 1 sensor !!", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
   const end = new Date();
   const end_string = end.toISOString();
   const get_start = end.setHours(end.getHours() - hours);
@@ -699,6 +699,7 @@ function load1MicroAtmo(id, hours, timespan) {
   console.log("Pas de temps:" + timespan);
   console.log("From: " + start_string);
   console.log("To: " + end_string);
+  console.log("Correction: " + correction);
 
   //ATTENTION, ON EST EN UTC
 
@@ -715,6 +716,7 @@ function load1MicroAtmo(id, hours, timespan) {
       timespan: timespan
     }),
   }).done(function (data) {
+    console.log("Data retrived:");
     console.log(data);
 
     if (root4 != undefined) {
@@ -728,7 +730,7 @@ function load1MicroAtmo(id, hours, timespan) {
         // Create root element
         // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
         root4 = am5.Root.new("chartSensor2");
-        graphCreatorAtmoSudMicro(root4, data, chartTitleText, timespan);
+        graphCreatorAtmoSudMicro(root4, data, chartTitleText, timespan, correction);
       })
     }, 1000); // end am5.ready()
 
@@ -780,88 +782,115 @@ function switchMicroAtmo() {
 }
 
 //fonction lorsque l'on clique sur un bouton du side panel
-function chooseTimeAtmoMicro(sensor, hours, timespan, modal) {
-  console.log("⭕️ Getting new data for sensor " + sensor + " for the lasts " + hours + " hours (aggregation: " + timespan + " min)");
+function chooseTimeAtmoMicro(sensor, hours, timespan, correction, modal) {
+  console.log("⭕️ Getting new data for sensor " + sensor + " for the lasts " + hours + " hours (aggregation: " + timespan + " min) and correction " + correction );
   timeLengthGraph = hours;
   timespanGraph = timespan;
 
-  
+  //sur desktop
   if(!modal){
-  load1MicroAtmo(sensor, hours, timespan);
-
+    //chargement des données et création des graphs (dans la fonction)
+  load1MicroAtmo(sensor, hours, timespan, correction);
+    //MISE A JOUR DES BOUTONS
+    //historique
   document.getElementById("button1h").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',1," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1h</button>';
     document.getElementById("button3h").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',3," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">3h</button>';
     document.getElementById("button24h").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',24," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">24h</button>';
     document.getElementById("button48h").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',48," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">48h</button>';
     document.getElementById("button1s").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',168," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1 semaine</button>';
     document.getElementById("button1m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',720," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1 mois</button>';
     document.getElementById("button1a").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "',8760," +
       timespanGraph +
-      ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-    //pas de temps
+      ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
+    //pas de temps (brute)
       document.getElementById("button2m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',2,false)" class="btn btn-outline-secondary btn-sm" disbled>2m</button>';
+      ',2,false, false)" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
     document.getElementById("button15m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',15,false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+      ',15,false, false)" class="btn btn-outline-secondary btn-sm">15m</button>';
     document.getElementById("button60m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',60,false)" class="btn btn-outline-secondary btn-sm">1h cor</button>';
+      ',60,false, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
     document.getElementById("button1440m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',1440,false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+      ',1440,false, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+      //pas de temps corrigé
+      document.getElementById("button2m_corrige").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',2,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>2m</button>';
+    document.getElementById("button15m_corrige").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',15,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>15m</button>';
+    document.getElementById("button60m_corrige").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',60,true, false)" class="btn btn-outline-secondary btn-sm mt-2">1h</button>';
+    document.getElementById("button1440m_corrige").innerHTML =
+      '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
+      sensor +
+      "'," +
+      timeLengthGraph +
+      ',1440,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
 
-  buttonsSwitcher(hours, timespan, false); //REVOIR
+  buttonsSwitcher(hours, timespan, correction, false); //REVOIR
 
-  
+  //sur téléphone
   }else{
-    load1MicroAtmoModal(sensor, hours, timespan);
+    load1MicroAtmoModal(sensor, hours, timespan, correction);
     buttonsSwitcher(hours, timespan, true); //REVOIR
   }
 }
@@ -1126,16 +1155,18 @@ function gaugeCreatorAtmoSudMicro(root, measure, type) {
 
 }
 
-function graphCreatorAtmoSudMicro(root, data, text, timespan) {
+function graphCreatorAtmoSudMicro(root, data, text, timespan, correction) {
 
-  console.log("Création du graphique (pas de temps " + timespan + " min)");
+  console.log("➡️ graphCreatorAtmoSudMicro ⬅️")
+  console.log("Création du graphique (pas de temps " + timespan + " min & corection "+correction+")");
   console.log(root);
 
   let filter_PM1 = data.filter((e) => e.variable == "PM1");
   let filter_PM25 = data.filter((e) => e.variable == "PM2.5");
   let filter_PM10 = data.filter((e) => e.variable == "PM10");
 
-  if (timespan === 15) {
+  //si corection false alors on prends valeur brute
+  if (correction === false) {
     var data_PM1 = filter_PM1.map(function (e) {
       return { value: e.valeur_brute, date: new Date(e.time).getTime() }
     });
@@ -1338,7 +1369,7 @@ function graphCreatorAtmoSudMicro(root, data, text, timespan) {
         chart.appear(1000, 100);
 }
 
-//ouverture du Modal (SmartPhone)
+//ouverture du Modal (SmartPhone Petit Ecran)
 function load1MicroAtmoModal(id, hours, timespan) {
 
   console.log("%cAtmoSud Micro 1 sensor", "color: yellow; font-style: bold; background-color: blue;padding: 2px",);
@@ -1381,7 +1412,7 @@ function load1MicroAtmoModal(id, hours, timespan) {
         // Create root element
         // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
         root4 = am5.Root.new("modal_chartSensor2");
-        graphCreatorAtmoSudMicro(root4, data, chartTitleText, timespan);
+        graphCreatorAtmoSudMicro(root4, data, chartTitleText, timespan, correction);
       })
     }, 1000); // end am5.ready()
 

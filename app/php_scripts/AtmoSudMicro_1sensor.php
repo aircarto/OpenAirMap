@@ -25,7 +25,7 @@ switch ($timespan) {
         break;
     case 60:
         $url .= '&aggregation=horaire';
-        $url .= '&valeur_brute=false';
+        $url .= '&valeur_brute=true';
         break;
     case 1440:
         exit;
