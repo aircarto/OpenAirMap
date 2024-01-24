@@ -2085,6 +2085,7 @@ function mobileTest() {
 
   //SidePanel for Desktop Computer
   function OpenSidePanel(sensor) {
+    console.log("➡️ OpenSidePanel ⬅️")
     const targetDiv = document.getElementById("sidePanel");
     console.log("Panel open for sensor: " + sensor + " ( pas de temps " + timespanLower + " min)");
     targetDiv.style.display = "block";
@@ -2115,7 +2116,7 @@ function mobileTest() {
 
     switch (timespanLower) {
       case 2:
-        timeLengthGraph = 3;
+        timeLengthGraph = 24;
         break;
       case 15:
         timeLengthGraph = 24;

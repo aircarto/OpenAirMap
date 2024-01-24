@@ -5,7 +5,7 @@ var options = {
 	"maxZoom": 21,
 	"compoundUpper": "PM25",
 	"timespanLower": 2,
-	"timeLength": 3,
+	"timeLength": 24,
 	"display": "atmosudmicro",
 	//"display":"nebuleair,sensorcommunity,atmosudmicro",
 	// "boundSW" : [42.91,4.16],
