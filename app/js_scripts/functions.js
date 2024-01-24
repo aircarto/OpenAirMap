@@ -2371,6 +2371,8 @@ function mobileTest() {
         "'," +
         timeLength + 
         ',1440,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
+        //mettre à jour les buttons (style)
+        buttonsSwitcher(timeLengthGraph, timespanGraph, false);
     }
 
     if (sensor.includes("stationRefAtmoSud")) {

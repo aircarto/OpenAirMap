@@ -697,6 +697,7 @@ function load1MicroAtmo(id, hours, timespan, correction) {
   const start_string = start.toISOString()
   console.log("Station id:" + id);
   console.log("Pas de temps:" + timespan);
+  console.log("Historique:" + hours);
   console.log("From: " + start_string);
   console.log("To: " + end_string);
   console.log("Correction: " + correction);
