@@ -22,13 +22,13 @@ body {
 
 #div_buttonPM {
   position: fixed;
-  right: 290px;
+  right: 320px;
   top: 15px;
 }
 
 #div_checkbox_choixCapteur {
   position: fixed;
-  right: 90px;
+  right: 95px;
   top: 15px;
 }
 
@@ -37,6 +37,7 @@ body {
   right: 30px;
   top: 15px;
 }
+
 
 #div_button_pas_de_temps {
   position: fixed;
@@ -93,7 +94,7 @@ body {
 }
 
 .leaflet-popup-content {
-  width: 600px;
+  width: 400px;
 }
 
 
@@ -188,7 +189,7 @@ body {
 #div_button_seuils_PM125 {
   visibility: visible;
   position: absolute;
-  right: 500px;
+  right: 600px;
   top: 15px;
 }
 

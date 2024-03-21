@@ -114,6 +114,7 @@
       <button id="button_PM1" class="btn btn-outline-primary">PM1</button>
       <button id="button_PM25" class="btn btn-outline-primary">PM2.5</button>
       <button id="button_PM10" class="btn btn-outline-primary">PM10</button>
+      <button id="button_openInfoModal" class="btn btn-primary"  onclick="openInfoModal()"> <i class="bi bi-question-circle"></i> </button>
     </div>
 
     <!-- Bouton Plus d'infos -->
@@ -125,6 +126,7 @@
     >
       <i class="bi bi-info-circle"></i>
     </button>
+
 
     <!-- Bouton dropdown Choix des capteurs -->
     <div class="dropdown" id="div_checkbox_choixCapteur">
@@ -848,6 +850,101 @@
         </div>
       </div>
     </div>
+
+  <!-- Modal General Infos -->
+  <div
+  class="modal fade"
+  id="InfoModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Micro Particules Renseignements
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row justify-content-md-center mb-2">
+            <div class="col-lg-8">
+              <img src="img/Particules-air_fig2-penetration-poumons.jpg" class="img-fluid" alt="..." />
+            </div>
+          </div>
+          <div class="row">
+            <h5>Les micros-particules sont des particules en suspension issues de toutes les combustions et de l'industrie manfacturière.
+                Les particules sont des irritants du système respiratoire et du système cardio-vasculaire.
+                Plus d'informations sur le <a href="https://www.atmosud.org/article/les-principaux-polluants">site d'AtmoSud.</a>
+              </h5>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">PM 1</th>
+                    <th scope="col">PM 2.5</th>
+                    <th scope="col">PM 10</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td scope="row">Les PM1 ont un diamètre inférieur à 1 micromètres. Elles sont tellement fines qu'elles peuvent atteindre les alvéoles.</td>                 
+                    <td scope="row">Les PM2.5 ont un diamètre inférieur à 2.5 micromètres. Elles sont appelées particules fines.</td>
+                    <td scope="row">Les PM10 ont un diamètre inférieur à 10 micromètres. Elles sont dites respirables car elles pénètrent dans les bronches.</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Risques</th>
+                    <td scope="row">Atteinte et endomagement des alvéoles</td>                 
+                    <td scope="row">Atteinte et endomagement des voies respiratoires inférieures</td>
+                    <td scope="row">Atteinte et endomagement des voies respiratoires supérieures</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Valeur Limite Annuel (selon comission européenne)</th>
+                    <td scope="row">&nbsp;</td>                 
+                    <td scope="row">25µg/m³</td>
+                    <td scope="row">40µg/m³</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Objectif Qualité</th>
+                    <td scope="row">&nbsp;</td>                 
+                    <td scope="row">20µg/m³</td>
+                    <td scope="row">300µg/m³</td>
+                  </tr>           
+                </tbody>
+              </table>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row justify-content-md-center mb-2">
+                    <div class="col-lg-6">
+                      <img src="img/comparaison-taille-pm25-pm10.jpg" class="img-fluid" alt="..." />
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Continuer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- Modal screen too smalll -->
     <div
@@ -1653,6 +1750,13 @@
       function openWelcomeModal() {
         welcomeModal.show();
       }
+
+      const InfoModal = new bootstrap.Modal("#InfoModal");
+      
+      function openInfoModal() {
+        InfoModal.show();
+      }
+
 
       const sensorPanelModal = new bootstrap.Modal("#sensorPanel_Modal");
       const sensorPanelModal2 = new bootstrap.Modal("#sensorPanel_Modal2");
