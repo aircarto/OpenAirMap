@@ -930,11 +930,25 @@ function gaugeCreatorAtmoSudMicro(root, measure, type) {
                   strokeOpacity: 0.8
                 });
 
+                let maximum;
+
+                switch (type) {
+                  case "PM1":
+                    maximum = 100;
+                    break;
+                  case "PM25":
+                    maximum = 100;
+                    break;
+                  case "PM10":
+                    maximum = 200;
+                    break;
+                }
+
 
                 let xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
                   maxDeviation: 0,
                   min: 0,
-                  max: 100,
+                  max: maximum,
                   strictMinMax: true,
                   renderer: axisRenderer
                 }));
