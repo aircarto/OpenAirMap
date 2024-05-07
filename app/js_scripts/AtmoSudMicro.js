@@ -836,31 +836,33 @@ function chooseTimeAtmoMicro(sensor, hours, timespan, correction, modal) {
       "',8760," +
       timespanGraph +
       ',' + correction + ',false)" class="btn btn-outline-secondary btn-sm">1 an</button>';
-    //pas de temps (brute)
+    
+      //pas de temps (brute)
       document.getElementById("button2m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',2,false, false)" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
+      ',2,false, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>2m</button>';
     document.getElementById("button15m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',15,false, false)" class="btn btn-outline-secondary btn-sm">15m</button>';
+      ',15,false, false)" class="btn btn-outline-secondary btn-sm mt-2">15m</button>';
     document.getElementById("button60m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',60,false, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
+      ',60,false, false)" class="btn btn-outline-secondary btn-sm mt-2">1h</button>';
     document.getElementById("button1440m").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
       sensor +
       "'," +
       timeLengthGraph +
-      ',1440,false, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
+      ',1440,false, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
+      
       //pas de temps corrigé
       document.getElementById("button2m_corrige").innerHTML =
       '<button type="button" onclick="chooseTimeAtmoMicro(\'' +
@@ -885,7 +887,7 @@ function chooseTimeAtmoMicro(sensor, hours, timespan, correction, modal) {
       sensor +
       "'," +
       timeLengthGraph +
-      ',1440,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
+      ',1440,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button> <img src="img/star_gold.png" style="display: inline-block; width: 20px;"><br>';
 
   buttonsSwitcher(hours, timespan, correction, false); //REVOIR
 
