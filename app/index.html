@@ -436,7 +436,12 @@
             <span id="button1m"></span>
             <span id="button1a"></span>
             <div id="pdt" style="margin-top: 15px; margin-bottom: 5px;"><b>Pas de temps</b></div>
-            <span id="dataBrute_dataCorrige"></span>
+            <span id="dataBrute_dataCorrige">
+              <span id="button2m"></span>
+              <span id="button15m"></span>
+              <span id="button60m"></span>
+              <span id="button1440m"></span>
+            </span>
               <!--
             <span id="dataBrute"></span>
             <span id="button2m"></span>
@@ -1268,7 +1273,7 @@
       var timespanLower = options.timespanLower;
       var timeLength = options.timeLength;
       var display = options.display;
-      var correction = false;
+      var correction = true;
 
       console.log(display);
       console.log(timespanLower);

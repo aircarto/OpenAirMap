@@ -2106,10 +2106,12 @@ function mobileTest() {
         break;
     }
 
+    const cubicMeterSymbol = "\u00B3";
+
     document.getElementById("card-title").innerText =
       "Evolution des concentrations" +
       tempo +
-      "en particules fines (µg/m3)";
+      `en particules fines (µg/m${cubicMeterSymbol})`;
 
     var timespanGraph = timespanLower;
     var timeLengthGraph;
