@@ -511,9 +511,9 @@
                   >GitHub du projet</a
                 >. <br /><br />
                 <h5>Liste des données proposées par OpenAirMap</h5>
-                A noter que pour certains appareils, la donnée n'est pas
+                <p>A noter que pour certains appareils, la donnée n'est pas
                 disponible pour tous les pas de temps (2 minutes, quart-horaire,
-                horaire et journalier).
+                horaire et journalier) dans ce cas l'icone est grisée.</p>
                 <div class="table-responsive">
                   <table class="table">
                     <thead>
@@ -686,6 +686,7 @@
                           >
                         </td>
                       </tr>
+                      
                       <tr>
                         <th scope="row">Micro-stations AtmoSud</th>
                         <td>
@@ -724,7 +725,7 @@
                           </div>
                         </td>
                         <td>Micro-capteurs déployés par AtmoSud</td>
-                        <td rowspan="4" class="text-end align-middle">
+                        <td rowspan="5" class="text-end align-middle">
                           <a
                             class="btn btn-primary"
                             href="https://api.atmosud.org/"
@@ -733,6 +734,54 @@
                           >
                         </td>
                       </tr>
+                      <tr>
+                        <th scope="row">Données consolidées</th>
+                        <td>
+                          <span class="badge rounded-pill text-bg-info"
+                            >micro-capteur</span
+                          >
+                        </td>
+                        <td>
+                          <img
+                            src="img/star_gold.png"
+                            alt=""
+                            style="width: 30px"
+                          />
+                        </td>
+                        <td>
+                          <div
+                            class="btn-group"
+                            role="group"
+                            aria-label="Basic mixed styles example"
+                          >
+                            <button type="button" class="btn btn-danger btn-sm">
+                              2m
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                            >
+                              QH
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-success btn-sm"
+                            >
+                              H
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                            >
+                              J
+                            </button>
+                          </div>
+                        </td>
+                        <td>
+                          Données corrigées de Nebule Air ou de microstations ayant fait l'objet d'une qualification en condition réelle d'utilisation en face d'un analyseur de référence. Elles permettent de prendre en compte la spécificité de chaque capteur et l'impact des conditions météo. Elles sont estampillées d'une étoile et sont disponibles au pas de temps horaire.
+                        </td>
+                      </tr>
+
                       <tr>
                         <th scope="row">Stations de référence AtmoSud</th>
                         <td>
@@ -782,6 +831,7 @@
                           d'AtmoSud
                         </td>
                       </tr>
+
                       <tr>
                         <th scope="row">Modélisation Horaire PM AtmoSud</th>
                         <td>
