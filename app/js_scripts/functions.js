@@ -2382,7 +2382,7 @@ function mobileTest() {
         ',1440, false, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
       
         //mettre à jour les buttons (style)
-        buttonsSwitcher(timeLengthGraph, timespanGraph, false);
+        buttonsSwitcher(timeLengthGraph, timespanGraph, true);
     }
 
     if (sensor.includes("stationRefAtmoSud")) {

@@ -4,9 +4,9 @@ var options = {
 	"minZoom": 1,
 	"maxZoom": 21,
 	"compoundUpper": "PM25",
-	"timespanLower": 2,
-	"timeLength": 24,
-	"display": "atmosudmicro",
+	"timespanLower": 60,   //pas de temps de base 2min, 15min, 60min ou journéé (??)
+	"timeLength": 24,      // ???
+	"display": "atmosudmicro, nebuleair",
 	//"display":"nebuleair,sensorcommunity,atmosudmicro",
 	// "boundSW" : [42.91,4.16],
 	// "boundNE" : [45.22,7.83]
