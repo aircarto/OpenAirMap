@@ -2106,10 +2106,12 @@ function mobileTest() {
         break;
     }
 
+    const cubicMeterSymbol = "\u00B3";
+
     document.getElementById("card-title").innerText =
       "Evolution des concentrations" +
       tempo +
-      "en particules fines (µg/m3)";
+      `en particules fines (µg/m${cubicMeterSymbol})`;
 
     var timespanGraph = timespanLower;
     var timeLengthGraph;
@@ -2327,52 +2329,60 @@ function mobileTest() {
         "',8760," +
         timespanGraph +
         ',' + correction + ', false)" class="btn btn-outline-secondary btn-sm" disabled>1 an</button>';
-      //boutons pas de temps (donnée brute)
-      document.getElementById("dataBrute").innerHTML ='<div class="d-inline">Donnée brute</div>';
-      document.getElementById("button2m").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
-      document.getElementById("button15m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
-        id +
-        "'," +
-        timeLength + 
-        ',15, false, false)" class="btn btn-secondary btn-sm">15m</button>';
-      document.getElementById("button60m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
-        id +
-        "'," +
-        timeLength + 
-        ',60, false, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
-      document.getElementById("button1440m").innerHTML =
-        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
-        id +
-        "'," +
-        timeLength + 
-        ',1440, false, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button>';
-      //boutons pas de temps (donnée corrigée)
-      document.getElementById("dataCorrige").innerHTML ='<br><div class="d-inline mt-2">Donnée corrigée</div>';
+      
+        
+        //on crée les boutons avec des span vide
+        document.getElementById("dataBrute_dataCorrige").innerHTML ='</span><span id="dataCorrige"></span><span id="button2m_corrige"></span><span id="button15m_corrige"></span><span id="button60m_corrige"></span><span id="button1440m_corrige"></span><span id="dataBrute"></span><span id="button2m"></span><span id="button15m"></span><span id="button60m"></span><span id="button1440m">';
+      
+        //boutons pas de temps (donnée corrigée)
+      document.getElementById("dataCorrige").innerHTML ='<div class="d-inline"><img src="img/star_gold.png" style="display: inline-block; width: 20px;"> Donnée consolidée </div>';
         document.getElementById("button2m_corrige").innerHTML =
-        '<button type="button" class="btn btn-outline-secondary btn-sm mt-2" disabled>2m</button>';
+        '<button type="button" class="btn btn-outline-secondary btn-sm" disabled>2m</button>';
       document.getElementById("button15m_corrige").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\''+
         id +
         "'," +
         timeLength + 
-        ',15, true,false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>15m</button>';
+        ',15, true,false)" class="btn btn-outline-secondary btn-sm" disabled>15m</button>';
       document.getElementById("button60m_corrige").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\''+
         id +
         "'," +
         timeLength + 
-        ',60,true, false)" class="btn btn-outline-secondary btn-sm mt-2">1h</button>';
+        ',60,true, false)" class="btn btn-outline-secondary btn-sm">1h</button>';
       document.getElementById("button1440m_corrige").innerHTML =
         '<button type="button" onclick="chooseTimeAtmoMicro(\''+
         id +
         "'," +
         timeLength + 
-        ',1440,true, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
+        ',1440,true, false)" class="btn btn-outline-secondary btn-sm" disabled>24h</button> <img src="img/star_gold.png" style="display: inline-block; width: 20px;"><br>';
+        
+        
+        //boutons pas de temps (donnée brute)
+        document.getElementById("dataBrute").innerHTML ='<div class="d-inline mt-2">Donnée brute </div>';
+      document.getElementById("button2m").innerHTML =
+        '<button type="button" class="btn btn-outline-secondary btn-sm mt-2 " disabled>2m</button>';
+      document.getElementById("button15m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',15, false, false)" class="btn btn-secondary btn-sm mt-2">15m</button>';
+      document.getElementById("button60m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',60, false, false)" class="btn btn-outline-secondary btn-sm mt-2">1h</button>';
+      document.getElementById("button1440m").innerHTML =
+        '<button type="button" onclick="chooseTimeAtmoMicro(\''+
+        id +
+        "'," +
+        timeLength + 
+        ',1440, false, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
+      
         //mettre à jour les buttons (style)
-        buttonsSwitcher(timeLengthGraph, timespanGraph, false);
+        buttonsSwitcher(timeLengthGraph, timespanGraph, true);
     }
 
     if (sensor.includes("stationRefAtmoSud")) {

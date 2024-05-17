@@ -408,7 +408,7 @@
               class="bi bi-aspect-ratio position-absolute bottom-0 end-0 me-1"
             ></i>
           </span>
-          <br class="card-body">
+          <div class="card-body">
             <!-- Nom du capteur en haut -->
             <!-- <h3 id="title_deviceName"></h3> -->
             <button
@@ -427,7 +427,7 @@
               frameborder="0"
             ></iframe>
             <div id="chartSensor2"></div>
-            <div id="historique">Historique</div>
+            <div id="historique" style="margin-top: 15px; margin-bottom: 5px;"><b>Historique</b></div>
             <span id="button1h"></span>
             <span id="button3h"></span>
             <span id="button24h"></span>
@@ -435,7 +435,14 @@
             <span id="button1s"></span>
             <span id="button1m"></span>
             <span id="button1a"></span>
-            <div id="pdt">Pas de temps</div>
+            <div id="pdt" style="margin-top: 15px; margin-bottom: 5px;"><b>Pas de temps</b></div>
+            <span id="dataBrute_dataCorrige">
+              <span id="button2m"></span>
+              <span id="button15m"></span>
+              <span id="button60m"></span>
+              <span id="button1440m"></span>
+            </span>
+              <!--
             <span id="dataBrute"></span>
             <span id="button2m"></span>
             <span id="button15m"></span>
@@ -446,6 +453,7 @@
             <span id="button15m_corrige"></span>
             <span id="button60m_corrige"></span>
             <span id="button1440m_corrige"></span>
+            -->
             <!-- </br>
             <span id="btn_comp"></span>
             <div id="compare">
@@ -499,6 +507,7 @@
                 </div>
               </div>
               <div class="row">
+                <p>
                 L'application OpenAirMap est un projet open source porté par
                 AirCarto et AtmoSud pour afficher en temps réel les mesures de
                 qualité de l'air effectué par les stations de mesures et les
@@ -506,10 +515,9 @@
                 récupérées via différentes plateforme de mise à disposition de
                 données de mesure (API). A noter que cette application est en
                 constante évolution et amélioration. Pour toutes questions et
-                suggestions n'hésitez pas à déposer un message sur le
-                <a href="https://github.com/aircarto/OpenAirMap"
-                  >GitHub du projet</a
-                >. <br /><br />
+                suggestions n'hésitez pas à déposer un message sur le <a href="https://github.com/aircarto/OpenAirMap" style="display: inline;">GitHub du projet</a>. 
+                <br /><br />
+              </p>
                 <h5>Liste des données proposées par OpenAirMap</h5>
                 <p>A noter que pour certains appareils, la donnée n'est pas
                 disponible pour tous les pas de temps (2 minutes, quart-horaire,
@@ -1315,7 +1323,7 @@
       var timespanLower = options.timespanLower;
       var timeLength = options.timeLength;
       var display = options.display;
-      var correction = false;
+      var correction = true;
 
       console.log(display);
       console.log(timespanLower);

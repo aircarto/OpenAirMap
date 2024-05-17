@@ -12,7 +12,8 @@ $url = 'https://api.atmosud.org/observations/capteurs/mesures?'.
 '&id_site='.$id_site.
 '&format=json'.
 '&download=false'.
-'&nb_dec=0'.
+'&nb_dec=1'.
+'&type_capteur=true'.
 '&variable=PM1%2CPM10%2CPM2.5';
 
 switch ($timespan) {  

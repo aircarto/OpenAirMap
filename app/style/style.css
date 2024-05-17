@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+a {
+  display: inline;
+}
+
 #map {
   position: fixed;
   height: 100%;
