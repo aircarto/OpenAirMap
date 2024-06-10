@@ -993,7 +993,7 @@ function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
       "'," +
       timeLengthGraph +
       ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-    buttonsSwitcher(timeLengthGraph, timespanGraph, modal);
+    buttonsSwitcher(timeLengthGraph, timespanGraph, false, modal);
     if (timespanGraph == 2 || timespanGraph == 15) {
       document
         .getElementById("button1a")
@@ -1087,7 +1087,7 @@ function chooseTimeNebuleAir(sensor, hours, timespan, modal) {
       "'," +
       timeLengthGraph +
       ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-    buttonsSwitcher(timeLengthGraph, timespanGraph, modal);
+    buttonsSwitcher(timeLengthGraph, timespanGraph, false, modal);
     if (timespanGraph == 2 || timespanGraph == 15) {
       document
         .getElementById("modal_button1a")

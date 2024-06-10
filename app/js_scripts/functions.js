@@ -9,7 +9,7 @@ function mobileTest() {
           a.substr(0, 4)
         )
       )
-        check = false;
+        check = true;
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
   }
@@ -637,7 +637,7 @@ function mobileTest() {
   function buttonsSwitcher(hours, timespan, correction, modal) {
     console.log("➡️ buttonsSwitcher ⬅️")
 
-    console.log("Switch to new historique (" + hours + ") and pas de temps (" + timespan + ") and correction (" + correction + ")");
+    console.log("Switch to new historique (" + hours + ") and pas de temps (" + timespan + ") correction (" + correction + ") and modal ("+modal+")");
      
     //sur desktop
     if (!modal) {
@@ -1457,7 +1457,8 @@ function mobileTest() {
         "'," +
         timeLength +
         ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLength, timespanLower, true);
+      
+      buttonsSwitcher(timeLength, timespanLower,false, true);
 
       if (timespanLower == 2 || timespanLower == 15) {
         document
@@ -1656,7 +1657,7 @@ function mobileTest() {
         //pas de temps (corrige)
 
       
-        buttonsSwitcher(timeLength, timespanLower, true);
+        buttonsSwitcher(timeLength, timespanLower, false, true);
 
     // if (timespanLower == 2 || timespanLower == 15) {
     //   document
@@ -1793,7 +1794,7 @@ function mobileTest() {
         "'," +
         timeLength +
         ',1440,true)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLength, timespanLower, true);
+      buttonsSwitcher(timeLength, timespanLower,false, true);
 
       if (timespanLower == 2 || timespanLower == 15) {
         document
@@ -2204,7 +2205,7 @@ function mobileTest() {
         timeLengthGraph +
         ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
 
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
+      buttonsSwitcher(timeLengthGraph, timespanGraph, false, false);
 
       if (timespanGraph == 2 || timespanGraph == 15) {
         document
@@ -2382,7 +2383,7 @@ function mobileTest() {
         ',1440, false, false)" class="btn btn-outline-secondary btn-sm mt-2" disabled>24h</button>';
       
         //mettre à jour les buttons (style)
-        buttonsSwitcher(timeLengthGraph, timespanGraph, true);
+        buttonsSwitcher(timeLengthGraph, timespanGraph, true, false);
     }
 
     if (sensor.includes("stationRefAtmoSud")) {
@@ -2453,7 +2454,7 @@ function mobileTest() {
         "'," +
         timeLengthGraph +
         ',1440,false)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
+      buttonsSwitcher(timeLengthGraph, timespanGraph, false, false);
 
       if (timespanGraph == 2 || timespanGraph == 15) {
         document
@@ -2553,7 +2554,7 @@ function mobileTest() {
         "'," +
         timeLengthGraph +
         ',1440)" class="btn btn-outline-secondary btn-sm">24h</button>';
-      buttonsSwitcher(timeLengthGraph, timespanGraph, false);
+      buttonsSwitcher(timeLengthGraph, timespanGraph, false, false);
 
       if (timespanGraph == 2 || timespanGraph == 15) {
         document
