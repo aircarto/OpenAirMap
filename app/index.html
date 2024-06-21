@@ -1755,12 +1755,15 @@
 
       //welcome mdodal (open at startup with cookies or with button_openWelcomeModal)
       const welcomeModal = new bootstrap.Modal("#welcome_Modal");
-
+      
+      //we remove the automatic open of modal (cookie)
+      /*
       if (Cookies.get("welcome") == null) {
         welcomeModal.show();
         Cookies.set("welcome", "oui", { expires: 7 });
       }
-
+      */
+     
       function openWelcomeModal() {
         welcomeModal.show();
       }
