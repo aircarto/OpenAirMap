@@ -641,7 +641,9 @@ function mobileTest() {
      
     //sur desktop
     if (!modal) {
+      //en fonction de l'historique (hours)
       switch (hours) {
+        //pour une heure
         case 1:
           document
             .getElementById("button1h")
@@ -680,6 +682,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+        //pour 3h
         case 3:
           document
             .getElementById("button1h")
@@ -718,6 +721,8 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+
+        //pour 24h
         case 24:
           document
             .getElementById("button1h")
@@ -756,6 +761,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+          //pour 48 heures
         case 48:
           document
             .getElementById("button1h")
@@ -794,6 +800,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+          //pour 1 semaine
         case 168:
           document
             .getElementById("button1h")
@@ -832,6 +839,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+          //pour un mois
         case 720:
           document
             .getElementById("button1h")
@@ -870,9 +878,55 @@ function mobileTest() {
               "btn-secondary"
             );
           break;
+          //pour un ans
+        case 8760:
+          document
+            .getElementById("button1h")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+          document
+            .getElementById("button3h")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+          document
+            .getElementById("button24h")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+          document
+            .getElementById("button48h")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+          document
+            .getElementById("button1s")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+          document
+            .getElementById("button1m")
+            .children[0].classList.replace(
+              "btn-secondary",
+              "btn-outline-secondary"
+            );
+            document
+            .getElementById("button1a")
+            .children[0].classList.replace(
+              "btn-outline-secondary",
+              "btn-secondary"
+            );
+          break;
       }
-
+      //en fonction du pas de temps
       switch (timespan) {
+        //pas de temps 2 minutes
         case 2:
           document
             .getElementById("button2m")
@@ -899,6 +953,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+          //pas de temps 15 min (quart horaire)
         case 15:
           document
             .getElementById("button2m")
@@ -925,6 +980,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+          //pas de temps une heure
         case 60:
           document
             .getElementById("button2m")
@@ -951,6 +1007,7 @@ function mobileTest() {
               "btn-outline-secondary"
             );
           break;
+          //pas de temps 24 heures
         case 1440:
           document
             .getElementById("button2m")
@@ -1005,6 +1062,7 @@ function mobileTest() {
             );
           break;
       }
+      //SUR MOBILE
     } else {
       switch (hours) {
         case 1:

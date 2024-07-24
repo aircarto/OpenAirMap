@@ -3,9 +3,10 @@ function loadStationRefAtmo() {
   const start = Date.now();
   stationsRefAtmoSud.clearLayers();
 
+  //Première requete pour les stations
   $.ajax({
     method: "GET",
-    url: "../php_scripts/AtmoSudRefList.php",
+    url: "../php_scripts/AtmoSudRefList.php", //API Station
   }).done(function (data) {
     apiFetchAtmoSudRefList = data.stations;
 
@@ -59,7 +60,7 @@ function loadStationRefAtmo() {
       }
     })
 
-
+    //seconde requete pour les mesures
     $.ajax({
       method: "GET",
       url: "../php_scripts/AtmoSudRef.php",
@@ -117,6 +118,7 @@ function loadStationRefAtmo() {
 
         var AtmoSudRefTootip = item.nom_station;
 
+        //si on est en PM et que l'on a de la donnée
         if ((item.polluant_id == "68" || item.polluant_id == "39" || item.polluant_id == "24") && value_compound != undefined) {
 
           var icon_param = {

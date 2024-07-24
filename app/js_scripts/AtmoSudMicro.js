@@ -165,7 +165,7 @@ function loadStationMicroAtmo() {
           .addTo(stationsMicroAtmoSud)
 
           //si on est en H alors une étoile sur la data
-          if (timespanLower === 60) {
+          if (timespanLower === 60 && item["valeur"] !== null) {
             L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSTAR })
           .addTo(stationsMicroAtmoSud)
           }
@@ -467,6 +467,8 @@ function changeStationMicroAtmo() {
 
     //add icon to map
     var microStationsAtmoSud_icon = L.icon(icon_param);
+
+
     var microStationsAtmoSTAR = L.icon(icon_STAR);
 
 
@@ -490,7 +492,7 @@ function changeStationMicroAtmo() {
       y_position = 56;
     }
 
-
+    // ?????????? pourquoi un if
     if (value_compound != undefined && value_compound != null) {
       // cutom text on the marker
       var myIcon = L.divIcon({
@@ -505,7 +507,7 @@ function changeStationMicroAtmo() {
         .addTo(stationsMicroAtmoSud);
 
          //si on est en H alors une étoile sur la data
-         if (timespanLower === 60) {
+         if (timespanLower === 60 && item["valeur"] !== null) {
           L.marker([item['lat'], item['lon']], { icon: microStationsAtmoSTAR })
         .addTo(stationsMicroAtmoSud)
         }
@@ -1318,6 +1320,25 @@ function graphCreatorAtmoSudMicro(root, data, text, timespan, correction) {
 
         // Add legend
         // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+        show_pasDeDonnee = true
+        data.forEach(element => {
+          //console.log(element.valeur);
+          if(element.valeur !== null){
+            show_pasDeDonnee = false
+          }
+
+        });
+        
+        if (show_pasDeDonnee == true && correction == true){
+
+        let modal = am5.Modal.new(root, {
+          content: "Pas de donnée consolidée sur cette période"
+        });
+      
+        modal.open();
+      }
+      
+
         let legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
           width: 400,
           height: am5.percent(20),
@@ -1370,7 +1391,7 @@ function graphCreatorAtmoSudMicro(root, data, text, timespan, correction) {
 
         chart.children.unshift(am5.Label.new(root, {
           text: text,
-          fontSize: 14,
+          fontSize: 16,
           textAlign: "center",
           x: am5.percent(50),
           centerX: am5.percent(50)
@@ -1404,7 +1425,7 @@ function load1MicroAtmoModal(id, hours, timespan) {
   //ATTENTION, ON EST EN UTC
 
   let chartTitleText = "";
-  chartTitleText += "AtmoSudMicro-" + id + ", mesures à 15 min.,  µg/m3";
+  chartTitleText += "AtmoSudMicro-" + id + ", mesures <br> à 15 min.,  µg/m3";
 
   $.ajax({
     method: "GET",

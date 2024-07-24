@@ -1,5 +1,7 @@
 <?php
 
+// VIENS Chercher les mesures dernieres
+
 $timespan = $_GET['timespan']; 
 
 switch ($timespan) {  
@@ -7,15 +9,21 @@ switch ($timespan) {
         exit;
         break; 
     case 15:
-        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=quart-horaire&metadata=false&only_validate_values=false&format=json&download=false';
+        $temporalite = 'quart-horaire';
+
         break;
     case 60:
-        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=horaire&metadata=false&only_validate_values=false&format=json&download=false';
+        $temporalite = 'horaire';
+
         break;
     case 1440:
-        $url = 'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=PM10%2CPM2.5%2CPM1&temporalite=journali%C3%A8re&metadata=false&only_validate_values=false&format=json&download=false';
+        $temporalite = 'journalière';
+
         break;
 }
+
+$url =  'https://api.atmosud.org/observations/stations/mesures/derniere?nom_polluant=pm10%2Cpm2.5%2Cpm1&temporalite='.$temporalite.'&metadata=false&format=json&download=false';
+
 
 $json_data = file_get_contents($url);
 

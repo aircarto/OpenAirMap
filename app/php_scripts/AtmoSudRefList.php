@@ -1,5 +1,7 @@
 <?php
 
+//liste de toutes les stations (tous les polluants possibles)
+
 $url = 'https://api.atmosud.org/observations/stations?format=json&download=false';
 
 $json_data = file_get_contents($url);
