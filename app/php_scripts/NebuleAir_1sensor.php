@@ -20,7 +20,7 @@ switch ($timespan) {
         break;
 }
 
-$url = 'https://aircarto.fr/API_V2/capteurs/dataNebuleAir?capteurID=nebuleair-'.$id.'&start='.$debut.'&end='.$fin.'&freq='.$timespan;
+$url = 'https://api.aircarto.fr/capteurs/dataNebuleAir?capteurID=nebuleair-'.$id.'&start='.$debut.'&end='.$fin.'&freq='.$timespan;
 
 $json_data = file_get_contents($url);
 

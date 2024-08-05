@@ -17,7 +17,7 @@
 //         break;
 // }
 
-$url = 'https://aircarto.fr/API_V2/capteurs/metadata?capteurType=NebuleAir';
+$url = 'https://api.aircarto.fr/capteurs/metadata?capteurType=NebuleAir';
 
 $json_data = file_get_contents($url);
 

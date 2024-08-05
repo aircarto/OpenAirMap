@@ -1913,6 +1913,7 @@ function mobileTest() {
           root4 = am5.Root.new("modal_chartSensor2");
           root4.setThemes([am5themes_Animated.new(root4)]);
 
+          //Instantiating the chart
           var chart4 = root4.container.children.push(
             am5xy.XYChart.new(root4, {
               panX: true,
@@ -1926,6 +1927,8 @@ function mobileTest() {
 
           // Create axes
           // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+
+          //axe X (horizontal -> datetime)
           var xAxis = chart4.xAxes.push(
             am5xy.DateAxis.new(root4, {
               maxDeviation: 0.2,
@@ -1937,7 +1940,7 @@ function mobileTest() {
               tooltip: am5.Tooltip.new(root4, {}),
             })
           );
-
+          //axe Y (vertical -> data)
           var yAxis = chart4.yAxes.push(
             am5xy.ValueAxis.new(root4, {
               renderer: am5xy.AxisRendererY.new(root4, {}),

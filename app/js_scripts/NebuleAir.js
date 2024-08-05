@@ -854,8 +854,10 @@ function load1NebuleAirModal(id, hours, timespan) {
       }
 
       setTimeout(function () {
-        am5.ready(function () {
 
+        //In some setups the code might execute before DOM is fully loaded, which would result in error. 
+        //For such cases amCharts provides a wrapper function:
+        am5.ready(function () {
           // Create root element
           // https://www.amcharts.com/docs/v5/getting-started/#Root_element 
           root4 = am5.Root.new("modal_chartSensor2");
